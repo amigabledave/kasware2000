@@ -1,0 +1,277 @@
+
+
+/*--- Base Formats----------------------------*/
+
+
+.KASwareTitleBlock {
+    display: block;
+    color: #222;        
+    text-align: left;
+    margin-top: 25px;
+    text-decoration: none;
+}
+
+.KASwareTitleText {
+    font-size: 30px;
+    font-weight: bold;
+    vertical-align: bottom;
+}
+
+
+
+.section-title{
+    display: block;
+    color: #222;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    text-decoration: none;
+}
+
+
+.NewEditKSU-title{
+    color: #222;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    text-decoration: none;
+}
+
+.MiniTopTitle{
+    color: #222;
+    font-size: 14px;
+    /*font-weight: bold;*/
+    text-align: left;
+/*    margin-bottom: 5px;
+    margin-top: 15px;*/
+    vertical-align: top;
+    /*text-decoration: none;*/
+}
+
+
+
+
+.section-sub-title{
+    display: block;
+    color: #222;
+    font-size: 20px;
+/*    font-weight: bold;*/
+    text-align: left;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    text-decoration: none;
+}
+
+
+
+.section-group-title{
+    display: block;
+    color: #222;
+    font-size: 23px;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    text-decoration: none;
+}
+
+.mission-group-title{
+    display: block;
+    color: #222;
+    font-size: 23px;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 0px;
+    margin-top: 40px;
+    text-decoration: none;
+}
+
+
+
+
+
+.BigO-title{
+    display: block;
+    color: #222;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+    text-decoration: none;
+}
+
+
+
+
+
+.new-ksu-button {
+    margin-top: 15px;
+    margin-left: 0px;
+}
+
+
+.score-title {
+    display: block;
+    color: #6600CC;
+    font-size: 15px;
+    /*font-weight: bold;*/
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 25px;
+    text-decoration: none;
+    white-space:pre;
+}
+
+
+.small-score-title {
+    display: block;
+    color: #6600CC;
+    font-size: 15px;
+    /*font-weight: bold;*/
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    text-decoration: none;
+    white-space:pre;
+}
+
+
+
+.corner-link{
+    display: inline-block;
+    margin-top: 25px;
+    text-align: right;
+}
+
+
+.title-question {
+    display: block;
+    color: #222;
+    font-size: 25px;
+    /*font-weight: bold;*/
+    text-align: center;
+    text-decoration: none;
+    /*white-space:pre;*/
+}
+
+
+.thick-hr-1px {
+    border: none;
+    height: 1px;
+    /* Set the hr color */
+    color: #333; /* old IE */
+    background-color: #333; /* Modern Browsers */
+}
+
+.thick-hr-2px {
+    border: none;
+    height: 2px;
+    /* Set the hr color */
+    color: #333; /* old IE */
+    background-color: #333; /* Modern Browsers */
+}
+
+
+
+.field-header{
+    font-weight: 700;
+    font-style: italic;
+}
+
+
+
+.tile-ksu-edit{
+    font-size: 20px;
+
+}
+
+.respect-space{
+    white-space:pre;
+}
+
+
+
+.copywright-message{
+    display: block;
+    color: #D3D3D3;
+    text-align: center;
+    text-decoration: none;
+
+}
+
+
+.mission-message{
+    display: block;
+    color: #222;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+
+}
+
+
+.PythonData {
+  width: 100%;
+  height: 800px;
+  /*font-size: 17px;*/
+  font-family: monospace;
+}
+
+
+
+/*Alignment*/
+.pull-left {
+  float: left;
+}
+
+
+/*To be deleted*/
+.mobile_button{
+     width: 40em;  
+     height: 10em;
+}
+
+
+.mission_time{
+    color: #0000FF;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+.error {
+    color: red;
+}
+
+.red {
+    color: red;
+}
+
+.mission_critical{
+    color: #D00000;
+    /*font-size: 15px;*/
+    font-weight: bold;
+    /*color: #0000FF;*/
+}
+
+.mission_any_any{
+    /*color: #00CC33; Light Green */
+    /*color: #993300; Marron */
+    font-size: 21px;
+    font-weight: bold;
+    color: #0000FF;
+}
+
+.purple {
+    color: #6600CC;
+}
+
+.blue {
+    color: #0000FF;
+}
+
+
