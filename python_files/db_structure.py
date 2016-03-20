@@ -12,7 +12,7 @@ class Theory(db.Model):
 	owner = db.StringProperty() #ID of user that owns this theory. Esto lo voy usar cuando permita log-in con una cuenta de Google
 	
  	#user settings
- 	language = db.StringProperty(choices=('Español', 'English'))
+ 	language = db.StringProperty(choices=('Español', 'English'), default='English')
  	hide_private_ksus = BooleanProperty(default=False)
 	
 	#tracker fields

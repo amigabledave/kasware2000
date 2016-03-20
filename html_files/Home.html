@@ -3,10 +3,85 @@
 {% block content %}
 <br><br>	
 <div class="row"> 	
-	<div class="col-xs-12"> 
-		<div class="title-question"> What Would You Have To Do To Experience The Best Life You Could Live? </div> 
+	
+	<div class="col-xs-hidden col-sm-4 col-md-6 col-lg-8">  
+		<div class="title-question"> What Would You Have To Do To Experience The Best Life You Could Live? </div> 	
 	</div>
+
+	<div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">  
+		<form class="form-horizontal" method="post">
+		
+			<div class="row">
+				<div class="col-xs-12">  
+					<div class="title-question"> Sign Up </div> 	
+				</div>				
+			</div>
+
+			<div class="form-group">
+				<div class="col-xs-6">
+					<input type="text" class="form-control" name="username" placeholder="First name">
+				</div>
+
+				<div class="col-xs-6">
+					<input type="text" class="form-control" name="username" placeholder="Last name">
+				</div>
+
+			</div>
+
+			<div class="form-group">
+			<label for="email" class="col-sm-2 control-label">Email</label>
+			<div class="col-sm-6">
+			<input type="email" class="form-control" name="email" placeholder="Email">
+			</div>
+			<label class="col-sm-4 error">{{error_email}}</label>
+			</div>
+
+			<div class="form-group">
+			<label for="password" class="col-sm-2 control-label">Password</label>
+			<div class="col-sm-6">
+			<input type="password" class="form-control" name="password" placeholder="Password">
+			</div>
+			<label class="col-sm-4 error">{{error_password}}</label>
+			</div>
+
+			<div class="form-group">
+			<label for="verify" class="col-sm-2 control-label">Confirm Password</label>
+			<div class="col-sm-6">
+			<input type="password" class="form-control" name="verify" placeholder="Confirm Password">
+			</div>
+			<label class="col-sm-4 error">{{error_verify}}</label>
+			</div>
+
+			<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+			<div class="checkbox">
+			<label>
+			  <input type="checkbox"> Remember me
+			</label>
+			</div>
+			</div>
+			</div>
+
+			<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+			<input type="submit" class="btn btn-default" value="Sign up!"> 
+			</div>
+			</div>
+
+
+	
+		</form>
+	</div>
+
 </div>	
+
+
+
+  
+
+
+
+
 
 
 {% endblock %}
