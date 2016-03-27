@@ -3,85 +3,97 @@
 {% block content %}
 <br><br>	
 <div class="row"> 	
-	
-	<div class="col-xs-hidden col-sm-4 col-md-6 col-lg-8">  
-		<div class="title-question"> What Would You Have To Do To Experience The Best Life You Could Live? </div> 	
+
+	<div class="col-xs-hidden col-sm-4 col-md-6 col-lg-8"> 
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="SignUp_SummaryTitle" style="padding: 42px 0 24px"> Become the person you  consciously decide to be <br> and experience the best life you could possibly have </div> 
+			</div>						
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="SignUp_SummaryBullet" style="padding: 10px 0">     <span class="glyphicon glyphicon-gift" style="color:grey;" aria-hidden="true"></span>   Understand that life is an awesome gift!</div> 
+			</div>						
+		</div> 
+
+
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="SignUp_SummaryBullet" style="padding: 10px 0">     <span class="glyphicon glyphicon-king" style="color:grey;" aria-hidden="true"></span>   Define the concrete set of actions you would have to excecute <br>            to get the most out of it</div> 
+			</div>						
+		</div> 
+
+
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="SignUp_SummaryBullet" style="padding: 10px 0">     <span class="glyphicon glyphicon-pencil" style="color:grey;" aria-hidden="true"></span>   Track your behaviour and meassure its results </div> 
+			</div>						
+		</div> 
+
+
+
+		<div class="row">
+			<div class="col-xs-12"> 
+				<div class="SignUp_SummaryBullet" style="padding: 10px 0 ">     <span class="glyphicon glyphicon-flag" style="color:grey;" aria-hidden="true"></span>   Get the peace of mind that comes with knowing that you are <br>            truly doing your best. </div> 
+			</div>						
+		</div> 
+
+
 	</div>
+
 
 	<div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">  
 		<form class="form-horizontal" method="post">
 		
 			<div class="row">
-				<div class="col-xs-12">  
-					<div class="title-question"> Sign Up </div> 	
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
+					<div class="SignUp_Title"> Sign Up! </div> 	
+				</div>				
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
+					<div class="SignUp_SubTitle"> it's free and sexy. </div> 	
 				</div>				
 			</div>
 
 			<div class="form-group">
 				<div class="col-xs-6">
-					<input type="text" class="form-control" name="username" placeholder="First name">
+					<input type="text" class="form-control SignUp_Input" name="first_name" placeholder="First name">
 				</div>
 
 				<div class="col-xs-6">
-					<input type="text" class="form-control" name="username" placeholder="Last name">
+					<input type="text" class="form-control SignUp_Input" name="last_name" placeholder="Last name">
 				</div>
-
 			</div>
 
 			<div class="form-group">
-			<label for="email" class="col-sm-2 control-label">Email</label>
-			<div class="col-sm-6">
-			<input type="email" class="form-control" name="email" placeholder="Email">
-			</div>
-			<label class="col-sm-4 error">{{error_email}}</label>
+				<div class="col-sm-12">
+					<input type="email" class="form-control SignUp_Input" name="email" placeholder="Email">
+				</div>
 			</div>
 
 			<div class="form-group">
-			<label for="password" class="col-sm-2 control-label">Password</label>
-			<div class="col-sm-6">
-			<input type="password" class="form-control" name="password" placeholder="Password">
-			</div>
-			<label class="col-sm-4 error">{{error_password}}</label>
+				<div class="col-sm-12">
+					<input type="email" class="form-control SignUp_Input" name="email" placeholder="Re-enter email">
+				</div>
 			</div>
 
 			<div class="form-group">
-			<label for="verify" class="col-sm-2 control-label">Confirm Password</label>
-			<div class="col-sm-6">
-			<input type="password" class="form-control" name="verify" placeholder="Confirm Password">
-			</div>
-			<label class="col-sm-4 error">{{error_verify}}</label>
+				<div class="col-sm-12">
+					<input type="password" class="form-control SignUp_Input" name="password" placeholder="New password">
+				</div>
 			</div>
 
 			<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-			<div class="checkbox">
-			<label>
-			  <input type="checkbox"> Remember me
-			</label>
+				<div class="col-xs-12">
+					<input type="submit" class="btn btn-lg btn-success" value="Sign Up"> 
+				</div>
 			</div>
-			</div>
-			</div>
-
-			<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-			<input type="submit" class="btn btn-default" value="Sign up!"> 
-			</div>
-			</div>
-
-
-	
 		</form>
 	</div>
-
 </div>	
-
-
-
-  
-
-
-
-
 
 
 {% endblock %}

@@ -1,21 +1,100 @@
+/*Validated for use in kasware2000*/
 
+.KASwareTopBar{
+    background-color: #666699;
+}
 
-/*--- Base Formats----------------------------*/
-
+.GreyBackground{
+    background-color: #F0F0F0;
+}
 
 .KASwareTitleBlock {
     display: block;
     color: #222;        
     text-align: left;
-    margin-top: 25px;
+    margin-top: 20px;
+    margin-bottom: 15px;
     text-decoration: none;
 }
 
 .KASwareTitleText {
+    color: white;
     font-size: 30px;
-    font-weight: bold;
+    /*font-weight: bold;*/
     vertical-align: bottom;
 }
+
+.MiniTopTitle{
+    color: white;
+    /*color: #222;*/
+    font-size: 14px;
+    text-align: left;
+    vertical-align: top;
+}
+
+
+.corner-link{
+    display: inline-block;
+    margin-top: 25px;
+    text-align: right;
+}
+
+
+
+.copywright-message{
+    display: block;
+    color: #D3D3D3;
+    text-align: center;
+    text-decoration: none;
+
+}
+
+.SignUp_Title{
+    display: block;
+    color: #222;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.SignUp_SubTitle{
+    display: block;
+    color: #222;
+    font-size: 19px;
+    margin-bottom: 20px;
+}
+
+.SignUp_Input{
+    font-size: 18px;
+}
+
+
+.SignUp_SummaryTitle{
+    display: block;
+    color: #222;
+    font-size: 28px;
+    font-weight: 600;    
+}
+
+.SignUp_SummaryBullet{
+    display: block;
+    color: #222;
+    font-size: 20px;
+    white-space:pre;
+  
+}
+
+
+.respect-space{
+    white-space:pre;
+}
+
+
+/*--- Base Formats----------------------------*/
+
+
+
+
+
 
 
 
@@ -41,16 +120,6 @@
     text-decoration: none;
 }
 
-.MiniTopTitle{
-    color: #222;
-    font-size: 14px;
-    /*font-weight: bold;*/
-    text-align: left;
-/*    margin-bottom: 5px;
-    margin-top: 15px;*/
-    vertical-align: top;
-    /*text-decoration: none;*/
-}
 
 
 
@@ -140,22 +209,6 @@
 
 
 
-.corner-link{
-    display: inline-block;
-    margin-top: 25px;
-    text-align: right;
-}
-
-
-.title-question {
-    display: block;
-    color: #222;
-    font-size: 25px;
-    /*font-weight: bold;*/
-    text-align: center;
-    text-decoration: none;
-    /*white-space:pre;*/
-}
 
 
 .thick-hr-1px {
@@ -188,19 +241,11 @@
 
 }
 
-.respect-space{
-    white-space:pre;
-}
 
 
 
-.copywright-message{
-    display: block;
-    color: #D3D3D3;
-    text-align: center;
-    text-decoration: none;
 
-}
+
 
 
 .mission-message{
