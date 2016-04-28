@@ -21,14 +21,56 @@ class Handler(webapp2.RequestHandler):
 #----------
 
 
+class SignUpLogIn(Handler):
+    def get(self):
+        self.print_html('SignUpLogIn.html')
+
+    def post(self):
+    	post_details = get_post_details(self)
+    	user_action = post_details['action_description']
+
+    	if user_action == 'LogIn':
+			self.write('Successful Log In')
+
+    	if user_action == 'SignUp':
+    		self.write('Sing Up Successful!')
+    		self.write(post_details)
+
+
+
+
+
 class Home(Handler):
     def get(self):
-        self.print_html('Home.html')
+        self.write('Ups! Seems like you are not logged in')
+
+
+
+
+
+#--- Essential Helper Functions ----------
+
+
+def get_post_details(self):
+	post_details = {}
+	arguments = self.request.arguments()
+	for argument in arguments:
+		post_details[str(argument)] = self.request.get(str(argument))
+	return adjust_post_details(post_details)
+
+
+def adjust_post_details(post_details): 
+	details = {}
+	for (attribute, value) in post_details.items():
+		if value and value!='' and value!='None':
+			details[attribute] = value
+	return details
 
 
 
 #----------
 
 app = webapp2.WSGIApplication([
-    ('/', Home)
-], debug=True)
+    ('/', Home),
+    ('/SignUpLogIn', SignUpLogIn)
+	], debug=True)

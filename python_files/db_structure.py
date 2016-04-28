@@ -55,30 +55,34 @@ class KAS1(db.Model):
 	is_private = db.BooleanProperty(default=False)
 
 	global_tags = db.ListProperty(db.Key) #all global tags related to this KSU
-	local_tags = db.ListProperty(db.Key) #all global tags related to this KSU	
+	local_tags = db.ListProperty(db.Key) #all local tags related to this KSU	
 	origin = db.TextProperty() #Quien lo recomendo o como fue que este KSU llego a mi teoria
 	comments = db.TextProperty()
 	picture = db.BlobProperty()
 
 	#KAS KSU propeties
 	value_type = db.StringProperty(required=True, choices=('V000', 'V100', 'V200', 'V300', 'V400', 'V500', 'V600', 'V700', 'V800', 'V900'))
-	importance = db.IntegerProperty(choices=(1,2,3,5,8,13), default=3)
+	importance = db.IntegerProperty(choices=(1,2,3,5,8), default=3)
 	is_critical = db.BooleanProperty(default=False)
 
-	#proactive KAS KSU
-	time_cost = db.IntegerProperty(default=1)
-	next_event = db.DateProperty(required=True)
-	best_time = db.TimeProperty()
-
+	#proactive KAS KSU	
 	in_mission = db.BooleanProperty(default=False)
 	any_any = db.BooleanProperty(default=False)
 	in_upcoming = db.BooleanProperty(default=True)
 	
+
+	#date, time and frequency details
+	next_event = db.DateProperty(required=True)
+	best_time = db.TimeProperty()
+	time_cost = db.IntegerProperty(default=1)
+	repeats = = db.StringProperty(required=True, choices=('Daily', 'Weekly', 'Monthly', 'Yearly'), default='Weekly')	
+	repeats_every = db.IntegerProperty(required=True)
+	repeats_on = db.StringListProperty() #Day's of the week when it repeats if the frequency is Weekly, elese the repetition date is the same day of the month or year
+	
+
 	# KAS1 specifics
-	charging_time = db.IntegerProperty(required=True)
 	last_event = db.DateProperty()
 	project = db.StringProperty()
-	best_day = db.StringProperty()
 
 	TimeUse_target_min = db.IntegerProperty()
 	TimeUse_target_max = db.IntegerProperty()
