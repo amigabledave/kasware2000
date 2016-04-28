@@ -1,6 +1,6 @@
 #KASware V2.0.0 | Copyright 2016 Kasware Inc.
 
-import webapp2, jinja2, os 
+import webapp2, jinja2, os, re 
 
 
 template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
@@ -28,13 +28,24 @@ class SignUpLogIn(Handler):
     def post(self):
     	post_details = get_post_details(self)
     	user_action = post_details['action_description']
+    	input_error = user_input_error(post_details)
+
+
+
+    	if user_action == 'SignUp':
+    		if input_error:
+    			self.print_html('SignUpLogIn.html', post_details=post_details, input_error=input_error)
+
+    		else:
+    			self.write('Sing Up Successful!')
+    			self.write(post_details)
+
+
 
     	if user_action == 'LogIn':
 			self.write('Successful Log In')
 
-    	if user_action == 'SignUp':
-    		self.write('Sing Up Successful!')
-    		self.write(post_details)
+
 
 
 
@@ -68,9 +79,62 @@ def adjust_post_details(post_details):
 
 
 
+#--- Validation and security functions ----------
+
+
+def user_input_error(post_details):
+	for (attribute, value) in post_details.items():
+		user_error = input_error(attribute, value)
+		if user_error:
+			return user_error
+
+	if 'confirm_email' in post_details:
+		if post_details['email'] != post_details['confirm_email']:
+			return "Emails don't match"
+
+	return None
+
+
+
+def input_error(target_attribute, user_input):
+	
+	validation_attributes = ['first_name',
+							 'last_name', 
+							 'password',
+							 'email']
+
+
+	if target_attribute not in validation_attributes:
+		return None
+	
+	error_key = target_attribute + '_error' 
+		
+	if d_RE[target_attribute].match(user_input):
+		return None
+
+	else:
+		return d_RE[error_key]
+
+
+d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
+		'last_name_error': 'invalid first name syntax',
+		
+		'last_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
+		'last_name_error': 'invalid last name syntax',
+
+		'password': re.compile(r"^.{3,20}$"),
+		'password_error': 'invalid password syntax',
+		
+		'email': re.compile(r'^[\S]+@[\S]+\.[\S]+$'),
+		'email_error': 'invalid email syntax'}
+
+
+
+
+
 #----------
 
 app = webapp2.WSGIApplication([
-    ('/', Home),
-    ('/SignUpLogIn', SignUpLogIn)
-	], debug=True)
+							    ('/', Home),
+							    ('/SignUpLogIn', SignUpLogIn)
+								], debug=True)

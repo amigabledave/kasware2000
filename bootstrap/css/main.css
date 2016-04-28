@@ -84,6 +84,13 @@
 }
 
 
+.SignUp_Error{
+    color: red;
+    font-size: 18px;
+
+}
+
+
 .respect-space{
     white-space:pre;
 }
