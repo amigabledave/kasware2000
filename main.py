@@ -1,10 +1,17 @@
 #KASware V2.0.0 | Copyright 2016 Kasware Inc.
 
-import webapp2, jinja2, os, re 
+import webapp2, jinja2, os, re, random, string, hashlib 
+from google.appengine.ext import db
+
 
 
 template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
+
+
+
+#----------
+
 
 class Handler(webapp2.RequestHandler):
 	def write(self, *a, **kw):
@@ -17,49 +24,85 @@ class Handler(webapp2.RequestHandler):
 	def print_html(self, template, **kw):
 		self.write(self.render_html(template, **kw))
 
+	def set_secure_cookie(self, cookie_name, cookie_value):
+		cookie_secure_value = make_secure_val(cookie_value)
+		self.response.headers.add_header('Set-Cookie', '%s=%s; Path=/' % (cookie_name, cookie_secure_value))
+
+	def read_secure_cookie(self, cookie_name):
+		cookie_secure_val = self.request.cookies.get(cookie_name)
+		return cookie_secure_val and check_secure_val(cookie_secure_val)
+
+	def login(self, theory):
+		self.set_secure_cookie('theory_id', str(theory.key().id()))
+
+	def logout(self):
+		self.response.headers.add_header('Set-Cookie', 'theory_id=; Path=/')
+
+	def initialize(self, *a, **kw):
+		webapp2.RequestHandler.initialize(self, *a, **kw)
+		theory_id = self.read_secure_cookie('theory_id')
+		self.theory = theory_id and Theory.get_by_theory_id(int(theory_id)) #if the user exist, 'self.theory' will store the actual theory object
+
+
+
+
+
 
 #----------
 
 
 class SignUpLogIn(Handler):
-    def get(self):
-        self.print_html('SignUpLogIn.html')
+	def get(self):
+		self.print_html('SignUpLogIn.html')
 
-    def post(self):
-    	post_details = get_post_details(self)
-    	user_action = post_details['action_description']
-    	input_error = user_input_error(post_details)
+	def post(self):
+		post_details = get_post_details(self)
+		user_action = post_details['action_description']
+		input_error = user_input_error(post_details)
+		theory = Theory.get_by_email(post_details['email'])
 
+		if user_action == 'SignUp':
+			
+			if input_error:
+				self.print_html('SignUpLogIn.html', post_details=post_details, input_error=input_error)
+			
+			elif theory:
+				self.print_html('SignUpLogIn.html', post_details=post_details, input_error = 'That email is already register to another user!')
 
+			else:
+				password_hash = make_password_hash(post_details['email'], post_details['password'])
+				theory = Theory(email=post_details['email'], password_hash=password_hash, first_name=post_details['first_name'], last_name=post_details['last_name'])
+				theory.put()
+				self.login(theory)
+				self.redirect('/')
 
-    	if user_action == 'SignUp':
-    		if input_error:
-    			self.print_html('SignUpLogIn.html', post_details=post_details, input_error=input_error)
-
-    		else:
-    			self.write('Sing Up Successful!')
-    			self.write(post_details)
-
-
-
-    	if user_action == 'LogIn':
+		if user_action == 'LogIn':
 			self.write('Successful Log In')
-
-
-
-
 
 
 
 class Home(Handler):
     def get(self):
-        self.write('Ups! Seems like you are not logged in')
+		if user_bouncer(self):
+			return		
+		theory = self.theory
+		message = 'Welcome to KASware ' + theory.first_name + ' ' + theory.last_name
+		self.write(message)
 
 
 
 
 
 #--- Essential Helper Functions ----------
+
+
+def user_bouncer(self):
+	theory = self.theory
+	if theory:
+		return False
+	else:
+		self.redirect('/SignUpLogIn')
+		return True
 
 
 def get_post_details(self):
@@ -80,6 +123,31 @@ def adjust_post_details(post_details):
 
 
 #--- Validation and security functions ----------
+
+secret = 'elzecreto'
+
+def make_secure_val(val):
+    return '%s|%s' % (val, hashlib.sha256(secret + val).hexdigest())
+
+def check_secure_val(secure_val):
+	val = secure_val.split('|')[0]
+	if secure_val == make_secure_val(val):
+		return val
+
+def make_salt(lenght = 5):
+    return ''.join(random.choice(string.letters) for x in range(lenght))
+
+def make_password_hash(email, password, salt = None):
+	if not salt:
+		salt = make_salt()
+	h = hashlib.sha256(email + password + salt).hexdigest()
+	return '%s|%s' % (h, salt)
+
+def validate_password(email, password, h):
+	salt = h.split('|')[1]
+	return h == make_password_hash(email, password, salt)
+
+
 
 
 def user_input_error(post_details):
@@ -117,7 +185,7 @@ def input_error(target_attribute, user_input):
 
 
 d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
-		'last_name_error': 'invalid first name syntax',
+		'first_name_error': 'invalid first name syntax',
 		
 		'last_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
 		'last_name_error': 'invalid last name syntax',
@@ -127,6 +195,48 @@ d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
 		
 		'email': re.compile(r'^[\S]+@[\S]+\.[\S]+$'),
 		'email_error': 'invalid email syntax'}
+
+
+
+#--- datastore classes ----------
+
+
+class Theory(db.Model):
+
+	#login details		
+	email = db.EmailProperty(required=True)
+	password_hash = db.StringProperty(required=True)
+	
+	#user details	
+	first_name = db.StringProperty(required=True)
+	last_name = db.StringProperty(required=True)
+	owner = db.StringProperty() #ID of user that owns this theory. Esto lo voy usar cuando permita log-in con una cuenta de Google
+	
+ 	#user settings
+ 	language = db.StringProperty(choices=('Spanish', 'English'), default='English')
+ 	hide_private_ksus = db.BooleanProperty(default=False)
+	
+	#tracker fields
+	created = db.DateTimeProperty(auto_now_add=True)	
+	last_modified = db.DateTimeProperty(auto_now=True)
+
+	@classmethod # This means you can call a method directly on the Class (no on a Class Instance)
+	def get_by_theory_id(cls, theory_id):
+		return Theory.get_by_id(theory_id)
+
+	@classmethod
+	def get_by_email(cls, email):
+		return Theory.all().filter('email =', email).get()
+
+	@classmethod
+	def valid_login(cls, email, password):
+		theory = cls.get_by_email(email)
+		if theory and validate_password(email, password, theory.password_hash):
+			return theory
+
+
+
+
 
 
 
