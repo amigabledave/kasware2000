@@ -19,7 +19,10 @@ class Handler(webapp2.RequestHandler):
 	
 	def render_html(self, template, **kw):
 		t = jinja_env.get_template(template)
-		return t.render(**kw)
+		if self.theory:				
+			return t.render(loggedIn=True,**kw)
+		else:
+			return t.render(**kw)
 
 	def print_html(self, template, **kw):
 		self.write(self.render_html(template, **kw))
@@ -99,8 +102,15 @@ class Home(Handler):
 		theory = self.theory
 		message = 'Welcome to KASware ' + theory.first_name + ' ' + theory.last_name
 		self.write(message)
+		self.print_html('SignUpLogIn.html')
 
 
+class KAS1Viewer(Handler):
+	def get(self):
+		if user_bouncer(self):
+			return
+		theory = self.theory
+		self.print_html('KAS1Viewer.html')
 
 
 
@@ -257,5 +267,6 @@ class Theory(db.Model):
 
 app = webapp2.WSGIApplication([
 							    ('/', Home),
-							    ('/SignUpLogIn', SignUpLogIn)
+							    ('/SignUpLogIn', SignUpLogIn),
+							    ('/KAS1Viewer', KAS1Viewer)
 								], debug=True)
