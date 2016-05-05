@@ -58,10 +58,10 @@ class SignUpLogIn(Handler):
 	def post(self):
 		post_details = get_post_details(self)
 		user_action = post_details['action_description']
-		input_error = user_input_error(post_details)
-		theory = Theory.get_by_email(post_details['email'])
-
+		
 		if user_action == 'SignUp':
+			input_error = user_input_error(post_details)
+			theory = Theory.get_by_email(post_details['email'])	
 			
 			if input_error:
 				self.print_html('SignUpLogIn.html', post_details=post_details, input_error=input_error)
@@ -76,8 +76,19 @@ class SignUpLogIn(Handler):
 				self.login(theory)
 				self.redirect('/')
 
-		if user_action == 'LogIn':
-			self.write('Successful Log In')
+		if user_action == 'LogIn':			
+			email = self.request.get('email')
+			password = self.request.get('password')
+			theory = Theory.valid_login(email, password)
+			if theory:
+				self.login(theory)
+				self.redirect('/')
+				# self.redirect('/TodaysMission')
+			else:
+				self.write('incorrect username or password')
+				# message = "Incorrect Username or Password"
+				# self.print_html('login-form.html', error = message)
+
 
 
 
