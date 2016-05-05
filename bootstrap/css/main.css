@@ -225,6 +225,23 @@
     background-color: #333; /* Modern Browsers */
 }
 
+
+.hr-1px-gray {
+    border: none;
+    height: 1px;
+    color: #D8D8D8;
+    background-color: #D8D8D8;
+}
+
+/*.hr-1px-gray {
+    border: none;
+    height: 1px;
+    color: #E0E0E0;
+    background-color: #E0E0E0; 
+}
+*/
+
+
 .thick-hr-2px {
     border: none;
     height: 2px;
