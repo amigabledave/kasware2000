@@ -1,3 +1,0 @@
-exports = 'Videogames'
-
-print datastore
