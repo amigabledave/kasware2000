@@ -1,9 +1,9 @@
 #KASware V2.0.0 | Copyright 2016 Kasware Inc.
-
 import webapp2, jinja2, os, re, random, string, hashlib 
 from google.appengine.ext import db
 
-
+from python_files import datastore, randomUser
+Theory = datastore.Theory
 
 template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
@@ -11,8 +11,6 @@ jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), a
 
 
 #----------
-
-
 class Handler(webapp2.RequestHandler):
 	def write(self, *a, **kw):
 		self.response.out.write(*a, **kw)
@@ -61,8 +59,11 @@ class SignUpLogIn(Handler):
 	def post(self):
 		post_details = get_post_details(self)
 		user_action = post_details['action_description']
+
+		if user_action == 'Random_SignUp':
+			post_details.update(randomUser.createRandomUser()) ## Creates a random user for testing purposes
 		
-		if user_action == 'SignUp':
+		if user_action == 'SignUp' or user_action == 'Random_SignUp':
 			input_error = user_input_error(post_details)
 			theory = Theory.get_by_email(post_details['email'])	
 			
@@ -102,8 +103,7 @@ class Home(Handler):
 		theory = self.theory
 		message = 'Welcome to KASware ' + theory.first_name + ' ' + theory.last_name
 		self.write(message)
-		self.print_html('SignUpLogIn.html')
-
+		
 
 class KAS1Viewer(Handler):
 	def get(self):
@@ -227,43 +227,6 @@ d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
 		'email': re.compile(r'^[\S]+@[\S]+\.[\S]+$'),
 		'email_error': 'invalid email syntax'}
 
-
-
-#--- datastore classes ----------
-
-
-class Theory(db.Model):
-
-	#login details		
-	email = db.EmailProperty(required=True)
-	password_hash = db.StringProperty(required=True)
-	
-	#user details	
-	first_name = db.StringProperty(required=True)
-	last_name = db.StringProperty(required=True)
-	owner = db.StringProperty() #ID of user that owns this theory. Esto lo voy usar cuando permita log-in con una cuenta de Google
-	
- 	#user settings
- 	language = db.StringProperty(choices=('Spanish', 'English'), default='English')
- 	hide_private_ksus = db.BooleanProperty(default=False)
-	
-	#tracker fields
-	created = db.DateTimeProperty(auto_now_add=True)	
-	last_modified = db.DateTimeProperty(auto_now=True)
-
-	@classmethod # This means you can call a method directly on the Class (no on a Class Instance)
-	def get_by_theory_id(cls, theory_id):
-		return Theory.get_by_id(theory_id)
-
-	@classmethod
-	def get_by_email(cls, email):
-		return Theory.all().filter('email =', email).get()
-
-	@classmethod
-	def valid_login(cls, email, password):
-		theory = cls.get_by_email(email)
-		if theory and validate_password(email, password, theory.password_hash):
-			return theory
 
 
 #--- Constants -------
