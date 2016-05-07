@@ -2,7 +2,9 @@
 import webapp2, jinja2, os, re, random, string, hashlib 
 from google.appengine.ext import db
 
-from python_files import datastore, randomUser
+from python_files import datastore, randomUser, constants
+
+constants = constants.constants
 Theory = datastore.Theory
 
 template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
@@ -84,6 +86,25 @@ class SignUpLogIn(Handler):
 
 
 
+class NewKSU(Handler):
+	
+	def get(self):
+		if user_bouncer(self):
+			return
+		self.print_html('NewEditKSU.html', title='Define', ksu={}, constants=constants)
+
+	def post(self):
+		if user_bouncer(self):
+			return
+		
+		if user_action == 'Create' or user_action == 'Create_Plus':
+			return			
+				
+		elif user_action == 'Discard':
+			return
+
+
+
 class Home(Handler):
     def get(self):
 		if user_bouncer(self):
@@ -102,6 +123,15 @@ class KAS1Viewer(Handler):
 		theory = self.theory
 		self.print_html('KAS1Viewer.html')
 
+
+	def post(self):
+		if user_bouncer(self):
+			return
+		post_details = get_post_details(self)
+		user_action = post_details['action_description']	
+		
+		if user_action == 'NewKSU':
+			self.redirect('/NewKSU')
 
 
 
@@ -215,6 +245,7 @@ d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
 app = webapp2.WSGIApplication([
 							    ('/', Home),
 							    ('/SignUpLogIn', SignUpLogIn),
+							    ('/NewKSU', NewKSU),
 							    ('/KAS1Viewer', KAS1Viewer)
 								], debug=True)
 

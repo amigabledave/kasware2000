@@ -40,9 +40,9 @@ class Theory(db.Model):
 
 
 
-class GlobalTag(db.Model):
+class Tag(db.Model):
 	
-	theory = db.ReferenceProperty(Theory, collection_name='GlobalTags')
+	theory = db.ReferenceProperty(Theory, collection_name='Tags')
 	#tracker fields
 	created = db.DateTimeProperty(auto_now_add=True)	
 	last_modified = db.DateTimeProperty(auto_now=True)
@@ -73,14 +73,12 @@ class KAS1(db.Model):
 	is_visible = db.BooleanProperty(default=True)
 	is_private = db.BooleanProperty(default=False)
 
-	global_tags = db.ListProperty(db.Key) #all global tags related to this KSU
-	local_tags = db.ListProperty(db.Key) #all local tags related to this KSU	
-	origin = db.TextProperty() #Quien lo recomendo o como fue que este KSU llego a mi teoria
+	tags = db.ListProperty(db.Key) #all tags related to this KSU	
 	comments = db.TextProperty()
 	picture = db.BlobProperty()
 
 	#KAS KSU propeties
-	value_type = db.StringProperty(required=True, choices=('V000', 'V100', 'V200', 'V300', 'V400', 'V500', 'V600', 'V700', 'V800', 'V900'))
+	value_type = db.StringProperty(required=True, choices=('V00', 'V01', 'V02', 'V03', 'V04', 'V05', 'V06', 'V07', 'V08', 'V09', 'V10'), default='V10')
 	importance = db.IntegerProperty(choices=(1,2,3,5,8), default=3)
 	is_critical = db.BooleanProperty(default=False)
 
@@ -109,18 +107,6 @@ class KAS1(db.Model):
 	Repetition_target_max = db.IntegerProperty()
 
 
-
-class KAS1LocalTag(db.Model):
-
-	theory = db.ReferenceProperty(Theory, collection_name='KAS1LocalTags')
-	#tracker fields
-	created = db.DateTimeProperty(auto_now_add=True)	
-	last_modified = db.DateTimeProperty(auto_now=True)
-	
-	name = db.StringProperty(required=True)
-	description = db.StringProperty()
-
-	ksus = db.ListProperty(db.Key) 	#all KSUs related to this tag
 
 
 
