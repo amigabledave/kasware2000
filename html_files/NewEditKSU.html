@@ -79,18 +79,8 @@
 			</select> 
 		</div>
 
-
-		<div class="col-xs-6 col-sm-3 col-md-1 col-lg-1">
-			<label> Every </label>
-			<input type="number" min="1" class="form-control" name="repeats_every" placeholder="eg. 1" required value="{% if ksu['repeats_every']%}{{ksu['repeats_every']}}{% endif %}">
-		</div>
-
-	</div>
-
-
-	<div class="form-group hidden" id="repeats_on">		
-		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-	 		<label> Repeats On
+		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 hidden" id="repeats_on">
+	 		<label> On
 	 		<div class="checkbox"> 	 		
 	 			<label> <input type="checkbox" name="repeats_on_Mon"><b> Mon </b></label> 
 	 			<label> <input type="checkbox" name="repeats_on_Tue"><b> Tue </b></label> 
@@ -102,7 +92,24 @@
 	 		</div>
 	 		</label>
 		</div>
+
+		<div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+					<label> Every </label>
+					<input type="number" min="1" class="form-control" name="repeats_every" placeholder="1" required value="{% if ksu['repeats_every']%}{{ksu['repeats_every']}}{% endif %}"> 		
+				</div>
+				
+				<div id="repeats_every_footnote" class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="position: absolute; bottom: 0; right: 0; padding-left: 0; font-style: italic;"> 
+				Days
+				</div>									
+			</div>		
+		</div>
+
 	</div>
+
+
 
 
 	<div class="form-group">

@@ -15,12 +15,18 @@ function al_cargar(){
 };
 $(al_cargar);
 
+d_repeats_legend = {'R001':'Days',
+			 'R007':'Weeks',
+			 'R030':'Months',
+			 'R365':'Years'};
 
 $('#repeats').on('change',function(){
 	if (this.value == 'R007'){
 		$('#repeats_on').removeClass('hidden');
-		console.log('Se repite cada semana');
 	} else {
 		$('#repeats_on').addClass('hidden');
 	}
+	$('#repeats_every_footnote').text(d_repeats_legend[this.value]);
+
 });
+
