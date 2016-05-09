@@ -1,6 +1,6 @@
 #KASware V2.0.0 | Copyright 2016 Kasware Inc.
 import webapp2, jinja2, os, re, random, string, hashlib 
-from google.appengine.ext import db
+from google.appengine.ext import ndb
 
 from python_files import datastore, randomUser, constants
 
@@ -35,7 +35,7 @@ class Handler(webapp2.RequestHandler):
 		return cookie_secure_val and check_secure_val(cookie_secure_val)
 
 	def login(self, theory):
-		self.set_secure_cookie('theory_id', str(theory.key().id()))
+		self.set_secure_cookie('theory_id', str(theory.key.id()))
 
 	def logout(self):
 		self.response.headers.add_header('Set-Cookie', 'theory_id=; Path=/')
@@ -151,6 +151,12 @@ class KAS1Viewer(Handler):
 		
 		if user_action == 'NewKSU':
 			self.redirect('/NewKSU')
+
+
+
+# class DataStoreViewer(Handler):
+# 	def get(self):
+# 		# all_theories =
 
 
 

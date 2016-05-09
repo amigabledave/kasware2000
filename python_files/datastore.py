@@ -1,26 +1,25 @@
-from google.appengine.ext import db
-
+from google.appengine.ext import ndb
 
 #--- datastore classes ----------
 
-class Theory(db.Model):
+class Theory(ndb.Model):
 
-	#login details		
-	email = db.EmailProperty(required=True)
-	password_hash = db.StringProperty(required=True)
+	#login details
+	email = ndb.StringProperty(required=True)
+	password_hash = ndb.StringProperty(required=True)
 	
 	#user details	
-	first_name = db.StringProperty(required=True)
-	last_name = db.StringProperty(required=True)
-	owner = db.StringProperty() #ID of user that owns this theory. Esto lo voy usar cuando permita log-in con una cuenta de Google
+	first_name = ndb.StringProperty(required=True)
+	last_name = ndb.StringProperty(required=True)
+	owner = ndb.StringProperty() #ID of user that owns this theory. Esto lo voy usar cuando permita log-in con una cuenta de Google
 	
  	#user settings
- 	language = db.StringProperty(choices=('Spanish', 'English'), default='English')
- 	hide_private_ksus = db.BooleanProperty(default=False)
+ 	language = ndb.StringProperty(choices=('Spanish', 'English'), default='English')
+ 	hide_private_ksus = ndb.BooleanProperty(default=False)
 	
 	#tracker fields
-	created = db.DateTimeProperty(auto_now_add=True)	
-	last_modified = db.DateTimeProperty(auto_now=True)
+	created = ndb.DateTimeProperty(auto_now_add=True)	
+	last_modified = ndb.DateTimeProperty(auto_now=True)
 
 	@classmethod # This means you can call a method directly on the Class (no on a Class Instance)
 	def get_by_theory_id(cls, theory_id):
@@ -28,7 +27,7 @@ class Theory(db.Model):
 
 	@classmethod
 	def get_by_email(cls, email):
-		return Theory.all().filter('email =', email).get()
+		return Theory.query(Theory.email == email).get()
 
 	@classmethod
 	def valid_login(cls, email, password):
@@ -37,78 +36,78 @@ class Theory(db.Model):
 			return theory
 
 
-class Tag(db.Model):
+class Tag(ndb.Model):
 	
-	theory = db.ReferenceProperty(Theory, collection_name='Tags')
+	theory = ndb.KeyProperty(kind=Theory, required=True)
 	#tracker fields
-	created = db.DateTimeProperty(auto_now_add=True)	
-	last_modified = db.DateTimeProperty(auto_now=True)
+	created = ndb.DateTimeProperty(auto_now_add=True)	
+	last_modified = ndb.DateTimeProperty(auto_now=True)
 	
-	name = db.StringProperty(required=True)
-	description = db.StringProperty()
+	name = ndb.StringProperty(required=True)
+	description = ndb.StringProperty()
 
-	ksus = db.ListProperty(db.Key) 	#all KSUs related to this tag
+	ksus = ndb.KeyProperty(kind=Theory, repeated=True)	#all KSUs related to this tag
 
 
 
-class KSU(db.Model):
+class KSU(ndb.Model):
 	#tracker fields
-	created = db.DateTimeProperty(auto_now_add=True)	
-	last_modified = db.DateTimeProperty(auto_now=True)
+	created = ndb.DateTimeProperty(auto_now_add=True)	
+	last_modified = ndb.DateTimeProperty(auto_now=True)
 
 	# base KSU properties
-	description = db.StringProperty(required=True)
-	status = db.StringProperty(choices=('Active', 'Done', 'Hold', 'Deleted'))
+	description = ndb.StringProperty(required=True)
+	status = ndb.StringProperty(choices=('Active', 'Done', 'Hold', 'Deleted'))
 
-	# theory = db.ReferenceProperty(Theory, collection_name='KSUs')	#Included on last level
-	# ksu_type = db.StringProperty(required=True) #Included on last level
-	# ksu_id = db.StringProperty(required=True) #Not sure if with the new datastore structure is really necesary
+	# theory = ndb.ReferenceProperty(Theory, collection_name='KSUs')	#Included on last level
+	# ksu_type = ndb.StringProperty(required=True) #Included on last level
+	# ksu_id = ndb.StringProperty(required=True) #Not sure if with the new datastore structure is really necesary
 
-	ksu_subtype = db.StringProperty()
-	parent_id = db.StringProperty()	
+	ksu_subtype = ndb.StringProperty()
+	parent_id = ndb.StringProperty()	
 			
-	is_visible = db.BooleanProperty(default=True)
-	is_private = db.BooleanProperty(default=False)
+	is_visible = ndb.BooleanProperty(default=True)
+	is_private = ndb.BooleanProperty(default=False)
 
-	tags = db.ListProperty(db.Key) #all tags related to this KSU	
-	comments = db.TextProperty()
-	picture = db.BlobProperty()
+	tags = ndb.KeyProperty(kind=Tag, repeated=True) #all tags related to this KSU	
+	comments = ndb.TextProperty()
+	picture = ndb.BlobProperty()
 
-	value_type = db.StringProperty(required=True, choices=('V00','V09', 'V10', 'V20', 'V30', 'V40', 'V50', 'V60', 'V70', 'V80', 'V90'), default='V09')
-	importance = db.IntegerProperty(default=3)
-	is_critical = db.BooleanProperty(default=False)
+	value_type = ndb.StringProperty(required=True, choices=('V00','V09', 'V10', 'V20', 'V30', 'V40', 'V50', 'V60', 'V70', 'V80', 'V90'), default='V09')
+	importance = ndb.IntegerProperty(default=3)
+	is_critical = ndb.BooleanProperty(default=False)
 
 
 
 class KAS(KSU):
 			
-	in_mission = db.BooleanProperty(default=False)
-	any_any = db.BooleanProperty(default=False)
-	in_upcoming = db.BooleanProperty(default=True)
+	in_mission = ndb.BooleanProperty(default=False)
+	any_any = ndb.BooleanProperty(default=False)
+	in_upcoming = ndb.BooleanProperty(default=True)
 
-	next_event = db.DateProperty(required=False)
-	best_time = db.TimeProperty()
-	time_cost = db.IntegerProperty(default=1)
+	next_event = ndb.DateProperty(required=False)
+	best_time = ndb.TimeProperty()
+	time_cost = ndb.IntegerProperty(default=1)
 
-	Repetition_target_min = db.IntegerProperty()
-	Repetition_target_max = db.IntegerProperty()
+	Repetition_target_min = ndb.IntegerProperty()
+	Repetition_target_max = ndb.IntegerProperty()
 
-	project = db.StringProperty()
+	project = ndb.StringProperty()
 
 
 
 class KAS1(KAS):
 		
-	theory = db.ReferenceProperty(Theory, collection_name='KAS1', required=True)
-	ksu_type = db.StringProperty(default='KAS1') 
+	theory = ndb.KeyProperty(kind=Theory, required=True)
+	ksu_type = ndb.StringProperty(default='KAS1') 
 	
-	last_event = db.DateProperty()
-	repeats = db.StringProperty(required=True, choices=('R001', 'R007', 'R030', 'R365'))	
-	repeats_every = db.IntegerProperty(required=True, default=1)
-	repeats_on = db.StringListProperty() #Day's of the week when it repeats if the frequency is Weekly, elese the repetition date is the same day of the month or year
+	last_event = ndb.DateProperty()
+	repeats = ndb.StringProperty(required=True, choices=('R001', 'R007', 'R030', 'R365'))	
+	repeats_every = ndb.IntegerProperty(required=True, default=1)
+	repeats_on = ndb.JsonProperty() #Day's of the week when it repeats if the frequency is Weekly, elese the repetition date is the same day of the month or year
 	
-	TimeUse_target_min = db.IntegerProperty()
-	TimeUse_target_max = db.IntegerProperty()
+	TimeUse_target_min = ndb.IntegerProperty()
+	TimeUse_target_max = ndb.IntegerProperty()
 
 
 
