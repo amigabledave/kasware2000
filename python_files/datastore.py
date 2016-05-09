@@ -73,14 +73,14 @@ class KSU(db.Model):
 	comments = db.TextProperty()
 	picture = db.BlobProperty()
 
+	value_type = db.StringProperty(required=True, choices=('V00','V09', 'V10', 'V20', 'V30', 'V40', 'V50', 'V60', 'V70', 'V80', 'V90'), default='V09')
+	importance = db.IntegerProperty(default=3)
+	is_critical = db.BooleanProperty(default=False)
+
 
 
 class KAS(KSU):
-
-	value_type = db.StringProperty(required=True, choices=('V00', 'V01', 'V02', 'V03', 'V04', 'V05', 'V06', 'V07', 'V08', 'V09', 'V10'), default='V10')
-	importance = db.IntegerProperty(default=3)
-		
-	is_critical = db.BooleanProperty(default=False)
+			
 	in_mission = db.BooleanProperty(default=False)
 	any_any = db.BooleanProperty(default=False)
 	in_upcoming = db.BooleanProperty(default=True)
@@ -93,6 +93,7 @@ class KAS(KSU):
 	Repetition_target_max = db.IntegerProperty()
 
 	project = db.StringProperty()
+
 
 
 class KAS1(KAS):
