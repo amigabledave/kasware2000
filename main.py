@@ -6,6 +6,7 @@ from python_files import datastore, randomUser, constants
 
 constants = constants.constants
 Theory = datastore.Theory
+KAS1 = datastore.KAS1
 
 template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
@@ -43,6 +44,11 @@ class Handler(webapp2.RequestHandler):
 		webapp2.RequestHandler.initialize(self, *a, **kw)
 		theory_id = self.read_secure_cookie('theory_id')
 		self.theory = theory_id and Theory.get_by_theory_id(int(theory_id)) #if the user exist, 'self.theory' will store the actual theory object
+		# if theory_id and Theory.get_by_theory_id(int(theory_id)): #Un intento de quitar el bouncer de todos los handlers
+		# 	self.theory = Theory.get_by_theory_id(int(theory_id))
+		# else:
+		# 	self.redirect('/SignUpLogIn')
+
 
 
 
@@ -69,7 +75,11 @@ class SignUpLogIn(Handler):
 
 			else:
 				password_hash = make_password_hash(post_details['email'], post_details['password'])
-				theory = Theory(email=post_details['email'], password_hash=password_hash, first_name=post_details['first_name'], last_name=post_details['last_name'])
+				theory = Theory(
+					email=post_details['email'], 
+					password_hash=password_hash, 
+					first_name=post_details['first_name'], 
+					last_name=post_details['last_name'])
 				theory.put()
 				self.login(theory)
 				self.redirect('/')
@@ -96,8 +106,17 @@ class NewKSU(Handler):
 	def post(self):
 		if user_bouncer(self):
 			return
+		post_details = get_post_details(self)
+		user_action = post_details['action_description']
 		
 		if user_action == 'Create' or user_action == 'Create_Plus':
+			# self.write(post_details)
+			new_ksu = KAS1(
+				theory=self.theory,
+				description=post_details['description'],
+				repeats=post_details['repeats'])
+			new_ksu.put()
+			self.write('Acabas de crear un nuevo KSU!')
 			return			
 				
 		elif user_action == 'Discard':

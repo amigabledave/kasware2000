@@ -61,8 +61,9 @@ class KSU(db.Model):
 	status = db.StringProperty(choices=('Active', 'Done', 'Hold', 'Deleted'))
 
 	# theory = db.ReferenceProperty(Theory, collection_name='KSUs')	#Included on last level
-	ksu_id = db.StringProperty(required=True)
 	# ksu_type = db.StringProperty(required=True) #Included on last level
+	# ksu_id = db.StringProperty(required=True) #Not sure if with the new datastore structure is really necesary
+
 	ksu_subtype = db.StringProperty()
 	parent_id = db.StringProperty()	
 			
@@ -85,7 +86,7 @@ class KAS(KSU):
 	any_any = db.BooleanProperty(default=False)
 	in_upcoming = db.BooleanProperty(default=True)
 
-	next_event = db.DateProperty(required=True)
+	next_event = db.DateProperty(required=False)
 	best_time = db.TimeProperty()
 	time_cost = db.IntegerProperty(default=1)
 
@@ -98,12 +99,12 @@ class KAS(KSU):
 
 class KAS1(KAS):
 		
-	theory = db.ReferenceProperty(Theory, collection_name='KAS1')
+	theory = db.ReferenceProperty(Theory, collection_name='KAS1', required=True)
 	ksu_type = db.StringProperty(default='KAS1') 
 	
 	last_event = db.DateProperty()
-	repeats = db.StringProperty(required=True, choices=('Daily', 'Weekly', 'Monthly', 'Yearly'))	
-	repeats_every = db.IntegerProperty(required=True)
+	repeats = db.StringProperty(required=True, choices=('R001', 'R007', 'R030', 'R365'))	
+	repeats_every = db.IntegerProperty(required=True, default=1)
 	repeats_on = db.StringListProperty() #Day's of the week when it repeats if the frequency is Weekly, elese the repetition date is the same day of the month or year
 	
 	TimeUse_target_min = db.IntegerProperty()
