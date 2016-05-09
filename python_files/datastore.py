@@ -37,9 +37,6 @@ class Theory(db.Model):
 			return theory
 
 
-
-
-
 class Tag(db.Model):
 	
 	theory = db.ReferenceProperty(Theory, collection_name='Tags')
@@ -54,9 +51,7 @@ class Tag(db.Model):
 
 
 
-class KAS1(db.Model):
-
-	theory = db.ReferenceProperty(Theory, collection_name='KAS1')	
+class KSU(db.Model):
 	#tracker fields
 	created = db.DateTimeProperty(auto_now_add=True)	
 	last_modified = db.DateTimeProperty(auto_now=True)
@@ -64,9 +59,10 @@ class KAS1(db.Model):
 	# base KSU properties
 	description = db.StringProperty(required=True)
 	status = db.StringProperty(choices=('Active', 'Done', 'Hold', 'Deleted'))
-	
+
+	# theory = db.ReferenceProperty(Theory, collection_name='KSUs')	#Included on last level
 	ksu_id = db.StringProperty(required=True)
-	ksu_type = db.StringProperty(required=True)
+	# ksu_type = db.StringProperty(required=True) #Included on last level
 	ksu_subtype = db.StringProperty()
 	parent_id = db.StringProperty()	
 			
@@ -77,34 +73,40 @@ class KAS1(db.Model):
 	comments = db.TextProperty()
 	picture = db.BlobProperty()
 
-	#KAS KSU propeties
-	value_type = db.StringProperty(required=True, choices=('V00', 'V01', 'V02', 'V03', 'V04', 'V05', 'V06', 'V07', 'V08', 'V09', 'V10'), default='V10')
-	importance = db.IntegerProperty(choices=(1,2,3,5,8), default=3)
-	is_critical = db.BooleanProperty(default=False)
 
-	#proactive KAS KSU	
+
+class KAS(KSU):
+
+	value_type = db.StringProperty(required=True, choices=('V00', 'V01', 'V02', 'V03', 'V04', 'V05', 'V06', 'V07', 'V08', 'V09', 'V10'), default='V10')
+	importance = db.IntegerProperty(default=3)
+		
+	is_critical = db.BooleanProperty(default=False)
 	in_mission = db.BooleanProperty(default=False)
 	any_any = db.BooleanProperty(default=False)
 	in_upcoming = db.BooleanProperty(default=True)
-	
 
-	#date, time and frequency details
 	next_event = db.DateProperty(required=True)
 	best_time = db.TimeProperty()
 	time_cost = db.IntegerProperty(default=1)
+
+	Repetition_target_min = db.IntegerProperty()
+	Repetition_target_max = db.IntegerProperty()
+
+	project = db.StringProperty()
+
+
+class KAS1(KAS):
+		
+	theory = db.ReferenceProperty(Theory, collection_name='KAS1')
+	ksu_type = db.StringProperty(default='KAS1') 
+	
+	last_event = db.DateProperty()
 	repeats = db.StringProperty(required=True, choices=('Daily', 'Weekly', 'Monthly', 'Yearly'))	
 	repeats_every = db.IntegerProperty(required=True)
 	repeats_on = db.StringListProperty() #Day's of the week when it repeats if the frequency is Weekly, elese the repetition date is the same day of the month or year
 	
-
-	# KAS1 specifics
-	last_event = db.DateProperty()
-	project = db.StringProperty()
-
 	TimeUse_target_min = db.IntegerProperty()
 	TimeUse_target_max = db.IntegerProperty()
-	Repetition_target_min = db.IntegerProperty()
-	Repetition_target_max = db.IntegerProperty()
 
 
 
