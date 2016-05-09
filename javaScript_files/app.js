@@ -1,24 +1,10 @@
-// $(document).ready(function(){
-// 	$('body').on('click', function(){
-// 		console.log('Logre linkear un archivo de JS a KASware!!! :)')
-// 	});
-// });
 
+d_repeats_legend = {
+	'R001':'Days',
+	'R007':'Weeks',
+	'R030':'Months',
+	'R365':'Years'};
 
-$('body').on('click', function(){
-	console.log('Logre linkear un archivo de JS a KASware!!! :)')
-});
-
-
-function al_cargar(){
-	console.log('mas o menos ahi va')
-};
-$(al_cargar);
-
-d_repeats_legend = {'R001':'Days',
-			 'R007':'Weeks',
-			 'R030':'Months',
-			 'R365':'Years'};
 
 $('#repeats').on('change',function(){
 	if (this.value == 'R007'){
@@ -30,3 +16,19 @@ $('#repeats').on('change',function(){
 
 });
 
+
+
+// function al_cargar(){
+// 	console.log('mas o menos ahi va')
+// };
+// $(al_cargar);
+
+// $('body').on('click', function(){
+// 	console.log('Logre linkear un archivo de JS a KASware!!! :)')
+// });
+
+// $(document).ready(function(){
+// 	$('body').on('click', function(){
+// 		console.log('Logre linkear un archivo de JS a KASware!!! :)')
+// 	});
+// });
