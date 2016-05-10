@@ -1,12 +1,61 @@
 /*Validated for use in kasware2000*/
 
-.KASwareTopBar{
+.KASwareTopBarBackground{
     background-color: #666699;
 }
+
 
 .GreyBackground{
     background-color: #F0F0F0;
 }
+
+
+.copywright-message{
+    display: block;
+    color: #D3D3D3;
+    text-align: center;
+    text-decoration: none;
+
+}
+
+
+
+
+/*---Navigation bar-------*/
+
+.NavigationTopBar{
+    height: 42px;    
+}
+
+.NavigationTopBarBlock {
+    display: block;
+    color: #222;        
+    text-align: left;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    text-decoration: none;
+}
+
+
+.NavigationKASwareTitleText {
+    color: white;
+    font-size: 20px; 
+    /*font-weight: bold;*/
+    vertical-align: bottom;
+}
+
+.NagivationMiniTopTitle{
+    color: white;
+    /*color: #222;*/
+    font-size: 8px;
+    text-align: left;
+    vertical-align: top;
+}
+
+
+
+/*---LogInSighUp-------*/
+
 
 .KASwareTitleBlock {
     display: block;
@@ -19,7 +68,7 @@
 
 .KASwareTitleText {
     color: white;
-    font-size: 30px;
+    font-size: 30px; 
     /*font-weight: bold;*/
     vertical-align: bottom;
 }
@@ -39,15 +88,6 @@
     text-align: right;
 }
 
-
-
-.copywright-message{
-    display: block;
-    color: #D3D3D3;
-    text-align: center;
-    text-decoration: none;
-
-}
 
 .SignUp_Title{
     display: block;
@@ -90,19 +130,18 @@
 }
 
 
+
+/*--- Base Formats----------------------------*/
+
+
 .respect-space{
     white-space:pre;
 }
 
 
-/*--- Base Formats----------------------------*/
 
 
-
-
-
-
-
+/*---Old formats yet to be validated-------*/
 
 .section-title{
     display: block;

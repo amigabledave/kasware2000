@@ -12,39 +12,65 @@
 </head>
 
 <body class="GreyBackground">
-	<div class="KASwareTopBar"> 
+	<div class="KASwareTopBarBackground"> 
 		<div class="container">		
-				<div class="row">			
-					<div class="col-xs-6 col-sm-9 col-md-7 col-lg-7"> 
-						<div class="KASwareTitleBlock">
-							<span class="KASwareTitleText"> KASware</span><span class="MiniTopTitle">β</span>
-						</div>
+
+			<div class="row" {% if loggedIn %}hidden{% endif %}>			
+				<div class="col-xs-6 col-sm-9 col-md-7 col-lg-7"> 
+					<div class="KASwareTitleBlock">
+						<span class="KASwareTitleText"> KASware</span><span class="MiniTopTitle">β</span>
 					</div>
-				
-					<div class="col-xs-6 col-sm-3 col-md-5 col-lg-5 text-right" {% if loggedIn %}hidden{% endif %}>
-						<form class="form-horizontal" method="post">
-							<div class="form-group" style="margin:10px; text-align: left;">
-								<div class="col-xs-5" style="padding-left: 0px;">
-									<label style="color:white; font-weight:500; font-size:12px; margin-bottom: 0px">Email</label>
-   									<input type="email" style="height: 25px" name="email" class="form-control">	
-								</div>
+				</div>
+			
+				<div class="col-xs-6 col-sm-3 col-md-5 col-lg-5 text-right">
+					<form class="form-horizontal" method="post">
+						<div class="form-group" style="margin:10px; text-align: left;">
+							<div class="col-xs-5" style="padding-left: 0px;">
+								<label style="color:white; font-weight:500; font-size:12px; margin-bottom: 0px">Email</label>
+									<input type="email" style="height: 25px" name="email" class="form-control">	
+							</div>
 
-								<div class="col-xs-5" style="padding-left: 0px;">
-									<label style="color:white; font-weight:500; font-size:12px; margin-bottom: 0px">Password</label>
-	   								<input type="password" style="height: 25px" name="password" class="form-control">
-								</div>
+							<div class="col-xs-5" style="padding-left: 0px;">
+								<label style="color:white; font-weight:500; font-size:12px; margin-bottom: 0px">Password</label>
+   								<input type="password" style="height: 25px" name="password" class="form-control">
+							</div>
 
-								<div class="col-xs-2" style="padding-left: 0px;">
-									<button type="submit" class="btn btn-xs btn-info" style="margin-top: 20px" name="action_description" value="LogIn"> Log In </button>
-
-								</div>
+							<div class="col-xs-2" style="padding-left: 0px;">
+								<button type="submit" class="btn btn-xs btn-info" style="margin-top: 20px" name="action_description" value="LogIn"> Log In </button>
 
 							</div>
-						</form>
-	
+
+						</div>
+					</form>
+
+				</div>					
+			</div>
+
+			<div class="row NavigationTopBar">
+
+				<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"> 
+					<div class="NavigationTopBarBlock">
+						<span class="NavigationKASwareTitleText"> KASware</span><span class="NagivationMiniTopTitle">β</span>
 					</div>
-					
 				</div>
+			
+				<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right">
+					<form class="form-horizontal" method="post">
+						<div class="form-group" style="margin:10px; text-align: left;">
+							<div class="col-xs-10" style="padding-left: 0px; padding-right: 0px;">
+								<input type="text" style="height: 25px;" name="email" class="form-control" placeholder="Search your theory">	
+							</div>
+							<div class="col-xs-2" style="padding-left: 2px;">
+								<button type="button" class="btn btn-default btn-xs" style="height: 25px; width: 40px; background-color: #E8E8E8;" aria-label="Left Align">
+  									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				
+			</div>
 
 		</div>
 	</div>
