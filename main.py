@@ -139,8 +139,10 @@ class KAS1Viewer(Handler):
 	def get(self):
 		if user_bouncer(self):
 			return
-		theory = self.theory
-		self.print_html('KAS1Viewer.html')
+		user_key = self.theory.key
+		ksu_set = KAS1.query(KAS1.theory == user_key).order(KAS1.created).fetch()
+
+		self.print_html('KAS1Viewer.html', ksu_set=ksu_set)
 
 
 	def post(self):
@@ -173,7 +175,7 @@ class PopulateRandomTheory(Handler):
 	def get(self):
 		randomUserTheory = self.theory
 		self.populateRandomTheory(100)
-		self.write('Check the datastore!')
+		self.redirect('/KAS1Viewer')
 
 
 

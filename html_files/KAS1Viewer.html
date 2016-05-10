@@ -16,7 +16,15 @@
 	</div>
 </div>
 
+{% for ksu in ksu_set %}
 
+	<div class="row">
+		<div class="col-xs-12">
+			{{ksu.description}}
+		</div>		
+	</div>
+
+{% endfor %}
 
 
 {% endblock %}
