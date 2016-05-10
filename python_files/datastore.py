@@ -85,7 +85,7 @@ class KAS(KSU):
 	any_any = ndb.BooleanProperty(default=False)
 	in_upcoming = ndb.BooleanProperty(default=True)
 
-	next_event = ndb.DateProperty(required=False)
+	next_event = ndb.DateProperty()
 	best_time = ndb.TimeProperty()
 	time_cost = ndb.IntegerProperty(default=1)
 
@@ -102,7 +102,7 @@ class KAS1(KAS):
 	ksu_type = ndb.StringProperty(default='KAS1') 
 	
 	last_event = ndb.DateProperty()
-	repeats = ndb.StringProperty(required=True, choices=('R001', 'R007', 'R030', 'R365'))	
+	repeats = ndb.StringProperty(required=True, choices=('R001', 'R007', 'R030', 'R365'), default='R001')	
 	repeats_every = ndb.IntegerProperty(required=True, default=1)
 	repeats_on = ndb.JsonProperty() #Day's of the week when it repeats if the frequency is Weekly, elese the repetition date is the same day of the month or year
 	

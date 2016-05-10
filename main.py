@@ -112,7 +112,7 @@ class NewKSU(Handler):
 		if user_action == 'Create' or user_action == 'Create_Plus':
 			# self.write(post_details)
 			new_ksu = KAS1(
-				theory=self.theory,
+				theory=self.theory.key,
 				description=post_details['description'],
 				repeats=post_details['repeats'])
 			new_ksu.put()
@@ -154,9 +154,47 @@ class KAS1Viewer(Handler):
 
 
 
-# class DataStoreViewer(Handler):
-# 	def get(self):
-# 		# all_theories =
+#--- Development handlers ----------
+
+class PopulateRandomTheory(Handler):
+
+	def populateRandomTheory(self, theorySize):
+		theory = self.theory
+		theory_key = theory.key
+		username = theory.first_name + ' ' + theory.last_name
+		for i in range(0, theorySize):
+			description = 'KAS1 no. ' + str(i) + ' of ' + username
+			new_ksu = KAS1(
+				theory=theory_key,
+				description=description)
+			new_ksu.put()		
+		return
+	
+	def get(self):
+		randomUserTheory = self.theory
+		self.populateRandomTheory(100)
+		self.write('Check the datastore!')
+
+
+
+class DataStoreViewer(Handler):
+
+	def descriptionsOnly(self):
+		user_key = self.theory.key
+		ksu_set = KAS1.query(KAS1.theory == user_key).order(KAS1.created).fetch()
+		result = []
+		for ksu in ksu_set:
+			result.append(ksu.description)
+		return result	
+
+	def get(self):
+		self.write('User: ')
+		self.write(self.theory.first_name)
+		self.write('<br>')
+		self.write('<br>')
+		for ksu in self.descriptionsOnly():
+			self.write(ksu)
+			self.write('<br>') 
 
 
 
@@ -271,6 +309,9 @@ app = webapp2.WSGIApplication([
 							    ('/', Home),
 							    ('/SignUpLogIn', SignUpLogIn),
 							    ('/NewKSU', NewKSU),
-							    ('/KAS1Viewer', KAS1Viewer)
+							    ('/KAS1Viewer', KAS1Viewer),
+
+							    ('/PopulateRandomTheory',PopulateRandomTheory),
+							    ('/DataStoreViewer',DataStoreViewer)
 								], debug=True)
 
