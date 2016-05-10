@@ -18,8 +18,9 @@ class Handler(webapp2.RequestHandler):
 	
 	def render_html(self, template, **kw):
 		t = jinja_env.get_template(template)
-		if self.theory:				
-			return t.render(loggedIn=True,**kw)
+		theory = self.theory 
+		if theory:				
+			return t.render(theory=theory,**kw)
 		else:
 			return t.render(**kw)
 
@@ -82,7 +83,7 @@ class SignUpLogIn(Handler):
 					last_name=post_details['last_name'])
 				theory.put()
 				self.login(theory)
-				self.redirect('/')
+				self.redirect('/KAS1Viewer')
 
 		if user_action == 'LogIn':			
 			email = self.request.get('email')
@@ -94,6 +95,11 @@ class SignUpLogIn(Handler):
 			else:
 				self.write('incorrect username or password')
 
+
+class LogOut(Handler):
+	def get(self):
+		self.logout()
+		self.redirect('/')
 
 
 class NewKSU(Handler):
@@ -310,6 +316,7 @@ d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
 app = webapp2.WSGIApplication([
 							    ('/', Home),
 							    ('/SignUpLogIn', SignUpLogIn),
+							    ('/LogOut', LogOut),
 							    ('/NewKSU', NewKSU),
 							    ('/KAS1Viewer', KAS1Viewer),
 

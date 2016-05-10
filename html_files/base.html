@@ -15,7 +15,7 @@
 	<div class="KASwareTopBarBackground"> 
 		<div class="container">		
 
-			<div class="row" {% if loggedIn %}hidden{% endif %}>			
+			<div class="row" {% if theory %}hidden{% endif %}>			
 				<div class="col-xs-6 col-sm-9 col-md-7 col-lg-7"> 
 					<div class="KASwareTitleBlock">
 						<span class="KASwareTitleText"> KASware</span><span class="MiniTopTitle">β</span>
@@ -46,52 +46,69 @@
 				</div>					
 			</div>
 
-			<div class="row NavigationTopBar">
+			{% if theory %}
 
-				<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"> 
-					<div class="NavigationTopBarBlock">
-						<span class="NavigationKASwareTitleText"> KASware</span><span class="NagivationMiniTopTitle">β</span>
-					</div>
-				</div>
-			
-				<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right">
-					<form class="form-horizontal" method="post">
-						<div class="form-group" style="margin:10px; text-align: left;">
-							<div class="col-xs-10" style="padding-left: 0px; padding-right: 0px;">
-								<input type="text" style="height: 25px;" name="email" class="form-control" placeholder="Search your theory">	
-							</div>
-							<div class="col-xs-2" style="padding-left: 2px;">
-								<button type="button" class="btn btn-default btn-xs" style="height: 25px; width: 40px; background-color: #E8E8E8;" aria-label="Left Align">
-  									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-								</button>
-							</div>
+				<div class="row NavigationTopBar">
+
+					<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"> 
+						<div class="NavigationTopBarBlock">
+							<span class="NavigationKASwareTitleText"> KASware</span><span class="NagivationMiniTopTitle">β</span>
 						</div>
-					</form>
+					</div>
+				
+					<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right">
+						<form class="form-horizontal" method="post">
+							<div class="form-group" style="margin:10px; text-align: left;">
+								<div class="col-xs-10" style="padding-left: 0px; padding-right: 0px;">
+									<input type="text" style="height: 25px;" name="email" class="form-control" placeholder="Search your theory">	
+								</div>
+								<div class="col-xs-2" style="padding-left: 2px;">
+									<button type="button" class="btn btn-default btn-xs" style="height: 25px; width: 40px; background-color: #E8E8E8;" aria-label="Left Align">
+	  									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+
+					<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 text-left">
+						<div style="margin-top: 12px; color: white;"> XX points earned so far, XX left to achieve today's goal...  </div>
+					</div>
+
+					<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right">
+						<div style="margin-top: 12px; color: white; white-space: pre;"> {{theory.first_name}}'s theory   |  <a href="/LogOut" style="color: white;"> Log out</a> </div>
+					</div>
+					
 				</div>
 
-				
-			</div>
+			{% endif %}
 
 		</div>
+
+
 	</div>
 	
-	<div class="container">				
-		
-		{% block content %}
-		
-		{% endblock %}
+	<div class="container" style="position: relative;">
+		<div style="height: 650px; overflow-y: auto; overflow-x: hidden;">				
+			
+			{% block content %}
+			
+			{% endblock %}
 
-		<br><br>
-	
-		<div class="row">
-
-			<div class="col-xs-12 copywright-message"> What Would You Have To Do To Experience The Best Life You Could Live? </div>
-		</div>
+			<br><br>
 		
-		<div class="row">
-			<div class="col-xs-12 copywright-message"> Kasware Inc. © 2016 </div>
+			<div class="row">
+
+				<div class="col-xs-12 copywright-message"> What Would You Have To Do To Experience The Best Life You Could Live? </div>
+			</div>
+			
+			<div class="row">
+				<div class="col-xs-12 copywright-message"> Kasware Inc. © 2016 </div>
+			</div>
+			<br><br><br>
+
 		</div>
-		<br><br><br>
+
 	</div>	
 
 </body>
