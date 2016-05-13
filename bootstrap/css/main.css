@@ -149,16 +149,28 @@ li a:hover:not(.active) {
 .SignUp_SummaryTitle{
     display: block;
     color: #222;
-    font-size: 28px;
-    font-weight: 600;    
+    font-size: 25px;
+    font-weight: 500;    
 }
 
 .SignUp_SummaryBullet{
-    display: block;
+    /*display: block;*/
     color: #222;
-    font-size: 20px;
-    white-space:pre;
+    font-size: 18px;
+    /*white-space:pre;*/
   
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+
+.SignUpGlyphicon{
+    color:grey; 
+    font-size: 35px;
 }
 
 
