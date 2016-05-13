@@ -18,7 +18,7 @@
 			<div class="row" {% if theory %}hidden{% endif %}>			
 				<div class="col-xs-6 col-sm-9 col-md-7 col-lg-7"> 
 					<div class="KASwareTitleBlock">
-						<span class="KASwareTitleText"> KASware</span><span class="MiniTopTitle">β</span>
+						<span class="KASwareTitleText"> KASware</span><span class="MiniTopTitle">α</span>
 					</div>
 				</div>
 			
@@ -92,6 +92,7 @@
 	
 	<div class="container" style="position: relative;">
 		<div class="row">
+		{% if theory %}
 			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
 				<ul class="LeftNavigationBar">
 				  <li><a class="active" href="">Today's Mission</a></li>
@@ -106,12 +107,14 @@
 				  <li><a href="">My Important People</a></li>				  
 				  <li><a href="">Money Requirements</a></li>
 				  <li><a href="">Indicators</a></li>
-
 				</ul>														
 			</div>
 
 			<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding-left: 0px; padding-right: 0px;">				
-				<div style="height: 650px; overflow-y: auto; overflow-x: hidden;">									
+				<div style="height: 650px; overflow-y: auto; overflow-x: hidden;">
+		{% else %}
+			<div class="col-xs-12">
+		{% endif %}									
 					{% block content %}
 
 					{% endblock %}
@@ -127,8 +130,11 @@
 				</div>
 			</div>
 
+		{% if theory %}
 			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">				
-			</div>			
+			</div>
+		{% endif %}
+
 		</div>
 	</div>	
 
