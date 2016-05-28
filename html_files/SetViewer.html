@@ -5,74 +5,55 @@
 	<!-- Section title -->
 	<div class="row">
 		<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10"> 
-			<div class="SectionTitle"> Today's Mission </div>	
+			<div class="SectionTitle"> Set Viewer </div>	
 		</div>
 	</div>
 
 	{% for ksu in ksu_set %}
 
 		<div class="row KSUdisplaySection" style="margin-top: 0px; padding-bottom:8px;">
-			<!-- <div class="KSUdisplaySection"> -->
-								
-				<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
-					<div class="row" style="min-height: 45px">
-						<div class="col-xs-12">
-							{{ksu.description}}		
+
+			<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+				<div class="row" style="min-height: 45px">
+
+					<div class="col-xs-10">
+						<div class="row" style="min-height:60px;">
+							<div class="col-xs-12">
+								{{ksu.description}}		
+							</div>		
 						</div>
-					</div>
-					<hr style="margin:6px; width:550px; margin-left:-20px;">
-					<div class="row">					
-						<div class="col-xs-5">
-							<div class="btn-group-horizontal">
-								  <button type="button" class="btn btn-success displaySectionButton"><span class="glyphicon glyphicon-ok"></span></button>
-								  <button type="button" class="btn btn-warning displaySectionButton"><span class="glyphicon glyphicon-fast-forward"></span></button>
-								  <button type="button" class="btn btn-danger displaySectionButton"><span class="glyphicon glyphicon-share-alt"></span></button>
-								  <button type="button" class="btn btn-primary displaySectionButton"><span class="glyphicon glyphicon-pencil"></span></button>
+
+						<div class="row">
+							<div class="col-xs-6">
+								<span style="color:blue; font-style:italic;"> Last event:</span> {{ksu.last_event}}		
 							</div>
-						</div>	
-					
-
-						<div class="col-xs-7" style="padding-right:2px;">
-							<form class="form-horizontal">
-								<div class="form-group" style="margin-bottom:0px;">
-									<div class="col-xs-2" style="padding-right: 1px">
-										<input class="form-control text-center displaySectionButton" type="text" placeholder="HH" style="padding:5px;"></input>
-									</div>
-									
-									<div class="col-xs-1 text-center" style="padding: 0px; font-size: 20px;">:</div>
-									
-									<div class="col-xs-2" style="padding-left: 1px;">
-										<input class="form-control text-center displaySectionButton" type="text" placeholder="MM" style="padding:5px;"></input>
-									</div>
-									<div class="col-xs-1 text-center" style="padding: 0px; font-size: 20px; margin-top:3px;">@</div>
-								
-									<div class="col-xs-2" style="padding-left:8px; padding-right:8px;">
-										<select class="form-control displaySectionButton" name="importance"> 
-											{% for i in constants['l_Fibonacci_1_8'] %}
-												{% if i == ksu['importance'] %}
-													<option selected="selected">{{i}}</option>
-												{% else %}		
-													<option> {{i}} </option>
-												{% endif %}
-											{% endfor %}					
-										</select>
-									</div>
-									
-									<div class="col-xs-3 text-right" style="padding-left:0px; margin-top:4px;">
-										<b> XX pts.</b>		
-									</div>
-
-								</div>		
-							</form>							
+							<div class="col-xs-6">
+								<span style="color:blue; font-style:italic;"> Next event: </span> {{ksu.next_event}}
+							</div>		
 						</div>
+								
+					</div>
+					
+					<div class="col-xs-1">
+						<div class="btn-group-vertical pull-right">
+							  <button type="button" class="btn btn-success displaySectionVerticalButton"><span class="glyphicon glyphicon-ok"></span></button>
+							  <button type="button" class="btn btn-primary displaySectionVerticalButton"><span class="glyphicon glyphicon-pencil"></span></button>
+						</div>						
+					</div>
 
-						
-
-
-					</div>					
+					<div class="col-xs-1">
+						<div class="btn-group-vertical pull-right">
+							  <button type="button" class="btn btn-primary displaySectionVerticalButton"><span class="glyphicon glyphicon-share-alt"></span></button>
+							  <button type="button" class="btn btn-danger displaySectionVerticalButton"><span class="glyphicon glyphicon-trash"></span></button> 
+						</div>						
+					</div>
 				</div>
 
-			<!-- </div>	 -->
+				<div class="row">					
+					<div class="col-xs-12">
+					</div>	
+				</div>			
+			</div>
 		</div>
 
 	{% endfor %}
@@ -80,66 +61,4 @@
 
 {% endblock %}
 
-
-<!-- EV portforlio or Dream/Wish display section
-<div class="row" style="margin-top: 0px;">
-	<div class="KSUdisplaySection">
-		
-		<div class="col-xs-1" style="padding: 0px;">
-			<div class="btn-group-vertical" style="max-width: 50px;">
-			  <button type="button" class="btn btn-success" style="margin-bottom: 8px;"><span class="glyphicon glyphicon-ok"></span></button>
-			  <button type="button" class="btn btn-warning" style="margin-bottom: 8px;"><span class="glyphicon glyphicon-fast-forward"></span></button>
-			  <button type="button" class="btn btn-danger" style="margin-bottom: 8px;"><span class="glyphicon glyphicon-share-alt"></span></button>
-			  <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></button>
-			</div>
-		</div>	
-		
-		<div class="col-xs-8">
-			<div class="row" style="height: 60px">
-				<div class="col-xs-12">
-					{{ksu.description}}		
-				</div>
-			</div>
-		
-			<div class="row" style="height: 50px">
-				
-			</div>
-
-
-			<form class="form-horizontal">
-				<div class="form-group">
-					<div class="col-xs-3">
-						<label style="font-size: 12px;">Importance</label> 
-						<input class="form-control" type="text"></input>
-
-					</div>
-					
-					<div class="col-xs-4">
-						<label style="font-size: 12px;"> Duration </label>
-						<div class="row">
-							<div class="col-xs-5" style="padding-right: 1px">
-								<input class="form-control text-center" type="text" placeholder="HH" style="padding:5px;"></input>
-							</div>
-							
-							<div class="col-xs-1 text-center" style="padding: 0px; font-size: 20px;">:</div>
-							
-							<div class="col-xs-5" style="padding-left: 1px">
-								<input class="form-control text-center" type="text" placeholder="MM" style="padding:5px;"></input>
-							</div>
-						</div>		
-					</div>
-					
-					<div class="col-xs-5" style="padding-left: 0px; padding-right: 30px;">
-						<label style="font-size: 12px;">Points to be awarded</label> 
-						<div style="margin-top: 8px;"> Wow! so many points</div>
-					</div>	
-				</div>	
-			</form>
-		</div>
-		
-		<div class="col-xs-3" style="padding-left: 0px;">
-			<img src="http://placehold.it/140x165">
-		</div>
-	</div>	
-</div> -->
 

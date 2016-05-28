@@ -229,6 +229,11 @@ li a:hover:not(.active) {
     /*margin-bottom: 8px;*/
 }
 
+.displaySectionVerticalButton{
+    margin-bottom: 8px;
+}
+
+
 
 .SectionTitle{
     /*color: #686868;*/
