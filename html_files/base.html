@@ -75,7 +75,10 @@
 						<div style="margin-top: 12px; color: white;"> XX points earned so far, XX left to achieve today's goal...  </div>
 					</div>
 
-					<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-left respect-space"><button type="button" class="btn btn-primary btn-xs" style="height: 25px; width: 60px; margin-top: 10px; background-color:#00CCFF; color:white;" aria-label="Left Align"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> EV </button>	    <button type="button" class="btn btn-primary btn-xs" style="height: 25px; width: 60px; margin-top:10px; background-color:#00CCFF; color:white;" aria-label="Left Align"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> KSU </button></div>
+					<form method="post">
+						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-left respect-space"><button type="button" class="btn btn-primary btn-xs" style="height: 25px; width: 60px; margin-top: 10px; background-color:#00CCFF; color:white;" aria-label="Left Align"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> EV </button>	    <button type="submit" class="btn btn-primary btn-xs" style="height: 25px; width: 60px; margin-top:10px; background-color:#00CCFF; color:white;" aria-label="Left Align"  name="action_description" value="NewKSU"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> KSU </button></div>
+					</form>
+					
 
 					<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
 						<div style="margin-top: 12px; color: white; white-space: pre;"> {{theory.first_name}}'s theory   |  <a href="/LogOut" style="color: white;"> Log out</a> </div>
@@ -98,7 +101,7 @@
 				  <li><a class="active" href="">Today's Mission</a></li>
 				  <li><a href="">Upcoming</a></li>
 				  <li><a href="">EV Portfolio</a></li>
-				  <li><a href="">Core Actions (KAS1)</a></li>
+				  <li><a href="/SetViewer">Core Actions (KAS1)</a></li>
 				  <li><a href="">Complementary Actions (KAS2)</a></li>
 				  <li><a href="">Re-Actions  (KAS3)</a></li>
 				  <li><a href="">Actions to Avoid (KAS4)</a></li>

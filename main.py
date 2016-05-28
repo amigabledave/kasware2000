@@ -83,7 +83,7 @@ class SignUpLogIn(Handler):
 					last_name=post_details['last_name'])
 				theory.put()
 				self.login(theory)
-				self.redirect('/KAS1Viewer')
+				self.redirect('/SetViewer')
 
 		if user_action == 'LogIn':			
 			email = self.request.get('email')
@@ -122,7 +122,7 @@ class NewKSU(Handler):
 				description=post_details['description'],
 				repeats=post_details['repeats'])
 			new_ksu.put()
-			self.write('Acabas de crear un nuevo KSU!')
+			self.redirect('/SetViewer')
 			return			
 				
 		elif user_action == 'Discard':
@@ -141,19 +141,20 @@ class Home(Handler):
 
 
 
-class KAS1Viewer(Handler):
+class SetViewer(Handler):
 	def get(self):
 		if user_bouncer(self):
 			return
 		user_key = self.theory.key
 		ksu_set = KAS1.query(KAS1.theory == user_key).order(KAS1.created).fetch()
 
-		self.print_html('KAS1Viewer.html', ksu_set=ksu_set)
+		self.print_html('SetViewer.html', ksu_set=ksu_set)
 
 
 	def post(self):
 		if user_bouncer(self):
 			return
+
 		post_details = get_post_details(self)
 		user_action = post_details['action_description']	
 		
@@ -180,8 +181,8 @@ class PopulateRandomTheory(Handler):
 	
 	def get(self):
 		randomUserTheory = self.theory
-		self.populateRandomTheory(100)
-		self.redirect('/KAS1Viewer')
+		self.populateRandomTheory(5)
+		self.redirect('/SetViewer')
 
 
 
@@ -318,7 +319,7 @@ app = webapp2.WSGIApplication([
 							    ('/SignUpLogIn', SignUpLogIn),
 							    ('/LogOut', LogOut),
 							    ('/NewKSU', NewKSU),
-							    ('/KAS1Viewer', KAS1Viewer),
+							    ('/SetViewer', SetViewer),
 
 							    ('/PopulateRandomTheory',PopulateRandomTheory),
 							    ('/DataStoreViewer',DataStoreViewer)

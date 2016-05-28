@@ -21,17 +21,6 @@
 
 
 
-.backgroundImage { 
-    background: url('http://placehold.it/140x165') no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-
-
-
-
 /*---Navigation bar-------*/
 
 .NavigationTopBar{
