@@ -224,6 +224,7 @@ li a:hover:not(.active) {
 .displaySectionButton{
     height: 27px;
     line-height: 100%;
+    margin-left:7px;
     /*width: 100px;*/
     /*margin-bottom: 8px;*/
 }

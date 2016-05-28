@@ -213,7 +213,7 @@ class PopulateRandomTheory(Handler):
 	def get(self):
 		randomUserTheory = self.theory
 		self.populateRandomTheory(5)
-		self.redirect('/SetViewer')
+		self.redirect('/')
 
 
 
