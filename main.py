@@ -83,7 +83,7 @@ class SignUpLogIn(Handler):
 					last_name=post_details['last_name'])
 				theory.put()
 				self.login(theory)
-				self.redirect('/SetViewer')
+				self.redirect('/')
 
 		if user_action == 'LogIn':			
 			email = self.request.get('email')
@@ -122,7 +122,7 @@ class NewKSU(Handler):
 				description=post_details['description'],
 				repeats=post_details['repeats'])
 			new_ksu.put()
-			self.redirect('/SetViewer')
+			self.redirect('/')
 			return			
 				
 		elif user_action == 'Discard':
@@ -141,14 +141,15 @@ class Home(Handler):
 
 
 
-class SetViewer(Handler):
+
+class TodaysMission(Handler):
 	def get(self):
 		if user_bouncer(self):
 			return
 		user_key = self.theory.key
 		ksu_set = KAS1.query(KAS1.theory == user_key).order(KAS1.created).fetch()
 
-		self.print_html('SetViewer.html', ksu_set=ksu_set)
+		self.print_html('TodaysMission.html', ksu_set=ksu_set, constants=constants)
 
 
 	def post(self):
@@ -160,6 +161,36 @@ class SetViewer(Handler):
 		
 		if user_action == 'NewKSU':
 			self.redirect('/NewKSU')
+
+
+
+class SetViewer(Handler):
+	def get(self):
+		if user_bouncer(self):
+			return
+		user_key = self.theory.key
+		ksu_set = KAS1.query(KAS1.theory == user_key).order(KAS1.created).fetch()
+
+		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants)
+
+
+	def post(self):
+		if user_bouncer(self):
+			return
+
+		post_details = get_post_details(self)
+		user_action = post_details['action_description']	
+		
+		if user_action == 'NewKSU':
+			self.redirect('/NewKSU')
+
+
+
+
+
+
+
+
 
 
 
@@ -315,7 +346,7 @@ d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
 #----------
 
 app = webapp2.WSGIApplication([
-							    ('/', Home),
+							    ('/', TodaysMission),
 							    ('/SignUpLogIn', SignUpLogIn),
 							    ('/LogOut', LogOut),
 							    ('/NewKSU', NewKSU),
