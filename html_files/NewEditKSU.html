@@ -15,7 +15,7 @@
 	<div class="form-group">
 		<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
 			<label> Action Description <span class="red">*</span></label>
-			<input type="text" class="form-control" name="description" placeholder="e.g. Go for a run" required value="{% if ksu['description']%}{{ksu['description']}}{% endif %}">			
+			<input type="text" class="form-control" name="description" placeholder="e.g. Go for a run" required value="{% if ksu %}{{ksu.description}}{% endif %}">			
 		</div>
 	</div>
 

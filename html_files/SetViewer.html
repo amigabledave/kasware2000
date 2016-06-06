@@ -33,11 +33,12 @@
 						</div>
 								
 					</div>
-					
+					<form method="post">
+					<input type="text" class="form-control hidden" name="ksu_id" value="{{ksu.key.id()}}">
 					<div class="col-xs-1">
 						<div class="btn-group-vertical pull-right">
 							  <button type="button" class="btn btn-success displaySectionVerticalButton"><span class="glyphicon glyphicon-ok"></span></button>
-							  <button type="button" class="btn btn-primary displaySectionVerticalButton"><span class="glyphicon glyphicon-pencil"></span></button>
+							  <button type="submit" class="btn btn-primary displaySectionVerticalButton" name='action_description' value="EditKSU"><span class="glyphicon glyphicon-pencil"></span></button>
 						</div>						
 					</div>
 
@@ -47,6 +48,7 @@
 							  <button type="button" class="btn btn-danger displaySectionVerticalButton"><span class="glyphicon glyphicon-trash"></span></button> 
 						</div>						
 					</div>
+					</form>
 				</div>
 
 				<div class="row">					

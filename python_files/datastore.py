@@ -39,13 +39,11 @@ class Theory(ndb.Model):
 class Tag(ndb.Model):
 	
 	theory = ndb.KeyProperty(kind=Theory, required=True)
-	#tracker fields
-	created = ndb.DateTimeProperty(auto_now_add=True)	
+	created = ndb.DateTimeProperty(auto_now_add=True)		
 	last_modified = ndb.DateTimeProperty(auto_now=True)
 	
 	name = ndb.StringProperty(required=True)
 	description = ndb.StringProperty()
-
 	ksus = ndb.KeyProperty(kind=Theory, repeated=True)	#all KSUs related to this tag
 
 
@@ -59,10 +57,8 @@ class KSU(ndb.Model):
 	description = ndb.StringProperty(required=True)
 	status = ndb.StringProperty(choices=('Active', 'Done', 'Hold', 'Deleted'))
 
-	# theory = ndb.ReferenceProperty(Theory, collection_name='KSUs')	#Included on last level
-	# ksu_type = ndb.StringProperty(required=True) #Included on last level
-	# ksu_id = ndb.StringProperty(required=True) #Not sure if with the new datastore structure is really necesary
-
+	theory = ndb.KeyProperty(kind=Theory, required=True)	
+	ksu_type = ndb.StringProperty()
 	ksu_subtype = ndb.StringProperty()
 	parent_id = ndb.StringProperty()	
 			
@@ -73,14 +69,11 @@ class KSU(ndb.Model):
 	comments = ndb.TextProperty()
 	picture = ndb.BlobProperty()
 
-	value_type = ndb.StringProperty(required=True, choices=('V00','V09', 'V10', 'V20', 'V30', 'V40', 'V50', 'V60', 'V70', 'V80', 'V90'), default='V09')
+	value_type = ndb.StringProperty()
 	importance = ndb.IntegerProperty(default=3)
 	is_critical = ndb.BooleanProperty(default=False)
 
-
-
-class KAS(KSU):
-			
+	# KAS Attributes			
 	in_mission = ndb.BooleanProperty(default=False)
 	any_any = ndb.BooleanProperty(default=False)
 	in_upcoming = ndb.BooleanProperty(default=True)
@@ -94,20 +87,20 @@ class KAS(KSU):
 
 	project = ndb.StringProperty()
 
-
-
-class KAS1(KAS):
-		
-	theory = ndb.KeyProperty(kind=Theory, required=True)
-	ksu_type = ndb.StringProperty(default='KAS1') 
-	
+	#KAS1 attributes	
 	last_event = ndb.DateProperty()
-	repeats = ndb.StringProperty(required=True, choices=('R001', 'R007', 'R030', 'R365'), default='R001')	
-	repeats_every = ndb.IntegerProperty(required=True, default=1)
+	repeats = ndb.StringProperty()	
+	repeats_every = ndb.IntegerProperty(default=1)
 	repeats_on = ndb.JsonProperty() #Day's of the week when it repeats if the frequency is Weekly, elese the repetition date is the same day of the month or year
 	
 	TimeUse_target_min = ndb.IntegerProperty()
 	TimeUse_target_max = ndb.IntegerProperty()
+
+
+
+
+
+
 
 
 

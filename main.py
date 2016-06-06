@@ -6,7 +6,7 @@ from python_files import datastore, randomUser, constants
 
 constants = constants.constants
 Theory = datastore.Theory
-KAS1 = datastore.KAS1
+KSU = datastore.KSU
 
 template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
@@ -117,7 +117,7 @@ class NewKSU(Handler):
 		
 		if user_action == 'Create' or user_action == 'Create_Plus':
 			# self.write(post_details)
-			new_ksu = KAS1(
+			new_ksu = KSU(
 				theory=self.theory.key,
 				description=post_details['description'],
 				repeats=post_details['repeats'])
@@ -147,7 +147,7 @@ class TodaysMission(Handler):
 		if user_bouncer(self):
 			return
 		user_key = self.theory.key
-		ksu_set = KAS1.query(KAS1.theory == user_key).order(KAS1.created).fetch()
+		ksu_set = KSU.query(KSU.theory == user_key).order(KSU.created).fetch()
 
 		self.print_html('TodaysMission.html', ksu_set=ksu_set, constants=constants)
 
@@ -169,7 +169,7 @@ class SetViewer(Handler):
 		if user_bouncer(self):
 			return
 		user_key = self.theory.key
-		ksu_set = KAS1.query(KAS1.theory == user_key).order(KAS1.created).fetch()
+		ksu_set = KSU.query(KSU.theory == user_key).order(KSU.created).fetch()
 
 		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants)
 
@@ -184,10 +184,18 @@ class SetViewer(Handler):
 		if user_action == 'NewKSU':
 			self.redirect('/NewKSU')
 
+		if user_action == 'EditKSU':
+			ksu_id = post_details['ksu_id']
+			self.redirect('/EditKSU?ksu_id='+ksu_id)
 
 
-
-
+class EditKSU(Handler):
+	def get(self):
+		if user_bouncer(self):
+			return
+		ksu_id = self.request.get('ksu_id')
+		ksu = KSU.get_by_id(int(ksu_id)) #xx
+		self.print_html('NewEditKSU.html', title='Define', ksu=ksu, constants=constants)
 
 
 
@@ -203,8 +211,8 @@ class PopulateRandomTheory(Handler):
 		theory_key = theory.key
 		username = theory.first_name + ' ' + theory.last_name
 		for i in range(0, theorySize):
-			description = 'KAS1 no. ' + str(i) + ' of ' + username
-			new_ksu = KAS1(
+			description = 'KSU no. ' + str(i) + ' of ' + username
+			new_ksu = KSU(
 				theory=theory_key,
 				description=description)
 			new_ksu.put()		
@@ -221,7 +229,7 @@ class DataStoreViewer(Handler):
 
 	def descriptionsOnly(self):
 		user_key = self.theory.key
-		ksu_set = KAS1.query(KAS1.theory == user_key).order(KAS1.created).fetch()
+		ksu_set = KSU.query(KSU.theory == user_key).order(KSU.created).fetch()
 		result = []
 		for ksu in ksu_set:
 			result.append(ksu.description)
@@ -350,6 +358,7 @@ app = webapp2.WSGIApplication([
 							    ('/SignUpLogIn', SignUpLogIn),
 							    ('/LogOut', LogOut),
 							    ('/NewKSU', NewKSU),
+							    ('/EditKSU', EditKSU),
 							    ('/SetViewer', SetViewer),
 
 							    ('/PopulateRandomTheory',PopulateRandomTheory),
