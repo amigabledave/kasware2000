@@ -189,6 +189,8 @@ class SetViewer(Handler):
 			self.redirect('/EditKSU?ksu_id='+ksu_id)
 
 
+
+
 class EditKSU(Handler):
 	def get(self):
 		if user_bouncer(self):

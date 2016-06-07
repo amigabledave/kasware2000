@@ -1,3 +1,5 @@
+import operator
+
 l_Fibonacci = ['1','2','3','5','8','13']
 
 l_long_Fibonacci = ['1','2','3','5','8','13','21','34','55','89','144','233','377','610','987']
@@ -9,6 +11,30 @@ l_Fibonacci_8_55 = ['8','13','21','34','55']
 l_Fibonacci_21_144 = ['21','34','55','89','144']
 
 
+d_KsuTypes = {
+	'KeyA': '01. Key Action',
+	'MinO': '02. Mini Objective',
+	'BigO': '03. Big Objective',
+	'Drea': '04. Dream',
+	'Wish': '05. Wish',
+	'Prin': '06. Principle',
+	'EVPo': '06. End Value',
+	'ImPe': '08. Important People',
+	'RTBG': '09. Reason To Be Grateful',
+	'Idea': '10. Wise Idea',
+	'NoAR': '11. Reminder',
+	'MoRe': '12. Money Requirement',
+	'ImIn': '13. Indicator'
+}
+l_KsuTypes = sorted(d_KsuTypes.items(), key=operator.itemgetter(1))
+
+def removeNumbers(tupleList):
+	result = []
+	for e in tupleList:
+		result.append((e[0],e[1][4:]))		
+	return result
+
+l_KsuTypes = removeNumbers(l_KsuTypes)
 
 d_Values = {'V00': '0. End Value',
 			'V01': '1. Inner Peace & Consciousness',
@@ -19,7 +45,7 @@ d_Values = {'V00': '0. End Value',
 			'V06': '6. Knowledge & Skills', 
 			'V07': '7. Outer Order & Peace', 
 			'V08': '8. Stuff',
-		 	'V09': '9. Money & Power'}
+		 	'V09': '9. Money & Power y popo'}
 l_Values = sorted(d_Values.items())
 
 
@@ -71,7 +97,8 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 'l_long_Fibonacci': l_long_Fibonacci,
 			 'l_Fibonacci_1_8' :l_Fibonacci_1_8,
 			 'l_Fibonacci_8_55':l_Fibonacci_8_55,
-			 'l_Fibonacci_21_144':l_Fibonacci_21_144, 
+			 'l_Fibonacci_21_144':l_Fibonacci_21_144,
+			 'l_KsuTypes':l_KsuTypes, 
 			 'l_Values':l_Values,
 			 'l_Mean_Values':l_Mean_Values,
 			 'l_Days':l_Days,
