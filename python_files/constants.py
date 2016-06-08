@@ -12,6 +12,7 @@ l_Fibonacci_21_144 = ['21','34','55','89','144']
 
 
 d_KsuTypes = {
+	'Gene': '00. Unassigned',
 	'KeyA': '01. Key Action',
 	'MinO': '02. Mini Objective',
 	'BigO': '03. Big Objective',
@@ -45,7 +46,7 @@ d_Values = {'V00': '0. End Value',
 			'V06': '6. Knowledge & Skills', 
 			'V07': '7. Outer Order & Peace', 
 			'V08': '8. Stuff',
-		 	'V09': '9. Money & Power y popo'}
+		 	'V09': '9. Money & Power'}
 l_Values = sorted(d_Values.items())
 
 

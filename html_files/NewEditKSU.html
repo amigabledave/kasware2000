@@ -4,54 +4,61 @@
 
 
 <br>
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8"  style="padding:0px">
 <form class="form-horizontal" method="post" autocomplete="off">
 	<input type="text" class="form-control hidden" name="ksu_id" value="{{ksu['id']}}">
 
 	<div class="row">
-		<div class="col-xs-12"><span class="NewEditKSU-title">{{ title + " Your Core Key Action"}}</span></div>
+		<div class="col-xs-12"><span class="NewEditKSU-title">{{ title + " Your KASware Standard Unit"}}</span></div>
 	</div>
 	<br>
-
+			
 	<div class="form-group">
-		<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-			<label> Action Description <span class="red">*</span></label>
+		<div class="col-xs-12">
+			<label>Description <span class="red">*</span></label>
 			<input type="text" class="form-control" name="description" placeholder="e.g. Go for a run" required value="{% if ksu %}{{ksu.description}}{% endif %}">			
 		</div>
 	</div>
 
-		<div class="form-group">
-				<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-					<label> Type <span class="red">*</span></label>
-						<select class="form-control" name="value_type">
-							{% for type in constants['l_KsuTypes'] %}
-								{% if type[0] == ksu['ksu_type'] %}
+	<div class="form-group">
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+				<label> Type </label>
+					<select class="form-control" name="value_type">
+						{% for type in constants['l_KsuTypes'] %}
+							{% if type[0] == ksu['ksu_type'] %}
 								<option selected="selected" value="{{type[0]}}"> {{type[1]}} </option>
-								{% else %}
+							{% else %}
 								<option value="{{type[0]}}"> {{type[1]}} </option>
-								{% endif %}
-							{% endfor %}
-						</select>	
-				</div>
-				<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-					<button type="submit" class="btn btn-success btn-lg respect-space" name="action_description" value="Create">   Create   </button>
-				</div>			
-		</div>
+							{% endif %}
+						{% endfor %}
+					</select>	
+			</div>
+
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+				<label> Target Value </label>
+					<select class="form-control" name="value_type">
+					<option hidden >Unassigned</option>
+					{% for value in constants['l_Values'] %}
+						{% if value[0] == ksu['value_type'] %}
+						<option selected="selected" value="{{value[0]}}"> {{value[1]}} </option>
+						{% else %}
+						<option value="{{value[0]}}"> {{value[1]}} </option>
+						{% endif %}
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+				<label> Tags </label>
+				<input type="text" class="form-control" name="tags" placeholder="Tag, Tag, Tag" value="{% if ksu['tags']%}{{ksu['tags']}}{% endif %}">
+			</div>
+
+	</div>
+
 
 		<div class="hidden">
 
-			<div class="form-group">
-				<div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-					<label>Value Type <span class="red">*</span></label>
-						<select class="form-control" name="value_type">
-						{% for value in constants['l_Values'] %}
-							{% if value[0] == ksu['value_type'] %}
-							<option selected="selected" value="{{value[0]}}"> {{value[1]}} </option>
-							{% else %}
-							<option value="{{value[0]}}"> {{value[1]}} </option>
-							{% endif %}
-						{% endfor %}
-					</select>
-				</div>	
+			<div class="form-group">	
 
 				<div class="col-xs-6 col-sm-3 col-md-2 col-lg-2"> 
 					<label> Importance </label> 
@@ -160,41 +167,29 @@
 
 			</div>
 
-			<div class="form-group">
-				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-					<label> Comments </label>
-					<textarea class="form-control" name="comments">{% if ksu['comments']%}{{ksu['comments']}}{% endif %}</textarea> 
-				</div>
 
-				<div class="col-xs-12 col-sm-6 col-md-2 col-lg-2">
-					<label> Tags </label>
-					<input type="text" class="form-control" name="tags" placeholder="Tag, Tag, Tag" value="{% if ksu['tags']%}{{ksu['tags']}}{% endif %}">
-				</div>
+	</div>
 
-				<div class="form-group">
-					<div class="col-xs-12 col-sm-6 col-md-2 col-lg-2">
-						<label> Picture </label>
-						<input type="file" accept="image/gif, image/jpeg, image/png" >		
-					</div>		
-				</div>
-
+		<div class="form-group">
+			<div class="col-xs-12">
+				<label> Comments </label>
+				<textarea class="form-control" name="comments">{% if ksu['comments']%}{{ksu['comments']}}{% endif %}</textarea> 
 			</div>
+		</div>
 
+	<br>
 
 			{% if title=='Define' %}
-			  	<div class="form-group">
-					<div class="hidden-xs col-sm-3 col-md-2 col-lg-2"> <button type="submit" class="btn btn-success btn-lg respect-space" name="action_description" value="Create">   Create   </button> </div>	
-					<div class="hidden-xs col-sm-3 col-md-2 col-lg-2"> <button type="submit" class="btn btn-success btn-lg respect-space" name="action_description" value="Create_Plus"> Create + </button> </div>
-					<div class="hidden-xs col-sm-3 col-md-2 col-lg-2"> <button type="submit" class="btn btn-danger btn-lg  respect-space" name="action_description" value="Discard">  Discard  </button> </div>
-				</div>
 
 			  	<div class="form-group">
-					<div class="col-xs-12 hidden-sm hidden-md hidden-lg">
-						<button type="submit" class="btn btn-success btn-lg respect-space" name="action_description" value="Create">   Create   </button>
-						<button type="submit" class="btn btn-success btn-lg respect-space" name="action_description" value="Create_Plus"> Create + </button> 
-						<button type="submit" class="btn btn-danger btn-lg  respect-space" name="action_description" value="Discard">  Discard  </button> 
+					<div class="col-xs-12 btn-group">
+
+						<button type="submit" class="btn btn-success btn-lg respect-space" name="action_description" value="Create" style="margin-right: 8px;"> Create </button>
+						<button type="submit" class="btn btn-success btn-lg respect-space" name="action_description" value="Create_Plus" style="margin-right: 8px;"> Create + </button> 
+						<button type="submit" class="btn btn-danger btn-lg  respect-space" name="action_description" value="Discard"> Discard </button> 
 					</div>
 				</div>
+
 			{% endif%}
 
 
@@ -216,13 +211,8 @@
 				</div>
 			{% endif%}
 
-		
-	</div>
-
-	
-	
-
 </form>
+</div>
 
 {% if input_error %}
 	<div class="row">
