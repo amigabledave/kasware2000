@@ -1,3 +1,11 @@
+$('#value_type').on('change',function(){
+	if (this.value == 'KeyA'){
+		$('#KeyA').removeClass('hidden');
+	} else {
+		$('#KeyA').addClass('hidden');
+	}
+});
+
 
 d_repeats_legend = {
 	'R001':'Days',
@@ -15,6 +23,7 @@ $('#repeats').on('change',function(){
 	$('#repeats_every_footnote').text(d_repeats_legend[this.value]);
 
 });
+
 
 
 
