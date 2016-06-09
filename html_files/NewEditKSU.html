@@ -22,7 +22,7 @@
 
 	<div class="form-group">
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-				<label> Type </label>
+				<label> KSU Type </label>
 					<select class="form-control" name="value_type" id="value_type">
 						{% for type in constants['l_KsuTypes'] %}
 							{% if type[0] == ksu['ksu_type'] %}
@@ -54,8 +54,19 @@
 			</div>
 	</div>
 
-	<div class="hidden" id="KeyA">
-	<!-- <div id="KeyA"> -->
+	<!-- <div class="hidden" id="KeyA"> -->
+	<div id="KeyA">
+		<div class="form-group">
+			<div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+				<label> Action type </label>
+				<select class="form-control" name="repeats">
+					<option value="KAS2"> To do once </option>
+					<option value="KAS1"> To do many times </option>
+					<option value="KAS3"> Reaction to have  </option>
+					<option value="KAS4"> To avoid </option>
+				</select> 			
+			</div>
+		</div>
 
 		<div class="form-group">	
 
