@@ -1,8 +1,8 @@
 $('#value_type').on('change',function(){
-	if (this.value == 'KeyA'){
-		$('#KeyA').removeClass('hidden');
+	if (this.value != 'Gene'){
+		$('#assignedKSU').removeClass('hidden');
 	} else {
-		$('#KeyA').addClass('hidden');
+		$('#assignedKSU').addClass('hidden');
 	}
 });
 
