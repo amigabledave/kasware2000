@@ -76,7 +76,8 @@ d_Scope = {'Total': 'Overall Results',
 l_Scope = sorted(d_Scope.items())
 
 
-d_repeats = {'R001':'Daily',
+d_repeats = {'R000':'Never',
+			 'R001':'Daily',
 			 'R007':'Weekly',
 			 'R030':'Monthly',
 			 'R365':'Yearly'}
