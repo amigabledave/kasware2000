@@ -14,6 +14,30 @@ $('#value_type').on('change',function(){
 });
 
 
+$('input[type=radio][name=ksu_subtype]').on('change',function(){
+	if (this.value != 'KAS1or2'){
+		$('#KeyA_KAS1or2').addClass('hidden');
+	} else {
+		$('#KeyA_KAS1or2').removeClass('hidden');
+	}
+
+	if (this.value == 'KAS3'){
+		$('#KeyA_KAS3').removeClass('hidden');
+	} else {
+		$('#KeyA_KAS3').addClass('hidden');
+		
+	}
+
+	if (this.value == 'KAS4'){
+		$('#KeyA_KAS4').removeClass('hidden');
+	} else {
+		$('#KeyA_KAS4').addClass('hidden');
+		
+	}
+
+});
+
+
 $('#repeats').on('change',function(){
 
 	d_repeats_legend = {
