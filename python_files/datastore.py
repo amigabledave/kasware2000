@@ -50,54 +50,55 @@ class Tag(ndb.Model):
 
 class KSU(ndb.Model):
 	#tracker fields
+	theory = ndb.KeyProperty(kind=Theory, required=True)	
 	created = ndb.DateTimeProperty(auto_now_add=True)	
 	last_modified = ndb.DateTimeProperty(auto_now=True)
 
-	# base KSU properties
+	# base properties
 	description = ndb.StringProperty(required=True)
-	status = ndb.StringProperty(choices=('Active', 'Done', 'Hold', 'Deleted'))
-
-	theory = ndb.KeyProperty(kind=Theory, required=True)	
+	comments = ndb.TextProperty()
 	ksu_type = ndb.StringProperty()
 	ksu_subtype = ndb.StringProperty()
-	parent_id = ndb.StringProperty()	
-			
-	is_visible = ndb.BooleanProperty(default=True)
-	is_private = ndb.BooleanProperty(default=False)
-
-	tags = ndb.KeyProperty(kind=Tag, repeated=True) #all tags related to this KSU	
-	comments = ndb.TextProperty()
-	picture = ndb.BlobProperty()
 
 	value_type = ndb.StringProperty()
-	importance = ndb.IntegerProperty(default=3)
+	tags = ndb.KeyProperty(kind=Tag, repeated=True) #all tags related to this KSU	
+	parent_id = ndb.StringProperty()		
+		
+	is_active = ndb.BooleanProperty(default=True)
 	is_critical = ndb.BooleanProperty(default=False)
+	is_private = ndb.BooleanProperty(default=False)
 
-	# KAS Attributes			
-	in_mission = ndb.BooleanProperty(default=False)
-	any_any = ndb.BooleanProperty(default=False)
-	in_upcoming = ndb.BooleanProperty(default=True)
+	is_visible = ndb.BooleanProperty(default=True)
+	is_deleted = ndb.BooleanProperty(default=False)
 
+	# base properties - might be used in the future
+	picture = ndb.BlobProperty()
+	importance = ndb.IntegerProperty(default=3)
+			
+	# KAS Specific	
+	last_event = ndb.DateProperty()
 	next_event = ndb.DateProperty()
+	
 	best_time = ndb.TimeProperty()
 	time_cost = ndb.IntegerProperty(default=1)
 
-	Repetition_target_min = ndb.IntegerProperty()
-	Repetition_target_max = ndb.IntegerProperty()
-
-	project = ndb.StringProperty()
-
-	#KAS1 attributes	
-	last_event = ndb.DateProperty()
 	repeats = ndb.StringProperty()	
 	repeats_every = ndb.IntegerProperty(default=1)
 	repeats_on = ndb.JsonProperty() #Day's of the week when it repeats if the frequency is Weekly, elese the repetition date is the same day of the month or year
-	
+
+	trigger_circumstances = ndb.TextProperty()
+	standard_reward = ndb.IntegerProperty()
+	valid_exceptions = ndb.TextProperty()	
+	standard_punishment = ndb.IntegerProperty()
+
+	# KAS Specific - might be used in the future
+	Repetition_target_min = ndb.IntegerProperty()
+	Repetition_target_max = ndb.IntegerProperty()
 	TimeUse_target_min = ndb.IntegerProperty()
 	TimeUse_target_max = ndb.IntegerProperty()
 
 
-
+	
 
 
 

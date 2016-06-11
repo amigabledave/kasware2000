@@ -22,7 +22,7 @@
 	 	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 
 			<label> KSU Type </label>
-			<select class="form-control" name="value_type" id="value_type">
+			<select class="form-control" name="ksu_type" id="ksu_type">
 				{% for type in constants['l_KsuTypes'] %}
 					{% if type[0] == ksu['ksu_type'] %}
 						<option selected="selected" value="{{type[0]}}"> {{type[1]}} </option>
@@ -118,11 +118,11 @@
 			<div class="form-group">
 				<div class="col-xs-8">
 					<label>Trigger Circumstances </label>
-					<textarea class="form-control" name="TriggerCircumstances" placeholder="e.g. A beautiful girl walks acroos the streat" value=""></textarea>	
+					<textarea class="form-control" name="trigger_circumstances" placeholder="e.g. A beautiful girl walks acroos the streat"></textarea>	
 				</div>
 			 	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 					<label> Standard Reward</label>
-					<select class="form-control" name="StandardReward">
+					<select class="form-control" name="standard_reward">
 						{% for value in constants['l_Fibonacci_8_55'] %}
 							{% if value == ksu['StandardReward'] %}
 								<option selected="selected" value="{{value}}"> {{value}} </option>
@@ -139,11 +139,11 @@
 			<div class="form-group">
 				<div class="col-xs-8">
 					<label>Valid Exceptions</label>
-					<textarea class="form-control" name="Valid Exceptions<" placeholder="e.g. When I'am on vacation, When the food its free!" value=""></textarea>	
+					<textarea class="form-control" name="valid_exceptions" placeholder="e.g. When I'am on vacation, When the food its free!"></textarea>	
 				</div>
 			 	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 					<label> Standard Punishment</label>
-					<select class="form-control" name="StandardPunishment">
+					<select class="form-control" name="standard_punishment">
 						{% for value in constants['l_Fibonacci_21_144'] %}
 							{% if value == ksu['StandardReward'] %}
 								<option selected="selected" value="{{value}}"> {{value}} </option>
