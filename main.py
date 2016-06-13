@@ -248,7 +248,7 @@ class TodaysMission(Handler):
 
 		post_details = get_post_details(self)
 		user_action = post_details['action_description']	
-		
+
 		if user_action == 'NewKSU':
 			self.redirect('/KsuEditor?ksu_id=NewKSU')
 			return
@@ -256,7 +256,7 @@ class TodaysMission(Handler):
 		if user_action == 'EditKSU':
 			ksu_id = post_details['ksu_id']
 			self.redirect('/KsuEditor?ksu_id='+ksu_id)
-			return
+			
 
 
 
@@ -278,7 +278,7 @@ class SetViewer(Handler):
 		user_action = post_details['action_description']	
 		
 		if user_action == 'NewKSU':
-			self.redirect('//KsuEditor?ksu_id=NewKSU')
+			self.redirect('/KsuEditor?ksu_id=NewKSU')
 
 		if user_action == 'EditKSU':
 			ksu_id = post_details['ksu_id']

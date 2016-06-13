@@ -1,5 +1,58 @@
 #Have not finished working on input validation so far.
 
+d_attributeType ={
+	'description':'basic',
+	'comments':'basic',
+	'ksu_type':'basic',
+	'ksu_subtype':'basic',
+
+	'value_type':'basic',
+	# 'tags':'', Assignment pending
+	# 'parent_id':'', Assignment pending		
+		
+	'is_active': 'Checkbox',
+	'is_critical': 'Checkbox',
+	'is_private': 'Checkbox',
+
+	'is_visible':'Checkbox',
+	'is_deleted':'Checkbox',
+
+	# base properties - might be used in the future
+	# 'picture':'', Assignment pending
+	'importance':'basic',
+			
+	# KAS Specific	
+	'last_event':'basic',
+	'next_event':'basic',
+	
+	'best_time':'basic',
+	'time_cost':'basic',
+
+	'repeats':'basic',	
+	'repeats_every':'basic',
+
+	'repeats_on_Mon':'repeats_on_Checkbox',
+	'repeats_on_Tue':'repeats_on_Checkbox', 
+	'repeats_on_Wed':'repeats_on_Checkbox',
+	'repeats_on_Thu':'repeats_on_Checkbox',
+	'repeats_on_Fri':'repeats_on_Checkbox',
+	'repeats_on_Sat':'repeats_on_Checkbox',
+	'repeats_on_Sun':'repeats_on_Checkbox',
+
+	'trigger_circumstances':'basic',
+	'standard_reward':'basic',
+	'valid_exceptions':'basic',
+	'standard_punishment':'basic',
+
+	# KAS Specific - might be used in the future
+	'Repetition_target_min':'basic',
+	'Repetition_target_max':'basic',
+	'TimeUse_target_min': 'basic',
+	'TimeUse_target_max': 'basic'
+}
+
+
+
 d_validationMethod ={
 	'description':'RE',
 	'comments':'RE',

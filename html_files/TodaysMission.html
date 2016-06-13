@@ -22,15 +22,6 @@
 					</div>
 					<hr style="margin:6px; width:550px; margin-left:-20px;">
 					<div class="row">					
-<!-- 						<div class="col-xs-5">
-							<div class="btn-group-horizontal">
-								  <button type="button" class="btn btn-success displaySectionButton"><span class="glyphicon glyphicon-ok"></span></button>
-								  <button type="button" class="btn btn-warning displaySectionButton"><span class="glyphicon glyphicon-fast-forward"></span></button>
-								  <button type="button" class="btn btn-danger displaySectionButton"><span class="glyphicon glyphicon-share-alt"></span></button>
-								  <button type="button" class="btn btn-primary displaySectionButton"><span class="glyphicon glyphicon-pencil"></span></button>
-							</div>
-						</div>	 -->
-					
 
 						<div class="col-xs-7" style="padding-right:2px;">
 							<form class="form-horizontal">
@@ -67,12 +58,16 @@
 						</div>
 
 						<div class="col-xs-5">
+							<form method="post">
+							<input type="text" class="form-control hidden" name="ksu_id" value="{{ksu.key.id()}}">
 							<div class="btn-group-horizontal pull-right">
 								  <button type="button" class="btn btn-success displaySectionButton"><span class="glyphicon glyphicon-ok"></span></button>
 								  <button type="button" class="btn btn-warning displaySectionButton"><span class="glyphicon glyphicon-fast-forward"></span></button>
 								  <button type="button" class="btn btn-danger displaySectionButton"><span class="glyphicon glyphicon-remove"></span></button>
-								  <button type="button" class="btn btn-primary displaySectionButton"><span class="glyphicon glyphicon-pencil"></span></button>
+								  <button type="submit" class="btn btn-primary displaySectionButton" name="action_description" value="EditKSU"><span class="glyphicon glyphicon-pencil"></span></button>
+
 							</div>
+							</form>
 						</div>							
 
 
