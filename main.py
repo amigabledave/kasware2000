@@ -116,14 +116,14 @@ class NewKSU(Handler):
 		user_action = post_details['action_description']
 		
 		if user_action == 'Create' or user_action == 'Create_Plus':
-			# self.write(post_details)
-			new_ksu = KSU(
-				theory=self.theory.key,
-				description=post_details['description'],
-				repeats=post_details['repeats'])
-			new_ksu.put()
-			self.redirect('/')
-			return			
+			self.write(post_details)
+			# new_ksu = KSU(
+			# 	theory=self.theory.key,
+			# 	description=post_details['description'],
+			# 	repeats=post_details['repeats'])
+			# new_ksu.put()
+			# self.redirect('/')
+			# return			
 				
 		elif user_action == 'Discard':
 			return

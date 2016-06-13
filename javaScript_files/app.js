@@ -1,4 +1,4 @@
-$('#value_type').on('change',function(){
+$('#ksu_type').on('change',function(){
 	if (this.value != 'Gene'){
 		$('#assignedKSU').removeClass('hidden');
 	} else {
