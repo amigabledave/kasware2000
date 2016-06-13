@@ -1,5 +1,7 @@
 #KASware V2.0.0 | Copyright 2016 Kasware Inc.
 import webapp2, jinja2, os, re, random, string, hashlib 
+
+from datetime import datetime, timedelta
 from google.appengine.ext import ndb
 
 from python_files import datastore, randomUser, constants
@@ -102,12 +104,20 @@ class LogOut(Handler):
 		self.redirect('/')
 
 
-class NewKSU(Handler):
+
+class KsuEditor(Handler):
 	
 	def get(self):
 		if user_bouncer(self):
 			return
-		self.print_html('NewEditKSU.html', title='Define', ksu={}, constants=constants)
+		ksu_id = self.request.get('ksu_id')
+		if ksu_id == 'NewKSU':
+			ksu = {}
+		else: 
+			ksu = KSU.get_by_id(int(ksu_id))
+
+		self.print_html('KsuEditor.html', title='Define', ksu=ksu, constants=constants)
+
 
 	def post(self):
 		if user_bouncer(self):
@@ -116,17 +126,97 @@ class NewKSU(Handler):
 		user_action = post_details['action_description']
 		
 		if user_action == 'Create' or user_action == 'Create_Plus':
-			self.write(post_details)
-			# new_ksu = KSU(
-			# 	theory=self.theory.key,
-			# 	description=post_details['description'],
-			# 	repeats=post_details['repeats'])
-			# new_ksu.put()
-			# self.redirect('/')
-			# return			
-				
+			ksu = KSU(theory=self.theory.key)
+			ksu = prepareInputForSaving(ksu, post_details)
+			ksu.put()
+			self.redirect('/')
+			return
+							
 		elif user_action == 'Discard':
 			return
+
+
+
+
+def prepareInputForSaving(ksu, post_details):
+
+	for a_key in post_details:
+		print '######################################'
+		print a_key
+		print
+
+		a_val = post_details[a_key]
+		a_type = None
+		
+		if a_key in d_attributeType:
+			a_type = d_attributeType[a_key]
+		
+		if a_type == 'basic':
+			setattr(ksu, a_key, a_val)
+
+		if a_type == 'basic_integer':
+			setattr(ksu, a_key, int(a_val))
+
+		if a_type == 'basic_date':
+			setattr(ksu, a_key, datetime.strptime(a_val, '%Y-%m-%d'))
+
+	
+	return ksu
+
+	
+
+d_attributeType ={
+	'description':'basic',
+	'comments':'basic',
+	'ksu_type':'basic',
+	'ksu_subtype':'basic',
+
+	'value_type':'basic',
+	# 'tags':'', Assignment pending
+	# 'parent_id':'', Assignment pending		
+		
+	'is_active': 'Checkbox',
+	'is_critical': 'Checkbox',
+	'is_private': 'Checkbox',
+
+	'is_visible':'Checkbox',
+	'is_deleted':'Checkbox',
+
+	# base properties - might be used in the future
+	# 'picture':'', Assignment pending
+	'importance':'basic_integer',
+			
+	# KAS Specific	
+	'last_event':'basic_date',
+	'next_event':'basic_date',
+	
+	'best_time':'basic',
+	'time_cost':'basic_integer',
+
+	'repeats':'basic',	
+	'repeats_every':'basic_integer',
+
+	'repeats_on_Mon':'repeats_on_Checkbox',
+	'repeats_on_Tue':'repeats_on_Checkbox', 
+	'repeats_on_Wed':'repeats_on_Checkbox',
+	'repeats_on_Thu':'repeats_on_Checkbox',
+	'repeats_on_Fri':'repeats_on_Checkbox',
+	'repeats_on_Sat':'repeats_on_Checkbox',
+	'repeats_on_Sun':'repeats_on_Checkbox',
+
+	'trigger_circumstances':'basic',
+	'standard_reward':'basic_integer',
+	'valid_exceptions':'basic',
+	'standard_punishment':'basic_integer',
+
+	# KAS Specific - might be used in the future
+	# 'Repetition_target_min':'basic_integer',
+	# 'Repetition_target_max':'basic_integer',
+	# 'TimeUse_target_min': 'basic_integer',
+	# 'TimeUse_target_max': 'basic_integer'
+}
+
+
 
 
 
@@ -160,7 +250,13 @@ class TodaysMission(Handler):
 		user_action = post_details['action_description']	
 		
 		if user_action == 'NewKSU':
-			self.redirect('/NewKSU')
+			self.redirect('/KsuEditor?ksu_id=NewKSU')
+			return
+
+		if user_action == 'EditKSU':
+			ksu_id = post_details['ksu_id']
+			self.redirect('/KsuEditor?ksu_id='+ksu_id)
+			return
 
 
 
@@ -182,22 +278,15 @@ class SetViewer(Handler):
 		user_action = post_details['action_description']	
 		
 		if user_action == 'NewKSU':
-			self.redirect('/NewKSU')
+			self.redirect('//KsuEditor?ksu_id=NewKSU')
 
 		if user_action == 'EditKSU':
 			ksu_id = post_details['ksu_id']
-			self.redirect('/EditKSU?ksu_id='+ksu_id)
+			self.redirect('/KsuEditor?ksu_id='+ksu_id)
 
 
 
 
-class EditKSU(Handler):
-	def get(self):
-		if user_bouncer(self):
-			return
-		ksu_id = self.request.get('ksu_id')
-		ksu = KSU.get_by_id(int(ksu_id)) #xx
-		self.print_html('NewEditKSU.html', title='Define', ksu=ksu, constants=constants)
 
 
 
@@ -359,8 +448,7 @@ app = webapp2.WSGIApplication([
 							    ('/', TodaysMission),
 							    ('/SignUpLogIn', SignUpLogIn),
 							    ('/LogOut', LogOut),
-							    ('/NewKSU', NewKSU),
-							    ('/EditKSU', EditKSU),
+							    ('/KsuEditor', KsuEditor),
 							    ('/SetViewer', SetViewer),
 
 							    ('/PopulateRandomTheory',PopulateRandomTheory),
