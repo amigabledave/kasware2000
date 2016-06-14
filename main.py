@@ -26,6 +26,32 @@ def super_user_bouncer(funcion):
 
 
 
+def CreateOrEditKSU_request_handler(funcion):
+	def inner(self):
+		post_details = get_post_details(self)
+		user_action = post_details['action_description']	
+
+		if user_action == 'NewKSU':
+			self.redirect('/KsuEditor?ksu_id=NewKSU')
+			return
+
+		elif user_action == 'EditKSU':
+			ksu_id = post_details['ksu_id']
+			self.redirect('/KsuEditor?ksu_id='+ksu_id)
+			return
+
+		else:
+			return funcion(self)
+
+	return inner
+
+
+
+
+
+
+
+
 class Handler(webapp2.RequestHandler):
 	def write(self, *a, **kw):
 		self.response.out.write(*a, **kw)
@@ -175,9 +201,9 @@ def prepareInputForSaving(ksu, post_details):
 
 
 	for a_key in post_details:
-		# print '######################################'
-		# print a_key
-		# print
+		print '######################################'
+		print a_key
+		print
 
 		a_val = post_details[a_key]
 		a_type = None
@@ -286,22 +312,12 @@ class TodaysMission(Handler):
 		self.print_html('TodaysMission.html', ksu_set=ksu_set, constants=constants)
 
 
+	@super_user_bouncer
+	@CreateOrEditKSU_request_handler	
 	def post(self):
-		if user_bouncer(self):
-			return
+		return
 
-		post_details = get_post_details(self)
-		user_action = post_details['action_description']	
-
-		if user_action == 'NewKSU':
-			self.redirect('/KsuEditor?ksu_id=NewKSU')
-			return
-
-		if user_action == 'EditKSU':
-			ksu_id = post_details['ksu_id']
-			self.redirect('/KsuEditor?ksu_id='+ksu_id)
 			
-
 
 
 class SetViewer(Handler):
@@ -314,6 +330,8 @@ class SetViewer(Handler):
 		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants)
 
 
+	# @super_user_bouncer
+	# @CreateOrEditKSU_request_handler	
 	def post(self):
 		if user_bouncer(self):
 			return
