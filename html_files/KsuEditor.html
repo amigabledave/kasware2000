@@ -9,14 +9,14 @@
 	<input type="text" class="form-control hidden" name="ksu_id" value="{{ksu['id']}}">
 
 	<div class="row">
-		<div class="col-xs-12"><span class="NewEditKSU-title">{{ title + " Your KASware Standard Unit"}}</span></div>
+		<div class="col-xs-12"><span class="NewEditKSU-title">KASware Standard Unit Editor</span></div>
 	</div>
 	<br>
 			
 	<div class="form-group">
 		<div class="col-xs-8">
 			<label>Description <span class="red">*</span></label>
-			<textarea class="form-control" name="description" placeholder="e.g. Go for a run" required value="{% if ksu %}{{ksu.description}}{% endif %}"></textarea>			
+			<textarea class="form-control" name="description" placeholder="e.g. Go for a run" required>{% if ksu %}{{ksu.description}}{% endif %}</textarea>			
 		</div>
 
 	 	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
@@ -24,7 +24,7 @@
 			<label> KSU Type </label>
 			<select class="form-control" name="ksu_type" id="ksu_type">
 				{% for type in constants['l_KsuTypes'] %}
-					{% if type[0] == ksu['ksu_type'] %}
+					{% if type[0] == ksu.ksu_type %}
 						<option selected="selected" value="{{type[0]}}"> {{type[1]}} </option>
 					{% else %}
 						<option value="{{type[0]}}"> {{type[1]}} </option>
@@ -35,9 +35,9 @@
 		</div>
 	</div>
 
-<div class="hidden" id="assignedKSU">
+<div class="{% if ksu.ksu_type == 'Gene' %}hidden{% endif %}" id="assignedKSU">
 
-	<div class="hidden" id="KeyA">
+	<div class="{% if ksu.ksu_type != 'KeyA' %}{% endif %}" id="KeyA">
 
 		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:0px;">
 		<div class="form-group" style="margin-bottom:8px;">				
@@ -215,27 +215,17 @@
 
 <br>
 
-	{% if title=='Define' %}
-	  	<div class="form-group">
-			<div class="col-xs-12 btn-group">
-				<button type="submit" class="btn btn-success btn-lg respect-space" name="action_description" value="Create" style="margin-right: 8px;"> Create </button>
-				<button type="submit" class="btn btn-success btn-lg respect-space" name="action_description" value="Create_Plus" style="margin-right: 8px;"> Create + </button> 
-				<button type="submit" class="btn btn-danger btn-lg  respect-space" name="action_description" value="Discard"> Discard </button> 
-			</div>
-		</div>
 
-	{% endif%}
+	<div class="form-group">
+	<div class="col-xs-12 btn-group">
+		<button type="submit" class="btn btn-success btn-lg respect-space" name="action_description" value="SaveChanges" style="margin-right: 8px;">  Save  </button>
+		<button type="submit" class="btn btn-danger btn-lg  respect-space" name="action_description" value="DiscardChanges"> Discard </button> 
+	</div>
+</div>
 
 
-	{% if title=='Edit' %}
-		<div class="form-group">
-			<div class="col-xs-12 btn-group">
-				<button type="submit" class="btn btn-success btn-lg respect-space" name="action_description" value="Save">    Save    </button>
-				<button type="submit" class="btn btn-warning btn-lg  respect-space" name="action_description" value="Discard"> Discard </button> 
-				<button type="submit" class="btn btn-danger btn-lg  respect-space" name="action_description" value="Delete"> Delete </button> 
-			</div>
-		</div>
-	{% endif%}
+
+
 
 </form>
 </div>

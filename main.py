@@ -116,23 +116,29 @@ class KsuEditor(Handler):
 		else: 
 			ksu = KSU.get_by_id(int(ksu_id))
 
-		self.print_html('KsuEditor.html', title='Define', ksu=ksu, constants=constants)
+		# self.write(ksu)
+		self.print_html('KsuEditor.html', ksu=ksu, constants=constants)
 
 
 	def post(self):
 		if user_bouncer(self):
 			return
 		post_details = get_post_details(self)
+		ksu_id = self.request.get('ksu_id')
+		if ksu_id == 'NewKSU':
+			ksu = KSU(theory=self.theory.key)
+		else: 
+			ksu = KSU.get_by_id(int(ksu_id))
+
 		user_action = post_details['action_description']
 		
-		if user_action == 'Create' or user_action == 'Create_Plus':
-			ksu = KSU(theory=self.theory.key)
+		if user_action == 'SaveChanges':
 			ksu = prepareInputForSaving(ksu, post_details)
 			ksu.put()
 			self.redirect('/')
 			return
 							
-		elif user_action == 'Discard':
+		elif user_action == 'DiscardChanges':
 			return
 
 
@@ -152,7 +158,7 @@ def prepareInputForSaving(ksu, post_details):
 			a_type = d_attributeType[a_key]
 		
 		if a_type == 'basic':
-			setattr(ksu, a_key, a_val)
+			setattr(ksu, a_key, str(a_val))
 
 		if a_type == 'basic_integer':
 			setattr(ksu, a_key, int(a_val))
