@@ -148,7 +148,12 @@ d_attributeType = {
 }
 
 
-
+d_repeats_legend = {
+	'R000':'',
+	'R001':'Days',
+	'R007':'Weeks',
+	'R030':'Months',
+	'R365':'Years'}
 
 
 
@@ -162,7 +167,8 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 'l_Mean_Values':l_Mean_Values,
 			 'l_Days':l_Days,
 			 'l_repeats':l_repeats,
-			 'd_attributeType':d_attributeType}
+			 'd_attributeType':d_attributeType,
+			 'd_repeats_legend':d_repeats_legend}
 
 
 			 

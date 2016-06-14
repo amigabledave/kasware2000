@@ -209,7 +209,7 @@ class KsuEditor(Handler):
 				setattr(ksu, a_key, True)
 
 			if a_type == 'repeats_on_checkbox':
-				d_repeats_on[a_type] = True
+				d_repeats_on[a_key] = True
 
 		setattr(ksu, 'repeats_on', d_repeats_on)
 		

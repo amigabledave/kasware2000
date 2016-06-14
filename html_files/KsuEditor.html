@@ -87,18 +87,18 @@
 				</div>
 			</div>
 
-			<div class="form-group hidden" id="repeatsDetails">	
+			<div class="form-group {% if ksu.repeats == 'R000' %}hidden{% endif %}" id="repeatsDetails">	
 
-				<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 hidden" id="repeats_on">
+				<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 {% if ksu.repeats != 'R007' %}hidden{% endif %}" id="repeats_on">
 			 		<label> On
 			 		<div class="checkbox"> 	 		
-			 			<label> <input type="checkbox" name="repeats_on_Mon" ><b> Mon </b></label> 
-			 			<label> <input type="checkbox" name="repeats_on_Tue"><b> Tue </b></label> 
-			 			<label> <input type="checkbox" name="repeats_on_Wed"><b> Wed </b></label> 
-			 			<label> <input type="checkbox" name="repeats_on_Thu"><b> Thu </b></label> 
-			 			<label> <input type="checkbox" name="repeats_on_Fri"><b> Fri </b></label> 
-			 			<label> <input type="checkbox" name="repeats_on_Sat"><b> Sat </b></label> 
-			 			<label> <input type="checkbox" name="repeats_on_Sun"><b> Sun </b></label> 
+			 			<label> <input type="checkbox" name="repeats_on_Mon" {% if ksu and ksu.repeats_on['repeats_on_Mon']%}checked{% endif %}><b> Mon </b></label> 
+			 			<label> <input type="checkbox" name="repeats_on_Tue" {% if ksu and ksu.repeats_on['repeats_on_Tue']%}checked{% endif %}><b> Tue </b></label> 
+			 			<label> <input type="checkbox" name="repeats_on_Wed" {% if ksu and ksu.repeats_on['repeats_on_Wed']%}checked{% endif %}><b> Wed </b></label> 
+			 			<label> <input type="checkbox" name="repeats_on_Thu" {% if ksu and ksu.repeats_on['repeats_on_Thu']%}checked{% endif %}><b> Thu </b></label> 
+			 			<label> <input type="checkbox" name="repeats_on_Fri" {% if ksu and ksu.repeats_on['repeats_on_Fri']%}checked{% endif %}><b> Fri </b></label> 
+			 			<label> <input type="checkbox" name="repeats_on_Sat" {% if ksu and ksu.repeats_on['repeats_on_Sat']%}checked{% endif %}><b> Sat </b></label> 
+			 			<label> <input type="checkbox" name="repeats_on_Sun" {% if ksu and ksu.repeats_on['repeats_on_Sun']%}checked{% endif %}><b> Sun </b></label> 
 			 		</div>
 			 		</label>
 				</div>
@@ -113,7 +113,7 @@
 						</div>
 						
 						<div id="repeats_every_footnote" class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="position: absolute; bottom: 0; right: 0; padding-left: 0; font-style: italic;"> 
-						Days
+						{{constants['d_repeats_legend'][ksu.repeats]}}
 						</div>									
 					</div>		
 				</div>
