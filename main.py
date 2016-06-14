@@ -14,6 +14,8 @@ template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
 
 
+
+#--- Decorator functions
 def super_user_bouncer(funcion):
 	def user_bouncer(self):
 		theory = self.theory
@@ -23,7 +25,6 @@ def super_user_bouncer(funcion):
 			self.redirect('/SignUpLogIn')
 		# return funcion(self)
 	return user_bouncer
-
 
 
 def CreateOrEditKSU_request_handler(funcion):
@@ -41,17 +42,12 @@ def CreateOrEditKSU_request_handler(funcion):
 			return
 
 		else:
-			return funcion(self)
+			return funcion(self, user_action, post_details)
 
 	return inner
 
 
-
-
-
-
-
-
+#-- Production Handlers
 class Handler(webapp2.RequestHandler):
 	def write(self, *a, **kw):
 		self.response.out.write(*a, **kw)
@@ -85,11 +81,6 @@ class Handler(webapp2.RequestHandler):
 		webapp2.RequestHandler.initialize(self, *a, **kw)
 		theory_id = self.read_secure_cookie('theory_id')
 		self.theory = theory_id and Theory.get_by_theory_id(int(theory_id)) #if the user exist, 'self.theory' will store the actual theory object
-		# if theory_id and Theory.get_by_theory_id(int(theory_id)): #Un intento de quitar el bouncer de todos los handlers
-		# 	self.theory = Theory.get_by_theory_id(int(theory_id))
-		# else:
-		# 	self.redirect('/SignUpLogIn')
-
 
 
 
@@ -136,6 +127,7 @@ class SignUpLogIn(Handler):
 				self.write('incorrect username or password')
 
 
+
 class LogOut(Handler):
 	def get(self):
 		self.logout()
@@ -145,9 +137,8 @@ class LogOut(Handler):
 
 class KsuEditor(Handler):
 	
+	@super_user_bouncer
 	def get(self):
-		if user_bouncer(self):
-			return
 		ksu_id = self.request.get('ksu_id')
 		if ksu_id == 'NewKSU':
 			ksu = {}
@@ -157,21 +148,17 @@ class KsuEditor(Handler):
 		# self.write(ksu)
 		self.print_html('KsuEditor.html', ksu=ksu, constants=constants)
 
-
-	def post(self):
-		if user_bouncer(self):
-			return
-		post_details = get_post_details(self)
+	@super_user_bouncer
+	@CreateOrEditKSU_request_handler	
+	def post(self, user_action, post_details):		
 		ksu_id = self.request.get('ksu_id')
 		if ksu_id == 'NewKSU':
 			ksu = KSU(theory=self.theory.key)
 		else: 
 			ksu = KSU.get_by_id(int(ksu_id))
-
-		user_action = post_details['action_description']
 		
 		if user_action == 'SaveChanges':
-			ksu = prepareInputForSaving(ksu, post_details)
+			ksu = self.prepareInputForSaving(ksu, post_details)
 			ksu.put()
 			self.redirect('/')
 			return
@@ -180,123 +167,63 @@ class KsuEditor(Handler):
 			self.redirect('/')
 			return
 
+	def prepareInputForSaving(self, ksu, post_details):
 
+		l_checkbox_attribute = [ 'is_active', 'is_critical', 'is_private']
 
+		d_repeats_on = {
+			'repeats_on_Mon': False,
+			'repeats_on_Tue': False, 
+			'repeats_on_Wed': False, 
+			'repeats_on_Thu': False,
+			'repeats_on_Fri': False,
+			'repeats_on_Sat': False,
+			'repeats_on_Sun': False}
 
-def prepareInputForSaving(ksu, post_details):
+		for attribute in l_checkbox_attribute:
+			setattr(ksu, attribute, False)
 
-	l_checkbox_attribute = [ 'is_active', 'is_critical', 'is_private']
+		d_attributeType = constants['d_attributeType']
 
-	d_repeats_on = {
-		'repeats_on_Mon': False,
-		'repeats_on_Tue': False, 
-		'repeats_on_Wed': False, 
-		'repeats_on_Thu': False,
-		'repeats_on_Fri': False,
-		'repeats_on_Sat': False,
-		'repeats_on_Sun': False}
+		for a_key in post_details:
+			print '######################################'
+			print a_key
+			print
 
-	for attribute in l_checkbox_attribute:
-		setattr(ksu, attribute, False)
-
-
-	for a_key in post_details:
-		print '######################################'
-		print a_key
-		print
-
-		a_val = post_details[a_key]
-		a_type = None
-		
-		if a_key in d_attributeType:
-			a_type = d_attributeType[a_key]
-		
-		if a_type == 'basic':
-			setattr(ksu, a_key, a_val.encode('utf-8'))
-
-		if a_type == 'basic_integer':
-			setattr(ksu, a_key, int(a_val))
-
-		if a_type == 'basic_date':
-			setattr(ksu, a_key, datetime.strptime(a_val, '%Y-%m-%d'))
-
-		if a_type == 'checkbox':
-			setattr(ksu, a_key, True)
-
-		if a_type == 'repeats_on_checkbox':
-			d_repeats_on[a_type] = True
-
-	setattr(ksu, 'repeats_on', d_repeats_on)
-	
-	return ksu
-
-
-
-
-	
-
-d_attributeType ={
-	'description':'basic',
-	'comments':'basic',
-	'ksu_type':'basic',
-	'ksu_subtype':'basic',
-
-	'value_type':'basic',
-	# 'tags':'', Assignment pending
-	# 'parent_id':'', Assignment pending		
-		
-	'is_active': 'checkbox',
-	'is_critical': 'checkbox',
-	'is_private': 'checkbox',
-
-	# 'is_visible':'Checkbox', These are not input attributes
-	# 'is_deleted':'Checkbox',
-
-	# base properties - might be used in the future
-	# 'picture':'', Assignment pending
-	'importance':'basic_integer',
+			a_val = post_details[a_key]
+			a_type = None
 			
-	# KAS Specific	
-	'last_event':'basic_date',
-	'next_event':'basic_date',
-	
-	'best_time':'basic',
-	'time_cost':'basic_integer',
+			if a_key in d_attributeType:
+				a_type = d_attributeType[a_key]
+			
+			if a_type == 'basic':
+				setattr(ksu, a_key, a_val.encode('utf-8'))
 
-	'repeats':'basic',	
-	'repeats_every':'basic_integer',
+			if a_type == 'basic_integer':
+				setattr(ksu, a_key, int(a_val))
 
-	'repeats_on_Mon':'repeats_on_checkbox',
-	'repeats_on_Tue':'repeats_on_checkbox', 
-	'repeats_on_Wed':'repeats_on_checkbox',
-	'repeats_on_Thu':'repeats_on_checkbox',
-	'repeats_on_Fri':'repeats_on_checkbox',
-	'repeats_on_Sat':'repeats_on_checkbox',
-	'repeats_on_Sun':'repeats_on_checkbox',
+			if a_type == 'basic_date':
+				setattr(ksu, a_key, datetime.strptime(a_val, '%Y-%m-%d'))
 
-	'trigger_circumstances':'basic',
-	'standard_reward':'basic_integer',
-	'valid_exceptions':'basic',
-	'standard_punishment':'basic_integer',
+			if a_type == 'checkbox':
+				setattr(ksu, a_key, True)
 
-	# KAS Specific - might be used in the future
-	# 'Repetition_target_min':'basic_integer',
-	# 'Repetition_target_max':'basic_integer',
-	# 'TimeUse_target_min': 'basic_integer',
-	# 'TimeUse_target_max': 'basic_integer'
-}
+			if a_type == 'repeats_on_checkbox':
+				d_repeats_on[a_type] = True
+
+		setattr(ksu, 'repeats_on', d_repeats_on)
+		
+		return ksu
 
 
 
 class Home(Handler):
-    def get(self):
-		if user_bouncer(self):
-			return		
+	
+	@super_user_bouncer
+	def get(self):
 		theory = self.theory
 		message = 'Welcome to KASware ' + theory.first_name + ' ' + theory.last_name
 		self.write(message)
-		
-
 
 
 
@@ -304,59 +231,34 @@ class TodaysMission(Handler):
 
 	@super_user_bouncer
 	def get(self):
-		# if user_bouncer(self):
-		# 	return
 		user_key = self.theory.key
 		ksu_set = KSU.query(KSU.theory == user_key).order(KSU.created).fetch()
-
 		self.print_html('TodaysMission.html', ksu_set=ksu_set, constants=constants)
 
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
-	def post(self):
+	def post(self, user_action, post_details):
 		return
 
 			
 
-
 class SetViewer(Handler):
+
+	@super_user_bouncer
 	def get(self):
-		if user_bouncer(self):
-			return
 		user_key = self.theory.key
 		ksu_set = KSU.query(KSU.theory == user_key).order(KSU.created).fetch()
-
 		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants)
 
-
-	# @super_user_bouncer
-	# @CreateOrEditKSU_request_handler	
-	def post(self):
-		if user_bouncer(self):
-			return
-
-		post_details = get_post_details(self)
-		user_action = post_details['action_description']	
-		
-		if user_action == 'NewKSU':
-			self.redirect('/KsuEditor?ksu_id=NewKSU')
-
-		if user_action == 'EditKSU':
-			ksu_id = post_details['ksu_id']
-			self.redirect('/KsuEditor?ksu_id='+ksu_id)
-
-
-
-
-
-
-
+	@super_user_bouncer
+	@CreateOrEditKSU_request_handler	
+	def post(self, user_action, post_details):
+		return
 
 
 
 #--- Development handlers ----------
-
 class PopulateRandomTheory(Handler):
 
 	def populateRandomTheory(self, theorySize):
@@ -398,21 +300,7 @@ class DataStoreViewer(Handler):
 			self.write('<br>') 
 
 
-
-
 #--- Essential Helper Functions ----------
-
-
-def user_bouncer(self):
-	theory = self.theory
-	if theory:
-		return False
-	else:
-		self.redirect('/SignUpLogIn')
-		return True
-
-
-
 def get_post_details(self):
 	post_details = {}
 	arguments = self.request.arguments()
@@ -429,9 +317,7 @@ def adjust_post_details(post_details):
 	return details
 
 
-
 #--- Validation and security functions ----------
-
 secret = 'elzecreto'
 
 def make_secure_val(val):
@@ -455,7 +341,6 @@ def validate_password(email, password, h):
 	salt = h.split('|')[1]
 	return h == make_password_hash(email, password, salt)
 
-
 def user_input_error(post_details):
 	for (attribute, value) in post_details.items():
 		user_error = input_error(attribute, value)
@@ -467,8 +352,6 @@ def user_input_error(post_details):
 			return "Emails don't match"
 
 	return None
-
-
 
 def input_error(target_attribute, user_input):
 	
@@ -489,7 +372,6 @@ def input_error(target_attribute, user_input):
 	else:
 		return d_RE[error_key]
 
-
 d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
 		'first_name_error': 'invalid first name syntax',
 		
@@ -503,10 +385,7 @@ d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
 		'email_error': 'invalid email syntax'}
 
 
-
-
-#----------
-
+#--- Request index
 app = webapp2.WSGIApplication([
 							    ('/', TodaysMission),
 							    ('/SignUpLogIn', SignUpLogIn),

@@ -95,6 +95,63 @@ d_Days = {'None':'None',
 l_Days = sorted(d_Days.items())
 
 
+
+d_attributeType = {
+	'description':'basic',
+	'comments':'basic',
+	'ksu_type':'basic',
+	'ksu_subtype':'basic',
+
+	'value_type':'basic',
+	# 'tags':'', Assignment pending
+	# 'parent_id':'', Assignment pending		
+		
+	'is_active': 'checkbox',
+	'is_critical': 'checkbox',
+	'is_private': 'checkbox',
+
+	# 'is_visible':'Checkbox', These are not input attributes
+	# 'is_deleted':'Checkbox',
+
+	# base properties - might be used in the future
+	# 'picture':'', Assignment pending
+	'importance':'basic_integer',
+			
+	# KAS Specific	
+	'last_event':'basic_date',
+	'next_event':'basic_date',
+	
+	'best_time':'basic',
+	'time_cost':'basic_integer',
+
+	'repeats':'basic',	
+	'repeats_every':'basic_integer',
+
+	'repeats_on_Mon':'repeats_on_checkbox',
+	'repeats_on_Tue':'repeats_on_checkbox', 
+	'repeats_on_Wed':'repeats_on_checkbox',
+	'repeats_on_Thu':'repeats_on_checkbox',
+	'repeats_on_Fri':'repeats_on_checkbox',
+	'repeats_on_Sat':'repeats_on_checkbox',
+	'repeats_on_Sun':'repeats_on_checkbox',
+
+	'trigger_circumstances':'basic',
+	'standard_reward':'basic_integer',
+	'valid_exceptions':'basic',
+	'standard_punishment':'basic_integer',
+
+	# KAS Specific - might be used in the future
+	# 'Repetition_target_min':'basic_integer',
+	# 'Repetition_target_max':'basic_integer',
+	# 'TimeUse_target_min': 'basic_integer',
+	# 'TimeUse_target_max': 'basic_integer'
+}
+
+
+
+
+
+
 constants = {'l_Fibonacci':l_Fibonacci,
 			 'l_long_Fibonacci': l_long_Fibonacci,
 			 'l_Fibonacci_1_8' :l_Fibonacci_1_8,
@@ -104,7 +161,8 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 'l_Values':l_Values,
 			 'l_Mean_Values':l_Mean_Values,
 			 'l_Days':l_Days,
-			 'l_repeats':l_repeats}
+			 'l_repeats':l_repeats,
+			 'd_attributeType':d_attributeType}
 
 
 			 
