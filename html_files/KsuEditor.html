@@ -92,7 +92,7 @@
 				<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 hidden" id="repeats_on">
 			 		<label> On
 			 		<div class="checkbox"> 	 		
-			 			<label> <input type="checkbox" name="repeats_on_Mon"><b> Mon </b></label> 
+			 			<label> <input type="checkbox" name="repeats_on_Mon" ><b> Mon </b></label> 
 			 			<label> <input type="checkbox" name="repeats_on_Tue"><b> Tue </b></label> 
 			 			<label> <input type="checkbox" name="repeats_on_Wed"><b> Wed </b></label> 
 			 			<label> <input type="checkbox" name="repeats_on_Thu"><b> Thu </b></label> 
@@ -205,15 +205,15 @@
 	<div class="col-xs-4">
 
 		<div class="checkbox"> 
-			<label> <input type="checkbox" name="is_active" {% if ksu['is_active']%}checked{% endif %} checked="checked"> <b> Active </b> </label> 
+			<label> <input type="checkbox" name="is_active" {% if not ksu %}checked{% elif ksu and ksu.is_active %}checked{% endif %}> <b> Active </b> </label> 
 		</div>
 
 		<div class="checkbox"> 
-			<label> <input type="checkbox" name="is_critical" {% if ksu['is_critical']%}checked{% endif %}> <b> Critical </b> </label> 
+			<label> <input type="checkbox" name="is_critical" {% if ksu.is_critical %}checked{% endif %}> <b> Critical </b> </label> 
 		</div>
 		
 		<div class="checkbox"> 
- 			<label> <input type="checkbox" name="is_private"{% if ksu['is_private']%}checked{% endif %}> <b> Private </b> </label> 
+ 			<label> <input type="checkbox" name="is_private"{% if ksu.is_private %}checked{% endif %}> <b> Private </b> </label> 
  		</div>
 
 		</div>

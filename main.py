@@ -159,10 +159,25 @@ class KsuEditor(Handler):
 
 def prepareInputForSaving(ksu, post_details):
 
+	l_checkbox_attribute = [ 'is_active', 'is_critical', 'is_private']
+
+	d_repeats_on = {
+		'repeats_on_Mon': False,
+		'repeats_on_Tue': False, 
+		'repeats_on_Wed': False, 
+		'repeats_on_Thu': False,
+		'repeats_on_Fri': False,
+		'repeats_on_Sat': False,
+		'repeats_on_Sun': False}
+
+	for attribute in l_checkbox_attribute:
+		setattr(ksu, attribute, False)
+
+
 	for a_key in post_details:
-		print '######################################'
-		print a_key
-		print
+		# print '######################################'
+		# print a_key
+		# print
 
 		a_val = post_details[a_key]
 		a_type = None
@@ -179,8 +194,18 @@ def prepareInputForSaving(ksu, post_details):
 		if a_type == 'basic_date':
 			setattr(ksu, a_key, datetime.strptime(a_val, '%Y-%m-%d'))
 
+		if a_type == 'checkbox':
+			setattr(ksu, a_key, True)
+
+		if a_type == 'repeats_on_checkbox':
+			d_repeats_on[a_type] = True
+
+	setattr(ksu, 'repeats_on', d_repeats_on)
 	
 	return ksu
+
+
+
 
 	
 
@@ -194,12 +219,12 @@ d_attributeType ={
 	# 'tags':'', Assignment pending
 	# 'parent_id':'', Assignment pending		
 		
-	'is_active': 'Checkbox',
-	'is_critical': 'Checkbox',
-	'is_private': 'Checkbox',
+	'is_active': 'checkbox',
+	'is_critical': 'checkbox',
+	'is_private': 'checkbox',
 
-	'is_visible':'Checkbox',
-	'is_deleted':'Checkbox',
+	# 'is_visible':'Checkbox', These are not input attributes
+	# 'is_deleted':'Checkbox',
 
 	# base properties - might be used in the future
 	# 'picture':'', Assignment pending
@@ -215,13 +240,13 @@ d_attributeType ={
 	'repeats':'basic',	
 	'repeats_every':'basic_integer',
 
-	'repeats_on_Mon':'repeats_on_Checkbox',
-	'repeats_on_Tue':'repeats_on_Checkbox', 
-	'repeats_on_Wed':'repeats_on_Checkbox',
-	'repeats_on_Thu':'repeats_on_Checkbox',
-	'repeats_on_Fri':'repeats_on_Checkbox',
-	'repeats_on_Sat':'repeats_on_Checkbox',
-	'repeats_on_Sun':'repeats_on_Checkbox',
+	'repeats_on_Mon':'repeats_on_checkbox',
+	'repeats_on_Tue':'repeats_on_checkbox', 
+	'repeats_on_Wed':'repeats_on_checkbox',
+	'repeats_on_Thu':'repeats_on_checkbox',
+	'repeats_on_Fri':'repeats_on_checkbox',
+	'repeats_on_Sat':'repeats_on_checkbox',
+	'repeats_on_Sun':'repeats_on_checkbox',
 
 	'trigger_circumstances':'basic',
 	'standard_reward':'basic_integer',
@@ -234,8 +259,6 @@ d_attributeType ={
 	# 'TimeUse_target_min': 'basic_integer',
 	# 'TimeUse_target_max': 'basic_integer'
 }
-
-
 
 
 
