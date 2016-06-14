@@ -171,7 +171,7 @@ def prepareInputForSaving(ksu, post_details):
 			a_type = d_attributeType[a_key]
 		
 		if a_type == 'basic':
-			setattr(ksu, a_key, str(a_val))
+			setattr(ksu, a_key, a_val.encode('utf-8'))
 
 		if a_type == 'basic_integer':
 			setattr(ksu, a_key, int(a_val))
