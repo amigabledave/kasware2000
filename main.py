@@ -14,6 +14,18 @@ template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
 
 
+def super_user_bouncer(funcion):
+	def user_bouncer(self):
+		theory = self.theory
+		if theory:
+			return funcion(self)
+		else:
+			self.redirect('/SignUpLogIn')
+		# return funcion(self)
+	return user_bouncer
+
+
+
 class Handler(webapp2.RequestHandler):
 	def write(self, *a, **kw):
 		self.response.out.write(*a, **kw)
@@ -139,6 +151,7 @@ class KsuEditor(Handler):
 			return
 							
 		elif user_action == 'DiscardChanges':
+			self.redirect('/')
 			return
 
 
@@ -239,9 +252,11 @@ class Home(Handler):
 
 
 class TodaysMission(Handler):
+
+	@super_user_bouncer
 	def get(self):
-		if user_bouncer(self):
-			return
+		# if user_bouncer(self):
+		# 	return
 		user_key = self.theory.key
 		ksu_set = KSU.query(KSU.theory == user_key).order(KSU.created).fetch()
 
@@ -354,6 +369,7 @@ def user_bouncer(self):
 	else:
 		self.redirect('/SignUpLogIn')
 		return True
+
 
 
 def get_post_details(self):

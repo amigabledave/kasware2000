@@ -1,15 +1,30 @@
 
 
-def funcion_basica():
-	for i in range(0,10):
-			print i
-
-diccionario = {
-	'ejecuta_funcion': funcion_basica()
-}
+def gatificar(funcion):
+		def inner(*args, **kwarg):
+			return funcion(*args, **kwarg) + ' miau miau'
+		return inner
 
 
-print diccionario['ejecuta_funcion']	
+@gatificar
+def perrito(x): 
+	return x + ' guau guau'
+
+
+print perrito('dartagnan')
+# perrito = gatificar(perrito)
+# print perrito('dartagnan')
+
+# def funcion_basica():
+# 	for i in range(0,10):
+# 			print i
+
+# diccionario = {
+# 	'ejecuta_funcion': funcion_basica()
+# }
+
+
+# print diccionario['ejecuta_funcion']	
 
 
 
