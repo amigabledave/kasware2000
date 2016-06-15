@@ -1,7 +1,7 @@
 #KASware V2.0.0 | Copyright 2016 Kasware Inc.
 import webapp2, jinja2, os, re, random, string, hashlib 
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from google.appengine.ext import ndb
 
 from python_files import datastore, randomUser, constants
@@ -196,19 +196,23 @@ class KsuEditor(Handler):
 			if a_key in d_attributeType:
 				a_type = d_attributeType[a_key]
 			
-			if a_type == 'basic':
+			if a_type == 'string':
 				setattr(ksu, a_key, a_val.encode('utf-8'))
 
-			if a_type == 'basic_integer':
+			if a_type == 'integer':
 				setattr(ksu, a_key, int(a_val))
 
-			if a_type == 'basic_date':
+			if a_type == 'date':
 				setattr(ksu, a_key, datetime.strptime(a_val, '%Y-%m-%d'))
+
+			if a_type == 'time':
+				a_val = a_val[0:5]
+				setattr(ksu, a_key, datetime.strptime(a_val, '%H:%M').time())
 
 			if a_type == 'checkbox':
 				setattr(ksu, a_key, True)
 
-			if a_type == 'repeats_on_checkbox':
+			if a_type == 'checkbox_repeats_on':
 				d_repeats_on[a_key] = True
 
 		setattr(ksu, 'repeats_on', d_repeats_on)

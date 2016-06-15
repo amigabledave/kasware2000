@@ -1,14 +1,14 @@
 import operator
 
-l_Fibonacci = ['1','2','3','5','8','13']
+l_Fibonacci = [1,2,3,5,8,13]
 
-l_long_Fibonacci = ['1','2','3','5','8','13','21','34','55','89','144','233','377','610','987']
+l_long_Fibonacci = [1,2,3,5,8,13,21,34,55,89,144,233,377,610,987]
 
-l_Fibonacci_1_8 = ['1','2','3','5','8']
+l_Fibonacci_1_8 = [1,2,3,5,8]
 
-l_Fibonacci_8_55 = ['8','13','21','34','55']
+l_Fibonacci_8_55 = [8,13,21,34,55]
 
-l_Fibonacci_21_144 = ['21','34','55','89','144']
+l_Fibonacci_21_144 = [21,34,55,89,144]
 
 
 d_KsuTypes = {
@@ -27,6 +27,7 @@ d_KsuTypes = {
 	'MoRe': '12. Money Requirement',
 	'ImIn': '13. Indicator'
 }
+
 l_KsuTypes = sorted(d_KsuTypes.items(), key=operator.itemgetter(1))
 
 def removeNumbers(tupleList):
@@ -97,12 +98,12 @@ l_Days = sorted(d_Days.items())
 
 
 d_attributeType = {
-	'description':'basic',
-	'comments':'basic',
-	'ksu_type':'basic',
-	'ksu_subtype':'basic',
+	'description':'string',
+	'comments':'string',
+	'ksu_type':'string',
+	'ksu_subtype':'string',
 
-	'value_type':'basic',
+	'value_type':'string',
 	# 'tags':'', Assignment pending
 	# 'parent_id':'', Assignment pending		
 		
@@ -115,36 +116,36 @@ d_attributeType = {
 
 	# base properties - might be used in the future
 	# 'picture':'', Assignment pending
-	'importance':'basic_integer',
+	'importance':'integer',
 			
 	# KAS Specific	
-	'last_event':'basic_date',
-	'next_event':'basic_date',
+	'last_event':'date',
+	'next_event':'date',
 	
-	'best_time':'basic',
-	'time_cost':'basic_integer',
+	'best_time':'time',
+	'time_cost':'integer',
 
-	'repeats':'basic',	
-	'repeats_every':'basic_integer',
+	'repeats':'string',	
+	'repeats_every':'integer',
 
-	'repeats_on_Mon':'repeats_on_checkbox',
-	'repeats_on_Tue':'repeats_on_checkbox', 
-	'repeats_on_Wed':'repeats_on_checkbox',
-	'repeats_on_Thu':'repeats_on_checkbox',
-	'repeats_on_Fri':'repeats_on_checkbox',
-	'repeats_on_Sat':'repeats_on_checkbox',
-	'repeats_on_Sun':'repeats_on_checkbox',
+	'repeats_on_Mon':'check_repeats_on',
+	'repeats_on_Tue':'check_repeats_on', 
+	'repeats_on_Wed':'check_repeats_on',
+	'repeats_on_Thu':'check_repeats_on',
+	'repeats_on_Fri':'check_repeats_on',
+	'repeats_on_Sat':'check_repeats_on',
+	'repeats_on_Sun':'check_repeats_on',
 
-	'trigger_circumstances':'basic',
-	'standard_reward':'basic_integer',
-	'valid_exceptions':'basic',
-	'standard_punishment':'basic_integer',
+	'trigger_circumstances':'string',
+	'standard_reward':'integer',
+	'valid_exceptions':'string',
+	'standard_punishment':'integer',
 
 	# KAS Specific - might be used in the future
-	# 'Repetition_target_min':'basic_integer',
-	# 'Repetition_target_max':'basic_integer',
-	# 'TimeUse_target_min': 'basic_integer',
-	# 'TimeUse_target_max': 'basic_integer'
+	# 'Repetition_target_min':'integer',
+	# 'Repetition_target_max':'integer',
+	# 'TimeUse_target_min': 'integer',
+	# 'TimeUse_target_max': 'integer'
 }
 
 
@@ -154,6 +155,7 @@ d_repeats_legend = {
 	'R007':'Weeks',
 	'R030':'Months',
 	'R365':'Years'}
+
 
 
 
