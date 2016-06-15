@@ -15,8 +15,8 @@ l_Fibonacci_21_144 = [21,34,55,89,144]
 d_KsuTypes = {
 	'Gene': '00. Unassigned',
 	'KeyA': '01. Key Action',
-	'MinO': '02. Mini Objective',
-	'BigO': '03. Big Objective',
+	# 'MinO': '02. Mini Objective',
+	'BigO': '03. Objective',
 	'Drea': '04. Dream',
 	'Wish': '05. Wish',
 	'Prin': '06. Principle',
@@ -158,7 +158,11 @@ d_attributeType = {
 	# 'Repetition_target_min':'integer',
 	# 'Repetition_target_max':'integer',
 	# 'TimeUse_target_min': 'integer',
-	# 'TimeUse_target_max': 'integer'
+	# 'TimeUse_target_max': 'integer',
+
+	#Objective Specific
+	'success_definition': 'string',
+	'target_date': 'date'
 }
 
 

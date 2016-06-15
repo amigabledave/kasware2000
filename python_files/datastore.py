@@ -97,6 +97,9 @@ class KSU(ndb.Model):
 	TimeUse_target_min = ndb.IntegerProperty()
 	TimeUse_target_max = ndb.IntegerProperty()
 
+	#Objective Specific
+	success_definition = ndb.StringProperty()
+	target_date = ndb.DateProperty()
 
 	
 

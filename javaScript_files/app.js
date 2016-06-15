@@ -11,11 +11,18 @@ $('#ksu_type').on('change',function(){
 		$('#KeyA').addClass('hidden');
 	}	
 
+	if (this.value == 'BigO'){
+		$('#BigO').removeClass('hidden');
+	} else {
+		$('#BigO').addClass('hidden');
+	}
+
+
 	d_EditorTitle = {
 		'Gene': 'KASware Standard Unit Editor',
 		'KeyA': 'Key Action Editor',
-		'MinO': 'Mini Objective Editor',
-		'BigO': 'Big Objective Editor',
+		// 'MinO': 'Mini Objective Editor',
+		'BigO': 'Objective Editor',
 		'Drea': 'Dream Editor',
 		'Wish': 'Wish Editor',
 		'Prin': 'Principle Editor',

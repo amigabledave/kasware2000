@@ -37,6 +37,21 @@
 
 <div class="{% if ksu.ksu_type == 'Gene' %}hidden{% endif %}" id="assignedKSU">
 
+	<div class="{% if ksu.ksu_type != 'BigO' %}hidden{% endif %}" id="BigO">
+		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+		<div class="form-group">
+			<div class="col-xs-8">
+				<label>Success Definition</label>
+				<textarea class="form-control" name="success_definition" placeholder="e.g. $1,000,000,000 USD in my bank acount">{% if ksu and ksu.success_definition %}{{ksu.success_definition}}{% endif %}</textarea>	
+			</div>
+
+			<div class="col-xs-4">
+				<label> Target date </label>
+				<input type="date" class="form-control" style="padding-right:3px;" name="target_date" value="{% if ksu %}{{ksu.target_date}}{% endif %}">
+			</div>
+		</div>
+	</div>
+
 	<div class="{% if ksu.ksu_type != 'KeyA' %}hidden{% endif %}" id="KeyA">
 
 		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:0px;">
@@ -199,7 +214,7 @@
 <div class="form-group">
 	<div class="col-xs-8">
 		<label> Comments </label>
-		<textarea class="form-control" name="comments">{% if ksu %}{{ksu.comments}}{% endif %}</textarea> 
+		<textarea class="form-control" name="comments">{% if ksu and ksu.comments %}{{ksu.comments}}{% endif %}</textarea> 
 	</div>
 
 	<div class="col-xs-4">
