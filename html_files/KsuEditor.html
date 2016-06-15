@@ -9,7 +9,7 @@
 	<input type="text" class="form-control hidden" name="ksu_id" value="{{ksu['id']}}">
 
 	<div class="row">
-		<div class="col-xs-12"><span class="NewEditKSU-title">KASware Standard Unit Editor</span></div>
+		<div class="col-xs-12"><span class="NewEditKSU-title" id="KsuEditorTitle"> {% if ksu and ksu.type !='Gene'%}{{constants['d_KsuTypes'][ksu.ksu_type] + ' Editor'}}{% else %}KASware Standard Unit Editor{% endif %}</span></div>
 	</div>
 	<br>
 			

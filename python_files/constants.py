@@ -11,6 +11,7 @@ l_Fibonacci_8_55 = [8,13,21,34,55]
 l_Fibonacci_21_144 = [21,34,55,89,144]
 
 
+
 d_KsuTypes = {
 	'Gene': '00. Unassigned',
 	'KeyA': '01. Key Action',
@@ -37,6 +38,18 @@ def removeNumbers(tupleList):
 	return result
 
 l_KsuTypes = removeNumbers(l_KsuTypes)
+
+
+def makeDictionaryFromTupleList(tupleList):
+	result = {}
+	for e in tupleList:
+		result[e[0]] = e[1]		
+	return result
+
+d_KsuTypes = makeDictionaryFromTupleList(l_KsuTypes)
+
+print d_KsuTypes
+
 
 d_Values = {'V00': '0. End Value',
 			'V01': '1. Inner Peace & Consciousness',
@@ -169,6 +182,7 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 'l_Mean_Values':l_Mean_Values,
 			 'l_Days':l_Days,
 			 'l_repeats':l_repeats,
+			 'd_KsuTypes':d_KsuTypes,
 			 'd_attributeType':d_attributeType,
 			 'd_repeats_legend':d_repeats_legend}
 

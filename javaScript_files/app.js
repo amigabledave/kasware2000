@@ -11,6 +11,25 @@ $('#ksu_type').on('change',function(){
 		$('#KeyA').addClass('hidden');
 	}	
 
+	d_EditorTitle = {
+		'Gene': 'KASware Standard Unit Editor',
+		'KeyA': 'Key Action Editor',
+		'MinO': 'Mini Objective Editor',
+		'BigO': 'Big Objective Editor',
+		'Drea': 'Dream Editor',
+		'Wish': 'Wish Editor',
+		'Prin': 'Principle Editor',
+		'EVPo': 'End Value Editor',
+		'ImPe': 'Important People Editor',
+		'RTBG': 'Reason To Be Grateful Editor',
+		'Idea': 'Wise Idea Editor',
+		'NoAR': 'Reminder Editor',
+		'MoRe': 'Money Requirement Editor',
+		'ImIn': 'Indicator Editor'
+	}
+
+	$('#KsuEditorTitle').text(d_EditorTitle[this.value]);
+
 });
 
 
