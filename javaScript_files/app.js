@@ -17,6 +17,13 @@ $('#ksu_type').on('change',function(){
 		$('#BigO').addClass('hidden');
 	}
 
+	if (this.value == 'Wish'){
+		$('#Wish').removeClass('hidden');
+	} else {
+		$('#Wish').addClass('hidden');
+	}
+
+
 
 	d_EditorTitle = {
 		'Gene': 'KASware Standard Unit Editor',

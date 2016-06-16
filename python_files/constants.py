@@ -17,7 +17,7 @@ d_KsuTypes = {
 	'KeyA': '01. Key Action',
 	# 'MinO': '02. Mini Objective',
 	'BigO': '03. Objective',
-	'Drea': '04. Dream',
+	# 'Drea': '04. Dream',
 	'Wish': '05. Wish',
 	'Prin': '06. Principle',
 	'EVPo': '06. End Value',
@@ -162,7 +162,13 @@ d_attributeType = {
 
 	#Objective Specific
 	'success_definition': 'string',
-	'target_date': 'date'
+	'target_date': 'date',
+	'is_sprint_goal':'checkbox',
+
+	#Wish Specific
+	'wish_categorie': 'string',
+	'money_cost':'integer',
+	'in_bucket_list':'checkbox'
 }
 
 
@@ -174,6 +180,21 @@ d_repeats_legend = {
 	'R365':'Years'}
 
 
+d_WishCategories = {
+	'W00': '00. Unassigned',	
+	'W01': '01. Being',
+	'W02': '02. Having',
+	'W03': '03. Doing',
+	'W04': '04. Geting done',
+	'W05': '05. TV Show',
+	'W06': '06. Movie',
+	'W07': '07. Tesis',
+	'W08': '08. Novel',
+	'W09': '09. Video Game',
+	'W10': '10. Board Game',
+	'W11': '11. City'}
+
+l_WishCategories = removeNumbers(sorted(d_WishCategories.items(), key=operator.itemgetter(1)))
 
 
 constants = {'l_Fibonacci':l_Fibonacci,
@@ -188,7 +209,8 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 'l_repeats':l_repeats,
 			 'd_KsuTypes':d_KsuTypes,
 			 'd_attributeType':d_attributeType,
-			 'd_repeats_legend':d_repeats_legend}
+			 'd_repeats_legend':d_repeats_legend,
+			 'l_WishCategories':l_WishCategories}
 
 
 			 

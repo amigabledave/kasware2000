@@ -101,6 +101,10 @@ class KSU(ndb.Model):
 	success_definition = ndb.StringProperty()
 	target_date = ndb.DateProperty()
 
+	#Wish Specific
+	wish_categorie = ndb.StringProperty()
+	money_cost = ndb.IntegerProperty(default=0)
+	in_bucket_list = ndb.BooleanProperty(default=False)
 	
 
 
