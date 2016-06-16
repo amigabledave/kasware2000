@@ -229,16 +229,18 @@
 	</div>
 
 	<div class="col-xs-4">
+
+		<div class="hidden" id="d_local_caltegories">"{{constants['d_local_categories']}}"</div>
 		<label> Category </label>
-		<select class="form-control" name="local_category" id="local_category">
-			{% for category in constants['d_local_categories']['Wish'] %}
-				{% if category == ksu.local_category %}
-					<option selected="selected" value="{{category}}"> {{category}} </option>
-				{% else %}
-					<option value="{{category}}"> {{category}} </option>
-				{% endif %}
-			{% endfor %}
-		</select>	
+			<select class="form-control" name="local_category" id="local_category">
+				{% for category in constants['d_local_categories'][ksu.ksu_type] %}
+					{% if category == ksu.local_category %}
+						<option selected="selected" value="{{category}}">{{category}}</option>
+					{% else %}
+						<option value="{{category}}"> {{category}} </option>
+					{% endif %}
+				{% endfor %}
+			</select>	
 	</div>
 
 	<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
@@ -279,10 +281,6 @@
 		<button type="submit" class="btn btn-danger btn-lg  respect-space" name="action_description" value="DiscardChanges"> Discard </button> 
 	</div>
 </div>
-
-
-
-
 
 </form>
 </div>

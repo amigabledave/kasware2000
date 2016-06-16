@@ -1,10 +1,32 @@
+var userCategories = {
+	'Gene': ['Unassigned'],
+	'KeyA': ['Unassigned'],
+	'BigO': ['Unassigned'],
+	'Wish': [	
+		'Unassigned',	
+		'01. Being',
+		'02. Having',
+		'03. Doing',
+		'04. Geting done',
+		'05. TV Show',
+		'06. Movie',
+		'07. Tesis',
+		'08. Novel',
+		'09. Video Game',
+		'10. Board Game',
+		'11. City'],	
+	'Prin': ['Unassigned'],
+	'EVPo': ['Unassigned'],
+	'ImPe': ['Unassigned'],
+	'RTBG': ['Unassigned'],
+	'Idea': ['Unassigned'],
+	'NoAR': ['Unassigned'],
+	'MoRe': ['Unassigned'],
+	'ImIn': ['Unassigned']}
+
+
 $('#ksu_type').on('change',function(){
-	// if (this.value != 'Gene'){
-	// 	$('#assignedKSU').removeClass('hidden');
-	// } else {
-	// 	$('#assignedKSU').addClass('hidden');
-	// }
-	
+
 	if (this.value == 'KeyA'){
 		$('#KeyA').removeClass('hidden');
 	} else {
@@ -22,8 +44,6 @@ $('#ksu_type').on('change',function(){
 	} else {
 		$('#Wish').addClass('hidden');
 	}
-
-
 
 	d_EditorTitle = {
 		'Gene': 'KASware Standard Unit Editor',
@@ -44,7 +64,16 @@ $('#ksu_type').on('change',function(){
 
 	$('#KsuEditorTitle').text(d_EditorTitle[this.value]);
 
+	var new_catDropdown = '<select class="form-control" name="local_category" id="local_category">';	
+	local_categories = userCategories[this.value];
+	for( c in local_categories){
+		new_catDropdown = new_catDropdown + '<option value="' + local_categories[c] + '">' + local_categories[c] + '</option>'
+	}
+	new_catDropdown = new_catDropdown + '</select>'
+	$('#local_category').replaceWith(new_catDropdown);
+
 });
+
 
 
 $('input[type=radio][name=ksu_subtype]').on('change',function(){
