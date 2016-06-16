@@ -104,8 +104,13 @@ class KSU(ndb.Model):
 
 	#Wish Specific
 	wish_categorie = ndb.StringProperty()
-	money_cost = ndb.IntegerProperty(default=0)
+	money_cost = ndb.IntegerProperty()
 	in_bucket_list = ndb.BooleanProperty(default=False)
+
+	#EVPo Specific
+	charging_time = ndb.IntegerProperty(default=0)
+	trigger_action = ndb.StringProperty()
+	next_trigger_event = ndb.DateProperty()
 	
 
 

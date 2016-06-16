@@ -45,6 +45,13 @@ $('#ksu_type').on('change',function(){
 		$('#Wish').addClass('hidden');
 	}
 
+	if (this.value == 'EVPo'){
+		$('#EVPo').removeClass('hidden');
+	} else {
+		$('#EVPo').addClass('hidden');
+	}
+
+
 	d_EditorTitle = {
 		'Gene': 'KASware Standard Unit Editor',
 		'KeyA': 'Key Action Editor',

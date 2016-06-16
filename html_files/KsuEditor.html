@@ -6,53 +6,77 @@
 <br>
 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8"  style="padding:0px">
 <form class="form-horizontal" method="post" autocomplete="off">
-	<input type="text" class="form-control hidden" name="ksu_id" value="{{ksu['id']}}">
 
-	<div class="row">
-		<div class="col-xs-12"><span class="NewEditKSU-title" id="KsuEditorTitle"> {% if ksu and ksu.type !='Gene'%}{{constants['d_KsuTypes'][ksu.ksu_type] + ' Editor'}}{% else %}KASware Standard Unit Editor{% endif %}</span></div>
+<input type="text" class="form-control hidden" name="ksu_id" value="{{ksu['id']}}">
+
+<div class="row">
+	<div class="col-xs-12"><span class="NewEditKSU-title" id="KsuEditorTitle"> {% if ksu and ksu.type !='Gene'%}{{constants['d_KsuTypes'][ksu.ksu_type] + ' Editor'}}{% else %}KASware Standard Unit Editor{% endif %}</span></div>
+</div>
+<br>
+		
+<div class="form-group">
+	<div class="col-xs-8">
+		<label>Description <span class="red">*</span></label>
+		<textarea class="form-control" name="description" placeholder="e.g. Go for a run" required>{% if ksu %}{{ksu.description}}{% endif %}</textarea>			
 	</div>
-	<br>
-			
+
+ 	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+
+		<label> KSU Type </label>
+		<select class="form-control" name="ksu_type" id="ksu_type">
+			{% for type in constants['l_KsuTypes'] %}
+				{% if type[0] == ksu.ksu_type %}
+					<option selected="selected" value="{{type[0]}}"> {{type[1]}} </option>
+				{% else %}
+					<option value="{{type[0]}}"> {{type[1]}} </option>
+				{% endif %}
+			{% endfor %}
+		</select>	
+
+	</div>
+</div>
+
+
+<div class="{% if ksu.ksu_type != 'EVPo' %}hidden{% endif %}" id="EVPo">
+	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+	<div class="form-group">
+		<div class="col-xs-4"> 
+			<label> Charging Time (Days) </label>			
+			<input type="number" min="1" class="form-control" name="charging_time" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.charging_time}}{% endif %}">
+		</div>
+
+		<div class="col-xs-4">
+			<label> Next Trigger Event </label>
+			<input type="date" class="form-control" style="padding-right:3px;" name="next_trigger_event" value="{% if ksu %}{{ksu.next_trigger_event}}{% endif %}">
+		</div>	
+
+	</div>
+
 	<div class="form-group">
 		<div class="col-xs-8">
-			<label>Description <span class="red">*</span></label>
-			<textarea class="form-control" name="description" placeholder="e.g. Go for a run" required>{% if ksu %}{{ksu.description}}{% endif %}</textarea>			
-		</div>
-
-	 	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-
-			<label> KSU Type </label>
-			<select class="form-control" name="ksu_type" id="ksu_type">
-				{% for type in constants['l_KsuTypes'] %}
-					{% if type[0] == ksu.ksu_type %}
-						<option selected="selected" value="{{type[0]}}"> {{type[1]}} </option>
-					{% else %}
-						<option value="{{type[0]}}"> {{type[1]}} </option>
-					{% endif %}
-				{% endfor %}
-			</select>	
-
+			<label> Trigger Action Description </label>
+			<textarea class="form-control" name="trigger_action" placeholder="e.g. Buy tickets to go watch a movie">{% if ksu and ksu.trigger_action %}{{ksu.trigger_action}}{% endif %}</textarea> 
 		</div>
 	</div>
 
-<!-- <div class="{% if ksu.ksu_type == 'Gene' %}hidden{% endif %}" id="assignedKSU"> -->
+</div>
 
-	<div class="{% if ksu.ksu_type != 'Wish' %}hidden{% endif %}" id="Wish">
-		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-		<div class="form-group">
+<div class="{% if ksu.ksu_type != 'Wish' %}hidden{% endif %}" id="Wish">
+	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+	<div class="form-group">
 
-			<div class="col-xs-4"> 
-				<label> Money Cost </label>			
-				<input type="number" min="0" class="form-control" name="money_cost" placeholder="e.g. $50" value="{% if ksu %}{{ksu.money_cost}}{% endif %}">
-			</div>
+		<div class="col-xs-4"> 
+			<label> Money Cost </label>			
+			<input type="number" min="0" class="form-control" name="money_cost" placeholder="e.g. $50" value="{% if ksu %}{{ksu.money_cost}}{% endif %}">
+		</div>
 
-			<div class="col-xs-4"> 
-				<div class="checkbox"> 
-					<label> <input type="checkbox" name="in_bucket_list"{% if ksu.in_bucket_list %}checked{% endif %}> <b> In Bucket List </b></label> 
-				</div>
+		<div class="col-xs-4"> 
+			<div class="checkbox"> 
+				<label> <input type="checkbox" name="in_bucket_list"{% if ksu.in_bucket_list %}checked{% endif %}> <b> In Bucket List </b></label> 
 			</div>
 		</div>
 	</div>
+</div>
 
 
 <div class="{% if ksu.ksu_type != 'BigO' %}hidden{% endif %}" id="BigO">

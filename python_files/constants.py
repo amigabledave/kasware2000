@@ -169,7 +169,12 @@ d_attributeType = {
 	#Wish Specific
 	'wish_categorie': 'string',
 	'money_cost':'integer',
-	'in_bucket_list':'checkbox'
+	'in_bucket_list':'checkbox',
+
+	#EVPo Specific
+	'charging_time': 'integer',
+	'trigger_action': 'string',
+	'next_trigger_event': 'date'
 }
 
 
@@ -206,7 +211,7 @@ d_local_categories = {
 	'NoAR': ['Unassigned'],
 	'MoRe': ['Unassigned'],
 	'ImIn': ['Unassigned']}
-	
+
 
 
 
