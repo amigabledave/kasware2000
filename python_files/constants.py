@@ -21,7 +21,7 @@ d_KsuTypes = {
 	'Wish': '05. Wish',
 	'Prin': '06. Principle',
 	'EVPo': '06. End Value',
-	'ImPe': '08. Important People',
+	'ImPe': '08. Important Person',
 	'RTBG': '09. Reason To Be Grateful',
 	'Idea': '10. Wise Idea',
 	'NoAR': '11. Reminder',
@@ -117,6 +117,7 @@ d_attributeType = {
 	'ksu_subtype':'string',
 
 	'value_type':'string',
+	'local_category':'string',
 	# 'tags':'', Assignment pending
 	# 'parent_id':'', Assignment pending		
 		
@@ -180,21 +181,32 @@ d_repeats_legend = {
 	'R365':'Years'}
 
 
-d_WishCategories = {
-	'W00': '00. Unassigned',	
-	'W01': '01. Being',
-	'W02': '02. Having',
-	'W03': '03. Doing',
-	'W04': '04. Geting done',
-	'W05': '05. TV Show',
-	'W06': '06. Movie',
-	'W07': '07. Tesis',
-	'W08': '08. Novel',
-	'W09': '09. Video Game',
-	'W10': '10. Board Game',
-	'W11': '11. City'}
+d_local_categories = {
+	'Gene': ['Unassigned'],
+	'KeyA': ['Unassigned'],
+	'BigO': ['Unassigned'],
+	'Wish': [	
+		'Unassigned',	
+		'01. Being',
+		'02. Having',
+		'03. Doing',
+		'04. Geting done',
+		'05. TV Show',
+		'06. Movie',
+		'07. Tesis',
+		'08. Novel',
+		'09. Video Game',
+		'10. Board Game',
+		'11. City'],	
+	'Prin': ['Unassigned'],
+	'EVPo': ['Unassigned'],
+	'ImPe': ['Unassigned'],
+	'RTBG': ['Unassigned'],
+	'Idea': ['Unassigned'],
+	'NoAR': ['Unassigned'],
+	'MoRe': ['Unassigned'],
+	'ImIn': ['Unassigned']}
 
-l_WishCategories = removeNumbers(sorted(d_WishCategories.items(), key=operator.itemgetter(1)))
 
 
 constants = {'l_Fibonacci':l_Fibonacci,
@@ -210,7 +222,7 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 'd_KsuTypes':d_KsuTypes,
 			 'd_attributeType':d_attributeType,
 			 'd_repeats_legend':d_repeats_legend,
-			 'l_WishCategories':l_WishCategories}
+			 'd_local_categories':d_local_categories}
 
 
 			 

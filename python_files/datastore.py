@@ -61,6 +61,7 @@ class KSU(ndb.Model):
 	ksu_subtype = ndb.StringProperty()
 
 	value_type = ndb.StringProperty()
+	local_category = ndb.StringProperty()
 	tags = ndb.KeyProperty(kind=Tag, repeated=True) #all tags related to this KSU	
 	parent_id = ndb.StringProperty()		
 		

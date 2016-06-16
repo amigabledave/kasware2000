@@ -1,10 +1,10 @@
 $('#ksu_type').on('change',function(){
-	if (this.value != 'Gene'){
-		$('#assignedKSU').removeClass('hidden');
-	} else {
-		$('#assignedKSU').addClass('hidden');
-	}
-
+	// if (this.value != 'Gene'){
+	// 	$('#assignedKSU').removeClass('hidden');
+	// } else {
+	// 	$('#assignedKSU').addClass('hidden');
+	// }
+	
 	if (this.value == 'KeyA'){
 		$('#KeyA').removeClass('hidden');
 	} else {
