@@ -36,9 +36,41 @@
 	</div>
 </div>
 
+<div class="{% if ksu.ksu_type != 'ImPe' %}hidden{% endif %}" id="ImPe">
+	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+	<div class="form-group">
+		<div class="col-xs-4"> 
+			<label> Contact Frequency </label>			
+			<input type="number" min="1" class="form-control" name="contact_frequency" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.contact_frequency}}{% endif %}">
+		</div>
+
+		<div class="col-xs-8">
+			<label> Contact Action Description </label>
+			<textarea class="form-control" name="contact_action" placeholder="e.g. Call Jimmy, Hangout with Mon, write to Dad">{% if ksu and ksu.contact_action %}{{ksu.contact_action}}{% endif %}</textarea> 
+		</div>
+
+	</div>
+
+	<div class="form-group">
+		<div class="col-xs-4">
+			<label> Next Contact Event </label>
+			<input type="date" class="form-control" style="padding-right:3px;" name="next_contact_event" value="{% if ksu %}{{ksu.next_contact_event}}{% endif %}">
+		</div>	
+
+		<div class="col-xs-4">
+			<label> Birthday </label>
+			<input type="date" class="form-control" style="padding-right:3px;" name="impe_birthday" value="{% if ksu %}{{ksu.impe_birthday}}{% endif %}">	
+		</div>
+
+		<div class="col-xs-4">
+			<label> KASware ID </label>
+			<input type="text" class="form-control" name="impe_kaswareID" placeholder="XXX-XXX-XXX-XXX" value="{% if ksu and ksu.impe_kaswareID %}{{ksu.impe_kaswareID}}{% endif %}"></input>
+		</div>
+	</div>
+</div>
 
 <div class="{% if ksu.ksu_type != 'Idea' %}hidden{% endif %}" id="Idea">
-<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 
 	<div class="form-group">
 		<div class="col-xs-8">
@@ -55,7 +87,6 @@
 	</div>
 </div>
 
-
 <div class="{% if ksu.ksu_type != 'EVPo' %}hidden{% endif %}" id="EVPo">
 	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 	<div class="form-group">
@@ -64,17 +95,17 @@
 			<input type="number" min="1" class="form-control" name="charging_time" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.charging_time}}{% endif %}">
 		</div>
 
-		<div class="col-xs-4">
-			<label> Next Trigger Event </label>
-			<input type="date" class="form-control" style="padding-right:3px;" name="next_trigger_event" value="{% if ksu %}{{ksu.next_trigger_event}}{% endif %}">
-		</div>	
+		<div class="col-xs-8">
+			<label> Trigger Action Description </label>
+			<textarea class="form-control" name="trigger_action" placeholder="e.g. Buy tickets to go watch a movie">{% if ksu and ksu.trigger_action %}{{ksu.trigger_action}}{% endif %}</textarea> 
+		</div>
 
 	</div>
 
 	<div class="form-group">
-		<div class="col-xs-8">
-			<label> Trigger Action Description </label>
-			<textarea class="form-control" name="trigger_action" placeholder="e.g. Buy tickets to go watch a movie">{% if ksu and ksu.trigger_action %}{{ksu.trigger_action}}{% endif %}</textarea> 
+		<div class="col-xs-4">
+			<label> Next Trigger Event </label>
+			<input type="date" class="form-control" style="padding-right:3px;" name="next_trigger_event" value="{% if ksu %}{{ksu.next_trigger_event}}{% endif %}">
 		</div>
 	</div>
 </div>
@@ -95,7 +126,6 @@
 		</div>
 	</div>
 </div>
-
 
 <div class="{% if ksu.ksu_type != 'BigO' %}hidden{% endif %}" id="BigO">
 
@@ -212,7 +242,7 @@
 		<div class="form-group">
 			<div class="col-xs-8">
 				<label>Trigger Circumstances </label>
-				<textarea class="form-control" name="trigger_circumstances" placeholder="e.g. A beautiful girl walks acroos the streat">{% if ksu %}{{ksu.trigger_circumstances}}{% endif %}</textarea>	
+				<textarea class="form-control" name="trigger_circumstances" placeholder="e.g. A beautiful girl walks acroos the streat">{% if ksu and ksu.trigger_circumstances %}{{ksu.trigger_circumstances}}{% endif %}</textarea>	
 			</div>
 		 	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 				<label> Standard Reward</label>
@@ -233,7 +263,7 @@
 		<div class="form-group">
 			<div class="col-xs-8">
 				<label>Valid Exceptions</label>
-				<textarea class="form-control" name="valid_exceptions" placeholder="e.g. When I'am on vacation, When the food its free!">{% if ksu %}{{ksu.valid_exceptions}}{% endif %}</textarea>	
+				<textarea class="form-control" name="valid_exceptions" placeholder="e.g. When I'am on vacation, When the food its free!">{% if ksu and ksu.valid_exceptions%}{{ksu.valid_exceptions}}{% endif %}</textarea>	
 			</div>
 		 	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 				<label> Standard Punishment</label>
@@ -250,12 +280,10 @@
 		</div>
 	</div>
 </div>
-		
-
-
-<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-
+	
+<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">		
 <div class="form-group" id="FooterClasificationAttributes">
+
 	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
 		<label> Target Value </label>
 			<select class="form-control" name="value_type">

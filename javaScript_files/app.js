@@ -57,6 +57,11 @@ $('#ksu_type').on('change',function(){
 		$('#Idea').addClass('hidden');
 	}
 
+	if (this.value == 'ImPe'){
+		$('#ImPe').removeClass('hidden');
+	} else {
+		$('#ImPe').addClass('hidden');
+	}
 
 
 	d_EditorTitle = {
@@ -68,7 +73,7 @@ $('#ksu_type').on('change',function(){
 		'Wish': 'Wish Editor',
 		// 'Prin': 'Principle Editor',
 		'EVPo': 'End Value Editor',
-		'ImPe': 'Important People Editor',
+		'ImPe': 'Important Person Editor',
 		'RTBG': 'Reason To Be Grateful Editor',
 		'Idea': 'Wise Idea Editor',
 		'NoAR': 'Reminder Editor',

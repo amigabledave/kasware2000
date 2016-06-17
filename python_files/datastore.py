@@ -73,7 +73,7 @@ class KSU(ndb.Model):
 	is_deleted = ndb.BooleanProperty(default=False)
 
 	# base properties - might be used in the future
-	importance = ndb.IntegerProperty(default=3)
+	importance = ndb.IntegerProperty()
 	picture = ndb.BlobProperty()
 			
 	# KAS Specific	
@@ -81,10 +81,10 @@ class KSU(ndb.Model):
 	next_event = ndb.DateProperty()
 	
 	best_time = ndb.TimeProperty()
-	time_cost = ndb.IntegerProperty(default=1)
+	time_cost = ndb.IntegerProperty()
 
 	repeats = ndb.StringProperty()	
-	repeats_every = ndb.IntegerProperty(default=1)
+	repeats_every = ndb.IntegerProperty()
 	repeats_on = ndb.JsonProperty() #Day's of the week when it repeats if the frequency is Weekly, elese the repetition date is the same day of the month or year
 
 	trigger_circumstances = ndb.TextProperty()
@@ -108,13 +108,20 @@ class KSU(ndb.Model):
 	in_bucket_list = ndb.BooleanProperty(default=False)
 
 	#EVPo Specific
-	charging_time = ndb.IntegerProperty(default=1)
+	charging_time = ndb.IntegerProperty()
 	trigger_action = ndb.StringProperty()
 	next_trigger_event = ndb.DateProperty()
 
 	#Idea Specific
 	source = ndb.StringProperty()
 	is_principle = ndb.BooleanProperty(default=False)
+
+	#Important person Specifics
+	contact_frequency = ndb.IntegerProperty()
+	contact_action = ndb.StringProperty()
+	next_contact_event = ndb.DateProperty()
+	impe_birthday = ndb.DateProperty()
+	impe_kaswareID = ndb.StringProperty()
 
 
 

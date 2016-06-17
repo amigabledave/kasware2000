@@ -178,7 +178,14 @@ d_attributeType = {
 
 	#Idea Specific
 	'source': 'string',
-	'is_principle':'checkbox'
+	'is_principle':'checkbox',
+
+	#Important Person Specific
+	'contact_frequency': 'integer',
+	'contact_action': 'string',
+	'next_contact_event': 'date',
+	'impe_birthday': 'date'
+	# 'impe_kaswareID': 'string' - 	To be used in the future
 }
 
 
