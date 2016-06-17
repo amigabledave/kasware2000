@@ -73,8 +73,8 @@ class KSU(ndb.Model):
 	is_deleted = ndb.BooleanProperty(default=False)
 
 	# base properties - might be used in the future
-	picture = ndb.BlobProperty()
 	importance = ndb.IntegerProperty(default=3)
+	picture = ndb.BlobProperty()
 			
 	# KAS Specific	
 	last_event = ndb.DateProperty()
@@ -108,12 +108,13 @@ class KSU(ndb.Model):
 	in_bucket_list = ndb.BooleanProperty(default=False)
 
 	#EVPo Specific
-	charging_time = ndb.IntegerProperty(default=0)
+	charging_time = ndb.IntegerProperty(default=1)
 	trigger_action = ndb.StringProperty()
 	next_trigger_event = ndb.DateProperty()
-	
 
-
+	#Idea Specific
+	source = ndb.StringProperty()
+	is_principle = ndb.BooleanProperty(default=False)
 
 
 

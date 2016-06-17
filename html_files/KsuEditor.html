@@ -37,6 +37,25 @@
 </div>
 
 
+<div class="{% if ksu.ksu_type != 'Idea' %}hidden{% endif %}" id="Idea">
+<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+
+	<div class="form-group">
+		<div class="col-xs-8">
+			<label> Source </label>
+			<input type="text" class="form-control" name="source" placeholder="e.g. name of a book, person or a link to an article" value="{% if ksu and ksu.source %}{{ksu.source}}{% endif %}"></input>
+		</div>
+
+		<div class="col-xs-4"> 
+			<div class="checkbox"> 
+				<label> <input type="checkbox" name="is_principle"{% if ksu.is_principle %}checked{% endif %}> <b> This idea is one of my principles </b></label> 
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
 <div class="{% if ksu.ksu_type != 'EVPo' %}hidden{% endif %}" id="EVPo">
 	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 	<div class="form-group">
@@ -58,7 +77,6 @@
 			<textarea class="form-control" name="trigger_action" placeholder="e.g. Buy tickets to go watch a movie">{% if ksu and ksu.trigger_action %}{{ksu.trigger_action}}{% endif %}</textarea> 
 		</div>
 	</div>
-
 </div>
 
 <div class="{% if ksu.ksu_type != 'Wish' %}hidden{% endif %}" id="Wish">
@@ -139,7 +157,7 @@
 
 			<div class="col-xs-6 col-sm-4 col-md-2 col-lg-2"> 
 				<label> T. Cost </label>			
-				<input type="number" min="1" class="form-control" name="time_cost" placeholder="e.g. 5" required value="{% if ksu %}{{ksu.time_cost}}{% else %}1{% endif %}">
+				<input type="number" min="1" class="form-control" name="time_cost" placeholder="e.g. 5" value="{% if ksu %}{{ksu.time_cost}}{% else %}1{% endif %}">
 			</div>
 
 
@@ -179,7 +197,7 @@
 				<div class="row">
 					<div class="col-xs-12 col-sm-6 col-md-5 col-lg-5">
 						<label> Every </label>
-						<input type="number" min="1" class="form-control" style="padding-right:3px;" name="repeats_every" placeholder="1" required value="{% if ksu %}{{ksu.repeats_every}}{% else %}1{% endif %}"> 		
+						<input type="number" min="1" class="form-control" style="padding-right:3px;" name="repeats_every" placeholder="1"  value="{% if ksu %}{{ksu.repeats_every}}{% else %}1{% endif %}"> 		
 					</div>
 					
 					<div id="repeats_every_footnote" class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="position: absolute; bottom: 0; right: 0; padding-left: 0; font-style: italic;"> 

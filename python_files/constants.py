@@ -16,17 +16,17 @@ d_KsuTypes = {
 	'Gene': '00. Unassigned',
 	'KeyA': '01. Key Action',
 	# 'MinO': '02. Mini Objective',
-	'BigO': '03. Objective',
+	'BigO': '02. Objective',
 	# 'Drea': '04. Dream',
-	'Wish': '05. Wish',
-	'Prin': '06. Principle',
-	'EVPo': '06. End Value',
-	'ImPe': '08. Important Person',
-	'RTBG': '09. Reason To Be Grateful',
-	'Idea': '10. Wise Idea',
-	'NoAR': '11. Reminder',
-	'MoRe': '12. Money Requirement',
-	'ImIn': '13. Indicator'
+	'Wish': '03. Wish',
+	'EVPo': '05. End Value',
+	'ImPe': '06. Important Person',
+	'Idea': '07. Wise Idea',
+	'RTBG': '08. Reason To Be Grateful',
+	# 'Prin': '10. Principle',
+	# 'NoAR': '11. Reminder',
+	# 'MoRe': '12. Money Requirement',
+	'ImIn': '09. Indicator'
 }
 
 l_KsuTypes = sorted(d_KsuTypes.items(), key=operator.itemgetter(1))
@@ -174,7 +174,11 @@ d_attributeType = {
 	#EVPo Specific
 	'charging_time': 'integer',
 	'trigger_action': 'string',
-	'next_trigger_event': 'date'
+	'next_trigger_event': 'date',
+
+	#Idea Specific
+	'source': 'string',
+	'is_principle':'checkbox'
 }
 
 

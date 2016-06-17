@@ -51,6 +51,13 @@ $('#ksu_type').on('change',function(){
 		$('#EVPo').addClass('hidden');
 	}
 
+	if (this.value == 'Idea'){
+		$('#Idea').removeClass('hidden');
+	} else {
+		$('#Idea').addClass('hidden');
+	}
+
+
 
 	d_EditorTitle = {
 		'Gene': 'KASware Standard Unit Editor',
@@ -59,7 +66,7 @@ $('#ksu_type').on('change',function(){
 		'BigO': 'Objective Editor',
 		'Drea': 'Dream Editor',
 		'Wish': 'Wish Editor',
-		'Prin': 'Principle Editor',
+		// 'Prin': 'Principle Editor',
 		'EVPo': 'End Value Editor',
 		'ImPe': 'Important People Editor',
 		'RTBG': 'Reason To Be Grateful Editor',
