@@ -63,6 +63,11 @@ $('#ksu_type').on('change',function(){
 		$('#ImPe').addClass('hidden');
 	}
 
+	if (this.value == 'RTBG'){
+		$('#RTBG').removeClass('hidden');
+	} else {
+		$('#RTBG').addClass('hidden');
+	}
 
 	d_EditorTitle = {
 		'Gene': 'KASware Standard Unit Editor',

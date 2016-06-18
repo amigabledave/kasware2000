@@ -6,6 +6,8 @@ l_long_Fibonacci = [1,2,3,5,8,13,21,34,55,89,144,233,377,610,987]
 
 l_Fibonacci_1_8 = [1,2,3,5,8]
 
+l_Fibonacci_0_8 = [0,1,2,3,5,8]
+
 l_Fibonacci_8_55 = [8,13,21,34,55]
 
 l_Fibonacci_21_144 = [21,34,55,89,144]
@@ -19,7 +21,7 @@ d_KsuTypes = {
 	'BigO': '02. Objective',
 	# 'Drea': '04. Dream',
 	'Wish': '03. Wish',
-	'EVPo': '05. End Value',
+	'EVPo': '05. End Value Trigger',
 	'ImPe': '06. Important Person',
 	'Idea': '07. Wise Idea',
 	'RTBG': '08. Reason To Be Grateful',
@@ -184,9 +186,15 @@ d_attributeType = {
 	'contact_frequency': 'integer',
 	'contact_action': 'string',
 	'next_contact_event': 'date',
-	'impe_birthday': 'date'
+	'impe_birthday': 'date',
 	# 'impe_kaswareID': 'string' - 	To be used in the future
-}
+
+	#RTBG Specific
+	'awesomeness': 'integer',
+	# 'max_awesomeness = ndb.IntegerProperty() # To be used to track max awesomeness
+	'was_awesome':  'checkbox',
+	'awesome_since': 'date'
+	}
 
 
 d_repeats_legend = {
@@ -230,6 +238,7 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 'l_long_Fibonacci': l_long_Fibonacci,
 			 'l_Fibonacci_1_8' :l_Fibonacci_1_8,
 			 'l_Fibonacci_8_55':l_Fibonacci_8_55,
+			 'l_Fibonacci_0_8':l_Fibonacci_0_8,
 			 'l_Fibonacci_21_144':l_Fibonacci_21_144,
 			 'l_KsuTypes':l_KsuTypes, 
 			 'l_Values':l_Values,

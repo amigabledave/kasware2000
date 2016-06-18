@@ -17,7 +17,7 @@
 <div class="form-group">
 	<div class="col-xs-8">
 		<label>Description <span class="red">*</span></label>
-		<textarea class="form-control" name="description" placeholder="e.g. Go for a run" required>{% if ksu %}{{ksu.description}}{% endif %}</textarea>			
+		<textarea class="form-control" name="description" placeholder="An action, objective, dream, person, idea, etc..." required>{% if ksu %}{{ksu.description}}{% endif %}</textarea>			
 	</div>
 
  	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
@@ -35,6 +35,36 @@
 
 	</div>
 </div>
+
+<div class="{% if ksu.ksu_type != 'RTBG' %}hidden{% endif %}" id="RTBG">
+	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+	<div class="form-group">
+	 	<div class="col-xs-4">
+			<label> Awesomeness </label>
+			<select class="form-control" name="awesomeness">
+				{% for level in constants['l_Fibonacci_0_8'] %}
+					{% if level == ksu.awesomeness %}
+						<option selected="selected" value="{{level}}"> {{level}} </option>
+					{% else %}
+						<option value="{{level}}"> {{level}} </option>
+					{% endif %}
+				{% endfor %}
+			</select>				
+		</div>
+
+		<div class="col-xs-4">
+			<label> Awesome since </label>
+			<input type="date" class="form-control" style="padding-right:3px;" name="awesome_since" value="{% if ksu %}{{ksu.awesome_since}}{% endif %}">
+		</div>
+
+		<div class="col-xs-4"> 
+			<div class="checkbox"> 
+				<label> <input type="checkbox" name="was_awesome"{% if ksu.was_awesome %}checked{% endif %}> <b> Was Awesome </b></label> 
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <div class="{% if ksu.ksu_type != 'ImPe' %}hidden{% endif %}" id="ImPe">
 	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
@@ -288,7 +318,7 @@
 		<label> Target Value </label>
 			<select class="form-control" name="value_type">
 			<option hidden >Unassigned</option>
-			{% for value in constants['l_Values'] %}
+			{% for value in constants['l_Mean_Values'] %}
 				{% if value[0] == ksu.value_type %}
 				<option selected="selected" value="{{value[0]}}"> {{value[1]}} </option>
 				{% else %}

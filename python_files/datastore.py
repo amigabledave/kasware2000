@@ -123,6 +123,12 @@ class KSU(ndb.Model):
 	impe_birthday = ndb.DateProperty()
 	impe_kaswareID = ndb.StringProperty()
 
+	#RTBG Specifics
+	awesomeness = ndb.IntegerProperty()
+	max_awesomeness = ndb.IntegerProperty() # To be used to track max awesomeness
+	was_awesome = ndb.BooleanProperty(default=False)
+	awesome_since = ndb.DateProperty()
+
 
 
 

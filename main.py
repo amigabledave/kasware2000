@@ -169,7 +169,12 @@ class KsuEditor(Handler):
 
 	def prepareInputForSaving(self, ksu, post_details):
 
-		l_checkbox_attribute = [ 'is_active', 'is_critical', 'is_private', 'in_bucket_list', 'is_principle']
+		l_checkbox_attribute = [ 'is_active', 
+								 'is_critical', 
+								 'is_private', 
+								 'in_bucket_list', 
+								 'is_principle', 
+								 'was_awesome']
 
 		d_repeats_on = {
 			'repeats_on_Mon': False,
