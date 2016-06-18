@@ -261,8 +261,12 @@ class SetViewer(Handler):
 
 	@super_user_bouncer
 	def get(self):
+		set_name = self.request.get('set_name')
 		user_key = self.theory.key
-		ksu_set = KSU.query(KSU.theory == user_key).order(KSU.created).fetch()
+		if not set_name:
+			ksu_set = KSU.query(KSU.theory == user_key ).order(KSU.created).fetch()	
+		else:
+			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.ksu_type == set_name).order(KSU.created).fetch()
 		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants)
 
 	@super_user_bouncer
@@ -397,7 +401,7 @@ d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
 		
 		'email': re.compile(r'^[\S]+@[\S]+\.[\S]+$'),
 		'email_error': 'invalid email syntax'}
-
+PAGE_RE = r'((?:[a-zA-Z0-9_-]+/?)*)'
 
 #--- Request index
 app = webapp2.WSGIApplication([
@@ -406,6 +410,7 @@ app = webapp2.WSGIApplication([
 							    ('/LogOut', LogOut),
 							    ('/KsuEditor', KsuEditor),
 							    ('/SetViewer', SetViewer),
+							    # ('/SetViewer/' + PAGE_RE, SetViewer),
 
 							    ('/PopulateRandomTheory',PopulateRandomTheory),
 							    ('/DataStoreViewer',DataStoreViewer)

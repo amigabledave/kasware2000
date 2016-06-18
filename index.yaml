@@ -17,5 +17,16 @@ indexes:
 
 - kind: KSU
   properties:
+  - name: ksu_type
+  - name: created
+
+- kind: KSU
+  properties:
+  - name: ksu_type
+  - name: theory
+  - name: created
+
+- kind: KSU
+  properties:
   - name: theory
   - name: created
