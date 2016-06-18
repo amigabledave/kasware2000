@@ -161,6 +161,7 @@ class KsuEditor(Handler):
 			ksu = self.prepareInputForSaving(ksu, post_details)
 			ksu.put()
 			self.redirect('/')
+			# self.write(post_details)
 			return
 							
 		elif user_action == 'DiscardChanges':
@@ -174,7 +175,8 @@ class KsuEditor(Handler):
 								 'is_private', 
 								 'in_bucket_list', 
 								 'is_principle', 
-								 'was_awesome']
+								 'was_awesome',
+								 'reverse_target']
 
 		d_repeats_on = {
 			'repeats_on_Mon': False,
@@ -191,9 +193,9 @@ class KsuEditor(Handler):
 		d_attributeType = constants['d_attributeType']
 
 		for a_key in post_details:
-			print '######################################'
-			print a_key
-			print
+			# print '######################################'
+			# print a_key
+			# print
 
 			a_val = post_details[a_key]
 			a_type = None
@@ -206,6 +208,9 @@ class KsuEditor(Handler):
 
 			if a_type == 'integer':
 				setattr(ksu, a_key, int(a_val))
+
+			if a_type == 'float':
+				setattr(ksu, a_key, float(a_val))
 
 			if a_type == 'date':
 				setattr(ksu, a_key, datetime.strptime(a_val, '%Y-%m-%d'))

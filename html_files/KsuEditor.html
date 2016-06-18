@@ -36,6 +36,63 @@
 	</div>
 </div>
 
+<div class="{% if ksu.ksu_type != 'ImIn' %}hidden{% endif %}" id="ImIn">
+
+	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:0px;">
+	<div class="form-group" style="margin-bottom:8px;">				
+		<div class="col-xs-6">
+			<label class="radio-inline" style="margin-left:2px;">
+				<input type="radio" name="ksu_subtype" value="AcumulatedPerception" {% if ksu.ksu_subtype == 'AcumulatedPerception' %} checked="checked" {% endif %}> Acumulated Perception </label></div>
+		<div class="col-xs-6">
+			<label class="radio-inline">
+				<input type="radio" name="ksu_subtype" value="RealitySnapshot" {% if ksu.ksu_subtype == 'RealitySnapshot' %} checked="checked" {% endif %}> Reality Snapshot </label></div>			
+	</div>
+	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+
+	<div class="form-group">
+		<div class="col-xs-8">
+			<label> Data generating question </label>
+			<textarea class="form-control" name="question" placeholder="e.g. Am I exited about the day that I'm about to live?">{% if ksu and ksu.question %}{{ksu.question}}{% endif %}</textarea>
+		</div>
+		
+		<div class="col-xs-4">
+			<label> Best time to ask </label>
+			<select class="form-control" name="question_time">
+				<option {% if ksu.question_time == 'morning' %}selected="selected"{% endif %} value="morning">Morning</option>
+				<option {% if ksu.question_time == 'night' %}selected="selected"{% endif %} value="night">Night</option>							
+			</select>
+		</div>		
+	</div>
+
+	<div class="form-group">
+		
+		<div class="col-xs-4">
+			<label> Question Frequency </label>			
+			<input type="number" min="1" class="form-control" name="question_frequency" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.question_frequency}}{% endif %}">
+		</div>
+
+		<div class="col-xs-3">
+			<label> Target Min. </label>			
+			<input type="number" step="0.01" min="0" class="form-control" name="target_min" placeholder="e.g 0.5" value="{% if ksu %}{{ksu.target_min}}{% endif %}">
+		</div>
+		
+		<div class="col-xs-3">
+			<label> Target Max. </label>			
+			<input type="number" step="0.01" min="0" class="form-control" name="target_max" placeholder="e.g. 100" value="{% if ksu %}{{ksu.target_max}}{% endif %}">
+		</div>
+
+		<div class="col-xs-2"> 
+			<div class="checkbox"> 
+				<label> <input type="checkbox" name="reverse_target"{% if ksu.reverse_target %}checked{% endif %}> <b> Reverse Target </b></label> 
+			</div>
+		</div>
+
+	</div>
+
+
+	
+</div>
+
 <div class="{% if ksu.ksu_type != 'RTBG' %}hidden{% endif %}" id="RTBG">
 	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 	<div class="form-group">
@@ -64,7 +121,6 @@
 		</div>
 	</div>
 </div>
-
 
 <div class="{% if ksu.ksu_type != 'ImPe' %}hidden{% endif %}" id="ImPe">
 	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">

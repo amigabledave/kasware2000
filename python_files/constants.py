@@ -193,7 +193,15 @@ d_attributeType = {
 	'awesomeness': 'integer',
 	# 'max_awesomeness = ndb.IntegerProperty() # To be used to track max awesomeness
 	'was_awesome':  'checkbox',
-	'awesome_since': 'date'
+	'awesome_since': 'date',
+
+	#Indicator Specifics
+	'question': 'string',
+	'question_time': 'string',
+	'question_frequency': 'integer',
+	'target_max':'float',
+	'target_min': 'float',
+	'reverse_target':'checkbox'
 	}
 
 

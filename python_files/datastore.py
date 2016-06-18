@@ -129,6 +129,14 @@ class KSU(ndb.Model):
 	was_awesome = ndb.BooleanProperty(default=False)
 	awesome_since = ndb.DateProperty()
 
+	#Indicator Specifics
+	question = ndb.StringProperty()
+	question_time = ndb.StringProperty(default='morning')
+	question_frequency = ndb.IntegerProperty()
+	target_max = ndb.FloatProperty()
+	target_min = ndb.FloatProperty()
+	reverse_target = ndb.BooleanProperty(default=False)
+
 
 
 

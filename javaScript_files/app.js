@@ -69,6 +69,12 @@ $('#ksu_type').on('change',function(){
 		$('#RTBG').addClass('hidden');
 	}
 
+	if (this.value == 'ImIn'){
+		$('#ImIn').removeClass('hidden');
+	} else {
+		$('#ImIn').addClass('hidden');
+	}
+
 	d_EditorTitle = {
 		'Gene': 'KASware Standard Unit Editor',
 		'KeyA': 'Key Action Editor',
