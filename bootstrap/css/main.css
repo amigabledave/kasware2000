@@ -233,6 +233,13 @@ li a:hover:not(.active) {
     margin-bottom: 8px;
 }
 
+.displaySectionTitle{
+    /*color: #A0A0A0;*/
+    /*color: #686868;*/
+    /*color: #808080;*/
+    color: #666699;
+    font-weight: bold;
+}
 
 
 .SectionTitle{

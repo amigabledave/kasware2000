@@ -17,6 +17,7 @@
 				<div class="row" style="min-height: 45px">
 
 					<div class="col-xs-10">
+
 						<div class="row" style="min-height:60px;">
 							<div class="col-xs-12">
 								{{ksu.description}}		
@@ -24,37 +25,47 @@
 						</div>
 
 						<div class="row">
+							<div class="col-xs-12">
+								<div class="displaySectionTitle">
+									{{constants['d_KsuTypes'][ksu.ksu_type]}}
+								</div>
+							</div>		
+						</div>
+
+	<!-- 					<div class="row">
 							<div class="col-xs-6">
 								<span style="color:blue; font-style:italic;"> Last event:</span> {{ksu.last_event}}		
 							</div>
 							<div class="col-xs-6">
 								<span style="color:blue; font-style:italic;"> Next event: </span> {{ksu.next_event}}
 							</div>		
-						</div>
+						</div> -->
 								
 					</div>
 					<form method="post">
 					<input type="text" class="form-control hidden" name="ksu_id" value="{{ksu.key.id()}}">
 					<div class="col-xs-1">
-						<div class="btn-group-vertical pull-right">
+<!-- 						<div class="btn-group-vertical pull-right">
 							  <button type="button" class="btn btn-success displaySectionVerticalButton"><span class="glyphicon glyphicon-ok"></span></button>
-							  <button type="submit" class="btn btn-primary displaySectionVerticalButton" name='action_description' value="EditKSU"><span class="glyphicon glyphicon-pencil"></span></button>
-						</div>						
+
+							  <button type="button" class="btn btn-primary displaySectionVerticalButton"><span class="glyphicon glyphicon-share-alt"></span></button>							  
+						</div> -->						
 					</div>
 
 					<div class="col-xs-1">
 						<div class="btn-group-vertical pull-right">
-							  <button type="button" class="btn btn-primary displaySectionVerticalButton"><span class="glyphicon glyphicon-share-alt"></span></button>
+							  <button type="submit" class="btn btn-primary displaySectionVerticalButton" name='action_description' value="EditKSU"><span class="glyphicon glyphicon-pencil"></span></button>
+
 							  <button type="button" class="btn btn-danger displaySectionVerticalButton"><span class="glyphicon glyphicon-trash"></span></button> 
 						</div>						
 					</div>
 					</form>
 				</div>
 
-				<div class="row">					
+<!-- 				<div class="row">					
 					<div class="col-xs-12">
 					</div>	
-				</div>			
+				</div>	 -->		
 			</div>
 		</div>
 
