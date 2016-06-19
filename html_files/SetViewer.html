@@ -25,21 +25,26 @@
 						</div>
 
 						<div class="row">
-							<div class="col-xs-12">
-								<div class="displaySectionTitle">
-									{{constants['d_KsuTypes'][ksu.ksu_type]}}
-								</div>
-							</div>		
+							<div class="col-xs-6">
+								<label> {{constants['d_Mean_Values'][ksu.value_type]}}
+								<div class="displaySectionBulletContent"> {% if ksu.ksu_subtype %}{{constants['d_KsuSubtypes'][ksu.ksu_subtype]}}{% else %}{{constants['d_KsuTypes'][ksu.ksu_type]}}{% endif %}
+								</div></label>
+							</div>	
+
+							<div class="col-xs-3">
+								<label> Next Event
+								<div class="displaySectionBulletContent"> {% if ksu.next_event %}{{ ksu.next_event }}{% endif %}
+								</div></label>
+							</div>	
+
+							<div class="col-xs-3">
+								<label> Repeats
+								<div class="displaySectionBulletContent"> {% if ksu.repeats %}{{ constants['d_repeats'][ksu.repeats]}}{% endif %}
+								</div></label>
+							</div>	
+
 						</div>
 
-	<!-- 					<div class="row">
-							<div class="col-xs-6">
-								<span style="color:blue; font-style:italic;"> Last event:</span> {{ksu.last_event}}		
-							</div>
-							<div class="col-xs-6">
-								<span style="color:blue; font-style:italic;"> Next event: </span> {{ksu.next_event}}
-							</div>		
-						</div> -->
 								
 					</div>
 					<form method="post">

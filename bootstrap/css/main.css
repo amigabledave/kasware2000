@@ -241,6 +241,15 @@ li a:hover:not(.active) {
     font-weight: bold;
 }
 
+.displaySectionBulletContent{
+    /*color: #A0A0A0;*/
+    /*color: #686868;*/
+    /*color: #808080;*/
+    color: #666699;
+    font-weight: normal;
+}
+
+
 
 .SectionTitle{
     /*color: #686868;*/

@@ -33,13 +33,13 @@ d_KsuTypes = {
 
 l_KsuTypes = sorted(d_KsuTypes.items(), key=operator.itemgetter(1))
 
-def removeNumbers(tupleList):
+def removeNumbers(tupleList, start):
 	result = []
 	for e in tupleList:
-		result.append((e[0],e[1][4:]))		
+		result.append((e[0],e[1][start:]))		
 	return result
 
-l_KsuTypes = removeNumbers(l_KsuTypes)
+l_KsuTypes = removeNumbers(l_KsuTypes, 4)
 
 
 def makeDictionaryFromTupleList(tupleList):
@@ -50,7 +50,11 @@ def makeDictionaryFromTupleList(tupleList):
 
 d_KsuTypes = makeDictionaryFromTupleList(l_KsuTypes)
 
-print d_KsuTypes
+d_KsuSubtypes = {
+	'KAS1or2':'Key Proactive Action',
+	'KAS3': 'Key Reactive Action',
+	'KAS4': 'Key Action To Avoid'
+}
 
 
 d_Values = {'V00': '0. End Value',
@@ -76,6 +80,8 @@ d_Mean_Values = {'V01': '1. Inner Peace & Consciousness',
 				'V08': '8. Stuff',
 			 	'V09': '9. Money & Power'}
 l_Mean_Values = sorted(d_Mean_Values.items())
+
+d_Mean_Values = makeDictionaryFromTupleList(removeNumbers(l_Mean_Values, 3))
 
 
 d_Scope = {'Total': 'Overall Results',
@@ -251,7 +257,10 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 'l_KsuTypes':l_KsuTypes, 
 			 'l_Values':l_Values,
 			 'l_Mean_Values':l_Mean_Values,
+			 'd_Mean_Values':d_Mean_Values,
+			 'd_KsuSubtypes':d_KsuSubtypes,
 			 'l_Days':l_Days,
+			 'd_repeats': d_repeats,
 			 'l_repeats':l_repeats,
 			 'd_KsuTypes':d_KsuTypes,
 			 'd_attributeType':d_attributeType,
