@@ -57,45 +57,20 @@ d_KsuSubtypes = {
 }
 
 
-d_Values = {'V00': '0. End Value',
-			'V01': '1. Inner Peace & Consciousness',
-			'V02': '2. Fun & Exciting Situations', 
-			'V03': '3. Meaning & Direction', 
-			'V04': '4. Health & Vitality', 
-			'V05': '5. Love & Friendship', 
-			'V06': '6. Knowledge & Skills', 
-			'V07': '7. Outer Order & Peace', 
-			'V08': '8. Stuff',
-		 	'V09': '9. Money & Power'}
-l_Values = sorted(d_Values.items())
+d_ValueTypes = {
+	'V01': '0. Unassigned',
+	'V10': '1. Inner Peace & Consciousness',
+	'V20': '2. Fun & Exciting Situations', 
+	'V30': '3. Meaning & Direction', 
+	'V40': '4. Health & Vitality', 
+	'V50': '5. Love & Friendship', 
+	'V60': '6. Knowledge & Skills', 
+	'V70': '7. Outer Order & Peace', 
+	'V80': '8. Stuff',
+	'V90': '9. Money & Power'}
+l_ValueTypes = sorted(d_ValueTypes.items())
 
-
-d_Mean_Values = {'V01': '1. Inner Peace & Consciousness',
-			 	'V02': '2. Fun & Exciting Situations', 
-				'V03': '3. Meaning & Direction', 
-				'V04': '4. Health & Vitality', 
-				'V05': '5. Love & Friendship', 
-				'V06': '6. Knowledge & Skills', 
-				'V07': '7. Outer Order & Peace', 
-				'V08': '8. Stuff',
-			 	'V09': '9. Money & Power'}
-l_Mean_Values = sorted(d_Mean_Values.items())
-
-d_Mean_Values = makeDictionaryFromTupleList(removeNumbers(l_Mean_Values, 3))
-
-
-d_Scope = {'Total': 'Overall Results',
-		   'V000': '0. End Value',
-		   'V100': '1. Inner Peace & Consciousness',
-		   'V200': '2. Fun & Exciting Situations', 
-		   'V300': '3. Meaning & Direction', 
-		   'V400': '4. Health & Vitality', 
-		   'V500': '5. Love & Friendship', 
-		   'V600': '6. Knowledge & Skills', 
-	       'V700': '7. Outer Order & Peace', 
-	       'V800': '8. Stuff',
-		   'V900': '9. Money & Power'}
-l_Scope = sorted(d_Scope.items())
+d_ValueTypes = makeDictionaryFromTupleList(removeNumbers(l_ValueTypes, 3))
 
 
 d_repeats = {'R000':'Never',
@@ -246,25 +221,25 @@ d_local_categories = {
 	'ImIn': ['Unassigned']}
 
 
-
-
 constants = {'l_Fibonacci':l_Fibonacci,
 			 'l_long_Fibonacci': l_long_Fibonacci,
 			 'l_Fibonacci_1_8' :l_Fibonacci_1_8,
 			 'l_Fibonacci_8_55':l_Fibonacci_8_55,
 			 'l_Fibonacci_0_8':l_Fibonacci_0_8,
 			 'l_Fibonacci_21_144':l_Fibonacci_21_144,
-			 'l_KsuTypes':l_KsuTypes, 
-			 'l_Values':l_Values,
-			 'l_Mean_Values':l_Mean_Values,
-			 'd_Mean_Values':d_Mean_Values,
-			 'd_KsuSubtypes':d_KsuSubtypes,
+			 
+			 'd_KsuTypes':d_KsuTypes,
+			 'l_KsuTypes':l_KsuTypes,
+			 'd_KsuSubtypes':d_KsuSubtypes, 
+			 'd_ValueTypes':d_ValueTypes,
+			 'l_ValueTypes':l_ValueTypes,
+			 
 			 'l_Days':l_Days,
 			 'd_repeats': d_repeats,
 			 'l_repeats':l_repeats,
-			 'd_KsuTypes':d_KsuTypes,
-			 'd_attributeType':d_attributeType,
 			 'd_repeats_legend':d_repeats_legend,
+
+			 'd_attributeType':d_attributeType,
 			 'd_local_categories':d_local_categories}
 
 
