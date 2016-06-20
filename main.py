@@ -3,7 +3,6 @@ import webapp2, jinja2, os, re, random, string, hashlib
 
 from datetime import datetime, timedelta, time
 from google.appengine.ext import ndb
-
 from python_files import datastore, randomUser, constants
 
 constants = constants.constants
@@ -247,7 +246,7 @@ class TodaysMission(Handler):
 	def get(self):
 		user_key = self.theory.key
 		ksu_set = KSU.query(KSU.theory == user_key).order(KSU.created).fetch()
-		self.print_html('TodaysMission.html', ksu_set=ksu_set, constants=constants)
+		self.print_html('TodaysMission.html', ksu_set=ksu_set, constants=constants, set_name='TodaysMission')
 
 
 	@super_user_bouncer
@@ -266,7 +265,7 @@ class SetViewer(Handler):
 			ksu_set = KSU.query(KSU.theory == user_key ).order(KSU.created).fetch()	
 		else:
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.ksu_type == set_name).order(KSU.created).fetch()
-		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants)
+		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name)
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	

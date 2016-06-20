@@ -13,6 +13,24 @@ l_Fibonacci_8_55 = [8,13,21,34,55]
 l_Fibonacci_21_144 = [21,34,55,89,144]
 
 
+d_SetTitles = {
+	'Gene': 'Unassigned KSUs',
+	'KeyA': 'Key Actions',
+	# 'MinO': '02. Mini Objective',
+	'BigO': 'Objectives',
+	# 'Drea': '04. Dream',
+	'Wish': 'Wishes',
+	'EVPo': 'End Value Triggers',
+	'ImPe': 'Important People',
+	'Idea': 'Wise Ideas',
+	'RTBG': 'Reasons To Be Grateful',
+	# 'Prin': '10. Principle',
+	# 'NoAR': '11. Reminder',
+	# 'MoRe': '12. Money Requirement',
+	'ImIn': 'Indicator'
+}
+
+
 
 d_KsuTypes = {
 	'Gene': '00. Unassigned',
@@ -228,6 +246,7 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 'l_Fibonacci_0_8':l_Fibonacci_0_8,
 			 'l_Fibonacci_21_144':l_Fibonacci_21_144,
 			 
+			 'd_SetTitles':d_SetTitles,
 			 'd_KsuTypes':d_KsuTypes,
 			 'l_KsuTypes':l_KsuTypes,
 			 'd_KsuSubtypes':d_KsuSubtypes, 
