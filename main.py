@@ -26,25 +26,27 @@ def super_user_bouncer(funcion):
 		# return funcion(self)
 	return user_bouncer
 
-
 def CreateOrEditKSU_request_handler(funcion):
 	def inner(self):
 		post_details = get_post_details(self)
-		user_action = post_details['action_description']	
+		user_action = post_details['action_description']
+		
+		return_to = determine_return_to(self)
 
 		if user_action == 'NewKSU':
-			self.redirect('/KsuEditor?ksu_id=NewKSU')
+			self.redirect('/KsuEditor?ksu_id=NewKSU&return_to='+return_to)
 			return
 
 		elif user_action == 'EditKSU':
 			ksu_id = post_details['ksu_id']
-			self.redirect('/KsuEditor?ksu_id='+ksu_id)
+			self.redirect('/KsuEditor?ksu_id='+ksu_id+'&return_to='+return_to)
 			return
 
 		else:
 			return funcion(self, user_action, post_details)
 
 	return inner
+
 
 
 #-- Production Handlers
@@ -81,7 +83,6 @@ class Handler(webapp2.RequestHandler):
 		webapp2.RequestHandler.initialize(self, *a, **kw)
 		theory_id = self.read_secure_cookie('theory_id')
 		self.theory = theory_id and Theory.get_by_theory_id(int(theory_id)) #if the user exist, 'self.theory' will store the actual theory object
-
 
 
 class SignUpLogIn(Handler):
@@ -127,12 +128,10 @@ class SignUpLogIn(Handler):
 				self.write('incorrect username or password')
 
 
-
 class LogOut(Handler):
 	def get(self):
 		self.logout()
 		self.redirect('/')
-
 
 
 class KsuEditor(Handler):
@@ -148,6 +147,7 @@ class KsuEditor(Handler):
 		# self.write(ksu)
 		self.print_html('KsuEditor.html', ksu=ksu, constants=constants)
 
+
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
 	def post(self, user_action, post_details):		
@@ -156,17 +156,19 @@ class KsuEditor(Handler):
 			ksu = KSU(theory=self.theory.key)
 		else: 
 			ksu = KSU.get_by_id(int(ksu_id))
+
+		return_to = determine_return_to(self)
 		
 		if user_action == 'SaveChanges':
 			ksu = self.prepareInputForSaving(ksu, post_details)
 			ksu.put()
-			self.redirect('/')
-			# self.write(post_details)
-			return
+		
+		self.redirect(return_to)
+		return
 							
-		elif user_action == 'DiscardChanges':
-			self.redirect('/')
-			return
+		# elif user_action == 'DiscardChanges':
+		# 	self.redirect(return_to)
+		# 	return
 
 	def prepareInputForSaving(self, ksu, post_details):
 
@@ -230,7 +232,6 @@ class KsuEditor(Handler):
 		return ksu
 
 
-
 class Home(Handler):
 	
 	@super_user_bouncer
@@ -238,7 +239,6 @@ class Home(Handler):
 		theory = self.theory
 		message = 'Welcome to KASware ' + theory.first_name + ' ' + theory.last_name
 		self.write(message)
-
 
 
 class TodaysMission(Handler):
@@ -256,7 +256,6 @@ class TodaysMission(Handler):
 		return
 
 			
-
 class SetViewer(Handler):
 
 	@super_user_bouncer
@@ -297,7 +296,6 @@ class PopulateRandomTheory(Handler):
 		self.redirect('/')
 
 
-
 class DataStoreViewer(Handler):
 
 	def descriptionsOnly(self):
@@ -326,13 +324,25 @@ def get_post_details(self):
 		post_details[str(argument)] = self.request.get(str(argument))
 	return adjust_post_details(post_details)
 
-
 def adjust_post_details(post_details): 
 	details = {}
 	for (attribute, value) in post_details.items():
 		if value and value!='' and value!='None':
 			details[attribute] = value
 	return details
+
+def determine_return_to(self):
+
+	return_to = self.request.get('return_to')
+	if not return_to:
+		return_to = self.request.path
+	
+	set_name = self.request.get('set_name')
+	if set_name:
+		return_to += '?set_name=' + set_name
+
+	return return_to
+
 
 
 #--- Validation and security functions ----------
@@ -401,7 +411,8 @@ d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
 		
 		'email': re.compile(r'^[\S]+@[\S]+\.[\S]+$'),
 		'email_error': 'invalid email syntax'}
-PAGE_RE = r'((?:[a-zA-Z0-9_-]+/?)*)'
+
+
 
 #--- Request index
 app = webapp2.WSGIApplication([

@@ -1,17 +1,28 @@
 
+def determine_return_to():
+	url_kasware = 'http://kasware.com'
+	url_activo = 'http://kasware.com/TodaysMission'
 
-def gatificar(funcion):
-		def inner(*args, **kwarg):
-			return funcion(*args, **kwarg) + ' miau miau'
-		return inner
+	if url_activo.find(url_kasware) != -1:
+		return url_activo[len(url_kasware):]
+	else:
+		return '/'
+
+print determine_return_to()
+
+#-----------
+# def gatificar(funcion):
+# 		def inner(*args, **kwarg):
+# 			return funcion(*args, **kwarg) + ' miau miau'
+# 		return inner
 
 
-@gatificar
-def perrito(x): 
-	return x + ' guau guau'
+# @gatificar
+# def perrito(x): 
+# 	return x + ' guau guau'
 
+# print perrito('dartagnan')
 
-print perrito('dartagnan')
 # perrito = gatificar(perrito)
 # print perrito('dartagnan')
 
