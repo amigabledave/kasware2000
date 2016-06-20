@@ -50,11 +50,20 @@
 					<form method="post">
 					<input type="text" class="form-control hidden" name="ksu_id" value="{{ksu.key.id()}}">
 					<div class="col-xs-1">
-<!-- 						<div class="btn-group-vertical pull-right">
-							  <button type="button" class="btn btn-success displaySectionVerticalButton"><span class="glyphicon glyphicon-ok"></span></button>
+						<div class="btn-group-vertical pull-right">
+							{% if ksu.ksu_type == 'KeyA' and ksu.ksu_subtype == 'KAS1or2' %}
+								<button type="button" class="btn btn-success displaySectionVerticalButton"><span class="glyphicon glyphicon-ok"></span></button>
 
-							  <button type="button" class="btn btn-primary displaySectionVerticalButton"><span class="glyphicon glyphicon-share-alt"></span></button>							  
-						</div> -->						
+								<button type="button" class="btn btn-primary displaySectionVerticalButton"><span class="glyphicon glyphicon-share-alt"></span></button>
+
+							{% elif ksu.ksu_type == 'KeyA' and ksu.ksu_subtype in ['KAS3', 'KAS4'] %}
+								<button type="button" class="btn btn-success displaySectionVerticalButton"><span class="glyphicon glyphicon-ok"></span></button>
+
+								<button type="button" class="btn btn-primary displaySectionVerticalButton"><span class="glyphicon glyphicon-pushpin"></span></button>
+
+							{% endif %}
+							  
+						</div>						
 					</div>
 
 					<div class="col-xs-1">
