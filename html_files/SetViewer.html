@@ -31,17 +31,25 @@
 								</div></label>
 							</div>	
 
+							{% for attr in constants['d_SetViewerDetails'][ksu.ksu_subtype]['attributes'] %}
+								<div class="col-xs-{{constants['d_SetViewerDetails'][ksu.ksu_subtype]['columns'][attr]}}">
+									<label> {{constants['d_SetViewerDetails'][ksu.ksu_subtype]['fields'][attr]}}
+									<div class="displaySectionBulletContent"> {% if ksu[attr] %}{{ ksu[attr]}}{% endif %}
+									</div></label>
+								</div>
+							{% endfor %}
+<!-- 
 							<div class="col-xs-3">
 								<label> Next Event
-								<div class="displaySectionBulletContent"> {% if ksu.next_event %}{{ ksu.next_event }}{% endif %}
+								<div class="displaySectionBulletContent"> {% if ksu['next_event'] %}{{ ksu['next_event']}}{% endif %}
 								</div></label>
 							</div>	
 
 							<div class="col-xs-3">
 								<label> Repeats
-								<div class="displaySectionBulletContent"> {% if ksu.repeats %}{{ constants['d_repeats'][ksu.repeats]}}{% endif %}
+								<div class="displaySectionBulletContent"> {% if ksu['repeats'] %}{{ constants['d_repeats'][ksu['repeats']]}}{% endif %}
 								</div></label>
-							</div>	
+							</div>	 -->
 
 						</div>
 

@@ -31,7 +31,6 @@ d_SetTitles = {
 }
 
 
-
 d_KsuTypes = {
 	'Gene': '00. Unassigned',
 	'KeyA': '01. Key Action',
@@ -69,7 +68,8 @@ def makeDictionaryFromTupleList(tupleList):
 d_KsuTypes = makeDictionaryFromTupleList(l_KsuTypes)
 
 d_KsuSubtypes = {
-	'KAS1or2':'Key Proactive Action',
+	'KAS1':'Key Repetitive Proactive Action',
+	'KAS2':'Key Proactive Action',
 	'KAS3': 'Key Reactive Action',
 	'KAS4': 'Key Action To Avoid'
 }
@@ -108,7 +108,6 @@ d_Days = {'None':'None',
 		  '6':'6. Friday',
 		  '7':'7. Saturday'}
 l_Days = sorted(d_Days.items())
-
 
 
 d_attributeType = {
@@ -239,6 +238,27 @@ d_local_categories = {
 	'ImIn': ['Unassigned']}
 
 
+d_SetViewerDetails = {
+	'KeyA':{},
+
+	'KAS1':{
+		'attributes': ['next_event', 'repeats'],
+		'fix_displayValue':{'next_event':False, 'repeats':True},
+		'fields': {'next_event':'Next Event', 'repeats':'Repeats'},
+		'columns':{'next_event':3, 'repeats':3},
+		'buttons':['button_Done', 'button_AddToMission']},
+
+	'KAS2':{},
+
+	'KAS3':{},
+
+	'KAS4':{}	
+}
+
+
+d_displayValues = {}
+d_displayValues.update(d_repeats)
+
 constants = {'l_Fibonacci':l_Fibonacci,
 			 'l_long_Fibonacci': l_long_Fibonacci,
 			 'l_Fibonacci_1_8' :l_Fibonacci_1_8,
@@ -247,6 +267,9 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 'l_Fibonacci_21_144':l_Fibonacci_21_144,
 			 
 			 'd_SetTitles':d_SetTitles,
+			 'd_displayValues':d_displayValues,
+			 'd_SetViewerDetails':d_SetViewerDetails,
+
 			 'd_KsuTypes':d_KsuTypes,
 			 'l_KsuTypes':l_KsuTypes,
 			 'd_KsuSubtypes':d_KsuSubtypes, 

@@ -228,7 +228,28 @@ class KsuEditor(Handler):
 
 		setattr(ksu, 'repeats_on', d_repeats_on)
 		
+		ksu.ksu_subtype = self.determine_ksu_subtype(ksu)
+
 		return ksu
+
+
+	def determine_ksu_subtype(self, ksu):
+
+		ksu_subtype = ksu.ksu_subtype
+
+		if not ksu_subtype: 
+			ksu_subtype = ksu.ksu_type
+
+		if ksu_subtype == 'KAS1or2':
+			if ksu.repeats == 'R000':
+				ksu_subtype = 'KAS2'
+			else:
+				ksu_subtype = 'KAS1'
+
+		return ksu_subtype
+
+
+
 
 
 class Home(Handler):
