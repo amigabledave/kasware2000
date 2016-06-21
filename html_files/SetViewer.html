@@ -19,8 +19,18 @@
 					<div class="col-xs-10">
 
 						<div class="row" style="min-height:60px;">
-							<div class="col-xs-12">
-								{{ksu.description}}		
+							<div class="col-xs-11">
+								{% if ksu.ksu_subtype == 'KAS3' %}	
+									<span style="color:blue; font-style:italic;"> If:</span> <span style="{% if ksu.is_critical %}color:red;{% endif %}">{{ksu.trigger_circumstances}}</span><span style="color:blue; font-style:italic;"> <br> Reaction:</span>
+								{% endif %}
+
+								{% if ksu.ksu_subtype == 'KAS4' %}	
+									<span style="color:blue; font-style:italic;"> Must avoid:</span> 
+								{% endif %}								
+
+								<span style="{% if ksu.is_critical %}color:red;{% endif %}"> {{ksu.description}} </span>
+								{% if ksu.comments %} <br> <em> --- {{ksu.comments}} --- </em>{% endif %}
+
 							</div>		
 						</div>
 
@@ -34,23 +44,15 @@
 							{% for attr in constants['d_SetViewerDetails'][ksu.ksu_subtype]['attributes'] %}
 								<div class="col-xs-{{constants['d_SetViewerDetails'][ksu.ksu_subtype]['columns'][attr]}}">
 									<label> {{constants['d_SetViewerDetails'][ksu.ksu_subtype]['fields'][attr]}}
-									<div class="displaySectionBulletContent"> {% if ksu[attr] %}{{ ksu[attr]}}{% endif %}
+									<div class="displaySectionBulletContent">
+									{% if constants['d_SetViewerDetails'][ksu.ksu_subtype]['fix_displayValue'][attr] %}
+										{% if ksu[attr] %}{{ constants['d_displayValues'][ksu[attr]]}}{% endif %}
+									{% else %}
+										{% if ksu[attr] %}{{ ksu[attr]}}{% endif %}
+									{% endif %}	
 									</div></label>
 								</div>
 							{% endfor %}
-<!-- 
-							<div class="col-xs-3">
-								<label> Next Event
-								<div class="displaySectionBulletContent"> {% if ksu['next_event'] %}{{ ksu['next_event']}}{% endif %}
-								</div></label>
-							</div>	
-
-							<div class="col-xs-3">
-								<label> Repeats
-								<div class="displaySectionBulletContent"> {% if ksu['repeats'] %}{{ constants['d_repeats'][ksu['repeats']]}}{% endif %}
-								</div></label>
-							</div>	 -->
-
 						</div>
 
 								
@@ -59,26 +61,34 @@
 					<input type="text" class="form-control hidden" name="ksu_id" value="{{ksu.key.id()}}">
 					<div class="col-xs-1">
 						<div class="btn-group-vertical pull-right">
-							{% if ksu.ksu_type == 'KeyA' and ksu.ksu_subtype == 'KAS1or2' %}
-								<button type="button" class="btn btn-success displaySectionVerticalButton"><span class="glyphicon glyphicon-ok"></span></button>
-
-								<button type="button" class="btn btn-primary displaySectionVerticalButton"><span class="glyphicon glyphicon-share-alt"></span></button>
-
-							{% elif ksu.ksu_type == 'KeyA' and ksu.ksu_subtype in ['KAS3', 'KAS4'] %}
-								<button type="button" class="btn btn-success displaySectionVerticalButton"><span class="glyphicon glyphicon-ok"></span></button>
-
-								<button type="button" class="btn btn-primary displaySectionVerticalButton"><span class="glyphicon glyphicon-pushpin"></span></button>
-
+							{% if 'Done' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}
+								<button type="button" class="btn btn-success displaySectionVerticalButton" name="action_description" value="Done">
+									<span class="glyphicon glyphicon-ok"></span>
+								</button>
 							{% endif %}
-							  
+
+							{% if 'SendToMission' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}
+								<button type="button" class="btn btn-primary displaySectionVerticalButton" name="action_description" value="SendToMission">
+									<span class="glyphicon glyphicon-share-alt"></span>
+								</button>
+							{% endif %}
+
+							{% if 'PinInMission' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}
+								<button type="button" class="btn btn-primary displaySectionVerticalButton" name="action_description" value="PinInMission">
+									<span class="glyphicon glyphicon-pushpin"></span>
+								</button>
+							{% endif %}  
 						</div>						
 					</div>
 
 					<div class="col-xs-1">
 						<div class="btn-group-vertical pull-right">
-							  <button type="submit" class="btn btn-primary displaySectionVerticalButton" name='action_description' value="EditKSU"><span class="glyphicon glyphicon-pencil"></span></button>
-
-							  <button type="button" class="btn btn-danger displaySectionVerticalButton"><span class="glyphicon glyphicon-trash"></span></button> 
+							<button type="submit" class="btn btn-primary displaySectionVerticalButton" name='action_description' value="EditKSU">
+							  	<span class="glyphicon glyphicon-pencil"></span>
+						  	</button>
+							<button type="button" class="btn btn-danger displaySectionVerticalButton">
+								<span class="glyphicon glyphicon-trash"></span>
+						  	</button> 
 						</div>						
 					</div>
 					</form>

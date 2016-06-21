@@ -247,7 +247,7 @@
 	<div class="form-group" style="margin-bottom:8px;">				
 		<div class="col-xs-4">
 			<label class="radio-inline" style="margin-left:2px;">
-				<input type="radio" name="ksu_subtype" value="KAS1or2" {% if ksu.ksu_subtype == 'KAS1or2' %} checked="checked" {% endif %}> Proactive </label></div>
+				<input type="radio" name="ksu_subtype" value="KAS1or2" {% if ksu.ksu_subtype in ['KAS1', 'KAS2'] %} checked="checked" {% endif %}> Proactive </label></div>
 		<div class="col-xs-4">
 			<label class="radio-inline">
 				<input type="radio" name="ksu_subtype" value="KAS3" {% if ksu.ksu_subtype == 'KAS3' %} checked="checked" {% endif %}> Reactive </label></div>
@@ -256,7 +256,7 @@
 				<input type="radio" name="ksu_subtype" value="KAS4" {% if ksu.ksu_subtype == 'KAS4' %} checked="checked" {% endif %}> To be avoided </label></div>
 	</div>
 	
-	<div {% if ksu.ksu_subtype != 'KAS1or2' %} class="hidden" {% endif %} id="KeyA_KAS1or2">
+	<div {% if ksu.ksu_subtype not in ['KAS1', 'KAS2'] %} class="hidden" {% endif %} id="KeyA_KAS1or2">
 	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:12px;">	
 
 		<div class="form-group">

@@ -246,13 +246,29 @@ d_SetViewerDetails = {
 		'fix_displayValue':{'next_event':False, 'repeats':True},
 		'fields': {'next_event':'Next Event', 'repeats':'Repeats'},
 		'columns':{'next_event':3, 'repeats':3},
-		'buttons':['button_Done', 'button_AddToMission']},
+		'buttons':['Done', 'SendToMission']},
 
-	'KAS2':{},
+	'KAS2':{		
+		'attributes': ['next_event'],
+		'fix_displayValue':{'next_event':False},
+		'fields': {'next_event':'Scheduled for'},
+		'columns':{'next_event':6},
+		'buttons':['Done', 'SendToMission']},
 
-	'KAS3':{},
+	'KAS3':{
+		'attributes': ['standard_reward'],
+		'fix_displayValue': {'standard_reward':False},
+		'fields': {'standard_reward':'Standard Reward (kpts.)'},
+		'columns': {'standard_reward':6},
+		'buttons': ['Done', 'PinInMission']},
 
-	'KAS4':{}	
+	'KAS4':{
+		'attributes': ['standard_punishment'],
+		'fix_displayValue':{'standard_punishment':False},
+		'fields': {'standard_punishment':'Standard Punishment (kpts.)'},
+		'columns':{'standard_punishment':6},
+		'buttons':['Done', 'PinInMission']},
+
 }
 
 
