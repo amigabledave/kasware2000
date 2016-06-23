@@ -1,5 +1,18 @@
 import operator
 
+def removeNumbers(tupleList, start):
+	result = []
+	for e in tupleList:
+		result.append((e[0],e[1][start:]))		
+	return result
+
+def makeDictionaryFromTupleList(tupleList):
+	result = {}
+	for e in tupleList:
+		result[e[0]] = e[1]		
+	return result
+
+
 l_Fibonacci = [1,2,3,5,8,13]
 
 l_long_Fibonacci = [1,2,3,5,8,13,21,34,55,89,144,233,377,610,987]
@@ -15,20 +28,19 @@ l_Fibonacci_21_144 = [21,34,55,89,144]
 
 d_SetTitles = {
 	'Gene': 'Unassigned KSUs',
-	'KeyA': 'Key Actions',
+	'KeyA': 'Key Actions Set',
 	# 'MinO': '02. Mini Objective',
 	'BigO': 'Objectives',
 	# 'Drea': '04. Dream',
 	'Wish': 'Wishes',
-	'EVPo': 'End Value Triggers',
+	'EVPo': 'End Value Mines',
 	'ImPe': 'Important People',
 	'Idea': 'Wise Ideas',
 	'RTBG': 'Reasons To Be Grateful',
 	# 'Prin': '10. Principle',
 	# 'NoAR': '11. Reminder',
 	# 'MoRe': '12. Money Requirement',
-	'ImIn': 'Indicator'
-}
+	'ImIn': 'Indicator'}
 
 
 d_KsuTypes = {
@@ -38,42 +50,42 @@ d_KsuTypes = {
 	'BigO': '02. Objective',
 	# 'Drea': '04. Dream',
 	'Wish': '03. Wish',
-	'EVPo': '05. End Value Trigger',
+	'EVPo': '05. End Value Mine',
 	'ImPe': '06. Important Person',
 	'Idea': '07. Wise Idea',
 	'RTBG': '08. Reason To Be Grateful',
 	# 'Prin': '10. Principle',
 	# 'NoAR': '11. Reminder',
 	# 'MoRe': '12. Money Requirement',
-	'ImIn': '09. Indicator'
-}
-
+	'ImIn': '09. Indicator'}
 l_KsuTypes = sorted(d_KsuTypes.items(), key=operator.itemgetter(1))
-
-def removeNumbers(tupleList, start):
-	result = []
-	for e in tupleList:
-		result.append((e[0],e[1][start:]))		
-	return result
-
 l_KsuTypes = removeNumbers(l_KsuTypes, 4)
-
-
-def makeDictionaryFromTupleList(tupleList):
-	result = {}
-	for e in tupleList:
-		result[e[0]] = e[1]		
-	return result
-
 d_KsuTypes = makeDictionaryFromTupleList(l_KsuTypes)
 
 d_KsuSubtypes = {
-	'KAS1':'Key Repetitive Proactive Action',
-	'KAS2':'Key Proactive Action',
-	'KAS3': 'Key Reactive Action',
-	'KAS4': 'Key Action To Avoid'
-}
+	'KeyA':'Key Action',
+	'KAS1':'Key Repetitive Action',
+	'KAS2':'Key Action',
+	'KAS3':'Key Reaction',
+	'KAS4':'Key Action To Avoid',
 
+	'BigO': 'Big Objective',
+	
+	'MinO': 'Sprint Goal',
+
+	'Wish': 'Wish',
+
+	'Dream': 'Dream',
+
+	'EVPo': 'End Value Mine',
+
+	'ImPe': 'Important Person',
+
+	'Idea': 'Wise Idea',
+
+	'RTBG': 'Reason To Be Grateful',
+
+	'ImIn': 'Indicator'}
 
 d_ValueTypes = {
 	'V01': '0. Unassigned',
@@ -164,12 +176,12 @@ d_attributeType = {
 	#Objective Specific
 	'success_definition': 'string',
 	'target_date': 'date',
-	'is_sprint_goal':'checkbox',
+	'is_BigO':'checkbox',
 
 	#Wish Specific
 	'wish_categorie': 'string',
 	'money_cost':'integer',
-	'in_bucket_list':'checkbox',
+	'is_dream':'checkbox',
 
 	#EVPo Specific
 	'charging_time': 'integer',
@@ -239,38 +251,96 @@ d_local_categories = {
 
 
 d_SetViewerDetails = {
+	
+	'Gene':{},
+
 	'KeyA':{},
 
 	'KAS1':{
 		'attributes': ['next_event', 'repeats'],
-		'fix_displayValue':{'next_event':False, 'repeats':True},
 		'fields': {'next_event':'Next Event', 'repeats':'Repeats'},
 		'columns':{'next_event':3, 'repeats':3},
 		'buttons':['Done', 'SendToMission']},
 
 	'KAS2':{		
-		'attributes': ['next_event'],
-		'fix_displayValue':{'next_event':False},
-		'fields': {'next_event':'Scheduled for'},
-		'columns':{'next_event':6},
+		'attributes': ['pretty_next_event'],
+		'fields': {'pretty_next_event':'Scheduled for'},
+		'columns':{'pretty_next_event':6},
 		'buttons':['Done', 'SendToMission']},
 
 	'KAS3':{
 		'attributes': ['standard_reward'],
-		'fix_displayValue': {'standard_reward':False},
 		'fields': {'standard_reward':'Standard Reward (kpts.)'},
 		'columns': {'standard_reward':6},
 		'buttons': ['Done', 'PinInMission']},
 
 	'KAS4':{
 		'attributes': ['standard_punishment'],
-		'fix_displayValue':{'standard_punishment':False},
 		'fields': {'standard_punishment':'Standard Punishment (kpts.)'},
 		'columns':{'standard_punishment':6},
 		'buttons':['Done', 'PinInMission']},
 
+	'BigO':{		
+		'attributes': ['pretty_target_date'],
+		'fields': {'pretty_target_date':'Target Date'},
+		'columns':{'pretty_target_date':6},
+		'buttons':['Done', 'PinInMission']},
+
+	'MinO':{		
+		'attributes': ['pretty_target_date'],
+		'fields': {'pretty_target_date':'Target Date'},
+		'columns':{'pretty_target_date':6},
+		'buttons':['Done', 'PinInMission']},
+
+	'Wish':{ 		
+		'attributes': ['money_cost'],
+		'fields': {'money_cost':'Money required ($)'},
+		'columns':{'money_cost':6},
+		'buttons':['Done', 'PinInMission']},
+
+	'Dream':{ 		
+		'attributes': ['money_cost'],
+		'fields': {'money_cost':'Money required ($USD)'},
+		'columns':{'money_cost':6},
+		'buttons':['Done', 'PinInMission']},
+
+	'EVPo': { 		
+		'attributes': ['charging_time'],
+		'fields': {'charging_time':'Charging time (days)'},
+		'columns':{'charging_time':6},
+		'buttons':['Done', 'PinInMission']},
+
+	'ImPe': { 		
+		'attributes': [],
+		'fix_displayValue':{},
+		'fields': {},
+		'columns':{},
+		'buttons':[]},
+
+	'Idea': { 		
+		'attributes': [],
+		'fix_displayValue':{},
+		'fields': {},
+		'columns':{},
+		'buttons':[]},
+
+	'RTBG': { 		
+		'attributes': [],
+		'fix_displayValue':{},
+		'fields': {},
+		'columns':{},
+		'buttons':[]},
+
+	'ImIn': { 		
+		'attributes': [],
+		'fix_displayValue':{},
+		'fields': {},
+		'columns':{},
+		'buttons':[]},
 }
 
+
+l_attributesThatNeedToBeFixed = ['repeats']
 
 d_displayValues = {}
 d_displayValues.update(d_repeats)
@@ -283,6 +353,7 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 'l_Fibonacci_21_144':l_Fibonacci_21_144,
 			 
 			 'd_SetTitles':d_SetTitles,
+			 'l_attributesThatNeedToBeFixed':l_attributesThatNeedToBeFixed,
 			 'd_displayValues':d_displayValues,
 			 'd_SetViewerDetails':d_SetViewerDetails,
 

@@ -79,6 +79,7 @@ class KSU(ndb.Model):
 	# KAS Specific	
 	last_event = ndb.DateProperty()
 	next_event = ndb.DateProperty()
+	pretty_next_event = ndb.StringProperty()
 	
 	best_time = ndb.TimeProperty()
 	time_cost = ndb.IntegerProperty()
@@ -101,11 +102,13 @@ class KSU(ndb.Model):
 	#Objective Specific
 	success_definition = ndb.StringProperty()
 	target_date = ndb.DateProperty()
+	pretty_target_date = ndb.StringProperty()
+	is_BigO = ndb.BooleanProperty(default=False)
 
 	#Wish Specific
 	wish_categorie = ndb.StringProperty()
 	money_cost = ndb.IntegerProperty()
-	in_bucket_list = ndb.BooleanProperty(default=False)
+	is_dream = ndb.BooleanProperty(default=False)
 
 	#EVPo Specific
 	charging_time = ndb.IntegerProperty()

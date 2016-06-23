@@ -19,8 +19,6 @@
 }
 
 
-
-
 /*---Navigation bar-------*/
 
 .NavigationTopBar{
@@ -191,10 +189,10 @@ li a:hover:not(.active) {
 }
 */
 
-
+/*
 *{
     font-size: 13px;
-}
+}*/
 
 .respect-space{
     white-space:pre;
@@ -205,8 +203,8 @@ li a:hover:not(.active) {
   border-style: solid;  
   border-color: #0000ff;
   
-  max-width: 550px;  
-  min-height: 100px;
+  max-width: 502px;  
+  /*min-height: 100px;*/
   margin: 8px auto;
   margin-left: 17px;
 
@@ -214,6 +212,8 @@ li a:hover:not(.active) {
 
   border: 1px #ddd;
   border-radius: 2px;
+
+  font-size: 13px;
 
   -webkit-box-shadow: 0.5px 2px 2px 0.5px rgba(0,0,0,0.25);
   -moz-box-shadow: 0.5px 2px 2px 0.5px rgba(0,0,0,0.25);
@@ -230,7 +230,8 @@ li a:hover:not(.active) {
 }
 
 .displaySectionVerticalButton{
-    margin-bottom: 8px;
+    margin-bottom: 2px;
+
 }
 
 .displaySectionTitle{
@@ -242,13 +243,20 @@ li a:hover:not(.active) {
 }
 
 .displaySectionBulletContent{
+    font-size: 13px;
     /*color: #A0A0A0;*/
     /*color: #686868;*/
     /*color: #808080;*/
     color: #666699;
+    /*font-weight: bold;*/
     font-weight: normal;
+    font-size: 13px;
 }
 
+
+.displaySectionDescription{
+    font-size: 16px;
+}
 
 
 .SectionTitle{

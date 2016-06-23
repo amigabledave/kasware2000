@@ -146,7 +146,6 @@ class KsuEditor(Handler):
 		# self.write(ksu)
 		self.print_html('KsuEditor.html', ksu=ksu, constants=constants)
 
-
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
 	def post(self, user_action, post_details):		
@@ -173,8 +172,9 @@ class KsuEditor(Handler):
 
 		l_checkbox_attribute = [ 'is_active', 
 								 'is_critical', 
-								 'is_private', 
-								 'in_bucket_list', 
+								 'is_private',
+								 'is_BigO',
+								 'is_dream', 
 								 'is_principle', 
 								 'was_awesome',
 								 'reverse_target']
@@ -194,9 +194,6 @@ class KsuEditor(Handler):
 		d_attributeType = constants['d_attributeType']
 
 		for a_key in post_details:
-			# print '######################################'
-			# print a_key
-			# print
 
 			a_val = post_details[a_key]
 			a_type = None
@@ -215,6 +212,9 @@ class KsuEditor(Handler):
 
 			if a_type == 'date':
 				setattr(ksu, a_key, datetime.strptime(a_val, '%Y-%m-%d'))
+				if a_key in ['target_date', 'next_event']:
+					setattr(ksu, 'pretty_'+a_key, datetime.strptime(a_val, '%Y-%m-%d').strftime('%a, %b %d, %Y'))
+
 
 			if a_type == 'time':
 				a_val = a_val[0:5]
@@ -232,13 +232,10 @@ class KsuEditor(Handler):
 
 		return ksu
 
-
 	def determine_ksu_subtype(self, ksu):
 
+		ksu_type = ksu.ksu_type
 		ksu_subtype = ksu.ksu_subtype
-
-		if not ksu_subtype: 
-			ksu_subtype = ksu.ksu_type
 
 		if ksu_subtype == 'KAS1or2':
 			if ksu.repeats == 'R000':
@@ -246,9 +243,26 @@ class KsuEditor(Handler):
 			else:
 				ksu_subtype = 'KAS1'
 
+		if ksu_type == 'BigO':
+			if ksu.is_BigO:
+				ksu_subtype = 'BigO'
+			else:
+				ksu_subtype = 'MinO'
+
+		if ksu_type == 'Wish':
+			if ksu.is_dream:
+				ksu_subtype = 'Dream'
+			else:
+				ksu_subtype = 'Wish'
+
+#XX aqui me quede, ajustando la forma en la que se guarda el tipo de KSU
+
+
+		if not ksu_subtype: 
+			ksu_subtype = ksu.ksu_type
+
+
 		return ksu_subtype
-
-
 
 
 
@@ -286,6 +300,7 @@ class SetViewer(Handler):
 			ksu_set = KSU.query(KSU.theory == user_key ).order(KSU.created).fetch()	
 		else:
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.ksu_type == set_name).order(KSU.created).fetch()
+		
 		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name)
 
 	@super_user_bouncer
