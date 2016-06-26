@@ -289,6 +289,30 @@ li a:hover:not(.active) {
 
 
 
+/*--- Today's Mission ---*/
+
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+
+
+.btn-circle.btn-lg {
+  width: 30px;
+  height: 30px;
+  /*padding: 10px 16px;*/
+  font-size: 14px;
+  line-height: 1.33;
+  border-radius: 25px;
+}
+
+
 /*---Old formats yet to be validated-------*/
 
 .section-title{

@@ -11,32 +11,30 @@
 {% for ksu in ksu_set %}
 <form method="post">
 <input type="text" class="form-control hidden" name="ksu_id" value="{{ksu.key.id()}}">
-<div class="row KSUdisplaySection" style="margin-top: 0px; padding-bottom:8px; padding-left:5px;">
+<div class="row KSUdisplaySection" style="margin-top: 0px; padding-bottom:8px; padding-left:5px; padding-right:5px;">
 		
-	<div class="col-xs-1" style="padding:0;">
-		<div class="btn-group-horizontal pull-left">
-			  <button type="button" class="btn btn-success displaySectionButton" style="height:50px; width:10px; background-color:white;"><span class="glyphicon glyphicon-ok" style="margin:-8px; color:green;"></span></button>
-		</div>		
+	<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
+		<button type="button" class="btn btn-success btn-circle btn-lg"><i class="glyphicon glyphicon-ok"></i></button>
 	</div>
 
 
-	<div class="col-xs-9" style="padding-left:4px; padding-right:4px;">
+	<div class="col-xs-9">
 		{{ksu.description}}		
 	</div>
 
-	<div class="col-xs-1">
-		<div class="btn-group-horizontal pull-right">
-			  <button type="button" class="btn btn-success displaySectionButton" style="margin-bottom:5px;"><span class="glyphicon glyphicon-ok"></span></button>
-			  <button type="button" class="btn btn-warning displaySectionButton"><span class="glyphicon glyphicon-fast-forward"></span></button>
-		</div>		
+	<div class="col-xs-1" style="padding:0;">
+		<!-- <div class="btn-group-horizontal pull-right"> -->
+			  <button type="button" class="btn btn-success btn-circle" style="margin-bottom:5px;"><span class="glyphicon glyphicon-ok"></span></button>
+			  <!-- <button type="button" class="btn btn-warning btn-circle"><span class="glyphicon glyphicon-fast-forward"></span></button> -->
+		<!-- </div>		 -->
 	</div>
 
 
-	<div class="col-xs-1">
-		<div class="btn-group-horizontal pull-right">
-			<button type="button" class="btn btn-danger displaySectionButton" style="margin-bottom:5px;"><span class="glyphicon glyphicon-remove"></span></button>
-			<button type="submit" class="btn btn-primary displaySectionButton" name="action_description" value="EditKSU"><span class="glyphicon glyphicon-pencil"></span></button>
-		</div>		
+	<div class="col-xs-1" style="padding:0;">
+		<!-- <div class="btn-group-horizontal pull-right"> -->
+			<button type="button" class="btn btn-danger btn-circle" style="margin-bottom:5px;"><span class="glyphicon glyphicon-remove"></span></button>
+			<!-- <button type="submit" class="btn btn-primary btn-circle" name="action_description" value="EditKSU"><span class="glyphicon glyphicon-pencil"></span></button> -->
+		<!-- </div>		 -->
 	</div>
 
 		
