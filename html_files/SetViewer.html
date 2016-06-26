@@ -31,6 +31,10 @@
 
 								<span style="{% if ksu.is_critical %}color:red;{% endif %}"> <b>{{ksu.description}}</b> </span>
 								
+								{% if ksu.ksu_type == 'ImIn' %}
+									<br><span style="color:grey; font-style:italic; font-size:13px;">{{ksu.question}}</span> 
+								{% endif %}
+
 								{% if ksu.comments %} <br> <em> --- <span style="font-size:13px;">{{ksu.comments}} </span> --- </em>{% endif %}
 								</div>
 							</div>		

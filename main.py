@@ -228,14 +228,18 @@ class KsuEditor(Handler):
 
 		setattr(ksu, 'repeats_on', d_repeats_on)
 		
-		ksu.ksu_subtype = self.determine_ksu_subtype(ksu)
+		ksu.ksu_subtype = self.determine_ksu_subtype(ksu, post_details)
 
 		return ksu
 
-	def determine_ksu_subtype(self, ksu):
+	def determine_ksu_subtype(self, ksu, post_details):
 
 		ksu_type = ksu.ksu_type
-		ksu_subtype = ksu.ksu_subtype
+
+		if 'ksu_subtype' in post_details:
+			ksu_subtype = post_details['ksu_subtype']
+		else:
+			ksu_subtype = ksu_type
 
 		if ksu_subtype == 'KAS1or2':
 			if ksu.repeats == 'R000':
@@ -243,23 +247,21 @@ class KsuEditor(Handler):
 			else:
 				ksu_subtype = 'KAS1'
 
-		if ksu_type == 'BigO':
+		elif ksu_type == 'BigO':
 			if ksu.is_BigO:
 				ksu_subtype = 'BigO'
 			else:
 				ksu_subtype = 'MinO'
 
-		if ksu_type == 'Wish':
+		elif ksu_type == 'Wish':
 			if ksu.is_dream:
 				ksu_subtype = 'Dream'
 			else:
 				ksu_subtype = 'Wish'
 
-#XX aqui me quede, ajustando la forma en la que se guarda el tipo de KSU
-
-
-		if not ksu_subtype: 
-			ksu_subtype = ksu.ksu_type
+		elif ksu_type == 'Idea':
+			if ksu.is_principle:
+				ksu_subtype = 'Principle'
 
 
 		return ksu_subtype

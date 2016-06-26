@@ -82,10 +82,13 @@ d_KsuSubtypes = {
 	'ImPe': 'Important Person',
 
 	'Idea': 'Wise Idea',
+	'Principle': 'Principle',
 
 	'RTBG': 'Reason To Be Grateful',
 
-	'ImIn': 'Indicator'}
+	'ImIn': 'Indicator',
+	'RealitySnapshot':'Reality Indicator',
+	'AcumulatedPerception': 'Perception Indicator'} 
 
 d_ValueTypes = {
 	'V01': '0. Unassigned',
@@ -311,32 +314,46 @@ d_SetViewerDetails = {
 		'buttons':['Done', 'PinInMission']},
 
 	'ImPe': { 		
-		'attributes': [],
-		'fix_displayValue':{},
-		'fields': {},
-		'columns':{},
-		'buttons':[]},
+		'attributes': ['contact_frequency'], 
+		'fields': {'contact_frequency':'Contact Frequency (days)'},
+		'columns':{'contact_frequency':6},
+		'buttons':['Done', 'SendToMission']},
 
 	'Idea': { 		
-		'attributes': [],
-		'fix_displayValue':{},
-		'fields': {},
-		'columns':{},
-		'buttons':[]},
+		'attributes': ['source'],
+		'fields': {'source':'Source'},
+		'columns':{'source':6},
+		'buttons':['Done', 'PinInMission']},
+
+	'Principle': { 		
+		'attributes': ['source'],
+		'fields': {'source':'Source'},
+		'columns':{'source':6},
+		'buttons':['Done', 'PinInMission']},
 
 	'RTBG': { 		
-		'attributes': [],
-		'fix_displayValue':{},
-		'fields': {},
-		'columns':{},
-		'buttons':[]},
+		'attributes': ['awesomeness'],
+		'fields': {'awesomeness':'Added Awesomeness'},
+		'columns':{'awesomeness':6},
+		'buttons':['Done', 'PinInMission']},
 
 	'ImIn': { 		
-		'attributes': [],
-		'fix_displayValue':{},
+		'attributes': [], 
 		'fields': {},
 		'columns':{},
-		'buttons':[]},
+		'buttons':['Done', 'PinInMission']},
+
+	'AcumulatedPerception': { 		
+		'attributes': [], 
+		'fields': {},
+		'columns':{},
+		'buttons':['Done', 'PinInMission']},
+
+	'RealitySnapshot': { 		
+		'attributes': [], 
+		'fields': {},
+		'columns':{},
+		'buttons':['Done', 'PinInMission']},
 }
 
 
