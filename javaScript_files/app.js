@@ -129,7 +129,6 @@ $('input[type=radio][name=ksu_subtype]').on('change',function(){
 
 });
 
-
 $('#repeats').on('change',function(){
 
 	d_repeats_legend = {
@@ -152,8 +151,33 @@ $('#repeats').on('change',function(){
 
 });
 
+$('.MissionButton').on('click', function(){
+	var ksu = $(this).closest('#MissionKSU');
+	console.log('Hasta aqui pifa')
+	ksu.delay(200).fadeOut(500);
+	ksu.animate({
+		"opacity" : "0",
+		},{
+			"complete" : function() {
+      		ksu.remove();
+			}
+	});
+});
 
 
+
+// $('.MissionButton').on('click', function(){
+// 	var ksu = $(this).parents(['#MissionKSU']);
+// 	console.log('Hasta aqui pifa')
+// 	$('#MissionKSU').delay(200).fadeOut(1000);
+// 	$('#MissionKSU').animate({
+// 		"opacity" : "0",
+// 		},{
+// 			"complete" : function() {
+//       		$('#MissionKSU').remove();
+// 			}
+// 	});
+// });
 
 
 

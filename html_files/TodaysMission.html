@@ -9,12 +9,13 @@
 </div>
 
 {% for ksu in ksu_set %}
+
+<div class="row KSUdisplaySection" id="MissionKSU" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 <form method="post">
 <input type="text" class="form-control hidden" name="ksu_id" value="{{ksu.key.id()}}">
-<div class="row KSUdisplaySection" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 		
 	<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
-		<button type="button" class="btn btn-default btn-circle btn-lg"><i class="glyphicon glyphicon-ok"></i></button>
+		<button type="button" class="btn btn-default btn-circle btn-lg MissionButton"><i class="glyphicon glyphicon-ok"></i></button>
 	</div>
 
 
@@ -38,9 +39,9 @@
 		<!-- </div>		 -->
 	</div>
 
-		
+</form>		
 </div>
-</form>
+
 
 
 
