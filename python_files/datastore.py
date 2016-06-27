@@ -47,7 +47,6 @@ class Tag(ndb.Model):
 	ksus = ndb.KeyProperty(kind=Theory, repeated=True)	#all KSUs related to this tag
 
 
-
 class KSU(ndb.Model):
 	#tracker fields
 	theory = ndb.KeyProperty(kind=Theory, required=True)	
@@ -141,7 +140,22 @@ class KSU(ndb.Model):
 	reverse_target = ndb.BooleanProperty(default=False)
 
 
+class Event(ndb.Model):
 
+	#tracker fields
+	theory = ndb.KeyProperty(kind=Theory, required=True)
+	ksu_id = ndb.KeyProperty(kind=KSU, required=True)	
+	date = ndb.DateTimeProperty(auto_now_add=True)	
+	last_modified = ndb.DateTimeProperty(auto_now=True)
+
+	# base properties
+	event_type = ndb.StringProperty(required=True)
+	comments = ndb.TextProperty()
+
+	#Score properties
+	score = ndb.IntegerProperty(default=0)
+	duration = ndb.IntegerProperty(default=0)
+	intensity = ndb.IntegerProperty(default=0)
 
 
 
