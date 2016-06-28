@@ -153,6 +153,7 @@ class Event(ndb.Model):
 	comments = ndb.TextProperty()
 
 	#Score properties
+	kpts_type = ndb.StringProperty()
 	score = ndb.IntegerProperty(default=0)
 	duration = ndb.IntegerProperty(default=0)
 	intensity = ndb.IntegerProperty(default=0)

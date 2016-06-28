@@ -8,6 +8,7 @@ from python_files import datastore, randomUser, constants
 constants = constants.constants
 Theory = datastore.Theory
 KSU = datastore.KSU
+Event = datastore.Event
 
 template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
@@ -311,16 +312,22 @@ class SetViewer(Handler):
 
 
 class EventHandler(Handler):
-
-	# @super_user_bouncer
-	# @CreateOrEditKSU_request_handler	
-	# def post(self, user_action, post_details):
-	# 	return
 	
 	@super_user_bouncer
 	def post(self):
-		data = json.loads(self.request.body)
-		self.response.out.write(json.dumps(({'mensaje': 'User action: ' + data['user_action'] + '. KSU id: ' + data['ksu_id'] + '. Score: ' + str(int(data['duration'])*int(data['intensity'])) })))
+		event_details = json.loads(self.request.body)
+		event = Event(
+			theory=self.theory.key,
+			ksu_id =  KSU.get_by_id(int(event_details['ksu_id'])).key,
+			event_type = event_details['user_action'],
+			#Score properties
+			kpts_type = 'SmartEffort',
+			duration = int(event_details['duration']),
+			intensity = int(event_details['intensity']),
+			score = int(event_details['duration'])*int(event_details['intensity']))
+		
+		event.put()
+		self.response.out.write(json.dumps({'mensaje':'Evento creado y guardado'}))
 		return
 
 
