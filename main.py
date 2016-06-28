@@ -1,5 +1,5 @@
 #KASware V2.0.0 | Copyright 2016 Kasware Inc.
-import webapp2, jinja2, os, re, random, string, hashlib 
+import webapp2, jinja2, os, re, random, string, hashlib, json, logging 
 
 from datetime import datetime, timedelta, time
 from google.appengine.ext import ndb
@@ -267,7 +267,6 @@ class KsuEditor(Handler):
 		return ksu_subtype
 
 
-
 class Home(Handler):
 	
 	@super_user_bouncer
@@ -310,6 +309,20 @@ class SetViewer(Handler):
 	def post(self, user_action, post_details):
 		return
 
+
+class EventHandler(Handler):
+
+	# @super_user_bouncer
+	# @CreateOrEditKSU_request_handler	
+	# def post(self, user_action, post_details):
+	# 	return
+
+    def post(self):
+        data = json.loads(self.request.body)
+        logging.info('Dave dodero is awesome! he just understood what logging was for!!')
+        logging.info('            ')
+        logging.info(data)
+        self.response.out.write(json.dumps(({'mensaje': 'User action: ' + data['user_action'] + '. KSU id: ' + data['ksu_id']})))
 
 
 #--- Development handlers ----------
@@ -459,6 +472,8 @@ app = webapp2.WSGIApplication([
 							    ('/KsuEditor', KsuEditor),
 							    ('/SetViewer', SetViewer),
 							    # ('/SetViewer/' + PAGE_RE, SetViewer),
+
+							    ('/EventHandler',EventHandler),
 
 							    ('/PopulateRandomTheory',PopulateRandomTheory),
 							    ('/DataStoreViewer',DataStoreViewer)

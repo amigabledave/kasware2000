@@ -101,9 +101,7 @@ $('#ksu_type').on('change',function(){
 	}
 	new_catDropdown = new_catDropdown + '</select>'
 	$('#local_category').replaceWith(new_catDropdown);
-
 });
-
 
 
 $('input[type=radio][name=ksu_subtype]').on('change',function(){
@@ -126,8 +124,8 @@ $('input[type=radio][name=ksu_subtype]').on('change',function(){
 		$('#KeyA_KAS4').addClass('hidden');
 		
 	}
-
 });
+
 
 $('#repeats').on('change',function(){
 
@@ -148,12 +146,16 @@ $('#repeats').on('change',function(){
 	} else {
 		$('#repeatsDetails').addClass('hidden');
 	}
-
 });
 
 $('.MissionButton').on('click', function(){
 	var ksu = $(this).closest('#MissionKSU');
-	console.log('Hasta aqui pifa')
+	var user_action = $(this).attr("value");
+	// var user_action = 'Done de amentis';
+	var ksu_id = ksu.attr("value");
+	// console.log(ksu_id);
+	// var ksu_id = 'ksu_id de mentis';
+	console.log('Hasta aqui pifa');
 	ksu.delay(200).fadeOut(500);
 	ksu.animate({
 		"opacity" : "0",
@@ -162,6 +164,17 @@ $('.MissionButton').on('click', function(){
       		ksu.remove();
 			}
 	});
+
+	$.ajax({
+		type: "POST",
+		url: "/EventHandler",
+		dataType: 'json',
+		data: JSON.stringify({'ksu_id': ksu_id,'user_action': user_action})
+	})
+	.done(function( data ) { // check why I use done
+		alert(data['mensaje']);
+	});
+
 });
 
 
