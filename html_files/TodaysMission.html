@@ -12,34 +12,64 @@
 
 <div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 <form method="post">
-<!-- <input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}"> -->
+<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
+	<div class="col-xs-12">
+		<div class="row">
+			<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
+				<button type="button" class="btn btn-default btn-circle btn-lg MissionButton" name="action_description" value='Done'><i class="glyphicon glyphicon-ok"></i></button>
+			</div>
 
-	<!-- <div class="hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">{{ksu.key.id()}}</div>	 -->
-	<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
-		<button type="button" class="btn btn-default btn-circle btn-lg MissionButton" name="action_description" value='Done'><i class="glyphicon glyphicon-ok"></i></button>
+			<div class="col-xs-8">
+				{{ksu.description}} 
+
+			</div>
+
+
+			<div class="col-xs-1" style="padding-left:0; padding-right:5px;">
+				<span class="MissionKsuKpts" id="KsuKpts">{% if ksu.time_cost %}{{ksu.time_cost * 3}}{% else %}0{% endif %}</span><span class="MissionKsuKpts"> kpts.</span>
+			</div>
+
+
+			<div class="col-xs-1" style="padding:0;">
+					<button type="submit" class="btn btn-primary btn-circle" name="action_description" value="EditKSU"><span class="glyphicon glyphicon-pencil"></span></button>
+			</div>
+
+			<div class="col-xs-1" style="padding:0;">
+					<button type="button" class="btn btn-success btn-circle ShowDetailButton" id="ShowDetailButton"><span class="glyphicon glyphicon-plus"></span></button>
+			</div>			
+		</div>
+
+		<div class="row hidden" id="ScoreDetail">
+			<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
+				
+				<div class="col-xs-4">
+					<label> Duration </label>			
+					<input type="number" min="1" class="form-control time_cost"  id="time_cost" value="{% if ksu['time_cost']%}{{ksu['time_cost']}}{% else %}1{% endif %}">
+				</div>
+
+				<div class="col-xs-3">
+					<label>Intensity</label>
+					<select class="form-control" id="intensity" >
+						{% for value in constants['l_Fibonacci_1_8'] %}
+							{% if value == 3 %}
+								<option selected="selected" value="{{value}}"> {{value}} </option>
+							{% else %}
+								<option value="{{value}}"> {{value}} </option>
+							{% endif %}
+						{% endfor %}
+					</select>					
+				</div>
+
+				<div class="col-xs-5">
+					<button type="button" class="btn btn-success btn-circle btn-lg MissionButton" name="action_description" value='Done' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
+					<button type="button" class="btn btn-warning btn-circle btn-lg MissionButton" name="action_description" value='Done' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-forward"  style="margin-left:5px;"></span></button>
+					<button type="button" class="btn btn-warning btn-circle btn-lg MissionButton" name="action_description" value='Done' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-remove""></span></button>
+					<button type="button" class="btn btn-danger btn-circle btn-lg MissionButton" name="action_description" value='Done' style="margin-top:20px;"><span class="glyphicon glyphicon-trash"></span></button>
+				</div>
+
+		</div>
+
 	</div>
-
-
-	<div class="col-xs-9">
-		{{ksu.description}}		
-	</div>
-
-	<div class="col-xs-1" style="padding:0;">
-		<!-- <div class="btn-group-horizontal pull-right"> -->
-			<button type="submit" class="btn btn-primary btn-circle" name="action_description" value="EditKSU"><span class="glyphicon glyphicon-pencil"></span></button>
-			  <!-- <button type="button" class="btn btn-success btn-circle"><span class="glyphicon glyphicon-option-vertical"></span></button> -->
-			  <!-- <button type="button" class="btn btn-warning btn-circle"><span class="glyphicon glyphicon-fast-forward"></span></button> -->
-		<!-- </div>		 -->
-	</div>
-
-
-	<div class="col-xs-1" style="padding:0;">
-		<!-- <div class="btn-group-horizontal pull-right"> -->
-			<!-- <button type="button" class="btn btn-danger btn-circle" style="margin-bottom:5px;"><span class="glyphicon glyphicon-remove"></span></button> -->
-			<button type="button" class="btn btn-success btn-circle"><span class="glyphicon glyphicon-flash"></span></button>
-		<!-- </div>		 -->
-	</div>
-
 </form>		
 </div>
 

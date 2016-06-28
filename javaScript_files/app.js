@@ -178,6 +178,27 @@ $('.MissionButton').on('click', function(){
 });
 
 
+$('.ShowDetailButton').on('click', function(){
+	var ScoreDetail = $(this).closest('#MissionKSU').find('#ScoreDetail');
+	ScoreDetail.toggleClass('hidden');
+});
+
+// function updateScore(this){
+// };
+
+$('.time_cost').on('change', function(){
+	console.log('cambio de duracion detectado')	
+	var ksu = $(this).closest('#MissionKSU');
+	var duration = ksu.find('#time_cost').val();
+	console.log(duration);
+	var intensity = ksu.find('#intensity option:selected').val();
+	console.log(intensity);
+	var score = ksu.find('#KsuKpts');	
+	score.text(duration * intensity);
+});
+
+
+
 
 // $('.MissionButton').on('click', function(){
 // 	var ksu = $(this).parents(['#MissionKSU']);

@@ -313,6 +313,13 @@ li a:hover:not(.active) {
 }
 
 
+.MissionKsuKpts{
+    font-size: 13px;
+    color: #666699;
+    /*font-weight: bold;*/
+    font-size: 13px;
+}
+
 /*---Old formats yet to be validated-------*/
 
 .section-title{
