@@ -316,13 +316,12 @@ class EventHandler(Handler):
 	# @CreateOrEditKSU_request_handler	
 	# def post(self, user_action, post_details):
 	# 	return
-
-    def post(self):
-        data = json.loads(self.request.body)
-        logging.info('Dave dodero is awesome! he just understood what logging was for!!')
-        logging.info('            ')
-        logging.info(data)
-        self.response.out.write(json.dumps(({'mensaje': 'User action: ' + data['user_action'] + '. KSU id: ' + data['ksu_id']})))
+	
+	@super_user_bouncer
+	def post(self):
+		data = json.loads(self.request.body)
+		self.response.out.write(json.dumps(({'mensaje': 'User action: ' + data['user_action'] + '. KSU id: ' + data['ksu_id'] + '. Score: ' + str(int(data['duration'])*int(data['intensity'])) })))
+		return
 
 
 #--- Development handlers ----------

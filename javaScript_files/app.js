@@ -150,11 +150,12 @@ $('#repeats').on('change',function(){
 
 $('.MissionButton').on('click', function(){
 	var ksu = $(this).closest('#MissionKSU');
-	var user_action = $(this).attr("value");
-	// var user_action = 'Done de amentis';
 	var ksu_id = ksu.attr("value");
-	// console.log(ksu_id);
-	// var ksu_id = 'ksu_id de mentis';
+	var user_action = $(this).attr("value");
+
+	var duration = ksu.find('#time_cost').val();
+	var intensity = ksu.find('#intensity option:selected').val();
+
 	console.log('Hasta aqui pifa');
 	ksu.delay(200).fadeOut(500);
 	ksu.animate({
@@ -169,7 +170,12 @@ $('.MissionButton').on('click', function(){
 		type: "POST",
 		url: "/EventHandler",
 		dataType: 'json',
-		data: JSON.stringify({'ksu_id': ksu_id,'user_action': user_action})
+		data: JSON.stringify({
+			'ksu_id': ksu_id,
+			'user_action': user_action,
+			'duration': duration,
+			'intensity': intensity
+		})
 	})
 	.done(function( data ) { // check why I use done
 		alert(data['mensaje']);
