@@ -140,7 +140,7 @@ class KsuEditor(Handler):
 	def get(self):
 		ksu_id = self.request.get('ksu_id')
 		if ksu_id == 'NewKSU':
-			ksu = {}
+			ksu = constants['default_ksu']
 		else: 
 			ksu = KSU.get_by_id(int(ksu_id))
 

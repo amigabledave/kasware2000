@@ -196,6 +196,9 @@ $('.MissionButton').on('click', function(){
 
 $('.ShowDetailButton').on('click', function(){
 	var ScoreDetail = $(this).closest('#MissionKSU').find('#ScoreDetail');
+	var GlaphiconDiv = $(this).children();
+	GlaphiconDiv.toggleClass('glyphicon-minus');
+	GlaphiconDiv.toggleClass('glyphicon-plus');
 	ScoreDetail.toggleClass('hidden');
 });
 

@@ -26,6 +26,24 @@ l_Fibonacci_8_55 = [8,13,21,34,55]
 l_Fibonacci_21_144 = [21,34,55,89,144]
 
 
+default_ksu = {}
+
+# default_ksu = {
+# 	'ksu_type':'KeyA',
+# 	'ksu_subtype':'KAS2',
+# 	'repeats':'R000',
+# 	'repeats_on': {
+# 		'repeats_on_Mon': False,
+# 		'repeats_on_Tue': False, 
+# 		'repeats_on_Wed': False, 
+# 		'repeats_on_Thu': False,
+# 		'repeats_on_Fri': False,
+# 		'repeats_on_Sat': False,
+# 		'repeats_on_Sun': False},
+# } 
+
+
+
 d_SetTitles = {
 	'Gene': 'Unassigned KSUs',
 	'KeyA': 'Key Actions Set',
@@ -369,6 +387,8 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 'l_Fibonacci_0_8':l_Fibonacci_0_8,
 			 'l_Fibonacci_21_144':l_Fibonacci_21_144,
 			 
+			 'default_ksu':default_ksu,
+
 			 'd_SetTitles':d_SetTitles,
 			 'l_attributesThatNeedToBeFixed':l_attributesThatNeedToBeFixed,
 			 'd_displayValues':d_displayValues,
