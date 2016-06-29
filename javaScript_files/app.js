@@ -177,8 +177,18 @@ $('.MissionButton').on('click', function(){
 			'intensity': intensity
 		})
 	})
-	.done(function( data ) { // check why I use done
-		alert(data['mensaje']);
+	.done(function(data){
+		var EventScore = duration * intensity;
+		var TotalScore = parseInt($('#TotalScore').text()) + EventScore;
+		var PointsToGoal = parseInt($('#PointsToGoal').text()) - EventScore;
+
+		if ( PointsToGoal <= 0){
+			PointsToGoal = 'Achieved!'
+		}; 
+	
+		$('#PointsToGoal').text(' ' + PointsToGoal);
+		$('#TotalScore').text(' ' + TotalScore); 
+		// alert(data['mensaje']);
 	});
 
 });
