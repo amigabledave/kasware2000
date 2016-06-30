@@ -16,6 +16,7 @@ class Theory(ndb.Model):
  	#user settings
  	language = ndb.StringProperty(choices=('Spanish', 'English'), default='English')
  	hide_private_ksus = ndb.BooleanProperty(default=False)
+ 	day_start_time = ndb.TimeProperty()
 	
 	#tracker fields
 	created = ndb.DateTimeProperty(auto_now_add=True)	
@@ -36,17 +37,6 @@ class Theory(ndb.Model):
 			return theory
 
 
-class Tag(ndb.Model):
-	
-	theory = ndb.KeyProperty(kind=Theory, required=True)
-	created = ndb.DateTimeProperty(auto_now_add=True)		
-	last_modified = ndb.DateTimeProperty(auto_now=True)
-	
-	name = ndb.StringProperty(required=True)
-	description = ndb.StringProperty()
-	ksus = ndb.KeyProperty(kind=Theory, repeated=True)	#all KSUs related to this tag
-
-
 class KSU(ndb.Model):
 	#tracker fields
 	theory = ndb.KeyProperty(kind=Theory, required=True)	
@@ -61,7 +51,7 @@ class KSU(ndb.Model):
 
 	value_type = ndb.StringProperty()
 	local_category = ndb.StringProperty()
-	tags = ndb.KeyProperty(kind=Tag, repeated=True) #all tags related to this KSU	
+	# tags = ndb.KeyProperty(kind=Tag, repeated=True) #all tags related to this KSU	
 	parent_id = ndb.StringProperty()		
 		
 	is_active = ndb.BooleanProperty(default=True)
@@ -145,10 +135,12 @@ class Event(ndb.Model):
 	#tracker fields
 	theory = ndb.KeyProperty(kind=Theory, required=True)
 	ksu_id = ndb.KeyProperty(kind=KSU, required=True)	
-	date = ndb.DateTimeProperty(auto_now_add=True)	
+	created = ndb.DateTimeProperty(auto_now_add=True)	
 	last_modified = ndb.DateTimeProperty(auto_now=True)
 
 	# base properties
+	# user_date = ndb.DateTimeProperty(auto_now_add=True)	
+	user_date_ordinal = ndb.IntegerProperty(required=True)
 	event_type = ndb.StringProperty(required=True)
 	comments = ndb.TextProperty()
 
@@ -159,4 +151,34 @@ class Event(ndb.Model):
 	intensity = ndb.IntegerProperty(default=0)
 
 
+class DailyLog(ndb.Model):
 
+	#tracker fields
+	theory = ndb.KeyProperty(kind=Theory, required=True)	
+	created = ndb.DateTimeProperty(auto_now_add=True)	
+	last_modified = ndb.DateTimeProperty(auto_now=True)
+	
+	#base properties	
+	# user_date = ndb.DateTimeProperty(required=True)
+	user_date_ordinal = ndb.IntegerProperty(required=True)
+	diary_entry = ndb.TextProperty()
+
+	#Score properties
+	Goal = ndb.IntegerProperty(default=0)
+	SmartEffort = ndb.IntegerProperty(default=0)
+	Stupidity = ndb.IntegerProperty(default=0)
+	EndValue = ndb.IntegerProperty(default=0)
+	TotalScore = ndb.IntegerProperty(default=0)
+
+
+
+### Might be used in the future
+# class Tag(ndb.Model):
+	
+# 	theory = ndb.KeyProperty(kind=Theory, required=True)
+# 	created = ndb.DateTimeProperty(auto_now_add=True)		
+# 	last_modified = ndb.DateTimeProperty(auto_now=True)
+	
+# 	name = ndb.StringProperty(required=True)
+# 	description = ndb.StringProperty()
+# 	ksus = ndb.KeyProperty(kind=Theory, repeated=True)	#all KSUs related to this tag

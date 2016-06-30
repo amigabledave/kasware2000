@@ -73,9 +73,9 @@
 
 					<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-left">
 						<div style="margin-top: 12px; color: white;"> 
-							<span class="glyphicon glyphicon-flag" style="margin-left:15px;"> </span><span id="PointsToGoal"> 1550 </span> 
-							<span class="glyphicon glyphicon-gift" style="margin-left:30px;"> </span><span id="EndValuePoints"> 0 </span> 
-							<span class="glyphicon glyphicon-hourglass" style="margin-left:30px;"> </span><span id="TotalScore"> 0 </span> 
+							<span class="glyphicon glyphicon-flag" style="margin-left:15px;"> </span><span id="PointsToGoal"> {% if (active_log.Goal - active_log.SmartEffort + active_log.Stupidity <= 0)%}Achieved!{% else %}{{active_log.Goal - active_log.SmartEffort + active_log.Stupidity}}{% endif %}</span> 
+							<span class="glyphicon glyphicon-gift" style="margin-left:30px;"> </span><span id="EndValuePoints"> {{active_log.EndValue}}</span> 
+							<span class="glyphicon glyphicon-hourglass" style="margin-left:30px;"> </span><span id="TotalScore"> {{active_log.TotalScore}}</span> 
 						</div>
 					</div>
 

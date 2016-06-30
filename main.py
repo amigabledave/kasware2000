@@ -9,6 +9,8 @@ constants = constants.constants
 Theory = datastore.Theory
 KSU = datastore.KSU
 Event = datastore.Event
+DailyLog = datastore.DailyLog
+
 
 template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
@@ -57,8 +59,9 @@ class Handler(webapp2.RequestHandler):
 	def render_html(self, template, **kw):
 		t = jinja_env.get_template(template)
 		theory = self.theory 
+		active_log = self.active_log
 		if theory:				
-			return t.render(theory=theory,**kw)
+			return t.render(theory=theory, active_log=active_log, **kw)
 		else:
 			return t.render(**kw)
 
@@ -83,6 +86,29 @@ class Handler(webapp2.RequestHandler):
 		webapp2.RequestHandler.initialize(self, *a, **kw)
 		theory_id = self.read_secure_cookie('theory_id')
 		self.theory = theory_id and Theory.get_by_theory_id(int(theory_id)) #if the user exist, 'self.theory' will store the actual theory object
+		self.active_log = self.theory and self.get_active_log()
+
+	def get_active_log(self):
+		theory = self.theory
+		
+		day_start_time = theory.day_start_time
+		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
+
+		active_date = (datetime.today()-timedelta(hours=user_start_hour)).toordinal()  	
+		user_key = theory.key
+
+		active_log = DailyLog.query(DailyLog.theory == user_key ).filter(DailyLog.user_date_ordinal == active_date).fetch()
+		
+		if active_log:
+			active_log = active_log[0]
+
+		if not active_log:
+			active_log = DailyLog(
+				theory = theory.key,
+				user_date_ordinal = active_date)
+			active_log.put()
+
+		return active_log
 
 
 class SignUpLogIn(Handler):
@@ -112,7 +138,9 @@ class SignUpLogIn(Handler):
 					email=post_details['email'], 
 					password_hash=password_hash, 
 					first_name=post_details['first_name'], 
-					last_name=post_details['last_name'])
+					last_name=post_details['last_name'],
+					day_start_time=datetime.strptime('06:00', '%H:%M').time())
+
 				theory.put()
 				self.login(theory)
 				self.redirect('/')
@@ -144,7 +172,6 @@ class KsuEditor(Handler):
 		else: 
 			ksu = KSU.get_by_id(int(ksu_id))
 
-		# self.write(ksu)
 		self.print_html('KsuEditor.html', ksu=ksu, constants=constants)
 
 	@super_user_bouncer
@@ -164,10 +191,7 @@ class KsuEditor(Handler):
 		
 		self.redirect(return_to)
 		return
-							
-		# elif user_action == 'DiscardChanges':
-		# 	self.redirect(return_to)
-		# 	return
+
 
 	def prepareInputForSaving(self, ksu, post_details):
 
@@ -315,20 +339,39 @@ class EventHandler(Handler):
 	
 	@super_user_bouncer
 	def post(self):
+
 		event_details = json.loads(self.request.body)
+		day_start_time = self.theory.day_start_time
+		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
+
 		event = Event(
 			theory=self.theory.key,
 			ksu_id =  KSU.get_by_id(int(event_details['ksu_id'])).key,
 			event_type = event_details['user_action'],
 			#Score properties
+			user_date_ordinal=(datetime.today()-timedelta(hours=user_start_hour)).toordinal(),
 			kpts_type = 'SmartEffort',
 			duration = int(event_details['duration']),
 			intensity = int(event_details['intensity']),
-			score = int(event_details['duration'])*int(event_details['intensity']))
-		
+			score = int(event_details['duration'])*int(event_details['intensity']))		
 		event.put()
+
+		self.update_active_log(event)
+
+
+
 		self.response.out.write(json.dumps({'mensaje':'Evento creado y guardado'}))
 		return
+
+	def update_active_log(self, event):
+		active_log = self.active_log
+		print
+		print 'ya intento actualizar'
+		print
+		if event.kpts_type == 'SmartEffort':
+			active_log.SmartEffort += event.score
+			active_log.TotalScore += event.score
+		active_log.put() 
 
 
 #--- Development handlers ----------

@@ -1,14 +1,35 @@
+from datetime import datetime, timedelta, time
 
-def determine_return_to():
-	url_kasware = 'http://kasware.com'
-	url_activo = 'http://kasware.com/TodaysMission'
+today = datetime.today()
+time = today.time()
+hours = time.hour + time.minute/60.0 + time.second/3600.0 
+timedelta = timedelta(hours=hours)
+# timedelta = timedelta(hours=(time.hour + time.minute/60.0))
 
-	if url_activo.find(url_kasware) != -1:
-		return url_activo[len(url_kasware):]
-	else:
-		return '/'
+print today
+print time
+print time.microsecond/3600000000.0000000000
+print today - timedelta
 
-print determine_return_to()
+print today.toordinal() * 10
+print(today + timedelta).toordinal()
+
+print
+print
+print hours
+
+
+
+#-------------------
+# def determine_return_to():
+# 	url_kasware = 'http://kasware.com'
+# 	url_activo = 'http://kasware.com/TodaysMission'
+
+# 	if url_activo.find(url_kasware) != -1:
+# 		return url_activo[len(url_kasware):]
+# 	else:
+# 		return '/'
+# print determine_return_to()
 
 #-----------
 # def gatificar(funcion):
