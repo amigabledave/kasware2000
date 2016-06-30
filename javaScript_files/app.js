@@ -182,6 +182,10 @@ $('.MissionButton').on('click', function(){
 		var TotalScore = parseInt($('#TotalScore').text()) + EventScore;
 		var PointsToGoal = parseInt($('#PointsToGoal').text()) - EventScore;
 
+		if (isNaN(PointsToGoal)){
+			PointsToGoal = 0
+		};
+
 		if ( PointsToGoal <= 0){
 			PointsToGoal = 'Achieved!'
 		}; 
