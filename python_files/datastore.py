@@ -17,6 +17,8 @@ class Theory(ndb.Model):
  	language = ndb.StringProperty(choices=('Spanish', 'English'), default='English')
  	hide_private_ksus = ndb.BooleanProperty(default=False)
  	day_start_time = ndb.TimeProperty()
+ 	kpts_goals_parameters = ndb.JsonProperty(required=True)
+ 	kpts_goals = ndb.JsonProperty(required=True)
 	
 	#tracker fields
 	created = ndb.DateTimeProperty(auto_now_add=True)	

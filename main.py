@@ -1,5 +1,5 @@
 #KASware V2.0.0 | Copyright 2016 Kasware Inc.
-import webapp2, jinja2, os, re, random, string, hashlib, json, logging 
+import webapp2, jinja2, os, re, random, string, hashlib, json, logging, math 
 
 from datetime import datetime, timedelta, time
 from google.appengine.ext import ndb
@@ -103,9 +103,14 @@ class Handler(webapp2.RequestHandler):
 			active_log = active_log[0]
 
 		if not active_log:
+
+			active_weekday = (datetime.today()-timedelta(hours=user_start_hour)).weekday()
+			goal = theory.kpts_goals['typical_weekly_goals'][active_weekday]
+
 			active_log = DailyLog(
 				theory = theory.key,
-				user_date_ordinal = active_date)
+				user_date_ordinal = active_date,
+				Goal = goal)
 			active_log.put()
 
 		return active_log
@@ -134,12 +139,21 @@ class SignUpLogIn(Handler):
 
 			else:
 				password_hash = make_password_hash(post_details['email'], post_details['password'])
+				
+				kpts_goals_parameters = {
+						'typical_week_effort_distribution':[1, 1, 1, 1, 1, 0.5, 0],
+						'yearly_vacations_day': 12,
+						'yearly_shit_happens_days': 6,
+						'minimum_daily_hours_of_fully_focus_effort':7}
+
 				theory = Theory(
 					email=post_details['email'], 
 					password_hash=password_hash, 
 					first_name=post_details['first_name'], 
 					last_name=post_details['last_name'],
-					day_start_time=datetime.strptime('06:00', '%H:%M').time())
+					day_start_time=datetime.strptime('06:00', '%H:%M').time(),
+					kpts_goals_parameters=kpts_goals_parameters,
+					kpts_goals=calculate_user_kpts_goals(kpts_goals_parameters))
 
 				theory.put()
 				self.login(theory)
@@ -160,6 +174,13 @@ class LogOut(Handler):
 	def get(self):
 		self.logout()
 		self.redirect('/')
+
+
+class Settings(Handler):
+
+	@super_user_bouncer
+	def get(self):
+		self.print_html('Settings.html', ksu={}, constants=constants)
 
 
 class KsuEditor(Handler):
@@ -442,6 +463,40 @@ def determine_return_to(self):
 
 	return return_to
 
+def calculate_user_kpts_goals(kpts_goals_parameters):
+
+	yearly_vacations_day = kpts_goals_parameters['yearly_vacations_day']
+	yearly_shit_happens_days = kpts_goals_parameters['yearly_shit_happens_days']
+	minimum_daily_hours_of_fully_focus_effort = kpts_goals_parameters['minimum_daily_hours_of_fully_focus_effort']
+	
+	typical_week_effort_distribution = kpts_goals_parameters['typical_week_effort_distribution']
+	typical_week_active_days = sum(typical_week_effort_distribution)
+
+	typical_day_minimum_effort = minimum_daily_hours_of_fully_focus_effort*60*3
+
+	typical_week_minimum_effort = typical_day_minimum_effort*typical_week_active_days
+
+	active_days = 365.25 - (yearly_vacations_day + yearly_shit_happens_days) - ((7 - typical_week_active_days) * (365.25/7.0))
+
+	yearly_effort_goal = active_days * typical_day_minimum_effort
+
+	daily_effort_consumption = yearly_effort_goal/365.25
+
+	typical_weekly_goals = []
+	for e in typical_week_effort_distribution:
+		typical_weekly_goals.append(e * typical_day_minimum_effort)
+
+	user_kpts_goals = {
+		'typical_day_minimum_effort': math.ceil(typical_day_minimum_effort),
+		'typical_week_minimum_effort': math.ceil(typical_week_minimum_effort),
+		'daily_effort_consumption': math.ceil(daily_effort_consumption),
+		'typical_weekly_goals': typical_weekly_goals
+	}
+
+	return user_kpts_goals
+
+
+
 
 
 #--- Validation and security functions ----------
@@ -516,11 +571,13 @@ d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
 #--- Request index
 app = webapp2.WSGIApplication([
 							    ('/', TodaysMission),
+							    
 							    ('/SignUpLogIn', SignUpLogIn),
 							    ('/LogOut', LogOut),
+							    ('/Settings', Settings),
+							    
 							    ('/KsuEditor', KsuEditor),
 							    ('/SetViewer', SetViewer),
-							    # ('/SetViewer/' + PAGE_RE, SetViewer),
 
 							    ('/EventHandler',EventHandler),
 

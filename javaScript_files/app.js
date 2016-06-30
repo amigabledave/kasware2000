@@ -156,8 +156,8 @@ $('.MissionButton').on('click', function(){
 	var duration = ksu.find('#time_cost').val();
 	var intensity = ksu.find('#intensity option:selected').val();
 
-	console.log('Hasta aqui pifa');
-	ksu.delay(200).fadeOut(500);
+	// console.log('Hasta aqui pifa');
+	// ksu.delay(200).fadeOut(500);
 	ksu.animate({
 		"opacity" : "0",
 		},{
