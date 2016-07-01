@@ -397,23 +397,41 @@ class EventHandler(Handler):
 
 #--- Development handlers ----------
 class PopulateRandomTheory(Handler):
+	
+	def get(self):
+		self.populateRandomTheory()
+		self.redirect('/')
 
-	def populateRandomTheory(self, theorySize):
+	def populateRandomTheory(self):
+
 		theory = self.theory
 		theory_key = theory.key
 		username = theory.first_name + ' ' + theory.last_name
-		for i in range(0, theorySize):
-			description = 'KSU no. ' + str(i) + ' of ' + username
-			new_ksu = KSU(
-				theory=theory_key,
-				description=description)
-			new_ksu.put()		
+
+		theory_parameters = [
+			[10, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1'}]
+		]
+
+		for e in theory_parameters:
+			set_size = e[0]
+			set_details = e[1]
+
+			ksu_subtype = constants['d_KsuSubtypes'][set_details['ksu_subtype']]
+
+			for i in range(0, set_size):
+
+				description =  ksu_subtype + 'no. ' + str(i) + ' of ' + username
+				new_ksu = KSU(
+					theory=theory_key,
+					description=description)
+
+				for a_key in set_details:
+					a_val = set_details[a_key]
+					setattr(new_ksu, a_key, a_val)
+			
+				new_ksu.put()		
 		return
-	
-	def get(self):
-		randomUserTheory = self.theory
-		self.populateRandomTheory(5)
-		self.redirect('/')
+
 
 
 class DataStoreViewer(Handler):
