@@ -409,7 +409,22 @@ class PopulateRandomTheory(Handler):
 		username = theory.first_name + ' ' + theory.last_name
 
 		theory_parameters = [
-			[10, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1'}]
+			[10,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1'}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS2'}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3'}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4'}],
+			[1, {'ksu_type':'BigO', 'ksu_subtype':'BigO'}],
+			[2, {'ksu_type':'BigO', 'ksu_subtype':'MinO'}],
+			[3, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
+			[3, {'ksu_type':'Wish', 'ksu_subtype':'Dream'}],
+			[3, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo'}],
+			[3, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe'}],
+			[3, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
+			[5, {'ksu_type':'Idea', 'ksu_subtype':'Principle'}],
+			[3, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
+			[1, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot'}],
+			[1, {'ksu_type':'ImIn', 'ksu_subtype':'AcumulatedPerception'}]
 		]
 
 		for e in theory_parameters:
@@ -418,9 +433,9 @@ class PopulateRandomTheory(Handler):
 
 			ksu_subtype = constants['d_KsuSubtypes'][set_details['ksu_subtype']]
 
-			for i in range(0, set_size):
+			for i in range(1, set_size + 1):
 
-				description =  ksu_subtype + 'no. ' + str(i) + ' of ' + username
+				description =  ksu_subtype + ' no. ' + str(i) + ' of ' + username
 				new_ksu = KSU(
 					theory=theory_key,
 					description=description)

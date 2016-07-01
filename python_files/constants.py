@@ -81,6 +81,7 @@ l_KsuTypes = removeNumbers(l_KsuTypes, 4)
 d_KsuTypes = makeDictionaryFromTupleList(l_KsuTypes)
 
 d_KsuSubtypes = {
+	'Gene':'Unassigned',
 	'KeyA':'Key Action',
 	'KAS1':'Key Repetitive Action',
 	'KAS2':'Key Action',
