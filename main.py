@@ -209,9 +209,11 @@ class KsuEditor(Handler):
 		if user_action == 'SaveChanges':
 			ksu = self.prepareInputForSaving(ksu, post_details)
 			ksu.put()
+			update_next_event(self, user_action, post_details, ksu)
 		
 		self.redirect(return_to)
 		return
+
 
 
 	def prepareInputForSaving(self, ksu, post_details):
@@ -448,7 +450,6 @@ class PopulateRandomTheory(Handler):
 		return
 
 
-
 class DataStoreViewer(Handler):
 
 	def descriptionsOnly(self):
@@ -528,7 +529,28 @@ def calculate_user_kpts_goals(kpts_goals_parameters):
 
 	return user_kpts_goals
 
+def update_next_event(self, user_action, post_details, ksu):	#xx	
 
+	today = datetime.today()
+	ksu_subtype = ksu.ksu_subtype	
+
+	if ksu_subtype == 'KAS1':
+
+		next_event = ksu.next_event
+		
+		
+		if not next_event:
+			ksu.next_event = today
+			
+		if user_action == 'Done':
+			ksu.next_event ==
+			
+	ksu.put()
+	return		
+
+
+
+	
 
 
 

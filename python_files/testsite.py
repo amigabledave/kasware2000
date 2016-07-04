@@ -1,3 +1,75 @@
+from datetime import datetime, timedelta, time
+
+days = 0
+months = 0
+years = 0
+
+
+
+d_repeats_on = {
+	'repeats_on_Mon': False,
+	'repeats_on_Tue': False, 
+	'repeats_on_Wed': False, 
+	'repeats_on_Thu': False,
+	'repeats_on_Fri': False,
+	'repeats_on_Sat': False,
+	'repeats_on_Sun': False}
+
+
+d_repeats = {'R000':'Never',
+			 'R001':'Daily',
+			 'R007':'Weekly',
+			 'R030':'Monthly',
+			 'R365':'Yearly'}
+
+
+d_repeats = {'R000':'Never',
+			 'R001':1,
+			 'R007':7,
+			 'R030':30,
+			 'R365':365}
+
+
+l_repeats_on = [0,0,0,0,0,0,0] # Monday = 0, Sunday = 6 on datetime.today().weekday()
+
+
+print datetime.today() + timedelta(days=2)
+print datetime.today().weekday()
+
+
+
+def determine_days_for_next_weekly_repeats_on(l_repeats_on):
+	days = 0
+	return
+
+def find_next_1(l_repeats_on):
+	active_position = datetime.today().weekday()
+	return
+
+abc = ['a', 'b', 'c', 'd', 'e', 'f']
+
+def reorginize_list(l, position):
+	result = []
+	list_size = len(l)
+	active_position = position
+	for i in range(0, list_size):
+		result.append(l[active_position]) 
+		active_position += 1
+		if active_position >= list_size:
+			active_position = 0
+	return result
+
+print reorginize_list(abc, 4)
+
+
+
+
+
+
+
+
+
+
 
 #-------------------
 # import math
