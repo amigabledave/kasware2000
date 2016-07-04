@@ -208,10 +208,12 @@ class KsuEditor(Handler):
 		
 		if user_action == 'SaveChanges':
 			ksu = self.prepareInputForSaving(ksu, post_details)
-			ksu.put()
 			update_next_event(self, user_action, post_details, ksu)
+			ksu.put()
 		
 		self.redirect(return_to)
+
+		# self.write(post_details)
 		return
 
 
@@ -367,10 +369,13 @@ class EventHandler(Handler):
 		day_start_time = self.theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 
+		user_action = event_details['user_action']
+		ksu = KSU.get_by_id(int(event_details['ksu_id']))
+
 		event = Event(
 			theory=self.theory.key,
-			ksu_id =  KSU.get_by_id(int(event_details['ksu_id'])).key,
-			event_type = event_details['user_action'],
+			ksu_id =  ksu.key,
+			event_type = user_action,
 			#Score properties
 			user_date_ordinal=(datetime.today()-timedelta(hours=user_start_hour)).toordinal(),
 			kpts_type = 'SmartEffort',
@@ -381,7 +386,8 @@ class EventHandler(Handler):
 
 		self.update_active_log(event)
 
-
+		update_next_event(self, user_action, {}, ksu)
+		ksu.put()
 
 		self.response.out.write(json.dumps({'mensaje':'Evento creado y guardado'}))
 		return
@@ -531,21 +537,68 @@ def calculate_user_kpts_goals(kpts_goals_parameters):
 
 def update_next_event(self, user_action, post_details, ksu):	#xx	
 
+	def days_to_next_event(ksu):
+
+		def find_next_weekly_repetition(d_repeats_on):
+
+			def d_to_l_repeats_on(d_repeats_on):
+				result = []
+				l_repeats_on_keys = ['repeats_on_Mon', 'repeats_on_Tue', 'repeats_on_Wed', 'repeats_on_Thu', 'repeats_on_Fri', 'repeats_on_Sat', 'repeats_on_Sun']
+				for day in l_repeats_on_keys:
+					result.append(d_repeats_on[day])
+				return result
+
+			l_repeats_on = d_to_l_repeats_on(d_repeats_on)
+
+			def reorginize_list(l, position):
+				result = []
+				list_size = len(l)
+				active_position = position
+				for i in range(0, list_size):		
+					active_position += 1
+					if active_position >= list_size:
+						active_position = 0
+					result.append(l[active_position]) 
+				return result
+
+			active_position = datetime.today().weekday()
+			repeats_on_list = reorginize_list(l_repeats_on, active_position)
+			i = 1
+			for weekday in repeats_on_list:
+				if weekday:
+					return i
+				else:
+					i += 1
+			return 0
+
+		d_repeats_values = {'R000':'Never', 'R001':1, 'R007':7, 'R030':30, 'R365':365}
+		
+		repeats = ksu.repeats
+		repeats_on = ksu.repeats_on
+		repeats_every = ksu.repeats_every
+
+		result = 0
+
+		if repeats in ['R001', 'R030', 'R365']:		
+			result = d_repeats_values[repeats] * repeats_every
+
+		if repeats == 'R007':
+			result = find_next_weekly_repetition(repeats_on)
+
+		return result
+
 	today = datetime.today()
 	ksu_subtype = ksu.ksu_subtype	
+	days_to_next_event = days_to_next_event(ksu)
 
 	if ksu_subtype == 'KAS1':
-
 		next_event = ksu.next_event
-		
-		
+
 		if not next_event:
 			ksu.next_event = today
 			
 		if user_action == 'Done':
-			ksu.next_event ==
-			
-	ksu.put()
+			ksu.next_event = today + timedelta(days=days_to_next_event)
 	return		
 
 

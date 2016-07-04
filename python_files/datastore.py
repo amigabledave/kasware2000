@@ -76,8 +76,8 @@ class KSU(ndb.Model):
 	time_cost = ndb.IntegerProperty()
 
 	repeats = ndb.StringProperty()	
-	repeats_every = ndb.IntegerProperty()
 	repeats_on = ndb.JsonProperty() #Day's of the week when it repeats if the frequency is Weekly, elese the repetition date is the same day of the month or year
+	repeats_every = ndb.IntegerProperty()
 
 	trigger_circumstances = ndb.TextProperty()
 	standard_reward = ndb.IntegerProperty()

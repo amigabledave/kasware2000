@@ -139,8 +139,10 @@ $('#repeats').on('change',function(){
 		$('#repeatsDetails').removeClass('hidden');
 		if (this.value == 'R007'){
 			$('#repeats_on').removeClass('hidden');
+			$('#repeats_every').addClass('hidden');
 		} else {
 			$('#repeats_on').addClass('hidden');
+			$('#repeats_every').removeClass('hidden');
 		}
 		$('#repeats_every_footnote').text(d_repeats_legend[this.value]);
 	} else {
