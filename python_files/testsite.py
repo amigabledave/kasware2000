@@ -2,113 +2,77 @@
 
 ### --
 # import datetime as DateTime
-from datetime import datetime, timedelta, time
+# from datetime import datetime, timedelta, time
 
-days = 0
-months = 0
-years = 0
-
+# # print datetime.today() + timedelta(days=2)
+# # print datetime.today().weekday()
 
 
-d_repeats_on = {
-	'repeats_on_Mon': False,
-	'repeats_on_Tue': False, 
-	'repeats_on_Wed': False, 
-	'repeats_on_Thu': False,
-	'repeats_on_Fri': False,
-	'repeats_on_Sat': False,
-	'repeats_on_Sun': False}
+# def days_to_next_event(ksu):
 
+# 	def find_next_weekly_repetition(d_repeats_on):
 
+# 		def d_to_l_repeats_on(d_repeats_on):
+# 			result = []
+# 			l_repeats_on_keys = ['repeats_on_Mon', 'repeats_on_Tue', 'repeats_on_Wed', 'repeats_on_Thu', 'repeats_on_Fri', 'repeats_on_Sat', 'repeats_on_Sun']
+# 			for day in l_repeats_on_keys:
+# 				result.append(d_repeats_on[day])
+# 			return result
 
-d_repeats = {'R000':'Never',
-			 'R001':'Daily',
-			 'R007':'Weekly',
-			 'R030':'Monthly',
-			 'R365':'Yearly'}
+# 		l_repeats_on = d_to_l_repeats_on(d_repeats_on)
 
+# 		def reorginize_list(l, position):
+# 			result = []
+# 			list_size = len(l)
+# 			active_position = position
+# 			for i in range(0, list_size):		
+# 				active_position += 1
+# 				if active_position >= list_size:
+# 					active_position = 0
+# 				result.append(l[active_position]) 
+# 			return result
 
+# 		active_position = datetime.today().weekday()
+# 		repeats_on_list = reorginize_list(l_repeats_on, active_position)
+# 		i = 1
+# 		for weekday in repeats_on_list:
+# 			if weekday:
+# 				return i
+# 			else:
+# 				i += 1
+# 		return 0
 
-# print datetime.today() + timedelta(days=2)
-# print datetime.today().weekday()
-
-
-def days_to_next_event(ksu):
-
-	d_repeats_values = {'R000':'Never', 'R001':1, 'R007':7, 'R030':30, 'R365':365}
+# 	d_repeats_values = {'R000':'Never', 'R001':1, 'R007':7, 'R030':30, 'R365':365}
 	
-	repeats = ksu.repeats
-	repeats_on = ksu.repeats_on
-	repeats_every = ksu.repeats_every
+# 	repeats = ksu.repeats
+# 	repeats_on = ksu.repeats_on
+# 	repeats_every = ksu.repeats_every
 
-	result = 0
+# 	result = 0
 
-	if repeats in ['R001', 'R030', 'R365']:		
-		result = d_repeats_values[repeats] * repeats_every
+# 	if repeats in ['R001', 'R030', 'R365']:		
+# 		result = d_repeats_values[repeats] * repeats_every
 
-	if repeats == 'R007':
-		result = find_next_weekly_repetition(d_repeats_on)
+# 	if repeats == 'R007':
+# 		result = find_next_weekly_repetition(d_repeats_on)
 
+# 	return result
 
-	return result
-
-
-def find_next_weekly_repetition(d_repeats_on):
-
-	def d_to_l_repeats_on(d_repeats_on):
-		result = []
-		l_repeats_on_keys = ['repeats_on_Mon', 'repeats_on_Tue', 'repeats_on_Wed', 'repeats_on_Thu', 'repeats_on_Fri', 'repeats_on_Sat', 'repeats_on_Sun']
-		for day in l_repeats_on_keys:
-			result.append(d_repeats_on[day])
-		return result
-
-	l_repeats_on = d_to_l_repeats_on(d_repeats_on)
-
-	def reorginize_list(l, position):
-		result = []
-		list_size = len(l)
-		active_position = position
-		for i in range(0, list_size):		
-			active_position += 1
-			if active_position >= list_size:
-				active_position = 0
-			result.append(l[active_position]) 
-		return result
-
-	active_position = datetime.today().weekday()
-	repeats_on_list = reorginize_list(l_repeats_on, active_position)
-	i = 1
-	for weekday in repeats_on_list:
-		if weekday:
-			return i
-		else:
-			i += 1
-	return 0
+# d_prueba = {
+# 	'repeats_on_Mon': False,
+# 	'repeats_on_Tue': True, 
+# 	'repeats_on_Wed': False, 
+# 	'repeats_on_Thu': False,
+# 	'repeats_on_Fri': False,
+# 	'repeats_on_Sat': False,
+# 	'repeats_on_Sun': False}
 
 
-d_prueba = {
-	'repeats_on_Mon': False,
-	'repeats_on_Tue': True, 
-	'repeats_on_Wed': False, 
-	'repeats_on_Thu': False,
-	'repeats_on_Fri': False,
-	'repeats_on_Sat': False,
-	'repeats_on_Sun': False}
-
-
-print find_next_weekly_repetition(d_prueba)
+# print find_next_weekly_repetition(d_prueba)
 
 
 # abc = ['a', 'b', 'c', 'd', 'e', 'f']
 # print reorginize_list(abc, 2)
-
-
-
-
-
-
-
-
 
 
 
