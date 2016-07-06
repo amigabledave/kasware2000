@@ -384,8 +384,7 @@ class EventHandler(Handler):
 			score = int(event_details['duration'])*int(event_details['intensity']))		
 		event.put()
 
-		self.update_active_log(event)
-
+		self.update_active_log(event) #xx
 		update_next_event(self, user_action, {}, ksu)
 		ksu.put()
 
@@ -394,12 +393,8 @@ class EventHandler(Handler):
 
 	def update_active_log(self, event):
 		active_log = self.active_log
-		print
-		print 'ya intento actualizar'
-		print
 		if event.kpts_type == 'SmartEffort':
 			active_log.SmartEffort += event.score
-			active_log.TotalScore += event.score
 		active_log.put() 
 
 
@@ -586,10 +581,11 @@ def update_next_event(self, user_action, post_details, ksu):	#xx
 			result = find_next_weekly_repetition(repeats_on)
 
 		return result
-
-	today = datetime.today()
+	# today = datetime.today() + timedelta(days=20)
+	today = datetime.today() + timedelta(days=1)
+	tomorrow = today
 	ksu_subtype = ksu.ksu_subtype	
-	days_to_next_event = days_to_next_event(ksu)
+	days_to_next_event = days_to_next_event(ksu) #xx
 
 	if ksu_subtype == 'KAS1':
 		next_event = ksu.next_event
@@ -597,8 +593,51 @@ def update_next_event(self, user_action, post_details, ksu):	#xx
 		if not next_event:
 			ksu.next_event = today
 			
-		if user_action == 'Done':
+		if user_action in ['Done', 'Skip']:
 			ksu.next_event = today + timedelta(days=days_to_next_event)
+
+		if user_action == 'Push':
+			ksu.next_event = tomorrow
+
+
+	if ksu_subtype == 'KAS2':
+		next_event = ksu.next_event
+
+		if user_action in ['Done', 'Skip']:
+			ksu.next_event = None
+			ksu.pretty_next_event = None
+
+		if user_action == 'Push':
+			ksu.next_event = tomorrow
+			ksu.pretty_next_event = tomorrow
+
+
+	if ksu_subtype == 'EVPo':
+		next_event = ksu.next_trigger_event
+
+		if not next_event:
+			ksu.next_trigger_event = today
+
+		if user_action in ['Done', 'Skip']:
+			ksu.next_trigger_event = today + timedelta(days=ksu.charging_time)			
+
+		if user_action == 'Push':
+			ksu.next_trigger_event = tomorrow
+
+
+
+	if ksu_subtype == 'ImPe':
+		next_event = ksu.next_contact_event
+
+		if not next_event:
+			ksu.next_contact_event = today
+
+		if user_action in ['Done', 'Skip']:
+			ksu.next_contact_event = today + timedelta(days=ksu.contact_frequency)			
+
+		if user_action == 'Push':
+			ksu.next_contact_event = tomorrow
+
 	return		
 
 

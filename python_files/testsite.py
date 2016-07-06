@@ -1,3 +1,13 @@
+from datetime import datetime, timedelta, time
+one_day = timedelta(days=1)
+
+today = datetime.today()
+
+tomorrow = today  + one_day
+
+print today
+print tomorrow
+print tomorrow + one_day
 
 
 ### --

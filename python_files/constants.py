@@ -182,7 +182,7 @@ d_attributeType = {
 	'repeats_on_Thu':'checkbox_repeats_on',
 	'repeats_on_Fri':'checkbox_repeats_on',
 	'repeats_on_Sat':'checkbox_repeats_on',
-	'repeats_on_Sun':'checkbox_repeats_on',
+	'repeats_on_Sun':'checkbox_repeats_on	',
 
 	'trigger_circumstances':'string',
 	'standard_reward':'integer',
