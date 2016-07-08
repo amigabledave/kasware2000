@@ -62,6 +62,7 @@ class KSU(ndb.Model):
 
 	is_visible = ndb.BooleanProperty(default=True)
 	is_deleted = ndb.BooleanProperty(default=False)
+	in_graveyard = ndb.BooleanProperty(default=False)
 
 	# base properties - might be used in the future
 	importance = ndb.IntegerProperty()

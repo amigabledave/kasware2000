@@ -331,14 +331,37 @@ class TodaysMission(Handler):
 	@super_user_bouncer
 	def get(self):
 		user_key = self.theory.key
-		ksu_set = KSU.query(KSU.theory == user_key).order(KSU.created).fetch()
+		ksu_set = self.generate_todays_mission()
 		self.print_html('TodaysMission.html', ksu_set=ksu_set, constants=constants, set_name='TodaysMission')
-
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
 	def post(self, user_action, post_details):
 		return
+
+	#xx
+	def generate_todays_mission(self):
+		user_key = self.theory.key
+		ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False).order(KSU.created).fetch()
+
+		day_start_time = self.theory.day_start_time
+		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
+		today =(datetime.today()-timedelta(hours=user_start_hour)).date()
+		mission = []
+		mission_sets = ['KAS1', 'KAS2', 'EVPo', 'ImPe']
+		for ksu in ksu_set:
+			ksu_subtype = ksu.ksu_subtype
+			if ksu_subtype in mission_sets:
+				if ksu_subtype in ['KAS1','KAS2']:
+					next_event = ksu.next_event
+				elif ksu_subtype == 'EVPo':
+					next_event = ksu.next_trigger_event
+				elif ksu_subtype == 'ImPe':
+					next_event = ksu.next_contact_event
+
+				if ksu.is_active and next_event and today >= next_event:
+					mission.append(ksu)
+		return mission
 
 			
 class SetViewer(Handler):
@@ -384,7 +407,7 @@ class EventHandler(Handler):
 			score = int(event_details['duration'])*int(event_details['intensity']))		
 		event.put()
 
-		self.update_active_log(event) #xx
+		self.update_active_log(event)
 		update_next_event(self, user_action, {}, ksu)
 		ksu.put()
 
@@ -411,18 +434,22 @@ class PopulateRandomTheory(Handler):
 		theory_key = theory.key
 		username = theory.first_name + ' ' + theory.last_name
 
+		day_start_time = self.theory.day_start_time
+		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 		
+		today =(datetime.today()-timedelta(hours=user_start_hour))
+
 		theory_parameters = [
 			[10,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1'}],
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS2'}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y')}],
 			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3'}],
 			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4'}],
 			[1, {'ksu_type':'BigO', 'ksu_subtype':'BigO'}],
 			[2, {'ksu_type':'BigO', 'ksu_subtype':'MinO'}],
 			[3, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
 			[3, {'ksu_type':'Wish', 'ksu_subtype':'Dream'}],
-			[3, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo'}],
-			[3, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe'}],
+			[3, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_trigger_event':today}],
+			[3, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_contact_event':today}],
 			[3, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
 			[5, {'ksu_type':'Idea', 'ksu_subtype':'Principle'}],
 			[3, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
@@ -530,7 +557,7 @@ def calculate_user_kpts_goals(kpts_goals_parameters):
 
 	return user_kpts_goals
 
-def update_next_event(self, user_action, post_details, ksu):	#xx	
+def update_next_event(self, user_action, post_details, ksu):
 
 	def days_to_next_event(ksu):
 
@@ -582,10 +609,13 @@ def update_next_event(self, user_action, post_details, ksu):	#xx
 
 		return result
 	# today = datetime.today() + timedelta(days=20)
-	today = datetime.today() + timedelta(days=1)
-	tomorrow = today
+
+	day_start_time = self.theory.day_start_time
+	user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
+	today =(datetime.today()-timedelta(hours=user_start_hour))
+	tomorrow = today + timedelta(days=1)
 	ksu_subtype = ksu.ksu_subtype	
-	days_to_next_event = days_to_next_event(ksu) #xx
+	days_to_next_event = days_to_next_event(ksu)
 
 	if ksu_subtype == 'KAS1':
 		next_event = ksu.next_event
@@ -599,7 +629,6 @@ def update_next_event(self, user_action, post_details, ksu):	#xx
 		if user_action == 'Push':
 			ksu.next_event = tomorrow
 
-
 	if ksu_subtype == 'KAS2':
 		next_event = ksu.next_event
 
@@ -609,8 +638,7 @@ def update_next_event(self, user_action, post_details, ksu):	#xx
 
 		if user_action == 'Push':
 			ksu.next_event = tomorrow
-			ksu.pretty_next_event = tomorrow
-
+			ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
 
 	if ksu_subtype == 'EVPo':
 		next_event = ksu.next_trigger_event
@@ -623,8 +651,6 @@ def update_next_event(self, user_action, post_details, ksu):	#xx
 
 		if user_action == 'Push':
 			ksu.next_trigger_event = tomorrow
-
-
 
 	if ksu_subtype == 'ImPe':
 		next_event = ksu.next_contact_event
@@ -640,9 +666,11 @@ def update_next_event(self, user_action, post_details, ksu):	#xx
 
 	return		
 
-
-
-	
+def kill_ksu(ksu): #xx
+	ksu.is_active = False
+	ksu.is_deleted = True
+	ksu.in_graveyard = True
+	return ksu
 
 
 

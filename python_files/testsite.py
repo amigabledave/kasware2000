@@ -9,6 +9,8 @@ print today
 print tomorrow
 print tomorrow + one_day
 
+print today <= tomorrow
+
 
 ### --
 # import datetime as DateTime

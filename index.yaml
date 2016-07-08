@@ -17,6 +17,12 @@ indexes:
 
 - kind: KSU
   properties:
+  - name: is_deleted
+  - name: theory
+  - name: created
+
+- kind: KSU
+  properties:
   - name: ksu_type
   - name: created
 
