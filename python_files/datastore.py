@@ -171,7 +171,6 @@ class DailyLog(ndb.Model):
 	Goal = ndb.IntegerProperty(default=0)
 	SmartEffort = ndb.IntegerProperty(default=0)
 	Stupidity = ndb.IntegerProperty(default=0)
-	EndValue = ndb.IntegerProperty(default=0)
 	EffortReserve = ndb.IntegerProperty(default=0)
 
 

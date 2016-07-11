@@ -56,7 +56,7 @@
 						</div>
 					</div>
 				
-					<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-right">
+					<div class="col-xs-5 text-right">
 						<form class="form-horizontal" method="post">
 							<div class="form-group" style="margin:10px; text-align: left;">
 								<div class="col-xs-10" style="padding-left: 0px; padding-right: 0px;">
@@ -71,16 +71,15 @@
 						</form>
 					</div>
 
-					<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-left">
+					<div class="col-xs-3 text-left">
 						<div style="margin-top: 12px; color: white;">
-							<span class="glyphicon glyphicon-heart" style="margin-left:30px;"> </span><span id="EffortReserve"> {{active_log.EffortReserve}}</span>  
-							<span class="glyphicon glyphicon-flag" style="margin-left:30px;"> </span><span id="PointsToGoal"> {% if (active_log.Goal - active_log.SmartEffort + active_log.Stupidity <= 0)%}Achieved!{% else %}{{active_log.Goal - active_log.SmartEffort + active_log.Stupidity}}{% endif %}</span> 
-							<span class="glyphicon glyphicon-gift" style="margin-left:30px;"> </span><span id="EndValuePoints"> {{active_log.EndValue}}</span> 
+							<span class="glyphicon glyphicon-flag" style="margin-left:30px;"> </span><span id="PointsToGoal"> {% if (active_log.Goal - active_log.SmartEffort + active_log.Stupidity <= 0)%}Achieved!{% else %}{{active_log.Goal - active_log.SmartEffort + active_log.Stupidity}}{% endif %}</span>			
+							<span class="glyphicon glyphicon-piggy-bank" style="margin-left:30px;"> </span><span id="EffortReserve"> {{active_log.EffortReserve}}</span>   
 						</div>
 					</div>
 
 					<form method="post">
-						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-left respect-space"><button type="button" class="btn btn-primary btn-xs" style="height: 25px; width: 60px; margin-top: 10px; background-color:#00CCFF; color:white;" aria-label="Left Align"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> EV </button>	    <button type="Submit" class="btn btn-primary btn-xs" style="height: 25px; width: 60px; margin-top:10px; background-color:#00CCFF; color:white;" aria-label="Left Align"  name="action_description" value="NewKSU" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> KSU </button></div>
+						<div class="col-xs-1 text-left"><button type="Submit" class="btn btn-primary btn-xs" style="height: 25px; width: 60px; margin-top:10px; background-color:#00CCFF; color:white;" aria-label="Left Align"  name="action_description" value="NewKSU" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> KSU </button></div>
 					</form>
 					
 
