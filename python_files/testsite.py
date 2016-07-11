@@ -1,15 +1,19 @@
-from datetime import datetime, timedelta, time
-one_day = timedelta(days=1)
+print int(8.0)
 
-today = datetime.today()
 
-tomorrow = today  + one_day
 
-print today
-print tomorrow
-print tomorrow + one_day
+# from datetime import datetime, timedelta, time
+# one_day = timedelta(days=1)
 
-print today <= tomorrow
+# today = datetime.today()
+
+# tomorrow = today  + one_day
+
+# print today
+# print tomorrow
+# print tomorrow + one_day
+
+# print today <= tomorrow
 
 
 ### --

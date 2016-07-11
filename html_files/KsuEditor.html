@@ -366,37 +366,30 @@
 <hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">		
 <div class="form-group" id="FooterClasificationAttributes">
 
-	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-		<label> Target Value </label>
-			<select class="form-control" name="value_type">
-			<!-- <option hidden >Unassigned</option> -->
-			{% for value in constants['l_ValueTypes'] %}
-				{% if value[0] == ksu.value_type %}
-				<option selected="selected" value="{{value[0]}}"> {{value[1]}} </option>
-				{% else %}
-				<option value="{{value[0]}}"> {{value[1]}} </option>
-				{% endif %}
-			{% endfor %}
-		</select>
+	<div class="col-xs-4">
+		<label> Global Category </label>
+			<select class="form-control" name="global_category">
+				{% for category in categories['Global'] %}
+					{% if category == ksu.global_category %}
+						<option selected="selected" value="{{category}}">{{category}}</option>
+					{% else %}
+						<option value="{{category}}"> {{category}} </option>
+					{% endif %}
+				{% endfor %}
+			</select>
 	</div>
 
 	<div class="col-xs-4">
-		<label> Category </label>
+		<label> Local Category </label>
 			<select class="form-control" name="local_category" id="local_category">
-				{% if not ksu %}
-					{% for category in constants['d_local_categories']['Gene'] %}
+				{% for category in categories[ksu.ksu_type] %}
+					{% if category == ksu.local_category %}
+						<option selected="selected" value="{{category}}">{{category}}</option>
+					{% else %}
 						<option value="{{category}}"> {{category}} </option>
-					{% endfor %}
-				{% else %}
-					{% for category in constants['d_local_categories'][ksu.ksu_type] %}
-						{% if category == ksu.local_category %}
-							<option selected="selected" value="{{category}}">{{category}}</option>
-						{% else %}
-							<option value="{{category}}"> {{category}} </option>
-						{% endif %}
-					{% endfor %}
-				{% endif %}
-			</select>	
+					{% endif %}
+				{% endfor %}
+			</select>
 	</div>
 
 	<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">

@@ -19,6 +19,7 @@ class Theory(ndb.Model):
  	day_start_time = ndb.TimeProperty()
  	kpts_goals_parameters = ndb.JsonProperty(required=True)
  	kpts_goals = ndb.JsonProperty(required=True)
+ 	categories = ndb.JsonProperty(required=True)
 	
 	#tracker fields
 	created = ndb.DateTimeProperty(auto_now_add=True)	
@@ -51,7 +52,7 @@ class KSU(ndb.Model):
 	ksu_type = ndb.StringProperty()
 	ksu_subtype = ndb.StringProperty()
 
-	value_type = ndb.StringProperty()
+	global_category = ndb.StringProperty()
 	local_category = ndb.StringProperty()
 	# tags = ndb.KeyProperty(kind=Tag, repeated=True) #all tags related to this KSU	
 	parent_id = ndb.StringProperty()		

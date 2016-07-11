@@ -105,7 +105,7 @@ class Handler(webapp2.RequestHandler):
 		if not active_log:
 
 			active_weekday = (datetime.today()-timedelta(hours=user_start_hour)).weekday()
-			goal = theory.kpts_goals['typical_weekly_goals'][active_weekday]
+			goal = int(theory.kpts_goals['typical_weekly_goals'][active_weekday])
 
 			active_log = DailyLog(
 				theory = theory.key,
@@ -146,6 +146,44 @@ class SignUpLogIn(Handler):
 						'yearly_shit_happens_days': 6,
 						'minimum_daily_hours_of_fully_focus_effort':7}
 
+				categories = {
+					'Global':[
+						'Unassigned',
+						'0. End Value',
+						'1. Inner Peace & Consciousness',
+						'2. Fun & Exciting Situations', 
+						'3. Meaning & Direction', 
+						'4. Health & Vitality', 
+						'5. Love & Friendship', 
+						'6. Knowledge & Skills', 
+						'7. Outer Order & Peace', 
+						'8. Stuff',
+						'9. Money & Power'],
+					'Gene': ['Unassigned'],
+					'KeyA': ['Unassigned'],
+					'BigO': ['Unassigned'],
+					'Wish': [	
+						'Unassigned',	
+						'01. Being',
+						'02. Having',
+						'03. Doing',
+						'04. Geting done',
+						'05. TV Show',
+						'06. Movie',
+						'07. Tesis',
+						'08. Novel',
+						'09. Video Game',
+						'10. Board Game',
+						'11. City'],	
+					'Prin': ['Unassigned'],
+					'EVPo': ['Unassigned'],
+					'ImPe': ['Unassigned'],
+					'RTBG': ['Unassigned'],
+					'Idea': ['Unassigned'],
+					'NoAR': ['Unassigned'],
+					'MoRe': ['Unassigned'],
+					'ImIn': ['Unassigned']}
+
 				theory = Theory(
 					email=post_details['email'], 
 					password_hash=password_hash, 
@@ -153,7 +191,8 @@ class SignUpLogIn(Handler):
 					last_name=post_details['last_name'],
 					day_start_time=datetime.strptime('06:00', '%H:%M').time(),
 					kpts_goals_parameters=kpts_goals_parameters,
-					kpts_goals=calculate_user_kpts_goals(kpts_goals_parameters))
+					kpts_goals=calculate_user_kpts_goals(kpts_goals_parameters),
+					categories=categories)
 
 				theory.put()
 				self.login(theory)
@@ -192,8 +231,8 @@ class KsuEditor(Handler):
 			ksu = constants['default_ksu']
 		else: 
 			ksu = KSU.get_by_id(int(ksu_id))
-
-		self.print_html('KsuEditor.html', ksu=ksu, constants=constants)
+		categories = self.theory.categories
+		self.print_html('KsuEditor.html', ksu=ksu, constants=constants, categories=categories)
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	

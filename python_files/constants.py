@@ -150,7 +150,7 @@ d_attributeType = {
 	'ksu_type':'string',
 	'ksu_subtype':'string',
 
-	'value_type':'string',
+	'global_category':'string',
 	'local_category':'string',
 	# 'tags':'', Assignment pending
 	# 'parent_id':'', Assignment pending		
