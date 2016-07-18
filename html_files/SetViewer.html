@@ -11,12 +11,12 @@
 
 	{% for ksu in ksu_set %}
 
-		<div class="row KSUdisplaySection" style="margin-top: 0px; padding-bottom:8px;">
+		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:8px;">
 
 			<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
 				<div class="row" style="min-height: 45px">
 
-					<div class="col-xs-10">
+					<div class="col-xs-11">
 
 						<div class="row" font-size:14px;">
 							<div class="col-xs-11 displaySectionDescription">
@@ -68,7 +68,62 @@
 					</div>
 					<form method="post">
 					<input type="text" class="form-control hidden" name="ksu_id" value="{{ksu.key.id()}}">
+
 					<div class="col-xs-1">
+						<div class="btn-group-vertical pull-right">
+							<button type="submit" class="btn btn-default displaySectionVerticalButton" name='action_description' value="EditKSU">
+							  	<span class="glyphicon glyphicon-pencil"></span>
+						  	</button>
+							<button type="button" class="btn btn-default displaySectionVerticalButton ShowDetailButton" id="ShowDetailButton">
+								<span class="glyphicon glyphicon-plus"></span>
+						  	</button> 
+						</div>						
+					</div>
+					</form>
+				</div>
+
+				<div class="row hidden" id="ScoreDetail">
+					<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
+								
+						{% if ksu.ksu_subtype in ['KAS1', 'KAS2'] %}
+							<div class="col-xs-2">
+								<label> Duration </label>			
+								<input type="number" min="1" class="form-control time_cost" id="time_cost" value="{% if ksu['time_cost']%}{{ksu['time_cost']}}{% else %}1{% endif %}" style="padding-left:8px; padding-right:3px;">
+							</div>
+
+							<div class="col-xs-2">
+								<label>Intensity</label>
+								<select class="form-control intensity" id="intensity" >
+									{% for value in constants['l_Fibonacci_1_8'] %}
+										{% if value == 3 %}
+											<option selected="selected" value="{{value}}"> {{value}} </option>
+										{% else %}
+											<option value="{{value}}"> {{value}} </option>
+										{% endif %}
+									{% endfor %}
+								</select>					
+							</div>
+						{% endif %}
+
+						<div class="col-xs-5">
+						{% if 'Done' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}
+							<button type="button" class="btn btn-success btn-circle btn-lg MissionButton" name="action_description" value='Done' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
+						{% endif %}
+
+						{% if 'SendToMission' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}
+							<button type="button" class="btn btn-primary btn-circle btn-lg MissionButton" name="action_description" value='SendToMission' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
+						{% endif %}
+
+						{% if 'PinInMission' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}
+							<button type="button" class="btn btn-primary btn-circle btn-lg MissionButton" name="action_description" value='SendToMission' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-pushpin"></span></button>
+						{% endif %}	
+
+							<button type="button" class="btn btn-danger btn-circle btn-lg MissionButton" name="action_description" value='DeleteKSU' style="margin-top:20px; margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+						</div>
+
+				</div>
+
+<!-- 					<div class="col-xs-1">
 						<div class="btn-group-vertical pull-right">
 							{% if 'Done' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}
 								<button type="button" class="btn btn-success displaySectionVerticalButton" name="action_description" value="Done">
@@ -88,25 +143,12 @@
 								</button>
 							{% endif %}  
 						</div>						
-					</div>
+					</div> -->
 
-					<div class="col-xs-1">
-						<div class="btn-group-vertical pull-right">
-							<button type="submit" class="btn btn-primary displaySectionVerticalButton" name='action_description' value="EditKSU">
-							  	<span class="glyphicon glyphicon-pencil"></span>
-						  	</button>
-							<button type="button" class="btn btn-danger displaySectionVerticalButton">
-								<span class="glyphicon glyphicon-trash"></span>
-						  	</button> 
-						</div>						
-					</div>
-					</form>
-				</div>
 
-<!-- 				<div class="row">					
-					<div class="col-xs-12">
-					</div>	
-				</div>	 -->		
+
+
+	
 			</div>
 		</div>
 

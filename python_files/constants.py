@@ -342,7 +342,7 @@ d_SetViewerDetails = {
 		'attributes': ['source'],
 		'fields': {'source':'Source'},
 		'columns':{'source':6},
-		'buttons':['Done', 'PinInMission']},
+		'buttons':['PinInMission']},
 
 	'Principle': { 		
 		'attributes': ['source'],
