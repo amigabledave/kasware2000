@@ -74,7 +74,7 @@
 							<button type="submit" class="btn btn-default displaySectionVerticalButton" name='action_description' value="EditKSU">
 							  	<span class="glyphicon glyphicon-pencil"></span>
 						  	</button>
-							<button type="button" class="btn btn-default displaySectionVerticalButton ShowDetailButton" id="ShowDetailButton">
+							<button type="button" class="btn btn-default displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
 								<span class="glyphicon glyphicon-plus"></span>
 						  	</button> 
 						</div>						
@@ -107,7 +107,7 @@
 						{% elif ksu.ksu_subtype == 'KAS3' %}
 							<div class="col-xs-4">
 								<label> Effort Reward</label>
-								<select class="form-control" name="standard_reward">
+								<select class="form-control" name="standard_reward" id="kas3_reward">
 									{% for value in constants['l_Fibonacci_8_55'] %}
 										{% if value == ksu.standard_reward %}
 											<option selected="selected" value="{{value}}"> {{value}} </option>
@@ -122,7 +122,7 @@
 						{% elif ksu.ksu_subtype == 'KAS4' %}
 							<div class="col-xs-4">
 								<label> Stupidity Punishment</label>
-								<select class="form-control" name="standard_punishment">
+								<select class="form-control" name="standard_punishment" id="kas4_punishment">
 									{% for value in constants['l_Fibonacci_21_144'] %}
 										{% if value == ksu.standard_punishment %}
 											<option selected="selected" value="{{value}}"> {{value}} </option>

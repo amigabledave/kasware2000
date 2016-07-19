@@ -437,39 +437,51 @@ class EventHandler(Handler):
 
 		print
 		print
-		print 'Si llego el AJAX Request. User action: ' + user_action
+		print 'Si llego el AJAX Request. User action: ' + user_action + '. Event details: ' +  str(event_details)
 		print
+
+		event = Event(
+			theory=self.theory.key,
+			ksu_id =  ksu.key,
+			event_type = user_action,
+			user_date_ordinal=(datetime.today()-timedelta(hours=user_start_hour)).toordinal())
 
 
 		if user_action in ['MissionDone', 'ViewerDone']:
 
 			if ksu_subtype in ['KAS1', 'KAS2']:
-
-				event = Event(
-					theory=self.theory.key,
-					ksu_id =  ksu.key,
-					event_type = user_action,
-					#Score properties
-					user_date_ordinal=(datetime.today()-timedelta(hours=user_start_hour)).toordinal(),
-					kpts_type = 'SmartEffort',
-					duration = int(event_details['duration']),
-					intensity = int(event_details['intensity']),
-					score = int(event_details['duration'])*int(event_details['intensity']))		
+				event.kpts_type = 'SmartEffort'
+				event.duration = int(event_details['duration'])
+				event.intensity = int(event_details['intensity'])
+				event.score = int(event_details['duration'])*int(event_details['intensity'])
 				
 				update_next_event(self, user_action, {}, ksu)
 				ksu.put()
 
-				self.update_active_log(event)
-				event.put()
-		
+			if ksu_subtype == 'KAS3':
+				event.kpts_type = 'SmartEffort'
+				event.score = int(event_details['kas3_reward'])
 
-		self.response.out.write(json.dumps({'mensaje':'Evento creado y guardado'}))
+			if ksu_subtype == 'KAS4':
+				event.kpts_type = 'Stupidity'
+				event.score = int(event_details['kas4_punishment'])				
+
+
+		self.update_active_log(event)
+		event.put()		
+
+		self.response.out.write(json.dumps({'mensaje':'Evento creado y guardado', 'EventScore':event.score, 'kpts_type':event.kpts_type, 'ksu_subtype':ksu_subtype}))
 		return
 
 	def update_active_log(self, event):
 		active_log = self.active_log
+		
 		if event.kpts_type == 'SmartEffort':
 			active_log.SmartEffort += event.score
+
+		if event.kpts_type == 'Stupidity':
+			active_log.Stupidity += event.score
+
 		active_log.put() 
 
 

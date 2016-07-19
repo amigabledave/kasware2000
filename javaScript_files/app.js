@@ -157,6 +157,8 @@ $('.UserActionButton').on('click', function(){
 
 	var duration = ksu.find('#time_cost').val();
 	var intensity = ksu.find('#intensity option:selected').val();
+	var kas3_reward = ksu.find('#kas3_reward option:selected').val();
+	var kas4_punishment = ksu.find('#kas4_punishment option:selected').val();
 
 	// console.log('Hasta aqui pifa');
 	// ksu.delay(200).fadeOut(500);
@@ -181,13 +183,25 @@ $('.UserActionButton').on('click', function(){
 			'ksu_id': ksu_id,
 			'user_action': user_action,
 			'duration': duration,
-			'intensity': intensity
+			'intensity': intensity,
+			'kas3_reward':kas3_reward,
+			'kas4_punishment':kas4_punishment
 		})
 	})
 	.done(function(data){
-		var EventScore = duration * intensity;
-		var TotalScore = parseInt($('#TotalScore').text()) + EventScore;
-		var PointsToGoal = parseInt($('#PointsToGoal').text()) - EventScore;
+		var EventScore = data['EventScore'];
+		var kpts_type = data['kpts_type'];
+		var PointsToGoal = parseInt($('#PointsToGoal').text())
+
+		if (kpts_type == 'SmartEffort'){
+			PointsToGoal -= EventScore;
+		};
+
+		if (kpts_type == 'Stupidity'){
+			PointsToGoal += EventScore;
+		};
+
+		// var TotalScore = parseInt($('#TotalScore').text()) + EventScore;
 
 		if (isNaN(PointsToGoal)){
 			PointsToGoal = 0
@@ -198,11 +212,25 @@ $('.UserActionButton').on('click', function(){
 		}; 
 	
 		$('#PointsToGoal').text(' ' + PointsToGoal);
-		$('#TotalScore').text(' ' + TotalScore); 
+		// $('#TotalScore').text(' ' + TotalScore); 
 		// alert(data['mensaje']);
+
+		var disapearing_suptypes = ['KAS2'];
+		var ksu_subtype = data['ksu_subtype'];
+		if ($.inArray(ksu_subtype, disapearing_suptypes)!= -1){
+			ksu.animate({
+				"opacity" : "0",
+				},{
+					"complete" : function() {
+					ksu.remove();
+					}
+				})
+			};
+
 	});
 
 });
+
 
 
 $('.ShowDetailViewerButton').on('click', function(){
@@ -214,9 +242,7 @@ $('.ShowDetailViewerButton').on('click', function(){
 });
 
 
-
-
-$('.ShowDetailButton').on('click', function(){
+$('.ShowDetailMissionButton').on('click', function(){
 	var ScoreDetail = $(this).closest('#MissionKSU').find('#ScoreDetail');
 	var GlaphiconDiv = $(this).children();
 	GlaphiconDiv.toggleClass('glyphicon-minus');
