@@ -56,6 +56,8 @@ class KSU(ndb.Model):
 	local_category = ndb.StringProperty()
 	# tags = ndb.KeyProperty(kind=Tag, repeated=True) #all tags related to this KSU	
 	parent_id = ndb.StringProperty()		
+
+	is_pinned = ndb.BooleanProperty(default=False)
 		
 	is_active = ndb.BooleanProperty(default=True)
 	is_critical = ndb.BooleanProperty(default=False)

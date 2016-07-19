@@ -150,7 +150,7 @@ $('#repeats').on('change',function(){
 	}
 });
 
-$('.MissionButton').on('click', function(){
+$('.UserActionButton').on('click', function(){
 	var ksu = $(this).closest('#MissionKSU');
 	var ksu_id = ksu.attr("value");
 	var user_action = $(this).attr("value");
@@ -160,13 +160,18 @@ $('.MissionButton').on('click', function(){
 
 	// console.log('Hasta aqui pifa');
 	// ksu.delay(200).fadeOut(500);
-	ksu.animate({
-		"opacity" : "0",
-		},{
-			"complete" : function() {
-      		ksu.remove();
-			}
-	});
+	var mission_actions = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete']
+	// console.log($.inArray('a', ['a','b'])!= -1);
+	// console.log($.inArray(user_action, mission_actions)!= -1);
+	if ($.inArray(user_action, mission_actions)!= -1){
+		ksu.animate({
+			"opacity" : "0",
+			},{
+				"complete" : function() {
+				ksu.remove();
+				}
+			})
+		};
 
 	$.ajax({
 		type: "POST",
@@ -198,6 +203,17 @@ $('.MissionButton').on('click', function(){
 	});
 
 });
+
+
+$('.ShowDetailViewerButton').on('click', function(){
+	var ScoreDetail = $(this).closest('#MissionKSU').find('#ScoreDetail');
+	var GlaphiconDiv = $(this).closest('#MissionKSU').find('#ShowDetailButton').children();
+	GlaphiconDiv.toggleClass('glyphicon-minus');
+	GlaphiconDiv.toggleClass('glyphicon-plus');
+	ScoreDetail.toggleClass('hidden');
+});
+
+
 
 
 $('.ShowDetailButton').on('click', function(){
@@ -241,7 +257,7 @@ $('.intensity').on('change', function(){
 
 
 
-// $('.MissionButton').on('click', function(){
+// $('.UserActionButton').on('click', function(){
 // 	var ksu = $(this).parents(['#MissionKSU']);
 // 	console.log('Hasta aqui pifa')
 // 	$('#MissionKSU').delay(200).fadeOut(1000);

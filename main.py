@@ -149,10 +149,9 @@ class SignUpLogIn(Handler):
 				categories = {
 					'Global':[
 						'Unassigned',
-						'0. End Value',
-						'1. Inner Peace & Consciousness',
-						'2. Fun & Exciting Situations', 
-						'3. Meaning & Direction', 
+						'1. End Value',
+						'2. Inner Peace & Consciousness',
+						'3. Fun & Exciting Situations', 	
 						'4. Health & Vitality', 
 						'5. Love & Friendship', 
 						'6. Knowledge & Skills', 
@@ -371,7 +370,7 @@ class TodaysMission(Handler):
 	def get(self):
 		user_key = self.theory.key
 		ksu_set = self.generate_todays_mission()
-		self.print_html('TodaysMission.html', ksu_set=ksu_set, constants=constants, set_name='TodaysMission')
+		self.print_html('TodaysMission.html', ksu_set=ksu_set, constants=constants)
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -400,6 +399,7 @@ class TodaysMission(Handler):
 
 				if ksu.is_active and next_event and today >= next_event:
 					mission.append(ksu)
+		pinned_sets = ['KAS3', 'KAS4']
 		return mission
 
 			
@@ -433,22 +433,35 @@ class EventHandler(Handler):
 
 		user_action = event_details['user_action']
 		ksu = KSU.get_by_id(int(event_details['ksu_id']))
+		ksu_subtype = ksu.ksu_subtype
 
-		event = Event(
-			theory=self.theory.key,
-			ksu_id =  ksu.key,
-			event_type = user_action,
-			#Score properties
-			user_date_ordinal=(datetime.today()-timedelta(hours=user_start_hour)).toordinal(),
-			kpts_type = 'SmartEffort',
-			duration = int(event_details['duration']),
-			intensity = int(event_details['intensity']),
-			score = int(event_details['duration'])*int(event_details['intensity']))		
-		event.put()
+		print
+		print
+		print 'Si llego el AJAX Request. User action: ' + user_action
+		print
 
-		self.update_active_log(event)
-		update_next_event(self, user_action, {}, ksu)
-		ksu.put()
+
+		if user_action in ['MissionDone', 'ViewerDone']:
+
+			if ksu_subtype in ['KAS1', 'KAS2']:
+
+				event = Event(
+					theory=self.theory.key,
+					ksu_id =  ksu.key,
+					event_type = user_action,
+					#Score properties
+					user_date_ordinal=(datetime.today()-timedelta(hours=user_start_hour)).toordinal(),
+					kpts_type = 'SmartEffort',
+					duration = int(event_details['duration']),
+					intensity = int(event_details['intensity']),
+					score = int(event_details['duration'])*int(event_details['intensity']))		
+				
+				update_next_event(self, user_action, {}, ksu)
+				ksu.put()
+
+				self.update_active_log(event)
+				event.put()
+		
 
 		self.response.out.write(json.dumps({'mensaje':'Evento creado y guardado'}))
 		return
@@ -662,20 +675,20 @@ def update_next_event(self, user_action, post_details, ksu):
 		if not next_event:
 			ksu.next_event = today
 			
-		if user_action in ['Done', 'Skip']:
+		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone']:
 			ksu.next_event = today + timedelta(days=days_to_next_event)
 
-		if user_action == 'Push':
+		if user_action == 'MissionPush':
 			ksu.next_event = tomorrow
 
 	if ksu_subtype == 'KAS2':
 		next_event = ksu.next_event
 
-		if user_action in ['Done', 'Skip']:
+		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone']:
 			ksu.next_event = None
 			ksu.pretty_next_event = None
 
-		if user_action == 'Push':
+		if user_action == 'MissionPush':
 			ksu.next_event = tomorrow
 			ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
 
@@ -685,10 +698,10 @@ def update_next_event(self, user_action, post_details, ksu):
 		if not next_event:
 			ksu.next_trigger_event = today
 
-		if user_action in ['Done', 'Skip']:
+		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone']:
 			ksu.next_trigger_event = today + timedelta(days=ksu.charging_time)			
 
-		if user_action == 'Push':
+		if user_action == 'MissionPush':
 			ksu.next_trigger_event = tomorrow
 
 	if ksu_subtype == 'ImPe':
@@ -697,10 +710,10 @@ def update_next_event(self, user_action, post_details, ksu):
 		if not next_event:
 			ksu.next_contact_event = today
 
-		if user_action in ['Done', 'Skip']:
+		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone']:
 			ksu.next_contact_event = today + timedelta(days=ksu.contact_frequency)			
 
-		if user_action == 'Push':
+		if user_action == 'MissionPush':
 			ksu.next_contact_event = tomorrow
 
 	return		
