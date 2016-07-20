@@ -107,7 +107,8 @@ d_KsuSubtypes = {
 
 	'ImIn': 'Indicator',
 	'RealitySnapshot':'Reality Indicator',
-	'AcumulatedPerception': 'Perception Indicator'} 
+	'BinaryPerception': 'Binary Perception Indicator',
+	'FibonacciPerception': 'Fibonacci Perception Indicator'} 
 
 d_ValueTypes = {
 	'V01': '0. Unassigned',
@@ -362,11 +363,18 @@ d_SetViewerDetails = {
 		'columns':{},
 		'buttons':['Done', 'PinInMission']},
 
-	'AcumulatedPerception': { 		
+	'BinaryPerception': { 		
 		'attributes': [], 
 		'fields': {},
 		'columns':{},
 		'buttons':['Done', 'PinInMission']},
+
+	'FibonacciPerception': { 		
+		'attributes': [], 
+		'fields': {},
+		'columns':{},
+		'buttons':['Done', 'PinInMission']},
+
 
 	'RealitySnapshot': { 		
 		'attributes': [], 

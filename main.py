@@ -149,9 +149,9 @@ class SignUpLogIn(Handler):
 				categories = {
 					'Global':[
 						'Unassigned',
-						'1. End Value',
-						'2. Inner Peace & Consciousness',
-						'3. Fun & Exciting Situations', 	
+						'1. Inner Peace & Consciousness',
+						'2. Fun & Exciting Situations', 	
+						'3. Meaning & Direction',
 						'4. Health & Vitality', 
 						'5. Love & Friendship', 
 						'6. Knowledge & Skills', 
@@ -518,7 +518,8 @@ class PopulateRandomTheory(Handler):
 			[5, {'ksu_type':'Idea', 'ksu_subtype':'Principle'}],
 			[3, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
 			[1, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot'}],
-			[1, {'ksu_type':'ImIn', 'ksu_subtype':'AcumulatedPerception'}]
+			[1, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception'}],
+			[1, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception'}]
 		]
 
 		for e in theory_parameters:

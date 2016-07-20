@@ -40,13 +40,20 @@
 
 	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:0px;">
 	<div class="form-group" style="margin-bottom:8px;">				
-		<div class="col-xs-6">
+
+		<div class="col-xs-4">
 			<label class="radio-inline" style="margin-left:2px;">
-				<input type="radio" name="ksu_subtype" value="AcumulatedPerception" {% if ksu.ksu_subtype == 'AcumulatedPerception' %} checked="checked" {% endif %}> Acumulated Perception </label></div>
-		<div class="col-xs-6">
+				<input type="radio" name="ksu_subtype" value="BinaryPerception" {% if ksu.ksu_subtype == 'BinaryPerception' %} checked="checked" {% endif %}> Acumulated Binary Perception </label></div>
+
+		<div class="col-xs-4">
+			<label class="radio-inline" style="margin-left:2px;">
+				<input type="radio" name="ksu_subtype" value="FibonacciPerception" {% if ksu.ksu_subtype == 'FibonacciPerception' %} checked="checked" {% endif %}> Acumulated Fibonacci Perception </label></div>
+		
+		<div class="col-xs-4">
 			<label class="radio-inline">
 				<input type="radio" name="ksu_subtype" value="RealitySnapshot" {% if ksu.ksu_subtype == 'RealitySnapshot' %} checked="checked" {% endif %}> Reality Snapshot </label></div>			
 	</div>
+
 	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 
 	<div class="form-group">
