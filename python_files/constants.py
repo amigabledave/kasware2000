@@ -13,7 +13,7 @@ def makeDictionaryFromTupleList(tupleList):
 	return result
 
 
-l_Fibonacci = [1,2,3,5,8,13]
+l_Fibonacci = [0.25,1,2,3,5,8,13]
 
 l_long_Fibonacci = [1,2,3,5,8,13,21,34,55,89,144,233,377,610,987]
 
@@ -172,7 +172,10 @@ d_attributeType = {
 	'next_event':'date',
 	
 	'best_time':'time',
-	'time_cost':'integer',
+	# 'time_cost':'integer',
+
+	'kpts_reward':'float',
+	'kpts_punishment':'float',
 
 	'repeats':'string',	
 	'repeats_every':'integer',
@@ -186,9 +189,9 @@ d_attributeType = {
 	'repeats_on_Sun':'checkbox_repeats_on	',
 
 	'trigger_circumstances':'string',
-	'standard_reward':'integer',
+	# 'standard_reward':'integer',
 	'valid_exceptions':'string',
-	'standard_punishment':'integer',
+	# 'standard_punishment':'integer',
 
 	# KAS Specific - might be used in the future
 	# 'Repetition_target_min':'integer',
@@ -292,15 +295,15 @@ d_SetViewerDetails = {
 		'buttons':['Done', 'SendToMission']},
 
 	'KAS3':{
-		'attributes': ['standard_reward'],
-		'fields': {'standard_reward':'Standard Reward (kpts.)'},
-		'columns': {'standard_reward':6},
+		'attributes': ['kpts_reward'],
+		'fields': {'kpts_reward':'Reward (Kpts.)'},
+		'columns': {'kpts_reward':6},
 		'buttons': ['Done', 'PinInMission']},
 
 	'KAS4':{
-		'attributes': ['standard_punishment'],
-		'fields': {'standard_punishment':'Standard Punishment (kpts.)'},
-		'columns':{'standard_punishment':6},
+		'attributes': ['kpts_punishment'],
+		'fields': {'kpts_punishment':'Punishment (Kpts.)'},
+		'columns':{'kpts_punishment':6},
 		'buttons':['Done', 'PinInMission']},
 
 	'BigO':{		

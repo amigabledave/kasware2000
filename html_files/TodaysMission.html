@@ -26,7 +26,7 @@
 
 
 			<div class="col-xs-1" style="padding-left:0; padding-right:5px;">
-				<span class="MissionKsuKpts" id="KsuKpts">{% if ksu.time_cost %}{{ksu.time_cost * 3}}{% else %}0{% endif %}</span><span class="MissionKsuKpts"> kpts.</span>
+				<span class="MissionKsuKpts" id="KsuKpts">{% if ksu.kpts_reward %}{{ksu.kpts_reward}}{% else %}0{% endif %}</span><span class="MissionKsuKpts"> Kpts.</span>
 			</div>
 
 			<div class="col-xs-1" style="padding:0;">
@@ -37,28 +37,24 @@
 		<div class="row hidden" id="ScoreDetail">
 			<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
 				
-				<div class="col-xs-3">
+<!-- 				<div class="col-xs-3">
 					<label> Start </label>
 					<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control" name="best_time" value={% if ksu %}{{ksu.best_time}}{% endif %}>	
-				</div>	
+				</div>	 -->
 
-				<div class="col-xs-2">
-					<label> Duration </label>			
-					<input type="number" min="1" class="form-control time_cost" id="time_cost" value="{% if ksu['time_cost']%}{{ksu['time_cost']}}{% else %}1{% endif %}" style="padding-left:8px; padding-right:3px;">
-				</div>
-
-				<div class="col-xs-2">
-					<label>Intensity</label>
-					<select class="form-control intensity" id="intensity" >
-						{% for value in constants['l_Fibonacci_1_8'] %}
-							{% if value == 3 %}
+				<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+					<label> Reward </label>
+					<select class="form-control kpts_reward" name="kpts_reward" id="kpts_reward">
+						{% for value in constants['l_Fibonacci'] %}
+							{% if value == ksu.kpts_reward %}
 								<option selected="selected" value="{{value}}"> {{value}} </option>
 							{% else %}
 								<option value="{{value}}"> {{value}} </option>
 							{% endif %}
 						{% endfor %}
-					</select>					
+					</select>	
 				</div>
+
 
 				<div class="col-xs-5">					
 					<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionPush' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-forward"  style="margin-left:5px;"></span></button>

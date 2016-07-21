@@ -107,24 +107,23 @@ $('#ksu_type').on('change',function(){
 $('input[type=radio][name=ksu_subtype]').on('change',function(){
 	
 
-	if (this.value != 'KAS1or2'){
-		$('#KeyA_KAS1or2').addClass('hidden');
-		$('#KeyA_KAS1or2or3').addClass('hidden');
-	} else {
+	if (this.value == 'KAS1or2'){
 		$('#KeyA_KAS1or2').removeClass('hidden');
-		$('#KeyA_KAS1or2or3').removeClass('hidden');X
+		$('#KeyA_KAS1or2or3').removeClass('hidden');
+	} else {
+		$('#KeyA_KAS1or2').addClass('hidden');
 	}
 
 	if (this.value == 'KAS3'){
 		$('#KeyA_KAS3').removeClass('hidden');
 		$('#KeyA_KAS1or2or3').removeClass('hidden');
 	} else {
-		$('#KeyA_KAS3').addClass('hidden');
-		$('#KeyA_KAS1or2or3').addClass('hidden');	
+		$('#KeyA_KAS3').addClass('hidden');	
 	}
 
 	if (this.value == 'KAS4'){
 		$('#KeyA_KAS4').removeClass('hidden');
+		$('#KeyA_KAS1or2or3').addClass('hidden');		
 	} else {
 		$('#KeyA_KAS4').addClass('hidden');
 		
@@ -160,16 +159,11 @@ $('.UserActionButton').on('click', function(){
 	var ksu_id = ksu.attr("value");
 	var user_action = $(this).attr("value");
 
-	var duration = ksu.find('#time_cost').val();
-	var intensity = ksu.find('#intensity option:selected').val();
-	var kas3_reward = ksu.find('#kas3_reward option:selected').val();
-	var kas4_punishment = ksu.find('#kas4_punishment option:selected').val();
+	var kpts_reward = ksu.find('#kpts_reward option:selected').val();
+	var kpts_punishment = ksu.find('#kpts_punishment option:selected').val();
 
-	// console.log('Hasta aqui pifa');
-	// ksu.delay(200).fadeOut(500);
 	var mission_actions = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete']
-	// console.log($.inArray('a', ['a','b'])!= -1);
-	// console.log($.inArray(user_action, mission_actions)!= -1);
+
 	if ($.inArray(user_action, mission_actions)!= -1){
 		ksu.animate({
 			"opacity" : "0",
@@ -187,16 +181,14 @@ $('.UserActionButton').on('click', function(){
 		data: JSON.stringify({
 			'ksu_id': ksu_id,
 			'user_action': user_action,
-			'duration': duration,
-			'intensity': intensity,
-			'kas3_reward':kas3_reward,
-			'kas4_punishment':kas4_punishment
+			'kpts_reward':kpts_reward,
+			'kpts_punishment':kpts_punishment
 		})
 	})
 	.done(function(data){
 		var EventScore = data['EventScore'];
 		var kpts_type = data['kpts_type'];
-		var PointsToGoal = parseInt($('#PointsToGoal').text())
+		var PointsToGoal = parseFloat($('#PointsToGoal').text())
 
 		if (kpts_type == 'SmartEffort'){
 			PointsToGoal -= EventScore;
@@ -233,9 +225,7 @@ $('.UserActionButton').on('click', function(){
 			};
 
 	});
-
 });
-
 
 
 $('.ShowDetailViewerButton').on('click', function(){
@@ -258,52 +248,14 @@ $('.ShowDetailMissionButton').on('click', function(){
 
 var updateKsuScore = function(x){	
 	var ksu = $(x).closest('#MissionKSU');
-	var duration = ksu.find('#time_cost').val();
-	var intensity = ksu.find('#intensity option:selected').val();
+	var kpts_reward = ksu.find('#kpts_reward').val();
 	var score = ksu.find('#KsuKpts');	
-	score.text(duration * intensity);
+	score.text(kpts_reward);
 };
 
-$('.time_cost').on('change', function(){
+$('.kpts_reward').on('change', function(){
 	updateKsuScore(this);
 });
-
-$('.intensity').on('change', function(){
-	updateKsuScore(this);
-});
-
-
-
-// $('.time_cost').on('change',function(){
-// 	console.log('cambio de duracion detectado')	
-// 	var ksu = $(this).closest('#MissionKSU');
-// 	var duration = ksu.find('#time_cost').val();
-// 	console.log(duration);
-// 	var intensity = ksu.find('#intensity option:selected').val();
-// 	console.log(intensity);
-// 	var score = ksu.find('#KsuKpts');	
-// 	score.text(duration * intensity);
-// });
-
-
-
-
-// $('.UserActionButton').on('click', function(){
-// 	var ksu = $(this).parents(['#MissionKSU']);
-// 	console.log('Hasta aqui pifa')
-// 	$('#MissionKSU').delay(200).fadeOut(1000);
-// 	$('#MissionKSU').animate({
-// 		"opacity" : "0",
-// 		},{
-// 			"complete" : function() {
-//       		$('#MissionKSU').remove();
-// 			}
-// 	});
-// });
-
-
-
-
 
 
 

@@ -79,8 +79,8 @@ class KSU(ndb.Model):
 	best_time = ndb.TimeProperty()
 	# time_cost = ndb.IntegerProperty()
 
-	kpts_reward = ndb.IntegerProperty()
-	kpts_punishment = ndb.IntegerProperty()
+	kpts_reward = ndb.FloatProperty()
+	kpts_punishment = ndb.FloatProperty()
 
 	repeats = ndb.StringProperty()	
 	repeats_on = ndb.JsonProperty() #Day's of the week when it repeats if the frequency is Weekly, elese the repetition date is the same day of the month or year
@@ -154,9 +154,7 @@ class Event(ndb.Model):
 
 	#Score properties
 	kpts_type = ndb.StringProperty()
-	score = ndb.IntegerProperty(default=0)
-	duration = ndb.IntegerProperty(default=0)
-	intensity = ndb.IntegerProperty(default=0)
+	score = ndb.FloatProperty(default=0)
 
 
 class DailyLog(ndb.Model):
@@ -172,10 +170,10 @@ class DailyLog(ndb.Model):
 	diary_entry = ndb.TextProperty()
 
 	#Score properties
-	Goal = ndb.IntegerProperty(default=0)
-	SmartEffort = ndb.IntegerProperty(default=0)
-	Stupidity = ndb.IntegerProperty(default=0)
-	EffortReserve = ndb.IntegerProperty(default=0)
+	Goal = ndb.FloatProperty(default=0)
+	SmartEffort = ndb.FloatProperty(default=0)
+	Stupidity = ndb.FloatProperty(default=0)
+	EffortReserve = ndb.FloatProperty(default=0)
 	FireStreak = ndb.IntegerProperty(default=0)
 
 
