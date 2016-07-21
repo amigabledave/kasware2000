@@ -116,10 +116,9 @@ class KSU(ndb.Model):
 
 	#Important person Specifics
 	contact_frequency = ndb.IntegerProperty()
-	contact_action = ndb.StringProperty()
 	next_contact_event = ndb.DateProperty()
 	impe_birthday = ndb.DateProperty()
-	impe_kaswareID = ndb.StringProperty()
+	# impe_kaswareID = ndb.StringProperty()
 
 	#RTBG Specifics
 	awesomeness = ndb.IntegerProperty()

@@ -137,14 +137,6 @@
 			<input type="number" min="1" class="form-control" name="contact_frequency" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.contact_frequency}}{% endif %}">
 		</div>
 
-		<div class="col-xs-8">
-			<label> Contact Action Description </label>
-			<textarea class="form-control" name="contact_action" placeholder="e.g. Call Jimmy, Hangout with Mon, write to Dad">{% if ksu and ksu.contact_action %}{{ksu.contact_action}}{% endif %}</textarea> 
-		</div>
-
-	</div>
-
-	<div class="form-group">
 		<div class="col-xs-4">
 			<label> Next Contact Event </label>
 			<input type="date" class="form-control" style="padding-right:3px;" name="next_contact_event" value="{% if ksu %}{{ksu.next_contact_event}}{% endif %}">
@@ -155,10 +147,6 @@
 			<input type="date" class="form-control" style="padding-right:3px;" name="impe_birthday" value="{% if ksu %}{{ksu.impe_birthday}}{% endif %}">	
 		</div>
 
-		<div class="col-xs-4">
-			<label> KASware ID </label>
-			<input type="text" class="form-control" name="impe_kaswareID" placeholder="XXX-XXX-XXX-XXX" value="{% if ksu and ksu.impe_kaswareID %}{{ksu.impe_kaswareID}}{% endif %}"></input>
-		</div>
 	</div>
 </div>
 
