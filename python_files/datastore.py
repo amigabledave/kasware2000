@@ -77,22 +77,25 @@ class KSU(ndb.Model):
 	pretty_next_event = ndb.StringProperty()
 	
 	best_time = ndb.TimeProperty()
-	time_cost = ndb.IntegerProperty()
+	# time_cost = ndb.IntegerProperty()
+
+	kpts_reward = ndb.IntegerProperty()
+	kpts_punishment = ndb.IntegerProperty()
 
 	repeats = ndb.StringProperty()	
 	repeats_on = ndb.JsonProperty() #Day's of the week when it repeats if the frequency is Weekly, elese the repetition date is the same day of the month or year
 	repeats_every = ndb.IntegerProperty()
 
 	trigger_circumstances = ndb.TextProperty()
-	standard_reward = ndb.IntegerProperty()
+	# standard_reward = ndb.IntegerProperty()
 	valid_exceptions = ndb.TextProperty()	
-	standard_punishment = ndb.IntegerProperty()
+	# standard_punishment = ndb.IntegerProperty()
 
 	# KAS Specific - might be used in the future
-	Repetition_target_min = ndb.IntegerProperty()
-	Repetition_target_max = ndb.IntegerProperty()
-	TimeUse_target_min = ndb.IntegerProperty()
-	TimeUse_target_max = ndb.IntegerProperty()
+	# Repetition_target_min = ndb.IntegerProperty()
+	# Repetition_target_max = ndb.IntegerProperty()
+	# TimeUse_target_min = ndb.IntegerProperty()
+	# TimeUse_target_max = ndb.IntegerProperty()
 
 	#Objective Specific
 	success_definition = ndb.StringProperty()
