@@ -36,202 +36,6 @@
 	</div>
 </div>
 
-<div class="{% if ksu.ksu_type != 'ImIn' %}hidden{% endif %}" id="ImIn">
-
-	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:0px;">
-	<div class="form-group" style="margin-bottom:8px;">				
-
-		<div class="col-xs-4">
-			<label class="radio-inline" style="margin-left:2px;">
-				<input type="radio" name="ksu_subtype" value="BinaryPerception" {% if ksu.ksu_subtype == 'BinaryPerception' %} checked="checked" {% endif %}> Acumulated Binary Perception </label></div>
-
-		<div class="col-xs-4">
-			<label class="radio-inline" style="margin-left:2px;">
-				<input type="radio" name="ksu_subtype" value="FibonacciPerception" {% if ksu.ksu_subtype == 'FibonacciPerception' %} checked="checked" {% endif %}> Acumulated Fibonacci Perception </label></div>
-		
-		<div class="col-xs-4">
-			<label class="radio-inline">
-				<input type="radio" name="ksu_subtype" value="RealitySnapshot" {% if ksu.ksu_subtype == 'RealitySnapshot' %} checked="checked" {% endif %}> Reality Snapshot </label></div>			
-	</div>
-
-	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-
-	<div class="form-group">
-		<div class="col-xs-8">
-			<label> Data generating question </label>
-			<textarea class="form-control" name="question" placeholder="e.g. Am I exited about the day that I'm about to live?">{% if ksu and ksu.question %}{{ksu.question}}{% endif %}</textarea>
-		</div>
-		
-		<div class="col-xs-4">
-			<label> Best time to ask </label>
-			<select class="form-control" name="question_time">
-				<option {% if ksu.question_time == 'morning' %}selected="selected"{% endif %} value="morning">Morning</option>
-				<option {% if ksu.question_time == 'night' %}selected="selected"{% endif %} value="night">Night</option>							
-			</select>
-		</div>		
-	</div>
-
-	<div class="form-group">
-		
-		<div class="col-xs-4">
-			<label> Question Frequency </label>			
-			<input type="number" min="1" class="form-control" name="question_frequency" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.question_frequency}}{% endif %}">
-		</div>
-
-		<div class="col-xs-3">
-			<label> Target Min. </label>			
-			<input type="number" step="0.01" min="0" class="form-control" name="target_min" placeholder="e.g 0.5" value="{% if ksu %}{{ksu.target_min}}{% endif %}">
-		</div>
-		
-		<div class="col-xs-3">
-			<label> Target Max. </label>			
-			<input type="number" step="0.01" min="0" class="form-control" name="target_max" placeholder="e.g. 100" value="{% if ksu %}{{ksu.target_max}}{% endif %}">
-		</div>
-
-		<div class="col-xs-2"> 
-			<div class="checkbox"> 
-				<label> <input type="checkbox" name="reverse_target"{% if ksu.reverse_target %}checked{% endif %}> <b> Reverse Target </b></label> 
-			</div>
-		</div>
-
-	</div>
-
-
-	
-</div>
-
-<div class="{% if ksu.ksu_type != 'RTBG' %}hidden{% endif %}" id="RTBG">
-	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-	<div class="form-group">
-	 	<div class="col-xs-4">
-			<label> Awesomeness </label>
-			<select class="form-control" name="awesomeness">
-				{% for level in constants['l_Fibonacci_0_8'] %}
-					{% if level == ksu.awesomeness %}
-						<option selected="selected" value="{{level}}"> {{level}} </option>
-					{% else %}
-						<option value="{{level}}"> {{level}} </option>
-					{% endif %}
-				{% endfor %}
-			</select>				
-		</div>
-
-		<div class="col-xs-4">
-			<label> Awesome since </label>
-			<input type="date" class="form-control" style="padding-right:3px;" name="awesome_since" value="{% if ksu %}{{ksu.awesome_since}}{% endif %}">
-		</div>
-
-		<div class="col-xs-4"> 
-			<div class="checkbox"> 
-				<label> <input type="checkbox" name="was_awesome"{% if ksu.was_awesome %}checked{% endif %}> <b> Was Awesome </b></label> 
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="{% if ksu.ksu_type != 'ImPe' %}hidden{% endif %}" id="ImPe">
-	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-	<div class="form-group">
-		<div class="col-xs-4"> 
-			<label> Contact Frequency </label>			
-			<input type="number" min="1" class="form-control" name="contact_frequency" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.contact_frequency}}{% endif %}">
-		</div>
-
-		<div class="col-xs-4">
-			<label> Next Contact Event </label>
-			<input type="date" class="form-control" style="padding-right:3px;" name="next_contact_event" value="{% if ksu %}{{ksu.next_contact_event}}{% endif %}">
-		</div>	
-
-		<div class="col-xs-4">
-			<label> Birthday </label>
-			<input type="date" class="form-control" style="padding-right:3px;" name="impe_birthday" value="{% if ksu %}{{ksu.impe_birthday}}{% endif %}">	
-		</div>
-
-	</div>
-</div>
-
-<div class="{% if ksu.ksu_type != 'Idea' %}hidden{% endif %}" id="Idea">
-	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-
-	<div class="form-group">
-		<div class="col-xs-8">
-			<label> Source </label>
-			<input type="text" class="form-control" name="source" placeholder="e.g. name of a book, person or a link to an article" value="{% if ksu and ksu.source %}{{ksu.source}}{% endif %}"></input>
-		</div>
-
-		<div class="col-xs-4"> 
-			<div class="checkbox"> 
-				<label> <input type="checkbox" name="is_principle"{% if ksu.is_principle %}checked{% endif %}> <b> This idea is one of my principles </b></label> 
-			</div>
-		</div>
-
-	</div>
-</div>
-
-<div class="{% if ksu.ksu_type != 'EVPo' %}hidden{% endif %}" id="EVPo">
-	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-	<div class="form-group">
-		<div class="col-xs-4"> 
-			<label> Charging Time (Days) </label>			
-			<input type="number" min="1" class="form-control" name="charging_time" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.charging_time}}{% endif %}">
-		</div>
-
-		<div class="col-xs-8">
-			<label> Trigger Action Description </label>
-			<textarea class="form-control" name="trigger_action" placeholder="e.g. Buy tickets to go watch a movie">{% if ksu and ksu.trigger_action %}{{ksu.trigger_action}}{% endif %}</textarea> 
-		</div>
-
-	</div>
-
-	<div class="form-group">
-		<div class="col-xs-4">
-			<label> Next Trigger Event </label>
-			<input type="date" class="form-control" style="padding-right:3px;" name="next_trigger_event" value="{% if ksu %}{{ksu.next_trigger_event}}{% endif %}">
-		</div>
-	</div>
-</div>
-
-<div class="{% if ksu.ksu_type != 'Wish' %}hidden{% endif %}" id="Wish">
-	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-	<div class="form-group">
-
-		<div class="col-xs-4"> 
-			<label> Money Cost </label>			
-			<input type="number" min="0" class="form-control" name="money_cost" placeholder="e.g. $50" value="{% if ksu %}{{ksu.money_cost}}{% endif %}">
-		</div>
-
-		<div class="col-xs-4"> 
-			<div class="checkbox"> 
-				<label> <input type="checkbox" name="is_dream"{% if ksu.is_dream %}checked{% endif %}> <b> This wish is one of my dreams </b></label> 
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="{% if ksu.ksu_type != 'BigO' %}hidden{% endif %}" id="BigO">
-
-	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-	<div class="form-group">
-		<div class="col-xs-6">
-			<label>Success Definition</label>
-			<textarea class="form-control" name="success_definition" placeholder="e.g. $1,000,000,000 USD in my bank acount">{% if ksu and ksu.success_definition %}{{ksu.success_definition}}{% endif %}</textarea>	
-		</div>
-
-		<div class="col-xs-4">
-			<label> Target date </label>
-			<input type="date" class="form-control" style="padding-right:3px;" name="target_date" value="{% if ksu %}{{ksu.target_date}}{% endif %}">		
-		</div>
-
-		<div class="col-xs-2" style="padding-left:0;">		
-			<div class="checkbox"> 
-				<label> <input type="checkbox" name="is_BigO" {% if ksu.is_BigO %}checked{% endif %}> <b> Big Objective </b> </label> 
-			</div>
-		</div>
-
-
-	</div>
-</div>
-
 <div class="{% if ksu.ksu_type != 'KeyA' %}hidden{% endif %}" id="KeyA">
 
 	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:0px;">
@@ -255,7 +59,7 @@
 
 				<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 					<label> Reward</label>
-					<select class="form-control" name="kpts_reward">
+					<select class="form-control" name="kpts_reward" id="kpts_reward">
 						{% for value in constants['l_Fibonacci'] %}
 							{% if value == ksu.kpts_reward %}
 								<option selected="selected" value="{{value}}"> {{value}} </option>
@@ -357,13 +161,240 @@
 			</div>
 		</div>		
 </div>
+
+
+
+<div class="{% if ksu.ksu_type != 'ImIn' %}hidden{% endif %}" id="ImIn">
+
+	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:0px;">
+	<div class="form-group" style="margin-bottom:8px;">				
+
+		<div class="col-xs-4">
+			<label class="radio-inline" style="margin-left:2px;">
+				<input type="radio" name="ksu_subtype" value="BinaryPerception" {% if ksu.ksu_subtype == 'BinaryPerception' %} checked="checked" {% endif %}> Acumulated Binary Perception </label></div>
+
+		<div class="col-xs-4">
+			<label class="radio-inline" style="margin-left:2px;">
+				<input type="radio" name="ksu_subtype" value="FibonacciPerception" {% if ksu.ksu_subtype == 'FibonacciPerception' %} checked="checked" {% endif %}> Acumulated Fibonacci Perception </label></div>
+		
+		<div class="col-xs-4">
+			<label class="radio-inline">
+				<input type="radio" name="ksu_subtype" value="RealitySnapshot" {% if ksu.ksu_subtype == 'RealitySnapshot' %} checked="checked" {% endif %}> Reality Snapshot </label></div>			
+	</div>
+
+	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+
+	<div class="form-group">
+		<div class="col-xs-8">
+			<label> Data generating question </label>
+			<textarea class="form-control" name="question" placeholder="e.g. Am I exited about the day that I'm about to live?">{% if ksu and ksu.question %}{{ksu.question}}{% endif %}</textarea>
+		</div>
+		
+		<div class="col-xs-4">
+			<label> Best time to ask </label>
+			<select class="form-control" name="question_time">
+				<option {% if ksu.question_time == 'morning' %}selected="selected"{% endif %} value="morning">Morning</option>
+				<option {% if ksu.question_time == 'night' %}selected="selected"{% endif %} value="night">Night</option>							
+			</select>
+		</div>		
+	</div>
+
+	<div class="form-group">
+		
+		<div class="col-xs-4">
+			<label> Question Frequency </label>			
+			<input type="number" min="1" class="form-control" name="question_frequency" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.question_frequency}}{% endif %}">
+		</div>
+
+		<div class="col-xs-3">
+			<label> Target Min. </label>			
+			<input type="number" step="0.01" min="0" class="form-control" name="target_min" placeholder="e.g 0.5" value="{% if ksu %}{{ksu.target_min}}{% endif %}">
+		</div>
+		
+		<div class="col-xs-3">
+			<label> Target Max. </label>			
+			<input type="number" step="0.01" min="0" class="form-control" name="target_max" placeholder="e.g. 100" value="{% if ksu %}{{ksu.target_max}}{% endif %}">
+		</div>
+
+		<div class="col-xs-2"> 
+			<div class="checkbox"> 
+				<label> <input type="checkbox" name="reverse_target"{% if ksu.reverse_target %}checked{% endif %}> <b> Reverse Target </b></label> 
+			</div>
+		</div>
+
+	</div>
+
+
+	
+</div>
+
+<div class="{% if ksu.ksu_type != 'RTBG' %}hidden{% endif %}" id="RTBG">
+	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+	<div class="form-group">
+	 	<div class="col-xs-4">
+			<label> Awesomeness </label>
+			<select class="form-control" name="awesomeness">
+				{% for level in constants['l_Fibonacci_0_8'] %}
+					{% if level == ksu.awesomeness %}
+						<option selected="selected" value="{{level}}"> {{level}} </option>
+					{% else %}
+						<option value="{{level}}"> {{level}} </option>
+					{% endif %}
+				{% endfor %}
+			</select>				
+		</div>
+
+		<div class="col-xs-4">
+			<label> Awesome since </label>
+			<input type="date" class="form-control" style="padding-right:3px;" name="awesome_since" value="{% if ksu %}{{ksu.awesome_since}}{% endif %}">
+		</div>
+
+		<div class="col-xs-4"> 
+			<div class="checkbox"> 
+				<label> <input type="checkbox" name="was_awesome"{% if ksu.was_awesome %}checked{% endif %}> <b> Was Awesome </b></label> 
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="{% if ksu.ksu_type != 'ImPe' %}hidden{% endif %}" id="ImPe">
+	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+	<div class="form-group">
+
+		<div class="col-xs-3">
+			<label> Contact Reward</label>
+			<select class="form-control DummyInput" name="">
+				{% for value in constants['l_Fibonacci'] %}
+					{% if value == ksu.kpts_reward %}
+						<option selected="selected" value="{{value}}"> {{value}} </option>
+					{% else %}
+						<option value="{{value}}"> {{value}} </option>
+					{% endif %}
+				{% endfor %}
+			</select>	
+		</div>
+
+		<div class="col-xs-3"> 
+			<label> Contact Freq. </label>			
+			<input type="number" min="1" class="form-control" name="contact_frequency" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.contact_frequency}}{% endif %}">
+		</div>
+
+		<div class="col-xs-3">
+			<label> Next Contact </label>
+			<input type="date" class="form-control" style="padding-right:3px;" name="next_contact_event" value="{% if ksu %}{{ksu.next_contact_event}}{% endif %}">
+		</div>	
+
+		<div class="col-xs-3">
+			<label> Birthday </label>
+			<input type="date" class="form-control" style="padding-right:3px;" name="impe_birthday" value="{% if ksu %}{{ksu.impe_birthday}}{% endif %}">	
+		</div>
+
+	</div>
+</div>
+
+<div class="{% if ksu.ksu_type != 'Idea' %}hidden{% endif %}" id="Idea">
+	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+
+	<div class="form-group">
+		<div class="col-xs-8">
+			<label> Source </label>
+			<input type="text" class="form-control" name="source" placeholder="e.g. name of a book, person or a link to an article" value="{% if ksu and ksu.source %}{{ksu.source}}{% endif %}"></input>
+		</div>
+
+		<div class="col-xs-4"> 
+			<div class="checkbox"> 
+				<label> <input type="checkbox" name="is_principle"{% if ksu.is_principle %}checked{% endif %}> <b> This idea is one of my principles </b></label> 
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div class="{% if ksu.ksu_type != 'EVPo' %}hidden{% endif %}" id="EVPo">
+	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+	<div class="form-group">
+
+		<div class="col-xs-4">
+			<label> Trigger Effort Reward</label>
+			<select class="form-control DummyInput" name="">
+				{% for value in constants['l_Fibonacci'] %}
+					{% if value == ksu.kpts_reward %}
+						<option selected="selected" value="{{value}}"> {{value}} </option>
+					{% else %}
+						<option value="{{value}}"> {{value}} </option>
+					{% endif %}
+				{% endfor %}
+			</select>	
+		</div>
+
+		<div class="col-xs-4"> 
+			<label> Charging Time (Days) </label>			
+			<input type="number" min="1" class="form-control" name="charging_time" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.charging_time}}{% endif %}">
+		</div>
+
+		<div class="col-xs-4">
+			<label> Next Trigger Event </label>
+			<input type="date" class="form-control" style="padding-right:3px;" name="next_trigger_event" value="{% if ksu %}{{ksu.next_trigger_event}}{% endif %}">
+		</div>
+
+	</div>
+
+	<div class="form-group">
+		<div class="col-xs-8">
+			<label> Trigger Action Description </label>
+			<textarea class="form-control" name="trigger_action" placeholder="e.g. Buy tickets to go watch a movie">{% if ksu and ksu.trigger_action %}{{ksu.trigger_action}}{% endif %}</textarea> 
+		</div>
+	</div>
+</div>
+
+<div class="{% if ksu.ksu_type != 'Wish' %}hidden{% endif %}" id="Wish">
+	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+	<div class="form-group">
+
+		<div class="col-xs-4"> 
+			<label> Money Cost </label>			
+			<input type="number" min="0" class="form-control" name="money_cost" placeholder="e.g. $50" value="{% if ksu %}{{ksu.money_cost}}{% endif %}">
+		</div>
+
+		<div class="col-xs-4"> 
+			<div class="checkbox"> 
+				<label> <input type="checkbox" name="is_dream"{% if ksu.is_dream %}checked{% endif %}> <b> This wish is one of my dreams </b></label> 
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="{% if ksu.ksu_type != 'BigO' %}hidden{% endif %}" id="BigO">
+
+	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+	<div class="form-group">
+		<div class="col-xs-6">
+			<label>Success Definition</label>
+			<textarea class="form-control" name="success_definition" placeholder="e.g. $1,000,000,000 USD in my bank acount">{% if ksu and ksu.success_definition %}{{ksu.success_definition}}{% endif %}</textarea>	
+		</div>
+
+		<div class="col-xs-4">
+			<label> Target date </label>
+			<input type="date" class="form-control" style="padding-right:3px;" name="target_date" value="{% if ksu %}{{ksu.target_date}}{% endif %}">		
+		</div>
+
+		<div class="col-xs-2" style="padding-left:0;">		
+			<div class="checkbox"> 
+				<label> <input type="checkbox" name="is_BigO" {% if ksu.is_BigO %}checked{% endif %}> <b> Big Objective </b> </label> 
+			</div>
+		</div>
+
+
+	</div>
+</div>
+
 	
 <hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">		
 <div class="form-group" id="FooterClasificationAttributes">
 
 	<div class="col-xs-4">
 		<label> Global Category </label>
-			<select class="form-control" name="global_category">
+			<select class="form-control" name="global_category" id="global_category">
 				{% for category in categories['Global'] %}
 					{% if category == ksu.global_category %}
 						<option selected="selected" value="{{category}}">{{category}}</option>

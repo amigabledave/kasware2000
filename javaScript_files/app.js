@@ -25,6 +25,12 @@ var userCategories = {
 	'ImIn': ['Unassigned']}
 
 
+$('.DummyInput').on('change',function(){
+	$('#kpts_reward').val(this.value);
+});
+
+
+
 $('#ksu_type').on('change',function(){
 
 	if (this.value == 'KeyA'){
