@@ -369,8 +369,8 @@ class TodaysMission(Handler):
 	@super_user_bouncer
 	def get(self):
 		user_key = self.theory.key
-		ksu_set = self.generate_todays_mission()
-		self.print_html('TodaysMission.html', ksu_set=ksu_set, constants=constants)
+		ksu_set, mission_value = self.generate_todays_mission()
+		self.print_html('TodaysMission.html', ksu_set=ksu_set, mission_value=mission_value,constants=constants)
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -386,6 +386,7 @@ class TodaysMission(Handler):
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 		today =(datetime.today()-timedelta(hours=user_start_hour)).date()
 		mission = []
+		mission_value = 0
 		mission_sets = ['KAS1', 'KAS2', 'EVPo', 'ImPe']
 		for ksu in ksu_set:
 			ksu_subtype = ksu.ksu_subtype
@@ -399,8 +400,10 @@ class TodaysMission(Handler):
 
 				if ksu.is_active and next_event and today >= next_event:
 					mission.append(ksu)
+					mission_value += ksu.kpts_reward
+
 		pinned_sets = ['KAS3', 'KAS4']
-		return mission
+		return mission, mission_value
 
 			
 class SetViewer(Handler):
@@ -507,7 +510,7 @@ class PopulateRandomTheory(Handler):
 			[3, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
 			[3, {'ksu_type':'Wish', 'ksu_subtype':'Dream'}],
 			[3, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_trigger_event':today, 'kpts_reward':1, 'charging_time':7}],
-			[3, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_contact_event':today, 'kpts_reward':8, 'contact_frequency':30}],
+			[3, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_contact_event':today, 'kpts_reward':0.25, 'contact_frequency':30}],
 			[3, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
 			[5, {'ksu_type':'Idea', 'ksu_subtype':'Principle'}],
 			[3, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
