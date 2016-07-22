@@ -26,9 +26,20 @@ var userCategories = {
 
 
 $('.DummyInput').on('change',function(){
-	$('#kpts_reward').val(this.value);
-});
+	
+	var ksu_attr = $(this).attr("ksuattr"); 
 
+	if (ksu_attr == 'kpts_value'){
+		$('#kpts_value').val(this.value);
+	};
+
+	// if (ksu_attr == 'kpts_reward'){
+	// 	$('#kpts_reward').val(this.value);
+	// };
+
+
+	
+});
 
 
 $('#ksu_type').on('change',function(){
