@@ -1,4 +1,43 @@
-print int(8.0)
+import math
+
+
+
+kpts_goals_parameters = {
+		'typical_week_effort_distribution':[1, 1, 1, 1, 1, 0.5, 0],
+		'yearly_vacations_day': 12,
+		'yearly_shit_happens_days': 6,
+		'minimum_daily_effort':25}
+
+
+
+def calculate_user_kpts_goals(kpts_goals_parameters):
+
+	minimum_daily_effort = kpts_goals_parameters['minimum_daily_effort']
+	yearly_vacations_day = kpts_goals_parameters['yearly_vacations_day']
+	yearly_shit_happens_days = kpts_goals_parameters['yearly_shit_happens_days']
+	typical_week_effort_distribution = kpts_goals_parameters['typical_week_effort_distribution']
+	typical_week_active_days = sum(typical_week_effort_distribution)
+
+	yearly_effort_goal = minimum_daily_effort * 365.25
+	active_days = 365.25 - (yearly_vacations_day + yearly_shit_happens_days) - ((7 - typical_week_active_days) * (365.25/7.0))
+	
+	typical_day_minimum_effort = yearly_effort_goal/active_days
+
+	typical_weekly_goals = []
+	for e in typical_week_effort_distribution:
+		typical_weekly_goals.append(math.ceil(e * typical_day_minimum_effort))
+
+	user_kpts_goals = {
+		'typical_day_minimum_effort': math.ceil(typical_day_minimum_effort),
+		'typical_weekly_goals': typical_weekly_goals,
+		'active_days': math.ceil(active_days)
+	}
+
+	return user_kpts_goals
+
+print calculate_user_kpts_goals(kpts_goals_parameters)
+print kpts_goals_parameters['minimum_daily_effort'] * 365.25
+print 269*34
 
 
 
