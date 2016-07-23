@@ -1,12 +1,4 @@
-
-
-
-birthday = [impe_birthday, awesome_since]
-
-best_time = [best_time, question_time]
-
 is_special = [is_BigO, is_dream, is_principle, was_awesome]
-
 
 # kpts_value = [kpts_reward, kpts_punishment, awesomeness]
 
@@ -17,3 +9,7 @@ is_special = [is_BigO, is_dream, is_principle, was_awesome]
 # frequency = [repeats_every, charging_time, contact_frequency, question_frequency]
 
 # secondary_description = [trigger_circumstances, valid_exceptions, success_definition, trigger_action, source, question]
+
+# birthday = [impe_birthday, awesome_since]
+
+# best_time = [best_time, question_time]

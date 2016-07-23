@@ -22,7 +22,7 @@
 							<div class="col-xs-11 displaySectionDescription">
 								<div>
 								{% if ksu.ksu_subtype == 'KAS3' %}	
-									<span style="color:blue; font-style:italic; font-weight:bold;"> If:</span> <span style="{% if ksu.is_critical %}color:red; font-weight:bold;{% endif %}">{{ksu.trigger_circumstances}}</span><span style="color:blue; font-style:italic; font-weight:bold;"> <br> Reaction:</span>
+									<span style="color:blue; font-style:italic; font-weight:bold;"> If:</span> <span style="{% if ksu.is_critical %}color:red; font-weight:bold;{% endif %}">{{ksu.secondary_description}}</span><span style="color:blue; font-style:italic; font-weight:bold;"> <br> Reaction:</span>
 								{% endif %}
 
 								{% if ksu.ksu_subtype == 'KAS4' %}	
@@ -32,7 +32,7 @@
 								<span style="{% if ksu.is_critical %}color:red;{% endif %}"> <b>{{ksu.description}}</b> </span>
 								
 								{% if ksu.ksu_type == 'ImIn' %}
-									<br><span style="color:grey; font-style:italic; font-size:13px;">{{ksu.question}}</span> 
+									<br><span style="color:grey; font-style:italic; font-size:13px;">{{ksu.secondary_description}}</span> 
 								{% endif %}
 
 								{% if ksu.comments %} <br> <em> --- <span style="font-size:13px;">{{ksu.comments}} </span> --- </em>{% endif %}

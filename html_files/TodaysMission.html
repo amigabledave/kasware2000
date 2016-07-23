@@ -20,10 +20,14 @@
 			</div>
 
 			<div class="col-xs-9">
-				{{ksu.description}} 
-
+				{% if ksu.ksu_subtype == 'ImPe' %}
+					{{'Contact ' + ksu.description}}
+				{% elif ksu.ksu_subtype == 'EVPo' %}
+					{{ksu.secondary_description}}
+				{% else %}
+					{{ksu.description}}
+				{% endif %} 
 			</div>
-
 
 			<div class="col-xs-1" style="padding-left:0; padding-right:5px;">
 				<span class="MissionKsuKpts" id="KsuKpts">{% if ksu.kpts_value %}{{ksu.kpts_value}}{% else %}0{% endif %}</span><span class="MissionKsuKpts"> Kpts.</span>

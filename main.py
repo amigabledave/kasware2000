@@ -338,6 +338,7 @@ class KsuEditor(Handler):
 			else:
 				ksu_subtype = 'KAS1'
 
+
 		return ksu_subtype
 
 
@@ -509,9 +510,11 @@ class PopulateRandomTheory(Handler):
 			for i in range(1, set_size + 1):
 
 				description =  ksu_subtype + ' no. ' + str(i) + ' of ' + username
+				secondary_description = 'Secondary description of ' + ksu_subtype + ' no. ' + str(i)
 				new_ksu = KSU(
 					theory=theory_key,
-					description=description)
+					description=description,
+					secondary_description=secondary_description)
 
 				for a_key in set_details:
 					a_val = set_details[a_key]
