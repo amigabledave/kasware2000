@@ -380,7 +380,7 @@ class TodaysMission(Handler):
 			if ksu_subtype in mission_sets:
 				next_event = ksu.next_event
 
-				if ksu.is_active and next_event and today >= next_event:
+				if ksu.is_active and next_event and today >= next_event and not ksu.in_graveyard:
 					mission.append(ksu)
 					mission_value += ksu.kpts_value
 
@@ -395,9 +395,11 @@ class SetViewer(Handler):
 		set_name = self.request.get('set_name')
 		user_key = self.theory.key
 		if not set_name:
-			ksu_set = KSU.query(KSU.theory == user_key ).order(KSU.created).fetch()	
+			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(KSU.created).fetch()
+		elif set_name == 'Graveyard':
+			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == True, KSU.is_deleted == False).order(KSU.created).fetch()
 		else:
-			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.ksu_type == set_name).order(KSU.created).fetch()
+			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(KSU.created).fetch()
 		
 		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name)
 
@@ -405,6 +407,7 @@ class SetViewer(Handler):
 	@CreateOrEditKSU_request_handler	
 	def post(self, user_action, post_details):
 		return
+
 
 
 class EventHandler(Handler):
@@ -445,11 +448,29 @@ class EventHandler(Handler):
 				event.kpts_type = 'Stupidity'
 				event.score = float(event_details['kpts_value'])				
 
+		if user_action in ['MissionDelete', 'ViewerDelete']:
+			ksu.in_graveyard = True
+			ksu.put()
+
+		if user_action == 'GraveyardReanimate':
+			ksu.in_graveyard = False
+			ksu.put()
+
+		if user_action == 'GraveyardDelete':
+			ksu.is_deleted = True
+			ksu.put()
+
+
+
 
 		self.update_active_log(event)
 		event.put()		
 
-		self.response.out.write(json.dumps({'mensaje':'Evento creado y guardado', 'EventScore':event.score, 'kpts_type':event.kpts_type, 'ksu_subtype':ksu_subtype}))
+		self.response.out.write(json.dumps({'mensaje':'Evento creado y guardado', 
+											'EventScore':event.score, 
+											'kpts_type':event.kpts_type, 
+											'ksu_subtype':ksu_subtype, 
+											'kpts_value':ksu.kpts_value}))
 		return
 
 	def update_active_log(self, event):
@@ -483,7 +504,7 @@ class PopulateRandomTheory(Handler):
 
 		theory_parameters = [
 			[10,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
 			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
 			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_value':0.25}],
 			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4', 'kpts_value':5}],
@@ -514,7 +535,8 @@ class PopulateRandomTheory(Handler):
 				new_ksu = KSU(
 					theory=theory_key,
 					description=description,
-					secondary_description=secondary_description)
+					secondary_description=secondary_description,
+					global_category = 'Unassigned')
 
 				for a_key in set_details:
 					a_val = set_details[a_key]
@@ -697,12 +719,6 @@ def update_next_event(self, user_action, post_details, ksu):
 
 
 	return		
-
-def kill_ksu(ksu): #xx
-	ksu.is_active = False
-	ksu.is_deleted = True
-	ksu.in_graveyard = True
-	return ksu
 
 
 

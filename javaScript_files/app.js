@@ -194,7 +194,7 @@ $('.UserActionButton').on('click', function(){
 
 	var kpts_value = ksu.find('#kpts_value option:selected').val();
 
-	var mission_actions = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete']
+	var mission_actions = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete', 'ViewerDelete','GraveyardDelete', 'GraveyardReanimate']
 
 	if ($.inArray(user_action, mission_actions)!= -1){
 		ksu.animate({
@@ -243,7 +243,7 @@ $('.UserActionButton').on('click', function(){
 
 
 		if ($.inArray(user_action, mission_actions)!= -1){
-			$('#MissionValue').text(parseFloat($('#MissionValue').text())-EventScore);
+			$('#MissionValue').text(parseFloat($('#MissionValue').text())-data['kpts_value']);
 		};
 
 
