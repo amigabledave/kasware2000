@@ -442,6 +442,10 @@ class EventHandler(Handler):
 				event.score = float(event_details['kpts_value'])
 				
 				update_next_event(self, user_action, {}, ksu)
+				
+				if ksu_subtype == 'KAS2':
+					ksu.in_graveyard = True
+
 				ksu.put()
 
 			if ksu_subtype == 'KAS4':
