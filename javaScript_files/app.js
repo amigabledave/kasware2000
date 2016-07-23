@@ -33,6 +33,12 @@ $('.DummyInput').on('change',function(){
 		$('#kpts_value').val(this.value);
 	};
 
+	if (ksu_attr == 'next_event'){
+		$('#next_event').val(this.value);
+	};
+
+
+
 });
 
 
@@ -224,8 +230,6 @@ $('.UserActionButton').on('click', function(){
 
 
 		if ($.inArray(user_action, mission_actions)!= -1){
-			console.log('hasta aqui llego, despues de confirmar');
-			console.log($('#MissionValue').text());
 			$('#MissionValue').text(parseFloat($('#MissionValue').text())-EventScore);
 		};
 

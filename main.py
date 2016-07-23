@@ -400,12 +400,7 @@ class TodaysMission(Handler):
 		for ksu in ksu_set:
 			ksu_subtype = ksu.ksu_subtype
 			if ksu_subtype in mission_sets:
-				if ksu_subtype in ['KAS1','KAS2']:
-					next_event = ksu.next_event
-				elif ksu_subtype == 'EVPo':
-					next_event = ksu.next_trigger_event
-				elif ksu_subtype == 'ImPe':
-					next_event = ksu.next_contact_event
+				next_event = ksu.next_event
 
 				if ksu.is_active and next_event and today >= next_event:
 					mission.append(ksu)
@@ -518,8 +513,8 @@ class PopulateRandomTheory(Handler):
 			[2, {'ksu_type':'BigO', 'ksu_subtype':'MinO'}],
 			[3, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
 			[3, {'ksu_type':'Wish', 'ksu_subtype':'Dream'}],
-			[3, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_trigger_event':today, 'kpts_value':1, 'charging_time':7}],
-			[3, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_contact_event':today, 'kpts_value':0.25, 'frequency':30}],
+			[3, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_event':today, 'kpts_value':1, 'frequency':7}],
+			[3, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_event':today, 'kpts_value':0.25, 'frequency':30}],
 			[3, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
 			[5, {'ksu_type':'Idea', 'ksu_subtype':'Principle'}],
 			[3, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
@@ -693,6 +688,8 @@ def update_next_event(self, user_action, post_details, ksu):
 		if user_action == 'MissionPush':
 			ksu.next_event = tomorrow
 
+		ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
+
 	if ksu_subtype == 'KAS2':
 		next_event = ksu.next_event
 
@@ -704,29 +701,20 @@ def update_next_event(self, user_action, post_details, ksu):
 			ksu.next_event = tomorrow
 			ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
 
-	if ksu_subtype == 'EVPo':
-		next_event = ksu.next_trigger_event
+	if ksu_subtype in ['EVPo', 'ImPe']:
+		next_event = ksu.next_event
 
 		if not next_event:
-			ksu.next_trigger_event = today
+			ksu.next_event = today
 
 		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone']:
-			ksu.next_trigger_event = today + timedelta(days=ksu.charging_time)			
+			ksu.next_event = today + timedelta(days=ksu.frequency)			
 
 		if user_action == 'MissionPush':
-			ksu.next_trigger_event = tomorrow
+			ksu.next_event = tomorrow
 
-	if ksu_subtype == 'ImPe':
-		next_event = ksu.next_contact_event
+		ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
 
-		if not next_event:
-			ksu.next_contact_event = today
-
-		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone']:
-			ksu.next_contact_event = today + timedelta(days=ksu.frequency)			
-
-		if user_action == 'MissionPush':
-			ksu.next_contact_event = tomorrow
 
 	return		
 

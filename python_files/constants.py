@@ -171,15 +171,15 @@ d_SetViewerDetails = {
 		'buttons':['Done', 'PinInMission']},
 
 	'BigO':{		
-		'attributes': ['pretty_target_date'],
-		'fields': {'pretty_target_date':'Target Date'},
-		'columns':{'pretty_target_date':6},
+		'attributes': ['pretty_next_event'],
+		'fields': {'pretty_next_event':'Target Date'},
+		'columns':{'pretty_next_event':6},
 		'buttons':['Done', 'PinInMission']},
 
 	'MinO':{		
-		'attributes': ['pretty_target_date'],
-		'fields': {'pretty_target_date':'Target Date'},
-		'columns':{'pretty_target_date':6},
+		'attributes': ['pretty_next_event'],
+		'fields': {'pretty_next_event':'Target Date'},
+		'columns':{'pretty_next_event':6},
 		'buttons':['Done', 'PinInMission']},
 
 	'Wish':{ 		
@@ -195,15 +195,15 @@ d_SetViewerDetails = {
 		'buttons':['Done', 'PinInMission']},
 
 	'EVPo': { 		
-		'attributes': ['charging_time'],
-		'fields': {'charging_time':'Charging time (days)'},
-		'columns':{'charging_time':6},
+		'attributes': ['frequency'],
+		'fields': {'frequency':'Charging time (days)'},
+		'columns':{'frequency':6},
 		'buttons':['Done', 'PinInMission']},
 
 	'ImPe': { 		
-		'attributes': ['contact_frequency'], 
-		'fields': {'contact_frequency':'Contact Frequency (days)'},
-		'columns':{'contact_frequency':6},
+		'attributes': ['frequency'], 
+		'fields': {'frequency':'Contact Frequency (days)'},
+		'columns':{'frequency':6},
 		'buttons':['Done', 'SendToMission']},
 
 	'Idea': { 		
@@ -219,9 +219,9 @@ d_SetViewerDetails = {
 		'buttons':['Done', 'PinInMission']},
 
 	'RTBG': { 		
-		'attributes': ['awesomeness'],
-		'fields': {'awesomeness':'Added Awesomeness'},
-		'columns':{'awesomeness':6},
+		'attributes': ['kpts_value'],
+		'fields': {'kpts_value':'Added Awesomeness'},
+		'columns':{'kpts_value':6},
 		'buttons':['Done', 'PinInMission']},
 
 	'ImIn': { 		
