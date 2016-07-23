@@ -41,23 +41,24 @@ class Theory(ndb.Model):
 
 
 class KSU(ndb.Model):
-	#tracker fields
+
 	theory = ndb.KeyProperty(kind=Theory, required=True)	
 	created = ndb.DateTimeProperty(auto_now_add=True)	
 	last_modified = ndb.DateTimeProperty(auto_now=True)
 
-	# base properties
 	description = ndb.StringProperty(required=True)
+	secondary_description = ndb.StringProperty()
+
 	comments = ndb.TextProperty()
 	ksu_type = ndb.StringProperty()
 	ksu_subtype = ndb.StringProperty()
 
 	global_category = ndb.StringProperty()
 	local_category = ndb.StringProperty()
-	# tags = ndb.KeyProperty(kind=Tag, repeated=True) #all tags related to this KSU	
-	parent_id = ndb.StringProperty()		
+	# parent_id = ndb.KeyProperty(kind=KSU) # Ahora me esta dando un error porque lo estoy ligando a la misma clase que estoy definiendo
 
-	is_pinned = ndb.BooleanProperty(default=False)
+	kpts_value = ndb.FloatProperty()
+	is_special = ndb.BooleanProperty(default=False)
 		
 	is_active = ndb.BooleanProperty(default=True)
 	is_critical = ndb.BooleanProperty(default=False)
@@ -66,76 +67,19 @@ class KSU(ndb.Model):
 	is_visible = ndb.BooleanProperty(default=True)
 	is_deleted = ndb.BooleanProperty(default=False)
 	in_graveyard = ndb.BooleanProperty(default=False)
-
-	# base properties - might be used in the future
-	importance = ndb.IntegerProperty()
-	picture = ndb.BlobProperty()
 			
-	# KAS Specific	
-	last_event = ndb.DateProperty()
 	next_event = ndb.DateProperty()
 	pretty_next_event = ndb.StringProperty()
-	
-	best_time = ndb.TimeProperty()
-	# time_cost = ndb.IntegerProperty()
-
-	kpts_reward = ndb.FloatProperty()
-	kpts_punishment = ndb.FloatProperty()
-
-	repeats = ndb.StringProperty()	
+	frequency = ndb.IntegerProperty()
+	repeats = ndb.StringProperty() # KAS1 Specific		
 	repeats_on = ndb.JsonProperty() #Day's of the week when it repeats if the frequency is Weekly, elese the repetition date is the same day of the month or year
-	repeats_every = ndb.IntegerProperty()
+	best_time = ndb.TimeProperty()
 
-	trigger_circumstances = ndb.TextProperty()
-	# standard_reward = ndb.IntegerProperty()
-	valid_exceptions = ndb.TextProperty()	
-	# standard_punishment = ndb.IntegerProperty()
-
-	# KAS Specific - might be used in the future
-	# Repetition_target_min = ndb.IntegerProperty()
-	# Repetition_target_max = ndb.IntegerProperty()
-	# TimeUse_target_min = ndb.IntegerProperty()
-	# TimeUse_target_max = ndb.IntegerProperty()
-
-	#Objective Specific
-	success_definition = ndb.StringProperty()
-	target_date = ndb.DateProperty()
-	pretty_target_date = ndb.StringProperty()
-	is_BigO = ndb.BooleanProperty(default=False)
-
-	#Wish Specific
-	wish_categorie = ndb.StringProperty()
+	target = ndb.JsonProperty() # For ksus that generate kpts and indicators target min, target max, reverse target etc
+	birthday = ndb.DateProperty()
 	money_cost = ndb.IntegerProperty()
-	is_dream = ndb.BooleanProperty(default=False)
+	# picture = ndb.BlobProperty() #Might be used in the future
 
-	#EVPo Specific
-	charging_time = ndb.IntegerProperty()
-	trigger_action = ndb.StringProperty()
-	next_trigger_event = ndb.DateProperty()
-
-	#Idea Specific
-	source = ndb.StringProperty()
-	is_principle = ndb.BooleanProperty(default=False)
-
-	#Important person Specifics
-	contact_frequency = ndb.IntegerProperty()
-	next_contact_event = ndb.DateProperty()
-	impe_birthday = ndb.DateProperty()
-	# impe_kaswareID = ndb.StringProperty()
-
-	#RTBG Specifics
-	awesomeness = ndb.IntegerProperty()
-	max_awesomeness = ndb.IntegerProperty() # To be used to track max awesomeness
-	was_awesome = ndb.BooleanProperty(default=False)
-	awesome_since = ndb.DateProperty()
-
-	#Indicator Specifics
-	question = ndb.StringProperty()
-	question_time = ndb.StringProperty(default='morning')
-	question_frequency = ndb.IntegerProperty()
-	target_max = ndb.FloatProperty()
-	target_min = ndb.FloatProperty()
-	reverse_target = ndb.BooleanProperty(default=False)
 
 
 class Event(ndb.Model):

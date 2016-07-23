@@ -7,7 +7,7 @@
 <div class="col-xs-12"  style="padding:0px">
 <form class="form-horizontal" method="post" autocomplete="off">
 
-<input type="text" class="form-control hidden" name="ksu_id" value="{{ksu['id']}}">
+<input type="text" class="form-control hidden" name="ksu_id" value="{{ksu['id']}}" id="ksu_id">
 
 <div class="row">
 	<div class="col-xs-12"><span class="NewEditKSU-title" id="KsuEditorTitle"> {% if ksu and ksu.ksu_type and ksu.ksu_type !='Gene'%}{{constants['d_KsuTypes'][ksu.ksu_type] + ' Editor'}}{% else %}KASware Standard Unit Editor{% endif %}</span></div>
@@ -42,7 +42,7 @@
 	<div class="form-group" style="margin-bottom:8px;">				
 		<div class="col-xs-4">
 			<label class="radio-inline" style="margin-left:2px;">
-				<input type="radio" name="ksu_subtype" value="KAS1or2" {% if ksu.ksu_subtype in ['KAS1', 'KAS2'] %} checked="checked" {% endif %}> Proactive </label></div>
+				<input type="radio" name="ksu_subtype" value="KAS1or2" id="KAS1or2" {% if ksu.ksu_subtype in ['KAS1', 'KAS2'] %} checked="checked" {% endif %}> Proactive </label></div>
 		<div class="col-xs-4">
 			<label class="radio-inline">
 				<input type="radio" name="ksu_subtype" value="KAS3" {% if ksu.ksu_subtype == 'KAS3' %} checked="checked" {% endif %}> Reactive </label></div>
@@ -51,57 +51,21 @@
 				<input type="radio" name="ksu_subtype" value="KAS4" {% if ksu.ksu_subtype == 'KAS4' %} checked="checked" {% endif %}> To be avoided </label></div>
 	</div>
 	
-	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:12px;">	
-
+	<div {% if ksu.ksu_subtype not in ['KAS1', 'KAS2'] %} class="hidden" {% endif %} id="KeyA_KAS1or2">
+		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:12px;">	
 		<div class="form-group">
-
-			<div {% if ksu.ksu_subtype not in ['KAS1', 'KAS2', 'KAS3'] %} class="hidden" {% endif %} id="KeyA_KAS1or2or3">
-
-				<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-					<label> Reward</label>
-					<select class="form-control" name="kpts_reward" id="kpts_value">
-						{% for value in constants['l_Fibonacci'] %}
-							{% if value == ksu.kpts_reward %}
-								<option selected="selected" value="{{value}}"> {{value}} </option>
-							{% else %}
-								<option value="{{value}}"> {{value}} </option>
-							{% endif %}
-						{% endfor %}
-					</select>	
-				</div>
+			<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+				<label> Reward</label>
+				<select class="form-control" name="kpts_value" id="kpts_value">
+					{% for value in constants['l_Fibonacci'] %}
+						{% if value == ksu.kpts_value %}
+							<option selected="selected" value="{{value}}"> {{value}} </option>
+						{% else %}
+							<option value="{{value}}"> {{value}} </option>
+						{% endif %}
+					{% endfor %}
+				</select>	
 			</div>
-
-
-			<div {% if ksu.ksu_subtype != 'KAS3' %} class="hidden" {% endif %} id="KeyA_KAS3">
-					<div class="col-xs-9">
-						<label>Trigger Circumstances </label>
-						<textarea class="form-control" name="trigger_circumstances" placeholder="e.g. A beautiful girl walks acroos the streat">{% if ksu and ksu.trigger_circumstances %}{{ksu.trigger_circumstances}}{% endif %}</textarea>	
-					</div>
-			</div>
-
-			<div {% if ksu.ksu_subtype != 'KAS4' %} class="hidden" {% endif %} id="KeyA_KAS4">	
-
-				<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-					<label> Punishment </label>
-					<select class="form-control DummyInput" ksuattr="kpts_value">
-						{% for value in constants['l_Fibonacci'] %}
-							{% if value == ksu.kpts_punishment %}
-								<option selected="selected" value="{{value}}"> {{value}} </option>
-							{% else %}
-								<option value="{{value}}"> {{value}} </option>
-							{% endif %}
-						{% endfor %}
-					</select>	
-				</div>
-				
-				<div class="col-xs-9">
-					<label>Valid Exceptions</label>
-					<textarea class="form-control" name="valid_exceptions" placeholder="e.g. When I'am on vacation, When the food its free!">{% if ksu and ksu.valid_exceptions%}{{ksu.valid_exceptions}}{% endif %}</textarea>	
-				</div>
-				
-			</div>
-
-		<div {% if ksu.ksu_subtype not in ['KAS1', 'KAS2'] %} class="hidden" {% endif %} id="KeyA_KAS1or2">
 
 			<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
 				<label> Next Event </label>
@@ -125,10 +89,9 @@
 					{% endfor %}
 				</select> 
 			</div>
+			
 		</div>
-
-		</div>
-
+		
 		<div class="form-group {% if ksu.repeats == 'R000' %}hidden{% endif %}" id="repeatsDetails">	
 
 			<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 {% if ksu.repeats != 'R007' %}hidden{% endif %}" id="repeats_on">
@@ -159,7 +122,56 @@
 					</div>									
 				</div>		
 			</div>
-		</div>		
+		</div>	
+	</div>	
+
+	<div {% if ksu.ksu_subtype != 'KAS3' %} class="hidden" {% endif %} id="KeyA_KAS3">
+		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:12px;">
+		<div class="form-group" style="margin-bottom:8px;">				
+
+			<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+				<label> Reward</label>
+				<select class="form-control DummyInput" ksuattr="kpts_value">
+					{% for value in constants['l_Fibonacci'] %}
+						{% if value == ksu.kpts_value %}
+							<option selected="selected" value="{{value}}"> {{value}} </option>
+						{% else %}
+							<option value="{{value}}"> {{value}} </option>
+						{% endif %}
+					{% endfor %}
+				</select>	
+			</div>
+
+			<div class="col-xs-9">
+				<label>Trigger Circumstances </label>
+				<textarea class="form-control" name="trigger_circumstances" placeholder="e.g. A beautiful girl walks acroos the streat">{% if ksu and ksu.trigger_circumstances %}{{ksu.trigger_circumstances}}{% endif %}</textarea>	
+			</div>
+		</div>
+	</div>
+			
+	<div {% if ksu.ksu_subtype != 'KAS4' %} class="hidden" {% endif %} id="KeyA_KAS4">	
+		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:12px;">
+		<div class="form-group" style="margin-bottom:8px;">
+
+			<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+					<label> Punishment </label>
+					<select class="form-control DummyInput" ksuattr="kpts_value">
+						{% for value in constants['l_Fibonacci'] %}
+							{% if value == ksu.kpts_value %}
+								<option selected="selected" value="{{value}}"> {{value}} </option>
+							{% else %}
+								<option value="{{value}}"> {{value}} </option>
+							{% endif %}
+						{% endfor %}
+					</select>	
+			</div>
+				
+			<div class="col-xs-9">
+				<label>Valid Exceptions</label>
+				<textarea class="form-control" name="valid_exceptions" placeholder="e.g. When I'am on vacation, When the food its free!">{% if ksu and ksu.valid_exceptions%}{{ksu.valid_exceptions}}{% endif %}</textarea>	
+			</div>		
+		</div>
+	</div>
 </div>
 
 
@@ -233,9 +245,9 @@
 	<div class="form-group">
 	 	<div class="col-xs-4">
 			<label> Awesomeness </label>
-			<select class="form-control" name="awesomeness">
-				{% for level in constants['l_Fibonacci_0_8'] %}
-					{% if level == ksu.awesomeness %}
+			<select class="form-control DummyInput" ksuattr="kpts_value">
+				{% for level in constants['l_Fibonacci'] %}
+					{% if level == ksu.kpts_value %}
 						<option selected="selected" value="{{level}}"> {{level}} </option>
 					{% else %}
 						<option value="{{level}}"> {{level}} </option>
@@ -265,7 +277,7 @@
 			<label> Contact Reward</label>
 			<select class="form-control DummyInput" ksuattr="kpts_value">
 				{% for value in constants['l_Fibonacci'] %}
-					{% if value == ksu.kpts_reward %}
+					{% if value == ksu.kpts_value %}
 						<option selected="selected" value="{{value}}"> {{value}} </option>
 					{% else %}
 						<option value="{{value}}"> {{value}} </option>
@@ -318,7 +330,7 @@
 			<label> Trigger Effort Reward</label>
 			<select class="form-control DummyInput" ksuattr="kpts_value">
 				{% for value in constants['l_Fibonacci'] %}
-					{% if value == ksu.kpts_reward %}
+					{% if value == ksu.kpts_value %}
 						<option selected="selected" value="{{value}}"> {{value}} </option>
 					{% else %}
 						<option value="{{value}}"> {{value}} </option>
@@ -452,8 +464,8 @@
 
 	<div class="form-group">
 	<div class="col-xs-12 btn-group">
-		<button type="submit" class="btn btn-success btn-lg respect-space" name="action_description" value="SaveChanges" style="margin-right: 8px;">  Save  </button>
-		<button type="submit" class="btn btn-danger btn-lg  respect-space" name="action_description" value="DiscardChanges"> Discard </button> 
+		<button type="submit" class="btn btn-success btn-lg" name="action_description" value="SaveChanges" style="margin-right: 8px;"><span class="glyphicon glyphicon-floppy-disk"></span>  Save  </button>
+		<button type="submit" class="btn btn-danger btn-lg" name="action_description" value="DiscardChanges">Discard</button> 
 	</div>
 </div>
 

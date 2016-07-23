@@ -36,9 +36,6 @@ $('.DummyInput').on('change',function(){
 	// if (ksu_attr == 'kpts_reward'){
 	// 	$('#kpts_reward').val(this.value);
 	// };
-
-
-	
 });
 
 
@@ -46,6 +43,12 @@ $('#ksu_type').on('change',function(){
 
 	if (this.value == 'KeyA'){
 		$('#KeyA').removeClass('hidden');
+		console.log('Una key action')
+		if ($('#ksu_id').val() == ''){
+			$('#KAS1or2').prop("checked", true);
+			$('#KeyA_KAS1or2').removeClass('hidden');
+		}
+
 	} else {
 		$('#KeyA').addClass('hidden');
 	}	
@@ -126,21 +129,18 @@ $('input[type=radio][name=ksu_subtype]').on('change',function(){
 
 	if (this.value == 'KAS1or2'){
 		$('#KeyA_KAS1or2').removeClass('hidden');
-		$('#KeyA_KAS1or2or3').removeClass('hidden');
 	} else {
 		$('#KeyA_KAS1or2').addClass('hidden');
 	}
 
 	if (this.value == 'KAS3'){
 		$('#KeyA_KAS3').removeClass('hidden');
-		$('#KeyA_KAS1or2or3').removeClass('hidden');
 	} else {
 		$('#KeyA_KAS3').addClass('hidden');	
 	}
 
 	if (this.value == 'KAS4'){
-		$('#KeyA_KAS4').removeClass('hidden');
-		$('#KeyA_KAS1or2or3').addClass('hidden');		
+		$('#KeyA_KAS4').removeClass('hidden');		
 	} else {
 		$('#KeyA_KAS4').addClass('hidden');
 		

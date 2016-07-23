@@ -149,6 +149,7 @@ class SignUpLogIn(Handler):
 				categories = {
 					'Global':[
 						'Unassigned',
+						'0. End Value'
 						'1. Inner Peace & Consciousness',
 						'2. Fun & Exciting Situations', 	
 						'3. Meaning & Direction',
@@ -245,6 +246,14 @@ class KsuEditor(Handler):
 		return_to = determine_return_to(self)
 		
 		if user_action == 'SaveChanges':
+			print
+			print
+			print 'REQUEST TO SAVE KSU:'
+			print 'POST DETAILS:'
+			print post_details
+			print
+			print
+
 			ksu = self.prepareInputForSaving(ksu, post_details)
 			update_next_event(self, user_action, post_details, ksu)
 			ksu.put()
@@ -510,7 +519,7 @@ class PopulateRandomTheory(Handler):
 			[3, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
 			[3, {'ksu_type':'Wish', 'ksu_subtype':'Dream'}],
 			[3, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_trigger_event':today, 'kpts_reward':1, 'charging_time':7}],
-			[3, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_contact_event':today, 'kpts_reward':0.25, 'contact_frequency':30}],
+			[3, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_contact_event':today, 'kpts_reward':0.25, 'frequency':30}],
 			[3, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
 			[5, {'ksu_type':'Idea', 'ksu_subtype':'Principle'}],
 			[3, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
@@ -652,12 +661,12 @@ def update_next_event(self, user_action, post_details, ksu):
 		
 		repeats = ksu.repeats
 		repeats_on = ksu.repeats_on
-		repeats_every = ksu.repeats_every
+		frequency = ksu.frequency
 
 		result = 0
 
 		if repeats in ['R001', 'R030', 'R365']:		
-			result = d_repeats_values[repeats] * repeats_every
+			result = d_repeats_values[repeats] * frequency
 
 		if repeats == 'R007':
 			result = find_next_weekly_repetition(repeats_on)
@@ -714,7 +723,7 @@ def update_next_event(self, user_action, post_details, ksu):
 			ksu.next_contact_event = today
 
 		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone']:
-			ksu.next_contact_event = today + timedelta(days=ksu.contact_frequency)			
+			ksu.next_contact_event = today + timedelta(days=ksu.frequency)			
 
 		if user_action == 'MissionPush':
 			ksu.next_contact_event = tomorrow
