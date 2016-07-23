@@ -65,9 +65,9 @@ class KSU(ndb.Model):
 	is_private = ndb.BooleanProperty(default=False)
 
 	is_visible = ndb.BooleanProperty(default=True)
-	is_deleted = ndb.BooleanProperty(default=False)
 	in_graveyard = ndb.BooleanProperty(default=False)
-			
+	is_deleted = ndb.BooleanProperty(default=False)			
+
 	next_event = ndb.DateProperty()
 	pretty_next_event = ndb.StringProperty()
 	frequency = ndb.IntegerProperty()
@@ -109,16 +109,21 @@ class DailyLog(ndb.Model):
 	last_modified = ndb.DateTimeProperty(auto_now=True)
 	
 	#base properties	
-	# user_date = ndb.DateTimeProperty(required=True)
+	user_date = ndb.DateTimeProperty(required=True)
 	user_date_ordinal = ndb.IntegerProperty(required=True)
 	diary_entry = ndb.TextProperty()
 
 	#Score properties
+	StreakStart =  ndb.IntegerProperty(required=True) #An number that represents a date
+	Streak = ndb.IntegerProperty(default=0)
 	Goal = ndb.FloatProperty(default=0)
+	
+	EffortReserve = ndb.FloatProperty(default=0)
+	PointsToGoal = ndb.FloatProperty(default=0)
+	
 	SmartEffort = ndb.FloatProperty(default=0)
 	Stupidity = ndb.FloatProperty(default=0)
-	EffortReserve = ndb.FloatProperty(default=0)
-	FireStreak = ndb.IntegerProperty(default=0)
+	
 
 
 
