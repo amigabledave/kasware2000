@@ -33,9 +33,6 @@ $('.DummyInput').on('change',function(){
 		$('#kpts_value').val(this.value);
 	};
 
-	// if (ksu_attr == 'kpts_reward'){
-	// 	$('#kpts_reward').val(this.value);
-	// };
 });
 
 
@@ -176,8 +173,7 @@ $('.UserActionButton').on('click', function(){
 	var ksu_id = ksu.attr("value");
 	var user_action = $(this).attr("value");
 
-	var kpts_reward = ksu.find('#kpts_reward option:selected').val();
-	var kpts_punishment = ksu.find('#kpts_punishment option:selected').val();
+	var kpts_value = ksu.find('#kpts_value option:selected').val();
 
 	var mission_actions = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete']
 
@@ -198,8 +194,7 @@ $('.UserActionButton').on('click', function(){
 		data: JSON.stringify({
 			'ksu_id': ksu_id,
 			'user_action': user_action,
-			'kpts_reward':kpts_reward,
-			'kpts_punishment':kpts_punishment
+			'kpts_value':kpts_value,
 		})
 	})
 	.done(function(data){
@@ -226,8 +221,15 @@ $('.UserActionButton').on('click', function(){
 		}; 
 	
 		$('#PointsToGoal').text(' ' + PointsToGoal);
-		// $('#TotalScore').text(' ' + TotalScore); 
-		// alert(data['mensaje']);
+
+
+		if ($.inArray(user_action, mission_actions)!= -1){
+			console.log('hasta aqui llego, despues de confirmar');
+			console.log($('#MissionValue').text());
+			$('#MissionValue').text(parseFloat($('#MissionValue').text())-EventScore);
+		};
+
+
 
 		var disapearing_suptypes = ['KAS2'];
 		var ksu_subtype = data['ksu_subtype'];
@@ -265,12 +267,12 @@ $('.ShowDetailMissionButton').on('click', function(){
 
 var updateKsuScore = function(x){	
 	var ksu = $(x).closest('#MissionKSU');
-	var kpts_reward = ksu.find('#kpts_reward').val();
+	var kpts_value = ksu.find('#kpts_value').val();
 	var score = ksu.find('#KsuKpts');	
-	score.text(kpts_reward);
+	score.text(kpts_value);
 };
 
-$('.kpts_reward').on('change', function(){
+$('.kpts_value').on('change', function(){
 	updateKsuScore(this);
 });
 

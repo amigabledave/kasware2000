@@ -159,15 +159,15 @@ d_SetViewerDetails = {
 		'buttons':['Done', 'SendToMission']},
 
 	'KAS3':{
-		'attributes': ['kpts_reward'],
-		'fields': {'kpts_reward':'Reward (Kpts.)'},
-		'columns': {'kpts_reward':6},
+		'attributes': ['kpts_value'],
+		'fields': {'kpts_value':'Reward (Kpts.)'},
+		'columns': {'kpts_value':6},
 		'buttons': ['Done', 'PinInMission']},
 
 	'KAS4':{
-		'attributes': ['kpts_punishment'],
-		'fields': {'kpts_punishment':'Punishment (Kpts.)'},
-		'columns':{'kpts_punishment':6},
+		'attributes': ['kpts_value'],
+		'fields': {'kpts_value':'Punishment (Kpts.)'},
+		'columns':{'kpts_value':6},
 		'buttons':['Done', 'PinInMission']},
 
 	'BigO':{		

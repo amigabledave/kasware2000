@@ -4,7 +4,7 @@
 
 <div class="row">
 	<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10"> 
-		<div class="SectionTitle"> Today's Mission - {{mission_value}} Kpts. </div>	
+		<div class="SectionTitle"> Today's Mission (<span id="MissionValue">{{mission_value}}</span> Kpts.)</div>
 	</div>
 </div>
 
@@ -26,7 +26,7 @@
 
 
 			<div class="col-xs-1" style="padding-left:0; padding-right:5px;">
-				<span class="MissionKsuKpts" id="KsuKpts">{% if ksu.kpts_reward %}{{ksu.kpts_reward}}{% else %}0{% endif %}</span><span class="MissionKsuKpts"> Kpts.</span>
+				<span class="MissionKsuKpts" id="KsuKpts">{% if ksu.kpts_value %}{{ksu.kpts_value}}{% else %}0{% endif %}</span><span class="MissionKsuKpts"> Kpts.</span>
 			</div>
 
 			<div class="col-xs-1" style="padding:0;">
@@ -44,9 +44,9 @@
 
 				<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 					<label> Reward </label>
-					<select class="form-control kpts_reward" name="kpts_reward" id="kpts_reward">
+					<select class="form-control kpts_value" name="kpts_value" id="kpts_value">
 						{% for value in constants['l_Fibonacci'] %}
-							{% if value == ksu.kpts_reward %}
+							{% if value == ksu.kpts_value %}
 								<option selected="selected" value="{{value}}"> {{value}} </option>
 							{% else %}
 								<option value="{{value}}"> {{value}} </option>

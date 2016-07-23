@@ -409,7 +409,7 @@ class TodaysMission(Handler):
 
 				if ksu.is_active and next_event and today >= next_event:
 					mission.append(ksu)
-					mission_value += ksu.kpts_reward
+					mission_value += ksu.kpts_value
 
 		pinned_sets = ['KAS3', 'KAS4']
 		return mission, mission_value
@@ -463,14 +463,14 @@ class EventHandler(Handler):
 
 			if ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'EVPo', 'ImPe']:
 				event.kpts_type = 'SmartEffort'
-				event.score = float(event_details['kpts_reward'])
+				event.score = float(event_details['kpts_value'])
 				
 				update_next_event(self, user_action, {}, ksu)
 				ksu.put()
 
 			if ksu_subtype == 'KAS4':
 				event.kpts_type = 'Stupidity'
-				event.score = float(event_details['kpts_punishment'])				
+				event.score = float(event_details['kpts_value'])				
 
 
 		self.update_active_log(event)
@@ -510,16 +510,16 @@ class PopulateRandomTheory(Handler):
 
 		theory_parameters = [
 			[10,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'kpts_reward':2}],
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_reward':3}],
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_reward':0.25}],
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4', 'kpts_punishment':5}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'kpts_value':2}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_value':0.25}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4', 'kpts_value':5}],
 			[1, {'ksu_type':'BigO', 'ksu_subtype':'BigO'}],
 			[2, {'ksu_type':'BigO', 'ksu_subtype':'MinO'}],
 			[3, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
 			[3, {'ksu_type':'Wish', 'ksu_subtype':'Dream'}],
-			[3, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_trigger_event':today, 'kpts_reward':1, 'charging_time':7}],
-			[3, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_contact_event':today, 'kpts_reward':0.25, 'frequency':30}],
+			[3, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_trigger_event':today, 'kpts_value':1, 'charging_time':7}],
+			[3, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_contact_event':today, 'kpts_value':0.25, 'frequency':30}],
 			[3, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
 			[5, {'ksu_type':'Idea', 'ksu_subtype':'Principle'}],
 			[3, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
