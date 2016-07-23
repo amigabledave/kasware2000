@@ -149,7 +149,7 @@ class SignUpLogIn(Handler):
 				categories = {
 					'Global':[
 						'Unassigned',
-						'0. End Value'
+						'0. End Value',
 						'1. Inner Peace & Consciousness',
 						'2. Fun & Exciting Situations', 	
 						'3. Meaning & Direction',
@@ -161,7 +161,7 @@ class SignUpLogIn(Handler):
 						'9. Money & Power'],
 					'Gene': ['Unassigned'],
 					'KeyA': ['Unassigned'],
-					'BigO': ['Unassigned'],
+					'Obje': ['Unassigned'],
 					'Wish': [	
 						'Unassigned',	
 						'01. Being',
@@ -269,12 +269,7 @@ class KsuEditor(Handler):
 
 		l_checkbox_attribute = [ 'is_active', 
 								 'is_critical', 
-								 'is_private',
-								 'is_BigO',
-								 'is_dream', 
-								 'is_principle', 
-								 'was_awesome',
-								 'reverse_target']
+								 'is_private']
 
 		d_repeats_on = {
 			'repeats_on_Mon': False,
@@ -312,7 +307,6 @@ class KsuEditor(Handler):
 				if a_key in ['target_date', 'next_event']:
 					setattr(ksu, 'pretty_'+a_key, datetime.strptime(a_val, '%Y-%m-%d').strftime('%a, %b %d, %Y'))
 
-
 			if a_type == 'time':
 				a_val = a_val[0:5]
 				setattr(ksu, a_key, datetime.strptime(a_val, '%H:%M').time())
@@ -343,23 +337,6 @@ class KsuEditor(Handler):
 				ksu_subtype = 'KAS2'
 			else:
 				ksu_subtype = 'KAS1'
-
-		elif ksu_type == 'BigO':
-			if ksu.is_BigO:
-				ksu_subtype = 'BigO'
-			else:
-				ksu_subtype = 'MinO'
-
-		elif ksu_type == 'Wish':
-			if ksu.is_dream:
-				ksu_subtype = 'Dream'
-			else:
-				ksu_subtype = 'Wish'
-
-		elif ksu_type == 'Idea':
-			if ksu.is_principle:
-				ksu_subtype = 'Principle'
-
 
 		return ksu_subtype
 
@@ -505,12 +482,12 @@ class PopulateRandomTheory(Handler):
 
 		theory_parameters = [
 			[10,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'kpts_value':2}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2}],
 			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
 			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_value':0.25}],
 			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4', 'kpts_value':5}],
-			[1, {'ksu_type':'BigO', 'ksu_subtype':'BigO'}],
-			[2, {'ksu_type':'BigO', 'ksu_subtype':'MinO'}],
+			[2, {'ksu_type':'Obje', 'ksu_subtype':'Obje'}],
+			[1, {'ksu_type':'Obje', 'ksu_subtype':'BigO'}],
 			[3, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
 			[3, {'ksu_type':'Wish', 'ksu_subtype':'Dream'}],
 			[3, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_event':today, 'kpts_value':1, 'frequency':7}],

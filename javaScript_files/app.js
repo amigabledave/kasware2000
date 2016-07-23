@@ -1,7 +1,7 @@
 var userCategories = {
 	'Gene': ['Unassigned'],
 	'KeyA': ['Unassigned'],
-	'BigO': ['Unassigned'],
+	'Obje': ['Unassigned'],
 	'Wish': [	
 		'Unassigned',	
 		'01. Being',
@@ -27,8 +27,8 @@ var userCategories = {
 
 $('.DummyInput').on('change',function(){
 	
-	var ksu_attr = $(this).attr("ksuattr"); 
-
+	var ksu_attr = $(this).attr("ksuattr");
+ 
 	if (ksu_attr == 'kpts_value'){
 		$('#kpts_value').val(this.value);
 	};
@@ -37,8 +37,21 @@ $('.DummyInput').on('change',function(){
 		$('#next_event').val(this.value);
 	};
 
+	if (ksu_attr == 'frequency'){
+		$('#frequency').val(this.value);
+	};
 
+	if (ksu_attr == 'secondary_description'){
+		$('#secondary_description').val(this.value);
+	};
 
+	if (ksu_attr == 'birthday'){
+		$('#birthday').val(this.value);
+	};
+
+	if (ksu_attr == 'best_time'){
+		$('#best_time').val(this.value);
+	};
 });
 
 
@@ -56,10 +69,10 @@ $('#ksu_type').on('change',function(){
 		$('#KeyA').addClass('hidden');
 	}	
 
-	if (this.value == 'BigO'){
-		$('#BigO').removeClass('hidden');
+	if (this.value == 'Obje'){
+		$('#Obje').removeClass('hidden');
 	} else {
-		$('#BigO').addClass('hidden');
+		$('#Obje').addClass('hidden');
 	}
 
 	if (this.value == 'Wish'){
@@ -102,7 +115,7 @@ $('#ksu_type').on('change',function(){
 		'Gene': 'KASware Standard Unit Editor',
 		'KeyA': 'Key Action Editor',
 		// 'MinO': 'Mini Objective Editor',
-		'BigO': 'Objective Editor',
+		'Obje': 'Objective Editor',
 		'Drea': 'Dream Editor',
 		'Wish': 'Wish Editor',
 		// 'Prin': 'Principle Editor',
@@ -279,6 +292,23 @@ var updateKsuScore = function(x){
 $('.kpts_value').on('change', function(){
 	updateKsuScore(this);
 });
+
+
+// Hace que sea posible desseleccionar radios    
+var allRadios = document.getElementsByName('ksu_subtype');
+var booRadio;
+var x = 0;
+for(x = 0; x < allRadios.length; x++){
+
+    allRadios[x].onclick = function() {
+        if(booRadio == this){
+            this.checked = false;
+            booRadio = null;
+        }else{
+            booRadio = this;
+        }
+    };
+}
 
 
 

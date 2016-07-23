@@ -56,7 +56,7 @@ d_SetTitles = {
 	'Gene': 'Unassigned KSUs',
 	'KeyA': 'Key Actions Set',
 	# 'MinO': '02. Mini Objective',
-	'BigO': 'Objectives',
+	'Obje': 'Objectives',
 	# 'Drea': '04. Dream',
 	'Wish': 'Wishes',
 	'EVPo': 'End Value Mines',
@@ -72,7 +72,7 @@ d_KsuTypes = {
 	'Gene': '00. Unassigned',
 	'KeyA': '01. Key Action',
 	# 'MinO': '02. Mini Objective',
-	'BigO': '02. Objective',
+	'Obje': '02. Objective',
 	# 'Drea': '04. Dream',
 	'Wish': '03. Wish',
 	'EVPo': '05. End Value Mine',
@@ -94,10 +94,10 @@ d_KsuSubtypes = {
 	'KAS3':'Key Reaction',
 	'KAS4':'Key Action To Avoid',
 
+	'Obje': 'Sprint Goal',
+
 	'BigO': 'Big Objective',
 	
-	'MinO': 'Sprint Goal',
-
 	'Wish': 'Wish',
 
 	'Dream': 'Dream',
@@ -110,6 +110,7 @@ d_KsuSubtypes = {
 	'Principle': 'Principle',
 
 	'RTBG': 'Reason To Be Grateful',
+	'RTBSDG': 'Reason To Be Super Duper Grateful',
 
 	'ImIn': 'Indicator',
 	'RealitySnapshot':'Reality Indicator',
@@ -147,9 +148,9 @@ d_SetViewerDetails = {
 	'KeyA':{},
 
 	'KAS1':{
-		'attributes': ['next_event', 'repeats'],
-		'fields': {'next_event':'Next Event', 'repeats':'Repeats'},
-		'columns':{'next_event':3, 'repeats':3},
+		'attributes': ['pretty_next_event'],
+		'fields': {'pretty_next_event':'Next Event'},
+		'columns':{'pretty_next_event':6},
 		'buttons':['Done', 'SendToMission']},
 
 	'KAS2':{		
@@ -170,13 +171,13 @@ d_SetViewerDetails = {
 		'columns':{'kpts_value':6},
 		'buttons':['Done', 'PinInMission']},
 
-	'BigO':{		
+	'Obje':{		
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Target Date'},
 		'columns':{'pretty_next_event':6},
 		'buttons':['Done', 'PinInMission']},
 
-	'MinO':{		
+	'BigO':{		
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Target Date'},
 		'columns':{'pretty_next_event':6},
@@ -219,10 +220,17 @@ d_SetViewerDetails = {
 		'buttons':['Done', 'PinInMission']},
 
 	'RTBG': { 		
-		'attributes': ['kpts_value'],
-		'fields': {'kpts_value':'Added Awesomeness'},
-		'columns':{'kpts_value':6},
-		'buttons':['Done', 'PinInMission']},
+			'attributes': [],
+			'fields': {},
+			'columns':{},
+			'buttons':['Done', 'PinInMission']},
+
+	'RTBSDG': { 		
+			'attributes': [],
+			'fields': {},
+			'columns':{},
+			'buttons':['Done', 'PinInMission']},
+
 
 	'ImIn': { 		
 		'attributes': [], 

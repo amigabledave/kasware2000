@@ -42,7 +42,7 @@
 
 						<div class="row">
 							<br>
-							<div class="col-xs-6">
+							<div class="col-xs-{% if ksu.ksu_type == 'RTBG' %}12{% else %}6{% endif %}">
 								<label class="displaySectionBulletContent">{% if ksu.global_category != 'Unassigned' %}{{ksu.global_category}}{% else %}<br>{% endif %}
 								<div class="displaySectionBulletContent"> {% if ksu.ksu_subtype %}{{constants['d_KsuSubtypes'][ksu.ksu_subtype]}}{% else %}{{constants['d_KsuTypes'][ksu.ksu_type]}}{% endif %}
 								</div></label>
