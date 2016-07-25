@@ -24,6 +24,7 @@ class Theory(ndb.Model):
 	#tracker fields
 	created = ndb.DateTimeProperty(auto_now_add=True)	
 	last_modified = ndb.DateTimeProperty(auto_now=True)
+	last_DailyLog = ndb.IntegerProperty(required=True)
 
 	@classmethod # This means you can call a method directly on the Class (no on a Class Instance)
 	def get_by_theory_id(cls, theory_id):
@@ -81,7 +82,6 @@ class KSU(ndb.Model):
 	# picture = ndb.BlobProperty() #Might be used in the future
 
 
-
 class Event(ndb.Model):
 
 	#tracker fields
@@ -91,8 +91,8 @@ class Event(ndb.Model):
 	last_modified = ndb.DateTimeProperty(auto_now=True)
 
 	# base properties
-	# user_date = ndb.DateTimeProperty(auto_now_add=True)	
-	user_date_ordinal = ndb.IntegerProperty(required=True)
+	user_date_date = ndb.DateTimeProperty(auto_now_add=True)	
+	user_date = ndb.IntegerProperty(required=True)
 	event_type = ndb.StringProperty(required=True)
 	comments = ndb.TextProperty()
 
@@ -109,15 +109,18 @@ class DailyLog(ndb.Model):
 	last_modified = ndb.DateTimeProperty(auto_now=True)
 	
 	#base properties	
-	user_date = ndb.DateTimeProperty(required=True)
-	user_date_ordinal = ndb.IntegerProperty(required=True)
+	user_date_date = ndb.DateTimeProperty(required=True)
+	user_date = ndb.IntegerProperty(required=True)
 	diary_entry = ndb.TextProperty()
+	
+	goal_achieved = ndb.BooleanProperty(default=False)
+	streak_start_date =  ndb.IntegerProperty(required=True) #An number that represents a date
+	
 
 	#Score properties
-	StreakStart =  ndb.IntegerProperty(required=True) #An number that represents a date
 	Streak = ndb.IntegerProperty(default=0)
 	Goal = ndb.FloatProperty(default=0)
-	
+
 	EffortReserve = ndb.FloatProperty(default=0)
 	PointsToGoal = ndb.FloatProperty(default=0)
 	

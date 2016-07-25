@@ -88,32 +88,92 @@ class Handler(webapp2.RequestHandler):
 		self.theory = theory_id and Theory.get_by_theory_id(int(theory_id)) #if the user exist, 'self.theory' will store the actual theory object
 		self.active_log = self.theory and self.get_active_log()
 
+
 	def get_active_log(self):
 		theory = self.theory
 		
 		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 
-		active_date = (datetime.today()-timedelta(hours=user_start_hour)).toordinal()  	
-		user_key = theory.key
+		active_date = (datetime.today()-timedelta(hours=user_start_hour)).toordinal() #aqui puedo hacer creer al programa que es otro dia
+		last_DailyLog = theory.last_DailyLog
+		user_key = theory.key		
 
-		active_log = DailyLog.query(DailyLog.theory == user_key ).filter(DailyLog.user_date_ordinal == active_date).fetch()
-		
-		if active_log:
-			active_log = active_log[0]
+		if last_DailyLog == active_date: 
+			active_log = DailyLog.query(DailyLog.theory == user_key ).filter(DailyLog.user_date == active_date).fetch()[0]
 
-		if not active_log:
-
-			active_weekday = (datetime.today()-timedelta(hours=user_start_hour)).weekday()
-			goal = int(theory.kpts_goals['typical_weekly_goals'][active_weekday])
-
-			active_log = DailyLog(
-				theory = theory.key,
-				user_date_ordinal = active_date,
-				Goal = goal)
-			active_log.put()
+		else:
+			last_log = DailyLog.query(DailyLog.theory == user_key ).filter(DailyLog.user_date == last_DailyLog).fetch()[0]
+			active_log = self.fill_log_gaps(theory, last_log, active_date)
 
 		return active_log
+
+
+	def fill_log_gaps(self, theory, last_log ,active_date):
+
+		kpts_weekly_goals = theory.kpts_goals['kpts_weekly_goals']
+
+		latest_log = last_log
+		latest_log_date = latest_log.user_date
+
+		while latest_log_date < active_date:
+			print latest_log.user_date_date, latest_log.user_date, latest_log.EffortReserve, latest_log.Streak, latest_log.streak_start_date
+			latest_log = self.fill_one_log_gap(theory, latest_log, kpts_weekly_goals)
+			latest_log_date = latest_log.user_date
+
+		print latest_log.user_date_date, latest_log.user_date, latest_log.EffortReserve, latest_log.Streak, latest_log.streak_start_date
+		theory.last_DailyLog = latest_log_date
+		theory.put()
+		return latest_log
+
+	def fill_one_log_gap(self, theory, last_log, kpts_weekly_goals):
+
+		user_date = last_log.user_date + 1
+		user_date_date = datetime.fromordinal(user_date)
+
+		active_weekday = (user_date_date).weekday()
+		Goal = int(kpts_weekly_goals[active_weekday])
+
+		old_EffortReserve = last_log.EffortReserve
+
+		if old_EffortReserve - Goal >= 0:
+			goal_achieved = True
+			streak_start_date = last_log.streak_start_date
+
+			Streak = last_log.Streak + 1
+			EffortReserve = old_EffortReserve - Goal
+			PointsToGoal = 0 
+
+		else:
+			goal_achieved = False
+			streak_start_date = user_date
+
+			Streak = 0
+			EffortReserve = 0
+			PointsToGoal = Goal - old_EffortReserve
+
+		new_log = DailyLog(
+			theory = theory.key,
+			
+			user_date_date = user_date_date,
+			user_date = user_date,
+
+			goal_achieved = goal_achieved,
+			streak_start_date = streak_start_date,
+
+			Streak = Streak,
+			Goal = Goal,
+			EffortReserve = EffortReserve,
+			PointsToGoal = PointsToGoal)
+		new_log.put()
+		
+		return new_log
+
+
+
+
+
+
 
 
 class SignUpLogIn(Handler):
@@ -194,7 +254,27 @@ class SignUpLogIn(Handler):
 					kpts_goals=calculate_user_kpts_goals(kpts_goals_parameters),
 					categories=categories)
 
+				#creates the first DailyLog entry
+				day_start_time = theory.day_start_time
+				user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
+				active_date = (datetime.today()-timedelta(hours=user_start_hour)).toordinal() 
+				active_date_date = datetime.fromordinal(active_date)
+				active_weekday = (datetime.today()-timedelta(hours=user_start_hour)).weekday()
+				goal = int(theory.kpts_goals['kpts_weekly_goals'][active_weekday])
+				
+				active_log = DailyLog(
+					theory = theory.key,
+					
+					user_date_date = active_date_date,
+					user_date = active_date,
+					streak_start_date = active_date,
+					
+					Goal = goal)
+				active_log.put()
+
+				theory.last_DailyLog = active_date
 				theory.put()
+
 				self.login(theory)
 				self.redirect('/')
 
@@ -432,7 +512,7 @@ class EventHandler(Handler):
 			theory=self.theory.key,
 			ksu_id =  ksu.key,
 			event_type = user_action,
-			user_date_ordinal=(datetime.today()-timedelta(hours=user_start_hour)).toordinal())
+			user_date=(datetime.today()-timedelta(hours=user_start_hour)).toordinal())
 
 
 		if user_action in ['MissionDone', 'ViewerDone']:
@@ -464,9 +544,6 @@ class EventHandler(Handler):
 			ksu.is_deleted = True
 			ksu.put()
 
-
-
-
 		self.update_active_log(event)
 		event.put()		
 
@@ -477,16 +554,35 @@ class EventHandler(Handler):
 											'kpts_value':ksu.kpts_value}))
 		return
 
+
 	def update_active_log(self, event):
 		active_log = self.active_log
-		
+
+		PointsToGoal = active_log.PointsToGoal
+
 		if event.kpts_type == 'SmartEffort':
 			active_log.SmartEffort += event.score
+			PointsToGoal -= event.score
 
 		if event.kpts_type == 'Stupidity':
 			active_log.Stupidity += event.score
+			PointsToGoal += event.score
 
-		active_log.put() 
+		if not active_log.goal_achieved:
+			if PointsToGoal <= 0:
+				active_log.goal_achieved = True
+				active_log.Streak += 1
+				active_log.EffortReserve -= PointsToGoal
+				active_log.PointsToGoal = 0
+			else:
+				active_log.PointsToGoal = PointsToGoal
+
+		else:
+			active_log.EffortReserve -= PointsToGoal
+
+		active_log.put()
+		
+
 
 
 #--- Development handlers ----------
@@ -550,26 +646,6 @@ class PopulateRandomTheory(Handler):
 		return
 
 
-class DataStoreViewer(Handler):
-
-	def descriptionsOnly(self):
-		user_key = self.theory.key
-		ksu_set = KSU.query(KSU.theory == user_key).order(KSU.created).fetch()
-		result = []
-		for ksu in ksu_set:
-			result.append(ksu.description)
-		return result	
-
-	def get(self):
-		self.write('User: ')
-		self.write(self.theory.first_name)
-		self.write('<br>')
-		self.write('<br>')
-		for ksu in self.descriptionsOnly():
-			self.write(ksu)
-			self.write('<br>') 
-
-
 #--- Essential Helper Functions ----------
 def get_post_details(self):
 	post_details = {}
@@ -610,13 +686,13 @@ def calculate_user_kpts_goals(kpts_goals_parameters):
 	
 	typical_day_minimum_effort = yearly_effort_goal/active_days
 
-	typical_weekly_goals = []
+	kpts_weekly_goals = []
 	for e in typical_week_effort_distribution:
-		typical_weekly_goals.append(math.ceil(e * typical_day_minimum_effort))
+		kpts_weekly_goals.append(math.ceil(e * typical_day_minimum_effort))
 
 	user_kpts_goals = {
 		'typical_day_minimum_effort': math.ceil(typical_day_minimum_effort),
-		'typical_weekly_goals': typical_weekly_goals,
+		'kpts_weekly_goals': kpts_weekly_goals,
 		'active_days': math.ceil(active_days)
 	}
 
@@ -808,7 +884,6 @@ app = webapp2.WSGIApplication([
 
 							    ('/EventHandler',EventHandler),
 
-							    ('/PopulateRandomTheory',PopulateRandomTheory),
-							    ('/DataStoreViewer',DataStoreViewer)
+							    ('/PopulateRandomTheory',PopulateRandomTheory)
 								], debug=True)
 
