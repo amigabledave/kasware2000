@@ -232,6 +232,8 @@ def fill_log_gaps(theory, active_date):
 		latest_log_date = latest_log.user_date
 
 	print latest_log.user_date_date, latest_log.user_date, latest_log.EffortReserve, latest_log.Streak, latest_log.streak_start_date
+	theory.last_DailyLog = latest_log_date
+	theory.put()
 	return latest_log
 
 fill_log_gaps(theory, active_date)

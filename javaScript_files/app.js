@@ -219,27 +219,15 @@ $('.UserActionButton').on('click', function(){
 	.done(function(data){
 		var EventScore = data['EventScore'];
 		var kpts_type = data['kpts_type'];
-		var PointsToGoal = parseFloat($('#PointsToGoal').text())
-
-		if (kpts_type == 'SmartEffort'){
-			PointsToGoal -= EventScore;
-		};
-
-		if (kpts_type == 'Stupidity'){
-			PointsToGoal += EventScore;
-		};
-
-		// var TotalScore = parseInt($('#TotalScore').text()) + EventScore;
-
-		if (isNaN(PointsToGoal)){
-			PointsToGoal = 0
-		};
+		var PointsToGoal = data['PointsToGoal']
 
 		if ( PointsToGoal <= 0){
 			PointsToGoal = 'Achieved!'
 		}; 
 	
 		$('#PointsToGoal').text(' ' + PointsToGoal);
+		$('#EffortReserve').text(' ' + data['EffortReserve']);
+		$('#Streak').text(' ' + data['Streak']);
 
 
 		if ($.inArray(user_action, mission_actions)!= -1){

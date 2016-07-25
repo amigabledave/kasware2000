@@ -95,21 +95,25 @@ class Handler(webapp2.RequestHandler):
 		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 
-		active_date = (datetime.today()-timedelta(hours=user_start_hour)).toordinal() #aqui puedo hacer creer al programa que es otro dia
+		active_date = (datetime.today()-timedelta(hours=user_start_hour)).toordinal() + 3 #xx aqui puedo hacer creer al programa que es otro dia
 		last_DailyLog = theory.last_DailyLog
 		user_key = theory.key		
 
 		if last_DailyLog == active_date: 
-			active_log = DailyLog.query(DailyLog.theory == user_key ).filter(DailyLog.user_date == active_date).fetch()[0]
+			active_log = DailyLog.query(DailyLog.theory == user_key ).filter(DailyLog.user_date == active_date).fetch()
+			active_log = active_log[0]
 
 		else:
-			last_log = DailyLog.query(DailyLog.theory == user_key ).filter(DailyLog.user_date == last_DailyLog).fetch()[0]
+			last_log = DailyLog.query(DailyLog.theory == user_key ).filter(DailyLog.user_date == last_DailyLog).fetch()
+			last_log = last_log[0]
+			if last_log.user_date == (active_date - 1):
+				last_log = self.fix_last_log(last_log, active_date)
 			active_log = self.fill_log_gaps(theory, last_log, active_date)
 
 		return active_log
 
 
-	def fill_log_gaps(self, theory, last_log ,active_date):
+	def fill_log_gaps(self, theory, last_log, active_date):
 
 		kpts_weekly_goals = theory.kpts_goals['kpts_weekly_goals']
 
@@ -118,7 +122,7 @@ class Handler(webapp2.RequestHandler):
 
 		while latest_log_date < active_date:
 			print latest_log.user_date_date, latest_log.user_date, latest_log.EffortReserve, latest_log.Streak, latest_log.streak_start_date
-			latest_log = self.fill_one_log_gap(theory, latest_log, kpts_weekly_goals)
+			latest_log = self.fill_one_log_gap(theory, latest_log, active_date, kpts_weekly_goals)
 			latest_log_date = latest_log.user_date
 
 		print latest_log.user_date_date, latest_log.user_date, latest_log.EffortReserve, latest_log.Streak, latest_log.streak_start_date
@@ -126,7 +130,29 @@ class Handler(webapp2.RequestHandler):
 		theory.put()
 		return latest_log
 
-	def fill_one_log_gap(self, theory, last_log, kpts_weekly_goals):
+
+	def fix_last_log(self, last_log, active_date):
+
+		EffortReserve = last_log.EffortReserve
+		PointsToGoal = last_log.PointsToGoal
+
+		if not last_log.goal_achieved:
+			if EffortReserve - PointsToGoal >= 0: #xx
+				last_log.goal_achieved = True
+				last_log.Streak = last_log.Streak + 1
+				last_log.EffortReserve = EffortReserve - PointsToGoal
+				last_log.PointsToGoal = 0 
+
+			else:
+				last_log.streak_start_date = active_date - 1
+				last_log.Streak = 0
+				last_log.EffortReserve = 0
+				last_log.PointsToGoal = last_log.PointsToGoal - last_log.EffortReserve	
+			last_log.put()
+		return last_log		
+
+
+	def fill_one_log_gap(self, theory, last_log, active_date, kpts_weekly_goals):
 
 		user_date = last_log.user_date + 1
 		user_date_date = datetime.fromordinal(user_date)
@@ -135,6 +161,7 @@ class Handler(webapp2.RequestHandler):
 		Goal = int(kpts_weekly_goals[active_weekday])
 
 		old_EffortReserve = last_log.EffortReserve
+		old_PointsToGoal = last_log.PointsToGoal
 
 		if old_EffortReserve - Goal >= 0:
 			goal_achieved = True
@@ -144,13 +171,21 @@ class Handler(webapp2.RequestHandler):
 			EffortReserve = old_EffortReserve - Goal
 			PointsToGoal = 0 
 
+		elif user_date == active_date:
+			goal_achieved = False
+			streak_start_date = last_log.streak_start_date
+
+			Streak = last_log.Streak
+			EffortReserve = old_EffortReserve 
+			PointsToGoal = Goal
+
 		else:
 			goal_achieved = False
 			streak_start_date = user_date
 
 			Streak = 0
 			EffortReserve = 0
-			PointsToGoal = Goal - old_EffortReserve
+			PointsToGoal = Goal
 
 		new_log = DailyLog(
 			theory = theory.key,
@@ -168,11 +203,6 @@ class Handler(webapp2.RequestHandler):
 		new_log.put()
 		
 		return new_log
-
-
-
-
-
 
 
 
@@ -252,7 +282,10 @@ class SignUpLogIn(Handler):
 					day_start_time=datetime.strptime('06:00', '%H:%M').time(),
 					kpts_goals_parameters=kpts_goals_parameters,
 					kpts_goals=calculate_user_kpts_goals(kpts_goals_parameters),
-					categories=categories)
+					categories=categories,
+					last_DailyLog = datetime.today().toordinal())
+
+				theory.put()
 
 				#creates the first DailyLog entry
 				day_start_time = theory.day_start_time
@@ -262,6 +295,7 @@ class SignUpLogIn(Handler):
 				active_weekday = (datetime.today()-timedelta(hours=user_start_hour)).weekday()
 				goal = int(theory.kpts_goals['kpts_weekly_goals'][active_weekday])
 				
+				
 				active_log = DailyLog(
 					theory = theory.key,
 					
@@ -269,7 +303,8 @@ class SignUpLogIn(Handler):
 					user_date = active_date,
 					streak_start_date = active_date,
 					
-					Goal = goal)
+					Goal = goal,
+					PointsToGoal=goal)
 				active_log.put()
 
 				theory.last_DailyLog = active_date
@@ -444,7 +479,6 @@ class TodaysMission(Handler):
 	def post(self, user_action, post_details):
 		return
 
-	#xx
 	def generate_todays_mission(self):
 		user_key = self.theory.key
 		ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False).order(KSU.created).fetch()
@@ -547,11 +581,20 @@ class EventHandler(Handler):
 		self.update_active_log(event)
 		event.put()		
 
+		active_log = self.active_log
+		PointsToGoal = active_log.PointsToGoal
+		EffortReserve = active_log.EffortReserve
+		Streak = active_log.Streak
+
+
 		self.response.out.write(json.dumps({'mensaje':'Evento creado y guardado', 
 											'EventScore':event.score, 
 											'kpts_type':event.kpts_type, 
 											'ksu_subtype':ksu_subtype, 
-											'kpts_value':ksu.kpts_value}))
+											'kpts_value':ksu.kpts_value,
+											'PointsToGoal':PointsToGoal,
+											'EffortReserve':EffortReserve,
+											'Streak':Streak}))
 		return
 
 
@@ -559,7 +602,7 @@ class EventHandler(Handler):
 		active_log = self.active_log
 
 		PointsToGoal = active_log.PointsToGoal
-
+		
 		if event.kpts_type == 'SmartEffort':
 			active_log.SmartEffort += event.score
 			PointsToGoal -= event.score
@@ -569,6 +612,7 @@ class EventHandler(Handler):
 			PointsToGoal += event.score
 
 		if not active_log.goal_achieved:
+
 			if PointsToGoal <= 0:
 				active_log.goal_achieved = True
 				active_log.Streak += 1
