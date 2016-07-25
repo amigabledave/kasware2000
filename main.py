@@ -95,7 +95,7 @@ class Handler(webapp2.RequestHandler):
 		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 
-		active_date = (datetime.today()-timedelta(hours=user_start_hour)).toordinal() + 3 #xx aqui puedo hacer creer al programa que es otro dia
+		active_date = (datetime.today()-timedelta(hours=user_start_hour)).toordinal() #xx aqui puedo hacer creer al programa que es otro dia
 		last_DailyLog = theory.last_DailyLog
 		user_key = theory.key		
 
