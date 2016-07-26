@@ -20,6 +20,16 @@
 			</div>
 
 			<div class="col-xs-9">
+				{% if time_frame == 'Upcoming' %}
+					<span style="color:blue;">{{ksu.pretty_next_event}}</span>
+					<br>
+				{% endif %}
+
+				{% if time_frame == 'Today' and ksu.best_time %}
+					<span style="color:blue;">{{ksu.best_time}}</span>
+					<br>
+				{% endif %}
+
 				{% if ksu.ksu_subtype == 'ImPe' %}
 					{{'Contact ' + ksu.description}}
 				{% elif ksu.ksu_subtype == 'EVPo' %}

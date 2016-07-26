@@ -102,9 +102,9 @@
 		{% if theory %}
 			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
 				<ul class="LeftNavigationBar">
-				  <li><a {% if set_name == 'TodaysMission' %} class="active" {% endif %} href="/">Today's Mission</a></li>
-				  <li><a href="">Upcoming</a></li>
-				  <li><a href="">Someday Maybe</a></li>
+				  <li><a {% if time_frame == 'Today' %} class="active" {% endif %} href="/MissionViewer?time_frame=Today">Today's Mission</a></li>
+				  <li><a {% if time_frame == 'Upcoming' %} class="active" {% endif %} href="/MissionViewer?time_frame=Upcoming">Upcoming</a></li>
+				  <li><a {% if time_frame == 'SomedayMaybe' %} class="active" {% endif %} href="/MissionViewer?time_frame=SomedayMaybe">Someday Maybe</a></li>
 				  <li><a {% if set_name == 'KeyA' %} class="active" {% endif %} href="/SetViewer?set_name=KeyA">Key Actions Set</a></li>
 				  <li><a {% if set_name == 'Obje' %} class="active" {% endif %} href="/SetViewer?set_name=Obje">Objectives</a></li>
 				  <li><a {% if set_name == 'Wish' %} class="active" {% endif %} href="/SetViewer?set_name=Wish">Wishes</a></li>

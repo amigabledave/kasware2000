@@ -310,7 +310,7 @@ class SignUpLogIn(Handler):
 				theory.put()
 
 				self.login(theory)
-				self.redirect('/')
+				self.redirect('/MissionViewer?time_frame=Today')
 
 		if user_action == 'LogIn':			
 			email = self.request.get('email')
@@ -318,7 +318,7 @@ class SignUpLogIn(Handler):
 			theory = Theory.valid_login(email, password)
 			if theory:
 				self.login(theory)
-				self.redirect('/')
+				self.redirect('/MissionViewer?time_frame=Today')
 			else:
 				self.write('incorrect username or password')
 
@@ -521,6 +521,58 @@ class SetViewer(Handler):
 	def post(self, user_action, post_details):
 		return
 
+
+class MissionViewer(Handler):
+
+	@super_user_bouncer
+	def get(self):
+		time_frame = self.request.get('time_frame')
+		print
+		print time_frame
+		print
+		user_key = self.theory.key
+
+		ksu_set, mission_value = self.generate_todays_mission(time_frame)
+
+		self.print_html('MissionViewer.html', ksu_set=ksu_set, time_frame=time_frame, mission_value=mission_value,constants=constants)
+
+	@super_user_bouncer
+	@CreateOrEditKSU_request_handler	
+	def post(self, user_action, post_details):
+		return
+
+	def generate_todays_mission(self, time_frame):
+		user_key = self.theory.key
+		ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True).order(KSU.next_event).fetch()
+
+		day_start_time = self.theory.day_start_time
+		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
+		today =(datetime.today()-timedelta(hours=user_start_hour)).date()
+		todays_mission = []
+		mission_value = 0
+		upcoming = []
+		someday_maybe = []
+		mission_sets = ['KAS1', 'KAS2', 'EVPo', 'ImPe']
+
+		for ksu in ksu_set:
+			ksu_subtype = ksu.ksu_subtype
+			if ksu_subtype in mission_sets:
+				next_event = ksu.next_event
+				if not next_event:
+					someday_maybe.append(ksu)
+				elif today < next_event:
+					upcoming.append(ksu)
+				else:# if next_event and today >= next_event:
+					todays_mission.append(ksu)
+					mission_value += ksu.kpts_value
+
+		if time_frame == 'Today':
+			mission = todays_mission
+		elif time_frame == 'Upcoming':
+			mission = upcoming
+		else:
+			mission = someday_maybe
+		return mission, mission_value
 
 
 class EventHandler(Handler):
@@ -734,6 +786,11 @@ def determine_return_to(self):
 	set_name = self.request.get('set_name')
 	if set_name:
 		return_to += '?set_name=' + set_name
+
+	time_frame = self.request.get('time_frame')
+	if time_frame:
+		return_to += '?time_frame=' + time_frame
+
 
 	return return_to
 
@@ -956,6 +1013,7 @@ app = webapp2.WSGIApplication([
 							    ('/Settings', Settings),
 							    
 							    ('/KsuEditor', KsuEditor),
+							    ('/MissionViewer', MissionViewer),
 							    ('/SetViewer', SetViewer),
 
 							    ('/EventHandler',EventHandler),

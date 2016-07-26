@@ -51,8 +51,12 @@ d_attributeType = {
 	'birthday': 'date',
 	'money_cost': 'integer'
 	}
+
 default_ksu = {}
 d_SetTitles = {
+	'Today':"Today's Mission",
+	'Upcoming':'Upcoming',
+	'SomedayMaybe': 'Someday Maybe', 
 	'Gene': 'Unassigned KSUs',
 	'KeyA': 'Key Actions Set',
 	# 'MinO': '02. Mini Objective',
