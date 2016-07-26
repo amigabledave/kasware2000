@@ -44,11 +44,14 @@ def CreateOrEditKSU_request_handler(funcion):
 			self.redirect('/KsuEditor?ksu_id='+ksu_id+'&return_to='+return_to)
 			return
 
+		elif user_action == 'SearchTheory': #xx
+			lookup_string = self.request.get('lookup_string')
+			self.redirect('/SetViewer?set_name=TheoryQuery&lookup_string='+lookup_string)
+
 		else:
 			return funcion(self, user_action, post_details)
 
 	return inner
-
 
 
 #-- Production Handlers
@@ -509,8 +512,16 @@ class SetViewer(Handler):
 		user_key = self.theory.key
 		if not set_name:
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(KSU.created).fetch()
+		
+		elif set_name == 'TheoryQuery':
+			lookup_string = self.request.get('lookup_string')
+			user_theory = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(KSU.created).fetch()
+			ksu_set = self.search_theory(user_theory, lookup_string)
+			set_name = 'You searched for: ' + lookup_string
+		
 		elif set_name == 'Graveyard':
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == True, KSU.is_deleted == False).order(KSU.created).fetch()
+		
 		else:
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(KSU.created).fetch()
 		
@@ -520,6 +531,25 @@ class SetViewer(Handler):
 	@CreateOrEditKSU_request_handler	
 	def post(self, user_action, post_details):
 		return
+
+
+	def search_theory(self, user_theory, lookup_string):
+		lookup_string = lookup_string.lower()
+		lookup_words =	lookup_string.split(' ')
+		main_result = []
+		secondary_result = []
+		for ksu in user_theory:
+			ksu_description = str(ksu.description).lower() + ' ' + str(ksu.secondary_description).lower()
+			if ksu_description.find(lookup_string) != -1:
+				main_result.append(ksu)
+			else:
+				for word in lookup_words:
+					if ksu_description.find(word) != -1 and ksu not in secondary_result:
+						secondary_result.append(ksu)
+
+		return main_result + secondary_result
+
+
 
 
 class MissionViewer(Handler):

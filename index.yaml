@@ -39,6 +39,12 @@ indexes:
 
 - kind: KSU
   properties:
+  - name: in_graveyard
+  - name: theory
+  - name: created
+
+- kind: KSU
+  properties:
   - name: is_deleted
   - name: theory
   - name: created
