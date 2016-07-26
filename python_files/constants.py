@@ -258,8 +258,6 @@ d_SetViewerDetails = {
 		'buttons':['Done', 'PinInMission']},
 }
 
-l_attributesThatNeedToBeFixed = ['repeats']
-
 d_displayValues = {}
 d_displayValues.update(d_repeats)
 
@@ -279,7 +277,6 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 'd_repeats_legend':d_repeats_legend,
 			 
 			 'd_SetViewerDetails':d_SetViewerDetails,
-			 'l_attributesThatNeedToBeFixed':l_attributesThatNeedToBeFixed,
 			 'd_displayValues':d_displayValues}
 
 

@@ -194,9 +194,14 @@ $('.UserActionButton').on('click', function(){
 
 	var kpts_value = ksu.find('#kpts_value option:selected').val();
 
-	var mission_actions = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete', 'ViewerDelete','GraveyardDelete', 'GraveyardReanimate']
+	var dissapear_before_done = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete', 'ViewerDelete','GraveyardDelete', 'GraveyardReanimate']
+	var dissapear_after_done_subtypes = ['KAS2'];
 
-	if ($.inArray(user_action, mission_actions)!= -1){
+	// var update_pretty_next_event_actions = []
+	// var update_pretty_next_event_subtypes = ['KAS1', ]
+
+
+	if ($.inArray(user_action, dissapear_before_done)!= -1){
 		ksu.animate({
 			"opacity" : "0",
 			},{
@@ -230,15 +235,34 @@ $('.UserActionButton').on('click', function(){
 		$('#Streak').text(' ' + data['Streak']);
 
 
-		if ($.inArray(user_action, mission_actions)!= -1){
+		if ($.inArray(user_action, dissapear_before_done)!= -1){
 			$('#MissionValue').text(parseFloat($('#MissionValue').text())-data['kpts_value']);
 		};
 
-
-
-		var disapearing_suptypes = ['KAS2'];
 		var ksu_subtype = data['ksu_subtype'];
-		if ($.inArray(ksu_subtype, disapearing_suptypes)!= -1){
+
+		if (user_action == 'SendToMission' || user_action == 'ViewerDone'){
+			ksu.find('#pretty_next_event').text(data['pretty_next_event']);
+		};
+
+		if (user_action == 'ViewerOnOff'){
+			console.log(data['is_active'])
+			if (data['is_active']){
+				ksu.find('#is_active').css({'color': 'black'});
+				ksu.find('#ViewerOnOffButton').removeClass('btn-success');
+				ksu.find('#ViewerOnOffButton').addClass('btn-warning');
+			} else {
+				ksu.find('#is_active').css({'color': '#D3D3D3'});
+				ksu.find('#ViewerOnOffButton').removeClass('btn-warning');
+				ksu.find('#ViewerOnOffButton').addClass('btn-success');				
+			}
+
+
+
+		};
+
+		
+		if (($.inArray(ksu_subtype, dissapear_after_done_subtypes)!= -1) && user_action == 'ViewerDone' ){
 			ksu.animate({
 				"opacity" : "0",
 				},{
@@ -250,6 +274,7 @@ $('.UserActionButton').on('click', function(){
 
 	});
 });
+
 
 
 $('.ShowDetailViewerButton').on('click', function(){

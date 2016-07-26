@@ -95,7 +95,7 @@ class Handler(webapp2.RequestHandler):
 		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 
-		active_date = (datetime.today()-timedelta(hours=user_start_hour)).toordinal() #xx aqui puedo hacer creer al programa que es otro dia
+		active_date = (datetime.today()-timedelta(hours=user_start_hour)).toordinal() # CC aqui puedo hacer creer al programa que es otro dia
 		last_DailyLog = theory.last_DailyLog
 		user_key = theory.key		
 
@@ -137,7 +137,7 @@ class Handler(webapp2.RequestHandler):
 		PointsToGoal = last_log.PointsToGoal
 
 		if not last_log.goal_achieved:
-			if EffortReserve - PointsToGoal >= 0: #xx
+			if EffortReserve - PointsToGoal >= 0:
 				last_log.goal_achieved = True
 				last_log.Streak = last_log.Streak + 1
 				last_log.EffortReserve = EffortReserve - PointsToGoal
@@ -203,7 +203,6 @@ class Handler(webapp2.RequestHandler):
 		new_log.put()
 		
 		return new_log
-
 
 
 class SignUpLogIn(Handler):
@@ -419,7 +418,7 @@ class KsuEditor(Handler):
 
 			if a_type == 'date':
 				setattr(ksu, a_key, datetime.strptime(a_val, '%Y-%m-%d'))
-				if a_key in ['target_date', 'next_event']:
+				if a_key == 'next_event':
 					setattr(ksu, 'pretty_'+a_key, datetime.strptime(a_val, '%Y-%m-%d').strftime('%a, %b %d, %Y'))
 
 			if a_type == 'time':
@@ -566,6 +565,18 @@ class EventHandler(Handler):
 				event.kpts_type = 'Stupidity'
 				event.score = float(event_details['kpts_value'])				
 
+		if user_action in ['MissionPush', 'MissionSkip', 'SendToMission']: #xx
+			update_next_event(self, user_action, {}, ksu)
+			ksu.put()
+
+		if user_action == 'ViewerOnOff':
+			if ksu.is_active:
+				ksu.is_active = False
+			else:
+				ksu.is_active = True
+			ksu.put()
+
+
 		if user_action in ['MissionDelete', 'ViewerDelete']:
 			ksu.in_graveyard = True
 			ksu.put()
@@ -577,6 +588,7 @@ class EventHandler(Handler):
 		if user_action == 'GraveyardDelete':
 			ksu.is_deleted = True
 			ksu.put()
+
 
 		self.update_active_log(event)
 		event.put()		
@@ -594,7 +606,9 @@ class EventHandler(Handler):
 											'kpts_value':ksu.kpts_value,
 											'PointsToGoal':PointsToGoal,
 											'EffortReserve':EffortReserve,
-											'Streak':Streak}))
+											'Streak':Streak,
+											'pretty_next_event':ksu.pretty_next_event,
+											'is_active':ksu.is_active}))
 		return
 
 
@@ -807,14 +821,20 @@ def update_next_event(self, user_action, post_details, ksu):
 
 		if not next_event:
 			ksu.next_event = today
+			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
 			
-		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone']:
+		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone']: #xx
 			ksu.next_event = today + timedelta(days=days_to_next_event)
+			ksu.pretty_next_event = (today + timedelta(days=days_to_next_event)).strftime('%a, %b %d, %Y')
 
 		if user_action == 'MissionPush':
 			ksu.next_event = tomorrow
+			ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
 
-		ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
+		if user_action == 'SendToMission':
+			ksu.next_event = today
+			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
+			print ksu.pretty_next_event
 
 	if ksu_subtype == 'KAS2':
 		next_event = ksu.next_event
@@ -827,19 +847,25 @@ def update_next_event(self, user_action, post_details, ksu):
 			ksu.next_event = tomorrow
 			ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
 
+		if user_action == 'SendToMission':
+			ksu.next_event = today
+			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
+
+
 	if ksu_subtype in ['EVPo', 'ImPe']:
 		next_event = ksu.next_event
 
 		if not next_event:
 			ksu.next_event = today
+			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
 
 		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone']:
-			ksu.next_event = today + timedelta(days=ksu.frequency)			
+			ksu.next_event = today + timedelta(days=ksu.frequency)
+			ksu.pretty_next_event = (today + timedelta(days=ksu.frequency)).strftime('%a, %b %d, %Y')
 
 		if user_action == 'MissionPush':
 			ksu.next_event = tomorrow
-
-		ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
+			ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
 
 
 	return		
