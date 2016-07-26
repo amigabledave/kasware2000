@@ -84,7 +84,7 @@
 							  	<span class="glyphicon glyphicon-pencil"></span>
 						  	</button>
 							<button type="button" class="btn btn-default displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
-								<span class="glyphicon glyphicon-plus"></span>
+								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus"></span>
 						  	</button>
 					  	{% else %}
 
@@ -105,9 +105,10 @@
 					<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
 								
 					<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-				
-
-						<label> {% if ksu.ksu_subtype in ['KAS1', 'KAS2', 'KAS3'] %}Reward{% elif ksu.ksu_subtype == 'KAS4' %}Punishment{% endif %} </label>
+						
+						<label> {{constants['d_SetViewerDetails'][ksu.ksu_subtype]['detailsLabel']}} </label>
+						
+						{% if ksu.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'ImPe', 'EVPo'] %}
 						<select class="form-control kpts_value" name="kpts_value" id="kpts_value">
 							{% for value in constants['l_Fibonacci'] %}
 								{% if value == ksu.kpts_value %}
@@ -116,7 +117,8 @@
 									<option value="{{value}}"> {{value}} </option>
 								{% endif %}
 							{% endfor %}
-						</select>	
+						</select>
+						{% endif %}
 					</div>
 
 

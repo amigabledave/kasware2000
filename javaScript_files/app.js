@@ -195,7 +195,7 @@ $('.UserActionButton').on('click', function(){
 	var kpts_value = ksu.find('#kpts_value option:selected').val();
 
 	var dissapear_before_done = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete', 'ViewerDelete','GraveyardDelete', 'GraveyardReanimate']
-	var dissapear_after_done_subtypes = ['KAS2'];
+	var dissapear_after_done_subtypes = ['KAS2', 'Wish', 'Dream', 'Obje', 'BigO'];
 
 	// var update_pretty_next_event_actions = []
 	// var update_pretty_next_event_subtypes = ['KAS1', ]
@@ -279,7 +279,7 @@ $('.UserActionButton').on('click', function(){
 
 $('.ShowDetailViewerButton').on('click', function(){
 	var ScoreDetail = $(this).closest('#MissionKSU').find('#ScoreDetail');
-	var GlaphiconDiv = $(this).closest('#MissionKSU').find('#ShowDetailButton').children();
+	var GlaphiconDiv = $(this).children();
 	GlaphiconDiv.toggleClass('glyphicon-minus');
 	GlaphiconDiv.toggleClass('glyphicon-plus');
 	ScoreDetail.toggleClass('hidden');

@@ -565,6 +565,12 @@ class EventHandler(Handler):
 				event.kpts_type = 'Stupidity'
 				event.score = float(event_details['kpts_value'])				
 
+			if ksu_subtype in ['Obje','BigO','Wish','Dream']:
+				ksu.in_graveyard = True
+				ksu.put()
+
+
+
 		if user_action in ['MissionPush', 'MissionSkip', 'SendToMission']: #xx
 			update_next_event(self, user_action, {}, ksu)
 			ksu.put()
@@ -823,7 +829,7 @@ def update_next_event(self, user_action, post_details, ksu):
 			ksu.next_event = today
 			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
 			
-		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone']: #xx
+		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone']:
 			ksu.next_event = today + timedelta(days=days_to_next_event)
 			ksu.pretty_next_event = (today + timedelta(days=days_to_next_event)).strftime('%a, %b %d, %Y')
 

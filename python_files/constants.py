@@ -151,111 +151,127 @@ d_SetViewerDetails = {
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Next Event'},
 		'columns':{'pretty_next_event':6},
+		'detailsLabel':'Reward',
 		'buttons':['Done', 'SendToMission']},
 
 	'KAS2':{		
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Scheduled for'},
 		'columns':{'pretty_next_event':6},
+		'detailsLabel':'Reward',
 		'buttons':['Done', 'SendToMission']},
 
 	'KAS3':{
 		'attributes': ['kpts_value'],
 		'fields': {'kpts_value':'Reward (Kpts.)'},
 		'columns': {'kpts_value':6},
-		'buttons': ['Done', 'PinInMission']},
+		'detailsLabel':'Reward',
+		'buttons': ['Done']},
 
 	'KAS4':{
 		'attributes': ['kpts_value'],
 		'fields': {'kpts_value':'Punishment (Kpts.)'},
 		'columns':{'kpts_value':6},
-		'buttons':['Done', 'PinInMission']},
+		'detailsLabel':'Punishment',
+		'buttons':['Done']},
 
 	'Obje':{		
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Target Date'},
 		'columns':{'pretty_next_event':6},
-		'buttons':['Done', 'PinInMission']},
+		'detailsLabel':'',
+		'buttons':['Done']},
 
 	'BigO':{		
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Target Date'},
 		'columns':{'pretty_next_event':6},
-		'buttons':['Done', 'PinInMission']},
+		'detailsLabel':'',
+		'buttons':['Done']},
 
 	'Wish':{ 		
 		'attributes': ['money_cost'],
 		'fields': {'money_cost':'Money required ($)'},
 		'columns':{'money_cost':6},
-		'buttons':['Done', 'PinInMission']},
+		'detailsLabel':'',
+		'buttons':['Done']},
 
 	'Dream':{ 		
 		'attributes': ['money_cost'],
 		'fields': {'money_cost':'Money required ($USD)'},
 		'columns':{'money_cost':6},
-		'buttons':['Done', 'PinInMission']},
+		'detailsLabel':'',
+		'buttons':['Done']},
 
 	'EVPo': { 		
 		'attributes': ['frequency'],
 		'fields': {'frequency':'Charging time (days)'},
 		'columns':{'frequency':6},
-		'buttons':['Done', 'PinInMission']},
+		'detailsLabel':'Reward',
+		'buttons':['Done']},
 
 	'ImPe': { 		
 		'attributes': ['frequency'], 
 		'fields': {'frequency':'Contact Frequency (days)'},
 		'columns':{'frequency':6},
+		'detailsLabel':'Reward',
 		'buttons':['Done', 'SendToMission']},
 
 	'Idea': { 		
 		'attributes': ['source'],
 		'fields': {'source':'Source'},
 		'columns':{'source':6},
-		'buttons':['PinInMission']},
+		'detailsLabel':'',
+		'buttons':[]},
 
 	'Principle': { 		
 		'attributes': ['source'],
 		'fields': {'source':'Source'},
 		'columns':{'source':6},
-		'buttons':['Done', 'PinInMission']},
+		'detailsLabel':'',
+		'buttons':['Done']},
 
 	'RTBG': { 		
 			'attributes': [],
 			'fields': {},
 			'columns':{},
-			'buttons':['Done', 'PinInMission']},
+			'detailsLabel':'',
+			'buttons':['Done']},
 
 	'RTBSDG': { 		
 			'attributes': [],
 			'fields': {},
 			'columns':{},
-			'buttons':['Done', 'PinInMission']},
-
+			'detailsLabel':'',
+			'buttons':['Done']},
 
 	'ImIn': { 		
 		'attributes': [], 
 		'fields': {},
 		'columns':{},
-		'buttons':['Done', 'PinInMission']},
+		'detailsLabel':'',
+		'buttons':['Done']},
 
 	'BinaryPerception': { 		
 		'attributes': [], 
 		'fields': {},
 		'columns':{},
-		'buttons':['Done', 'PinInMission']},
+		'detailsLabel':'',
+		'buttons':['Done']},
 
 	'FibonacciPerception': { 		
 		'attributes': [], 
 		'fields': {},
 		'columns':{},
-		'buttons':['Done', 'PinInMission']},
-
+		'detailsLabel':'',
+		'buttons':['Done']},
 
 	'RealitySnapshot': { 		
 		'attributes': [], 
 		'fields': {},
 		'columns':{},
-		'buttons':['Done', 'PinInMission']},
+		'detailsLabel':'',
+		'buttons':['Done']},
 }
 
 d_displayValues = {}
