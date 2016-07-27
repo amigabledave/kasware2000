@@ -110,16 +110,13 @@ class DailyLog(ndb.Model):
 	created = ndb.DateTimeProperty(auto_now_add=True)	
 	last_modified = ndb.DateTimeProperty(auto_now=True)
 	
-	#base properties	
 	user_date_date = ndb.DateTimeProperty(required=True)
 	user_date = ndb.IntegerProperty(required=True)
-	diary_entry = ndb.TextProperty()
 	
+	#Score properties
 	goal_achieved = ndb.BooleanProperty(default=False)
 	streak_start_date =  ndb.IntegerProperty(required=True) #An number that represents a date
-	
 
-	#Score properties
 	Streak = ndb.IntegerProperty(default=0)
 	Goal = ndb.FloatProperty(default=0)
 

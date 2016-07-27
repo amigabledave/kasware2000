@@ -118,6 +118,7 @@ d_KsuSubtypes = {
 
 	'ImIn': 'Indicator',
 	'RealitySnapshot':'Reality Indicator',
+	'OpenPerception': 'Open Perception Indicator',
 	'BinaryPerception': 'Binary Perception Indicator',
 	'FibonacciPerception': 'Fibonacci Perception Indicator'} 
 
@@ -264,6 +265,13 @@ d_SetViewerDetails = {
 		'buttons':['Record']},
 
 	'FibonacciPerception': { 		
+		'attributes': ['pretty_next_event'],
+		'fields': {'pretty_next_event':'Next Question'},
+		'columns':{'pretty_next_event':6},
+		'detailsLabel':'',
+		'buttons':['Record']},
+
+	'OpenPerception': { 		
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Next Question'},
 		'columns':{'pretty_next_event':6},

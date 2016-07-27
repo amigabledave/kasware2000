@@ -181,42 +181,52 @@
 	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:0px;">
 	<div class="form-group" style="margin-bottom:8px;">				
 
-		<div class="col-xs-4">
-			<label class="radio-inline" style="margin-left:2px;">
-				<input type="radio" name="ksu_subtype" value="BinaryPerception" {% if ksu.ksu_subtype == 'BinaryPerception' %} checked="checked" {% endif %}> Acumulated Binary Perception </label></div>
-
-		<div class="col-xs-4">
-			<label class="radio-inline" style="margin-left:2px;">
-				<input type="radio" name="ksu_subtype" value="FibonacciPerception" {% if ksu.ksu_subtype == 'FibonacciPerception' %} checked="checked" {% endif %}> Acumulated Fibonacci Perception </label></div>
-		
-		<div class="col-xs-4">
+		<div class="col-xs-3">
 			<label class="radio-inline">
-				<input type="radio" name="ksu_subtype" value="RealitySnapshot" {% if ksu.ksu_subtype == 'RealitySnapshot' %} checked="checked" {% endif %}> Reality Snapshot </label></div>			
+				<input type="radio" name="ksu_subtype" value="RealitySnapshot" {% if ksu.ksu_subtype == 'RealitySnapshot' %} checked="checked" {% endif %}> Reality Snapshot </label></div>
+
+		<div class="col-xs-3">
+			<label class="radio-inline" style="margin-left:2px;">
+				<input type="radio" name="ksu_subtype" value="BinaryPerception" {% if ksu.ksu_subtype == 'BinaryPerception' %} checked="checked" {% endif %}> Binary Perception </label></div>
+
+		<div class="col-xs-3">
+			<label class="radio-inline" style="margin-left:2px;">
+				<input type="radio" name="ksu_subtype" value="FibonacciPerception" {% if ksu.ksu_subtype == 'FibonacciPerception' %} checked="checked" {% endif %}> Fibonacci Perception </label></div>
+
+		<div class="col-xs-3">
+			<label class="radio-inline">
+				<input type="radio" name="ksu_subtype" value="OpenPerception" {% if ksu.ksu_subtype == 'OpenPerception' %} checked="checked" {% endif %}> Open Perception </label></div>
+		
+
 	</div>
 
 	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 
 	<div class="form-group">
-		<div class="col-xs-8">
+		<div class="col-xs-12">
 			<label> Data generating question </label>
-			<textarea class="form-control DummyInput" ksuattr="secondary_description" placeholder="e.g. Am I exited about the day that I'm about to live?">{% if ksu and ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
-		</div>
-		
-		<div class="col-xs-4">
-			<label> Best time to ask </label>
-			<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control DummyInput" ksuattr="best_time" value={% if ksu %}{{ksu.best_time}}{% endif %}>	
-
+			<input type="text" class="form-control DummyInput" ksuattr="secondary_description" placeholder="e.g. Am I exited about the day that I'm about to live?" value="{% if ksu and ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}">
 		</div>		
 	</div>
 
 	<div class="form-group">
-		
+
 		<div class="col-xs-4">
 			<label> Question Frequency </label>			
 			<input type="number" min="1" class="form-control DummyInput" ksuattr="frequency" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.frequency}}{% endif %}">
 		</div>
 
-		<div class="col-xs-3">
+		<div class="col-xs-4">
+			<label> Next Question </label>
+			<input type="date" class="form-control DummyInput" style="padding-right:3px;" ksuattr="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+		</div>
+
+		<div class="col-xs-4">
+			<label> Question time </label>
+			<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control DummyInput" ksuattr="best_time" value={% if ksu %}{{ksu.best_time}}{% endif %}>	
+		</div>
+
+<!-- 		<div class="col-xs-3">
 			<label> Target Min. </label>			
 			<input type="number" step="0.01" min="0" class="form-control" name="target_min" placeholder="e.g 0.5" value="{% if ksu %}{{ksu.target_min}}{% endif %}">
 		</div>
@@ -230,7 +240,7 @@
 			<div class="checkbox"> 
 				<label> <input type="checkbox" name="reverse_target"{% if ksu.reverse_target %}checked{% endif %}> <b> Reverse Target </b></label> 
 			</div>
-		</div>
+		</div> -->
 
 	</div>
 

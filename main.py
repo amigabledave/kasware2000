@@ -606,7 +606,7 @@ class MissionViewer(Handler):
 		if time_frame == 'Today':
 			mission = todays_mission + todays_timeless_mission
 
-			questions_sets = ['RealitySnapshot', 'BinaryPerception', 'FibonacciPerception']
+			questions_sets = ['RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'OpenPerception']
 			for ksu in ksu_set:
 				ksu_subtype = ksu.ksu_subtype
 				if ksu_subtype in questions_sets:
@@ -656,6 +656,7 @@ class EventHandler(Handler):
 		if user_action == 'RecordValue': #xx
 			event.kpts_type = 'IndicatorValue'
 			event.score = float(event_details['kpts_value'])
+			event.comments = event_details['event_comments'].encode('utf-8')
 			update_next_event(self, user_action, {}, ksu)
 			ksu.put()
 
@@ -716,15 +717,19 @@ class EventHandler(Handler):
 
 
 		self.response.out.write(json.dumps({'mensaje':'Evento creado y guardado', 
-											'EventScore':event.score, 
+											
+											'event_comments':event.comments,
+											'EventScore':event.score, 											
 											'kpts_type':event.kpts_type, 
+											
 											'ksu_subtype':ksu_subtype, 
 											'kpts_value':ksu.kpts_value,
+											'pretty_next_event':ksu.pretty_next_event,
+											'is_active':ksu.is_active,
+											
 											'PointsToGoal':PointsToGoal,
 											'EffortReserve':EffortReserve,
-											'Streak':Streak,
-											'pretty_next_event':ksu.pretty_next_event,
-											'is_active':ksu.is_active}))
+											'Streak':Streak}))
 		return
 
 
@@ -821,6 +826,7 @@ class PopulateRandomTheory(Handler):
 			[3, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
 			[5, {'ksu_type':'Idea', 'ksu_subtype':'Principle'}],
 			[3, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
+			[2, {'ksu_type':'ImIn', 'ksu_subtype':'OpenPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[1, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[1, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[1, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}]
@@ -1003,7 +1009,7 @@ def update_next_event(self, user_action, post_details, ksu): #xx
 			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
 
 
-	if ksu_subtype in ['EVPo', 'ImPe', 'RealitySnapshot', 'FibonacciPerception', 'BinaryPerception']:
+	if ksu_subtype in ['EVPo', 'ImPe', 'RealitySnapshot', 'FibonacciPerception', 'BinaryPerception', 'OpenPerception']:
 		
 		next_event = ksu.next_event
 
@@ -1012,11 +1018,8 @@ def update_next_event(self, user_action, post_details, ksu): #xx
 			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
 
 		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone', 'RecordValue']:
-			print 'XX ya llegamos hasta aqui'
-			print ksu.pretty_next_event
 			ksu.next_event = today + timedelta(days=ksu.frequency)
 			ksu.pretty_next_event = (today + timedelta(days=ksu.frequency)).strftime('%a, %b %d, %Y')
-			print ksu.pretty_next_event
 
 		if user_action == 'MissionPush':
 			ksu.next_event = tomorrow

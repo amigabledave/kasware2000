@@ -207,11 +207,15 @@ $('.UserActionButton').on('click', function(){
 		};
 
 	if (user_action == 'MissionRecordValue' || user_action == 'ViewerRecordValue'){
+		event_comments = ksu.find('#event_comments').val()
 		user_action = 'RecordValue'
 		kpts_value = ksu.find('#select_indicator_value option:selected').val()
+		
 		if(kpts_value == undefined){
-			kpts_value = ksu.find('#open_indicator_value').val()
-		}
+			kpts_value = ksu.find('#open_indicator_value').val()};
+		
+		if(kpts_value == undefined){
+			kpts_value = 0};	
 		};
 
 	$.ajax({
@@ -222,6 +226,7 @@ $('.UserActionButton').on('click', function(){
 			'ksu_id': ksu_id,
 			'user_action': user_action,
 			'kpts_value':kpts_value,
+			'event_comments':event_comments
 		})
 	})
 	.done(function(data){
