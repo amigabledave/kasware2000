@@ -31,7 +31,7 @@
 
 								<span style="{% if ksu.is_critical %}color:red;{% endif %}"><span id="is_active" style="{% if not ksu.is_active %}color:#D3D3D3;{% endif %}"><b>{{ksu.description}}</b></span></span>
 								
-								{% if ksu.ksu_type == 'ImIn' %}
+								{% if ksu.ksu_type in ['ImIn', 'Obje'] %}
 									<br><span style="color:grey; font-style:italic; font-size:13px;">{{ksu.secondary_description}}</span> 
 								{% endif %}
 
@@ -103,9 +103,14 @@
 
 				<div class="row hidden" id="ScoreDetail">
 					<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
-								
-					{% if ksu.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'ImPe', 'EVPo'] %}
-					<div class="col-xs-3">
+
+					{% if ksu.ksu_subtype in ['Obje', 'BigO', 'Wish', 'Dream']%}
+						<div class="col-xs-8">
+							<textarea style="width:100%;" class="form-control" name="event_comments" id="event_comments" placeholder="Some words for the record?"></textarea>
+						</div>
+
+					{% elif ksu.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'ImPe', 'EVPo'] %}
+					<div class="col-xs-5">
 						<label> {{constants['d_SetViewerDetails'][ksu.ksu_subtype]['detailsLabel']}} </label>
 						<select class="form-control kpts_value" name="kpts_value" id="kpts_value">
 							{% for value in constants['l_Fibonacci'] %}
@@ -117,13 +122,16 @@
 							{% endfor %}
 						</select>
 					</div>
-					{% endif %}
+					<div class="col-xs-2"></div>
 
-					{% if ksu.ksu_type == 'ImIn' %}
+					{% elif ksu.ksu_type in ['Idea', 'Wish', 'RTBG', 'Gene']%}
+						<div class="col-xs-9"></div>
+
+					{% elif ksu.ksu_type == 'ImIn' %}
 
 						{% if ksu.ksu_subtype == 'OpenPerception' %}
 							<div class="col-xs-8">
-								<textarea style="width:100%;" class="form-control" name="event_comments" id="event_comments" placeholder="Whats your perception on this right now">{{ksu.ksu_suptype}}</textarea>
+								<textarea style="width:100%;" class="form-control" name="event_comments" id="event_comments" placeholder="Whats your perception on this right now"></textarea>
 							</div>
 						{% else %}
 							<div class="col-xs-4">
@@ -152,26 +160,26 @@
 					</div>
 					{% endif %}
 
-					<div class="col-xs-{% if ksu.ksu_type == 'ImIn' %}4{% else %}5{% endif %}">
+					<div class="col-xs-{% if ksu.ksu_type in ['Idea', 'RTBG', 'Gene'] %}3{% elif ksu.ksu_type in ['ImIn', 'Obje', 'Wish'] %}4{% else %}5{% endif %}">
 					{% if 'Record' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}
-						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
+						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
 					{% endif %}
 
 					{% if 'Done' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}
-						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
+						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
 					{% endif %}
 
 					{% if 'SendToMission' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}
-						<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
+						<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
 					{% endif %}
 
 					{% if ksu.is_active %}
-						<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton ShowDetailViewerButton" id="ViewerOnOffButton" name="action_description" value='ViewerOnOff' style="margin-top:20px; margin-right: 10px;"><span class="glyphicon glyphicon-off"></span></button>
+						<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton ShowDetailViewerButton" id="ViewerOnOffButton" name="action_description" value='ViewerOnOff' style="margin-right: 10px;"><span class="glyphicon glyphicon-off"></span></button>
 					{% else %}
-						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" id="ViewerOnOffButton"name="action_description" value='ViewerOnOff' style="margin-top:20px; margin-right: 10px;"><span class="glyphicon glyphicon-off"></span></button>
+						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" id="ViewerOnOffButton"name="action_description" value='ViewerOnOff' style="margin-right: 10px;"><span class="glyphicon glyphicon-off"></span></button>
 					{% endif %}
 
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete' style="margin-top:20px; margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete' style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
 					</div>
 
 				</div>

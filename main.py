@@ -650,13 +650,12 @@ class EventHandler(Handler):
 			theory=self.theory.key,
 			ksu_id =  ksu.key,
 			event_type = user_action,
-			user_date=(datetime.today()-timedelta(hours=user_start_hour)).toordinal())
-
+			user_date=(datetime.today()-timedelta(hours=user_start_hour)).toordinal(),
+			comments = event_details['event_comments'].encode('utf-8'))
 
 		if user_action == 'RecordValue': #xx
 			event.kpts_type = 'IndicatorValue'
 			event.score = float(event_details['kpts_value'])
-			event.comments = event_details['event_comments'].encode('utf-8')
 			update_next_event(self, user_action, {}, ksu)
 			ksu.put()
 

@@ -191,8 +191,8 @@ $('.UserActionButton').on('click', function(){
 	var ksu = $(this).closest('#MissionKSU');
 	var ksu_id = ksu.attr("value");
 	var user_action = $(this).attr("value");
-
 	var kpts_value = ksu.find('#kpts_value option:selected').val();
+	var event_comments = ksu.find('#event_comments').val()
 
 	var dissapear_before_done = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete', 'ViewerDelete','GraveyardDelete', 'GraveyardReanimate', 'MissionRecordValue']
 	
@@ -207,16 +207,18 @@ $('.UserActionButton').on('click', function(){
 		};
 
 	if (user_action == 'MissionRecordValue' || user_action == 'ViewerRecordValue'){
-		event_comments = ksu.find('#event_comments').val()
 		user_action = 'RecordValue'
 		kpts_value = ksu.find('#select_indicator_value option:selected').val()
 		
 		if(kpts_value == undefined){
-			kpts_value = ksu.find('#open_indicator_value').val()};
-		
-		if(kpts_value == undefined){
-			kpts_value = 0};	
+			kpts_value = ksu.find('#open_indicator_value').val()};	
 		};
+
+	if(kpts_value == undefined){
+		kpts_value = 0};
+
+	if(event_comments == undefined){
+		event_comments = ''};
 
 	$.ajax({
 		type: "POST",

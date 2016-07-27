@@ -156,28 +156,28 @@ d_SetViewerDetails = {
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Next Event'},
 		'columns':{'pretty_next_event':6},
-		'detailsLabel':'Reward',
+		'detailsLabel':'Effort Reward',
 		'buttons':['Done', 'SendToMission']},
 
 	'KAS2':{		
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Scheduled for'},
 		'columns':{'pretty_next_event':6},
-		'detailsLabel':'Reward',
+		'detailsLabel':'Effort Reward',
 		'buttons':['Done', 'SendToMission']},
 
 	'KAS3':{
 		'attributes': ['kpts_value'],
 		'fields': {'kpts_value':'Reward (Kpts.)'},
 		'columns': {'kpts_value':6},
-		'detailsLabel':'Reward',
+		'detailsLabel':'Effort Reward',
 		'buttons': ['Done']},
 
 	'KAS4':{
 		'attributes': ['kpts_value'],
 		'fields': {'kpts_value':'Punishment (Kpts.)'},
 		'columns':{'kpts_value':6},
-		'detailsLabel':'Punishment',
+		'detailsLabel':'Stupidity Punishment',
 		'buttons':['Done']},
 
 	'Obje':{		
@@ -212,14 +212,14 @@ d_SetViewerDetails = {
 		'attributes': ['frequency'],
 		'fields': {'frequency':'Charging time (days)'},
 		'columns':{'frequency':6},
-		'detailsLabel':'Reward',
-		'buttons':['Done']},
+		'detailsLabel':'Trigger Effort Reward',
+		'buttons':['Done', 'SendToMission']},
 
 	'ImPe': { 		
 		'attributes': ['frequency'], 
 		'fields': {'frequency':'Contact Frequency (days)'},
 		'columns':{'frequency':6},
-		'detailsLabel':'Reward',
+		'detailsLabel':'Contract Effort Reward',
 		'buttons':['Done', 'SendToMission']},
 
 	'Idea': { 		
@@ -241,14 +241,14 @@ d_SetViewerDetails = {
 			'fields': {},
 			'columns':{},
 			'detailsLabel':'',
-			'buttons':['Done']},
+			'buttons':[]},
 
 	'RTBSDG': { 		
 			'attributes': [],
 			'fields': {},
 			'columns':{},
 			'detailsLabel':'',
-			'buttons':['Done']},
+			'buttons':[]},
 
 	'ImIn': { 		
 		'attributes': [], 
