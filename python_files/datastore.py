@@ -56,7 +56,7 @@ class KSU(ndb.Model):
 
 	global_category = ndb.StringProperty()
 	local_category = ndb.StringProperty()
-	# parent_id = ndb.KeyProperty(kind=KSU) # Ahora me esta dando un error porque lo estoy ligando a la misma clase que estoy definiendo
+	parent_id = ndb.KeyProperty() # Ahora me esta dando un error porque lo estoy ligando a la misma clase que estoy definiendo
 
 	kpts_value = ndb.FloatProperty()
 	is_special = ndb.BooleanProperty(default=False)
@@ -80,7 +80,8 @@ class KSU(ndb.Model):
 	target = ndb.JsonProperty() # For ksus that generate kpts and indicators target min, target max, reverse target etc
 	birthday = ndb.DateProperty()
 	money_cost = ndb.IntegerProperty()
-	# picture = ndb.BlobProperty() #Might be used in the future
+	picture = ndb.BlobProperty() #Might be used in the future
+	times_reviewed = ndb.IntegerProperty(default=0)
 
 
 class Event(ndb.Model):

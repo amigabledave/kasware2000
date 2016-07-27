@@ -277,20 +277,15 @@ $('.UserActionButton').on('click', function(){
 
 
 $('.ShowDetailViewerButton').on('click', function(){
-	var ScoreDetail = $(this).closest('#MissionKSU').find('#ScoreDetail');
-	var GlaphiconDiv = $(this).children();
+	var ksu = $(this).closest('#MissionKSU');
+	
+	var ScoreDetail = ksu.find('#ScoreDetail');
+	ScoreDetail.toggleClass('hidden');
+
+	var GlaphiconDiv = ksu.find('#PlusMinusGlyphicon');
 	GlaphiconDiv.toggleClass('glyphicon-minus');
 	GlaphiconDiv.toggleClass('glyphicon-plus');
-	ScoreDetail.toggleClass('hidden');
-});
-
-
-$('.ShowDetailMissionButton').on('click', function(){
-	var ScoreDetail = $(this).closest('#MissionKSU').find('#ScoreDetail');
-	var GlaphiconDiv = $(this).children();
-	GlaphiconDiv.toggleClass('glyphicon-minus');
-	GlaphiconDiv.toggleClass('glyphicon-plus');
-	ScoreDetail.toggleClass('hidden');
+	
 });
 
 
@@ -304,7 +299,6 @@ var updateKsuScore = function(x){
 $('.kpts_value').on('change', function(){
 	updateKsuScore(this);
 });
-
 
 
 $('.QuickAttributeUpdate').on('focusout', function(){
