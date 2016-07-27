@@ -197,8 +197,18 @@ $('.UserActionButton').on('click', function(){
 	var dissapear_before_done = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete', 'ViewerDelete','GraveyardDelete', 'GraveyardReanimate']
 	var dissapear_after_done_subtypes = ['KAS2', 'Wish', 'Dream', 'Obje', 'BigO'];
 
-	// var update_pretty_next_event_actions = []
-	// var update_pretty_next_event_subtypes = ['KAS1', ]
+	if (user_action == 'RecordValue' ){
+		kpts_value = ksu.find('#select_indicator_value option:selected').val()
+		if(kpts_value == undefined){
+			kpts_value = ksu.find('#open_indicator_value').val()
+		}
+		console.log(kpts_value);
+		};
+
+	if (user_action == 'open_RecordValue' ){
+		kpts_value = ksu.find('#open_indicator_value').val()
+		user_action = 'RecordValue'
+		};
 
 
 	if ($.inArray(user_action, dissapear_before_done)!= -1){
@@ -222,6 +232,7 @@ $('.UserActionButton').on('click', function(){
 		})
 	})
 	.done(function(data){
+		console.log(data);
 		var EventScore = data['EventScore'];
 		var kpts_type = data['kpts_type'];
 		var PointsToGoal = data['PointsToGoal']

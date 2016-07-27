@@ -382,7 +382,7 @@ class KsuEditor(Handler):
 
 
 
-	def prepareInputForSaving(self, ksu, post_details): #xx
+	def prepareInputForSaving(self, ksu, post_details):
 
 		l_checkbox_attribute = [ 'is_active', 
 								 'is_critical', 
@@ -625,7 +625,6 @@ class EventHandler(Handler):
 		ksu_subtype = ksu.ksu_subtype
 
 		print
-		print
 		print 'Si llego el AJAX Request. User action: ' + user_action + '. Event details: ' +  str(event_details)
 		print
 
@@ -641,6 +640,11 @@ class EventHandler(Handler):
 			ksu_id =  ksu.key,
 			event_type = user_action,
 			user_date=(datetime.today()-timedelta(hours=user_start_hour)).toordinal())
+
+
+		if user_action == 'RecordValue':
+			event.kpts_type = 'IndicatorValue'
+			event.score = float(event_details['kpts_value'])
 
 
 		if user_action in ['MissionDone', 'ViewerDone']:
@@ -741,7 +745,7 @@ class EventHandler(Handler):
 		active_log.put()
 		
 
-	def update_single_attribute(self, ksu, attr_key, attr_value): #xx
+	def update_single_attribute(self, ksu, attr_key, attr_value):
 		updated_value = None
 
 		if attr_key == 'description':

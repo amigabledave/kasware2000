@@ -254,28 +254,28 @@ d_SetViewerDetails = {
 		'fields': {},
 		'columns':{},
 		'detailsLabel':'',
-		'buttons':['Done']},
+		'buttons':[]},
 
 	'BinaryPerception': { 		
 		'attributes': [], 
 		'fields': {},
 		'columns':{},
 		'detailsLabel':'',
-		'buttons':['Done']},
+		'buttons':['Record']},
 
 	'FibonacciPerception': { 		
 		'attributes': [], 
 		'fields': {},
 		'columns':{},
 		'detailsLabel':'',
-		'buttons':['Done']},
+		'buttons':['Record']},
 
 	'RealitySnapshot': { 		
 		'attributes': [], 
 		'fields': {},
 		'columns':{},
 		'detailsLabel':'',
-		'buttons':['Done']},
+		'buttons':['Record']},
 }
 
 d_displayValues = {}

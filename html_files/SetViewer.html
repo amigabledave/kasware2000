@@ -104,11 +104,9 @@
 				<div class="row hidden" id="ScoreDetail">
 					<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
 								
-					<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-						
+					{% if ksu.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'ImPe', 'EVPo'] %}
+					<div class="col-xs-3">
 						<label> {{constants['d_SetViewerDetails'][ksu.ksu_subtype]['detailsLabel']}} </label>
-						
-						{% if ksu.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'ImPe', 'EVPo'] %}
 						<select class="form-control kpts_value" name="kpts_value" id="kpts_value">
 							{% for value in constants['l_Fibonacci'] %}
 								{% if value == ksu.kpts_value %}
@@ -118,11 +116,36 @@
 								{% endif %}
 							{% endfor %}
 						</select>
+					</div>
+					{% endif %}
+
+					{% if ksu.ksu_type == 'ImIn' %}
+					<div class="col-xs-4">
+						<label> Value right now </label>
+						{% if ksu.ksu_subtype in ['BinaryPerception', 'FibonacciPerception'] %}
+							<select class="form-control" name="indicator_value" id="select_indicator_value">
+								{% if ksu.ksu_subtype == 'BinaryPerception' %}
+									<option value="1"> Yes </option>
+									<option value="0"> No </option>
+								{% elif ksu.ksu_subtype == 'FibonacciPerception' %}
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option selected="selected" value="3">3</option>
+									<option value="5">5</option>
+									<option value="8">8</option>
+								{% endif %}
+							</select>
+						{% elif ksu.ksu_subtype == 'RealitySnapshot' %}
+							<input type="number" min="0" class="form-control" style="padding-right:3px;" name="indicator_value" id="open_indicator_value" placeholder="0">
 						{% endif %}
 					</div>
-
+					{% endif %}
 
 					<div class="col-xs-5">
+					{% if 'Record' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}
+						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='RecordValue' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
+					{% endif %}
+
 					{% if 'Done' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}
 						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
 					{% endif %}
