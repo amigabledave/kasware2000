@@ -44,7 +44,7 @@ def CreateOrEditKSU_request_handler(funcion):
 			self.redirect('/KsuEditor?ksu_id='+ksu_id+'&return_to='+return_to)
 			return
 
-		elif user_action == 'SearchTheory': #xx
+		elif user_action == 'SearchTheory':
 			lookup_string = self.request.get('lookup_string')
 			self.redirect('/SetViewer?set_name=TheoryQuery&lookup_string='+lookup_string)
 
@@ -382,7 +382,7 @@ class KsuEditor(Handler):
 
 
 
-	def prepareInputForSaving(self, ksu, post_details):
+	def prepareInputForSaving(self, ksu, post_details): #xx
 
 		l_checkbox_attribute = [ 'is_active', 
 								 'is_critical', 
@@ -427,6 +427,7 @@ class KsuEditor(Handler):
 			if a_type == 'time':
 				a_val = a_val[0:5]
 				setattr(ksu, a_key, datetime.strptime(a_val, '%H:%M').time())
+				setattr(ksu, 'pretty_'+a_key, a_val)
 
 			if a_type == 'checkbox':
 				setattr(ksu, a_key, True)
@@ -437,6 +438,9 @@ class KsuEditor(Handler):
 		setattr(ksu, 'repeats_on', d_repeats_on)
 		
 		ksu.ksu_subtype = self.determine_ksu_subtype(ksu, post_details)
+
+		if ksu.ksu_subtype == 'ImPe':
+			ksu.secondary_description = 'Contact ' + ksu.description
 
 		return ksu
 
@@ -550,8 +554,6 @@ class SetViewer(Handler):
 		return main_result + secondary_result
 
 
-
-
 class MissionViewer(Handler):
 
 	@super_user_bouncer
@@ -573,12 +575,13 @@ class MissionViewer(Handler):
 
 	def generate_todays_mission(self, time_frame):
 		user_key = self.theory.key
-		ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True).order(KSU.next_event).fetch()
+		ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True).order(KSU.next_event).order(KSU.best_time).fetch()
 
 		day_start_time = self.theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 		today =(datetime.today()-timedelta(hours=user_start_hour)).date()
 		todays_mission = []
+		todays_timeless_mission = []
 		mission_value = 0
 		upcoming = []
 		someday_maybe = []
@@ -593,11 +596,14 @@ class MissionViewer(Handler):
 				elif today < next_event:
 					upcoming.append(ksu)
 				else:# if next_event and today >= next_event:
-					todays_mission.append(ksu)
+					if ksu.best_time:
+						todays_mission.append(ksu)
+					else:
+						todays_timeless_mission.append(ksu)
 					mission_value += ksu.kpts_value
 
 		if time_frame == 'Today':
-			mission = todays_mission
+			mission = todays_mission + todays_timeless_mission
 		elif time_frame == 'Upcoming':
 			mission = upcoming
 		else:
@@ -622,6 +628,13 @@ class EventHandler(Handler):
 		print
 		print 'Si llego el AJAX Request. User action: ' + user_action + '. Event details: ' +  str(event_details)
 		print
+
+		if user_action == 'UpdateKsuAttribute':
+			attr_key = event_details['attr_key']
+			attr_value = event_details['attr_value']
+			updated_value = self.update_single_attribute(ksu, attr_key, attr_value)
+			self.response.out.write(json.dumps({'updated_value':updated_value}))
+			return
 
 		event = Event(
 			theory=self.theory.key,
@@ -652,8 +665,7 @@ class EventHandler(Handler):
 				ksu.put()
 
 
-
-		if user_action in ['MissionPush', 'MissionSkip', 'SendToMission']: #xx
+		if user_action in ['MissionPush', 'MissionSkip', 'SendToMission']:
 			update_next_event(self, user_action, {}, ksu)
 			ksu.put()
 
@@ -729,6 +741,36 @@ class EventHandler(Handler):
 		active_log.put()
 		
 
+	def update_single_attribute(self, ksu, attr_key, attr_value): #xx
+		updated_value = None
+
+		if attr_key == 'description':
+			ksu.description = attr_value.encode('utf-8')			
+			updated_value = ksu.description
+
+		elif attr_key == 'secondary_description':
+			ksu.secondary_description = attr_value.encode('utf-8')			
+			updated_value = ksu.secondary_description
+
+
+		elif attr_key == 'best_time':
+			attr_val = attr_value[0:5]
+			ksu.best_time = datetime.strptime(attr_value, '%H:%M').time()
+			ksu.pretty_best_time = attr_value
+			updated_value = ksu.pretty_best_time
+		
+		elif attr_key == 'next_event':
+			ksu.next_event = datetime.strptime(attr_value, '%Y-%m-%d')
+			ksu.pretty_next_event = datetime.strptime(attr_value, '%Y-%m-%d').strftime('%a, %b %d, %Y')
+			updated_value = ksu.pretty_next_event
+
+		elif attr_key == 'kpts_value':
+			ksu.kpts_value = float(attr_value)
+			updated_value = ksu.kpts_value 
+
+
+		ksu.put()	
+		return updated_value
 
 
 #--- Development handlers ----------
@@ -736,7 +778,7 @@ class PopulateRandomTheory(Handler):
 	
 	def get(self):
 		self.populateRandomTheory()
-		self.redirect('/')
+		self.redirect('/MissionViewer?time_frame=Today')
 
 	def populateRandomTheory(self):
 

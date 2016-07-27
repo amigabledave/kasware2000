@@ -276,7 +276,6 @@ $('.UserActionButton').on('click', function(){
 });
 
 
-
 $('.ShowDetailViewerButton').on('click', function(){
 	var ScoreDetail = $(this).closest('#MissionKSU').find('#ScoreDetail');
 	var GlaphiconDiv = $(this).children();
@@ -305,6 +304,41 @@ var updateKsuScore = function(x){
 $('.kpts_value').on('change', function(){
 	updateKsuScore(this);
 });
+
+
+
+$('.QuickAttributeUpdate').on('focusout', function(){
+	var attr_key = $(this).attr("name");
+	var attr_value = $(this).val();
+	var ksu = $(this).closest('#MissionKSU');
+	var ksu_id = ksu.attr("value");
+
+	$.ajax({
+		type: "POST",
+		url: "/EventHandler",
+		dataType: 'json',
+		data: JSON.stringify({
+			'ksu_id': ksu_id,
+			'user_action': 'UpdateKsuAttribute',
+			'attr_key':attr_key,
+			'attr_value':attr_value,
+		})
+	})
+	
+	.done(function(data){
+		console.log(data['updated_value']);
+
+		if (attr_key == 'best_time'){
+			ksu.find('#pretty_best_time').text(data['updated_value'])};
+
+		if (attr_key == 'next_event'){
+			ksu.find('#pretty_next_event').text(data['updated_value'])};
+
+		if (attr_key == 'description'){
+			ksu.find('#description').val(data['updated_value'])};
+	})
+});
+
 
 
 // Hace que sea posible desseleccionar radios    
