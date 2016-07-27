@@ -194,23 +194,8 @@ $('.UserActionButton').on('click', function(){
 
 	var kpts_value = ksu.find('#kpts_value option:selected').val();
 
-	var dissapear_before_done = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete', 'ViewerDelete','GraveyardDelete', 'GraveyardReanimate']
-	var dissapear_after_done_subtypes = ['KAS2', 'Wish', 'Dream', 'Obje', 'BigO'];
-
-	if (user_action == 'RecordValue' ){
-		kpts_value = ksu.find('#select_indicator_value option:selected').val()
-		if(kpts_value == undefined){
-			kpts_value = ksu.find('#open_indicator_value').val()
-		}
-		console.log(kpts_value);
-		};
-
-	if (user_action == 'open_RecordValue' ){
-		kpts_value = ksu.find('#open_indicator_value').val()
-		user_action = 'RecordValue'
-		};
-
-
+	var dissapear_before_done = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete', 'ViewerDelete','GraveyardDelete', 'GraveyardReanimate', 'MissionRecordValue']
+	
 	if ($.inArray(user_action, dissapear_before_done)!= -1){
 		ksu.animate({
 			"opacity" : "0",
@@ -219,6 +204,14 @@ $('.UserActionButton').on('click', function(){
 				ksu.remove();
 				}
 			})
+		};
+
+	if (user_action == 'MissionRecordValue' || user_action == 'ViewerRecordValue'){
+		user_action = 'RecordValue'
+		kpts_value = ksu.find('#select_indicator_value option:selected').val()
+		if(kpts_value == undefined){
+			kpts_value = ksu.find('#open_indicator_value').val()
+		}
 		};
 
 	$.ajax({
@@ -252,7 +245,7 @@ $('.UserActionButton').on('click', function(){
 
 		var ksu_subtype = data['ksu_subtype'];
 
-		if (user_action == 'SendToMission' || user_action == 'ViewerDone'){
+		if (user_action == 'SendToMission' || user_action == 'ViewerDone' || user_action == 'RecordValue'){
 			ksu.find('#pretty_next_event').text(data['pretty_next_event']);
 		};
 
@@ -268,12 +261,12 @@ $('.UserActionButton').on('click', function(){
 				ksu.find('#ViewerOnOffButton').addClass('btn-success');				
 			}
 
-
-
 		};
-
 		
-		if (($.inArray(ksu_subtype, dissapear_after_done_subtypes)!= -1) && user_action == 'ViewerDone' ){
+		var dissapear_after_done_subtypes = ['KAS2', 'Wish', 'Dream', 'Obje', 'BigO'];
+		var dissapear_after_done_actions = ['ViewerDone'];
+
+		if (($.inArray(ksu_subtype, dissapear_after_done_subtypes)!= -1) && ($.inArray(user_action, dissapear_after_done_actions)!= -1)){
 			ksu.animate({
 				"opacity" : "0",
 				},{

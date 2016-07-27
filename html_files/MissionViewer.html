@@ -106,11 +106,91 @@
 </form>		
 </div>
 
-
-
-
 {% endfor %}
 
 
+{% if time_frame == 'Today' %}
+	{% if todays_questions %}
+		<div class="row">
+			<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10"> 
+				<div class="SectionTitle"> Questions to answer </div>
+			</div>
+		</div>
+	{% endif %}
+
+	{% for ksu in todays_questions %}
+
+	<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+	<form method="post">
+	<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
+		<div class="col-xs-12">
+			<div class="row">
+				<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
+					<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton" name="action_description" value='MissionRecordValue'><i class="glyphicon glyphicon-record"></i></button>
+				</div>
+
+				<div class="col-xs-10">
+					<div class="row">
+						<div class="col-xs-8">
+							<textarea style="width:100%; border:0;" class="QuickAttributeUpdate" name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>
+						</div>
+
+						<div class="col-xs-4">
+							{% if ksu.ksu_subtype in ['BinaryPerception', 'FibonacciPerception'] %}
+								<select class="form-control" name="indicator_value" id="select_indicator_value">
+									{% if ksu.ksu_subtype == 'BinaryPerception' %}
+										<option value="1"> Yes </option>
+										<option value="0"> No </option>
+									{% elif ksu.ksu_subtype == 'FibonacciPerception' %}
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option selected="selected" value="3">3</option>
+										<option value="5">5</option>
+										<option value="8">8</option>
+									{% endif %}
+								</select>
+							{% elif ksu.ksu_subtype == 'RealitySnapshot' %}
+								<input type="number" min="0" class="form-control" style="padding-right:3px;" name="indicator_value" id="open_indicator_value" placeholder="0">
+							{% endif %}
+						</div>
+					</div>
+				</div>
+
+				<div class="col-xs-1" style="padding:0;">
+						<button type="button" class="btn btn-default btn-circle ShowDetailViewerButton" id="ShowDetailViewerButton"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus"></span></button>
+				</div>			
+			</div>
+
+			<div class="row hidden" id="ScoreDetail">
+				<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
+				
+					<div class="col-xs-8"></div>
+					<div class="col-xs-4">
+
+						<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionPush' style="margin-right:10px;"><span class="glyphicon glyphicon-forward"  style="margin-left:5px;"></span></button>
+
+						<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-right:10px;"><span class="glyphicon glyphicon-remove"></span></button>
+
+						<button type="submit" class="btn btn-primary btn-circle btn-lg" name="action_description" value='EditKSU' style=""><span class="glyphicon glyphicon-pencil"></span></button>
+
+					</div>
+			</div>
+
+		</div>
+	</form>		
+	</div>
+
+
+
+	{% endfor %}
+{% endif %}
+
+
+
 {% endblock %}
+
+
+
+
+
 

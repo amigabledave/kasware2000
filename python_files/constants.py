@@ -257,23 +257,23 @@ d_SetViewerDetails = {
 		'buttons':[]},
 
 	'BinaryPerception': { 		
-		'attributes': [], 
-		'fields': {},
-		'columns':{},
+		'attributes': ['pretty_next_event'],
+		'fields': {'pretty_next_event':'Next Question'},
+		'columns':{'pretty_next_event':6},
 		'detailsLabel':'',
 		'buttons':['Record']},
 
 	'FibonacciPerception': { 		
-		'attributes': [], 
-		'fields': {},
-		'columns':{},
+		'attributes': ['pretty_next_event'],
+		'fields': {'pretty_next_event':'Next Question'},
+		'columns':{'pretty_next_event':6},
 		'detailsLabel':'',
 		'buttons':['Record']},
 
 	'RealitySnapshot': { 		
-		'attributes': [], 
-		'fields': {},
-		'columns':{},
+		'attributes': ['pretty_next_event'],
+		'fields': {'pretty_next_event':'Next Question'},
+		'columns':{'pretty_next_event':6},
 		'detailsLabel':'',
 		'buttons':['Record']},
 }
