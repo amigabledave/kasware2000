@@ -16,6 +16,13 @@ indexes:
   - name: user_date
   - name: created
 
+- kind: Event
+  properties:
+  - name: theory
+  - name: user_date
+  - name: created
+    direction: desc
+
 - kind: KAS1
   properties:
   - name: theory

@@ -780,7 +780,7 @@ class EventViewer(Handler):
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 		today =(datetime.today()-timedelta(hours=user_start_hour)).date().toordinal()
 
-		event_set = Event.query(Event.theory == user_key).filter(Event.user_date == today).order(Event.created).fetch()
+		event_set = Event.query(Event.theory == user_key).filter(Event.user_date == today).order(-Event.created).fetch()
 		
 		history = []
 		history_value = 0
@@ -788,11 +788,12 @@ class EventViewer(Handler):
 		for event in event_set:#xx 
 			ksu = KSU.get_by_id(event.ksu_id.id())
 			event.ksu_description = ksu.description
+			event.ksu_secondary_description = ksu.secondary_description
 			event.ksu_subtype = ksu.ksu_subtype
 			event.pretty_ksu_subtype = constants['d_KsuSubtypes'][ksu.ksu_subtype]
 			event.pretty_date = event.user_date_date.strftime('%a, %b %d, %Y')
 			history.append(event)
-			if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3']:
+			if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'EVPo', 'ImPe']:
 				history_value += event.score
 			elif event.ksu_subtype == 'KAS4':
 				history_value -= event.score
