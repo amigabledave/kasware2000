@@ -471,42 +471,6 @@ class Home(Handler):
 		message = 'Welcome to KASware ' + theory.first_name + ' ' + theory.last_name
 		self.write(message)
 
-
-class TodaysMission(Handler):
-
-	@super_user_bouncer
-	def get(self):
-		user_key = self.theory.key
-		ksu_set, mission_value = self.generate_todays_mission()
-		self.print_html('TodaysMission.html', ksu_set=ksu_set, mission_value=mission_value,constants=constants)
-
-	@super_user_bouncer
-	@CreateOrEditKSU_request_handler	
-	def post(self, user_action, post_details):
-		return
-
-	def generate_todays_mission(self):
-		user_key = self.theory.key
-		ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False).order(KSU.created).fetch()
-
-		day_start_time = self.theory.day_start_time
-		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-		today =(datetime.today()-timedelta(hours=user_start_hour)).date()
-		mission = []
-		mission_value = 0
-		mission_sets = ['KAS1', 'KAS2', 'EVPo', 'ImPe']
-		for ksu in ksu_set:
-			ksu_subtype = ksu.ksu_subtype
-			if ksu_subtype in mission_sets:
-				next_event = ksu.next_event
-
-				if ksu.is_active and next_event and today >= next_event and not ksu.in_graveyard:
-					mission.append(ksu)
-					mission_value += ksu.kpts_value
-
-		pinned_sets = ['KAS3', 'KAS4']
-		return mission, mission_value
-
 			
 class SetViewer(Handler):
 
@@ -653,7 +617,7 @@ class EventHandler(Handler):
 			user_date=(datetime.today()-timedelta(hours=user_start_hour)).toordinal(),
 			comments = event_details['event_comments'].encode('utf-8'))
 
-		if user_action == 'RecordValue': #xx
+		if user_action == 'RecordValue':
 			event.kpts_type = 'IndicatorValue'
 			event.score = float(event_details['kpts_value'])
 			update_next_event(self, user_action, {}, ksu)
@@ -793,6 +757,48 @@ class EventHandler(Handler):
 		return updated_value
 
 
+class EventViewer(Handler):
+
+	@super_user_bouncer
+	def get(self):
+		history_start = self.request.get('history_start')
+		history_end = self.request.get('history_end')
+
+		history, history_value = self.retrieve_history(history_start, history_end)
+
+		self.print_html('EventViewer.html', history=history, history_start=history_start, history_end=history_end, history_value=history_value, constants=constants)
+
+	@super_user_bouncer
+	@CreateOrEditKSU_request_handler	
+	def post(self, user_action, post_details):
+		return
+
+	def retrieve_history(self, history_start, history_end):
+		user_key = self.theory.key
+		
+		day_start_time = self.theory.day_start_time
+		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
+		today =(datetime.today()-timedelta(hours=user_start_hour)).date().toordinal()
+
+		event_set = Event.query(Event.theory == user_key).filter(Event.user_date == today).order(Event.created).fetch()
+		
+		history = []
+		history_value = 0
+
+		for event in event_set:#xx 
+			ksu = KSU.get_by_id(event.ksu_id.id())
+			event.ksu_description = ksu.description
+			event.ksu_subtype = ksu.ksu_subtype
+			event.pretty_ksu_subtype = constants['d_KsuSubtypes'][ksu.ksu_subtype]
+			event.pretty_date = event.user_date_date.strftime('%a, %b %d, %Y')
+			history.append(event)
+			if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3']:
+				history_value += event.score
+			elif event.ksu_subtype == 'KAS4':
+				history_value -= event.score
+
+		return history, history_value
+
 #--- Development handlers ----------
 class PopulateRandomTheory(Handler):
 	
@@ -912,7 +918,7 @@ def calculate_user_kpts_goals(kpts_goals_parameters):
 
 	return user_kpts_goals
 
-def update_next_event(self, user_action, post_details, ksu): #xx
+def update_next_event(self, user_action, post_details, ksu):
 
 	def days_to_next_event(ksu):
 
@@ -1099,7 +1105,6 @@ d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
 
 #--- Request index
 app = webapp2.WSGIApplication([
-							    ('/', TodaysMission),
 							    
 							    ('/SignUpLogIn', SignUpLogIn),
 							    ('/LogOut', LogOut),
@@ -1108,8 +1113,9 @@ app = webapp2.WSGIApplication([
 							    ('/KsuEditor', KsuEditor),
 							    ('/MissionViewer', MissionViewer),
 							    ('/SetViewer', SetViewer),
-
+						
 							    ('/EventHandler',EventHandler),
+							    ('/EventViewer', EventViewer),
 
 							    ('/PopulateRandomTheory',PopulateRandomTheory)
 								], debug=True)
