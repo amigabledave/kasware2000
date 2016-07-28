@@ -528,9 +528,15 @@ class MissionViewer(Handler):
 		print
 		user_key = self.theory.key
 
-		ksu_set, mission_value, todays_questions = self.generate_todays_mission(time_frame)
+		ksu_set, mission_value, todays_questions, reactive_mission = self.generate_todays_mission(time_frame)
 
-		self.print_html('MissionViewer.html', ksu_set=ksu_set, time_frame=time_frame, mission_value=mission_value, todays_questions=todays_questions, constants=constants)
+		self.print_html('MissionViewer.html', 
+						ksu_set=ksu_set, 
+						time_frame=time_frame, 
+						mission_value=mission_value, 
+						todays_questions=todays_questions,
+						reactive_mission=reactive_mission, 
+						constants=constants)
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -544,18 +550,28 @@ class MissionViewer(Handler):
 		day_start_time = self.theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 		today =(datetime.today()-timedelta(hours=user_start_hour)).date()
+		
 		todays_mission = []
 		todays_timeless_mission = []
 		todays_questions = []
+		
+		KAS3_mission = []
+		KAS4_mission = []
+		reactive_mission = []
 		mission_value = 0
 		upcoming = []
 		someday_maybe = []
+
 		mission_sets = ['KAS1', 'KAS2', 'EVPo', 'ImPe']
+		questions_sets = ['RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'OpenPerception']
+
 
 		for ksu in ksu_set:
 			ksu_subtype = ksu.ksu_subtype
+			next_event = ksu.next_event
+
 			if ksu_subtype in mission_sets:
-				next_event = ksu.next_event
+				
 				if not next_event:
 					someday_maybe.append(ksu)
 				elif today < next_event:
@@ -567,23 +583,29 @@ class MissionViewer(Handler):
 						todays_timeless_mission.append(ksu)
 					mission_value += ksu.kpts_value
 
+			elif ksu_subtype in questions_sets:
+				if today >= next_event:
+					todays_questions.append(ksu)
+
+			elif ksu_subtype == 'KAS3' and today >= next_event:
+				KAS3_mission.append(ksu)
+
+			elif ksu_subtype == 'KAS4' and today >= next_event:
+				KAS4_mission.append(ksu)
+
+
 		if time_frame == 'Today':
 			mission = todays_mission + todays_timeless_mission
+			reactive_mission = KAS3_mission + KAS4_mission
 
-			questions_sets = ['RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'OpenPerception']
-			for ksu in ksu_set:
-				ksu_subtype = ksu.ksu_subtype
-				if ksu_subtype in questions_sets:
-					next_event = ksu.next_event
-					if today >= next_event:
-						todays_questions.append(ksu)
-
-
+			
 		elif time_frame == 'Upcoming':
 			mission = upcoming
+		
 		else:
 			mission = someday_maybe
-		return mission, mission_value, todays_questions
+		
+		return mission, mission_value, todays_questions, reactive_mission
 
 
 class EventHandler(Handler):
@@ -999,7 +1021,7 @@ def update_next_event(self, user_action, post_details, ksu):
 			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
 			print ksu.pretty_next_event
 
-	if ksu_subtype == 'KAS2':
+	elif ksu_subtype == 'KAS2':
 		next_event = ksu.next_event
 
 		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone']:
@@ -1015,7 +1037,24 @@ def update_next_event(self, user_action, post_details, ksu):
 			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
 
 
-	if ksu_subtype in ['EVPo', 'ImPe', 'RealitySnapshot', 'FibonacciPerception', 'BinaryPerception', 'OpenPerception']:
+	elif ksu_subtype in ['KAS3', 'KAS4']:
+		
+		next_event = ksu.next_event
+
+		if not next_event:
+			ksu.next_event = today
+			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
+
+		if user_action in ['MissionDone']:
+			ksu.next_event = today
+			ksu.pretty_next_event = today.strftime('%a, %b %d, %Y')
+
+		if user_action == 'MissionPush':
+			ksu.next_event = tomorrow
+			ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
+
+
+	elif ksu_subtype in ['EVPo', 'ImPe', 'RealitySnapshot', 'FibonacciPerception', 'BinaryPerception', 'OpenPerception']:
 		
 		next_event = ksu.next_event
 
@@ -1030,6 +1069,8 @@ def update_next_event(self, user_action, post_details, ksu):
 		if user_action == 'MissionPush':
 			ksu.next_event = tomorrow
 			ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
+
+
 
 	return		
 
@@ -1106,7 +1147,7 @@ d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
 
 #--- Request index
 app = webapp2.WSGIApplication([
-							    
+							    ('/', SetViewer),
 							    ('/SignUpLogIn', SignUpLogIn),
 							    ('/LogOut', LogOut),
 							    ('/Settings', Settings),

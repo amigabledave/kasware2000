@@ -206,6 +206,11 @@ $('.UserActionButton').on('click', function(){
 			})
 		};
 
+
+	if (user_action == 'ReactiveMissionDone'){
+		user_action = 'MissionDone'};
+
+
 	if (user_action == 'MissionRecordValue' || user_action == 'ViewerRecordValue'){
 		user_action = 'RecordValue'
 		kpts_value = ksu.find('#select_indicator_value option:selected').val()
