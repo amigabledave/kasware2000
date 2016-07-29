@@ -3,13 +3,14 @@ import webapp2, jinja2, os, re, random, string, hashlib, json, logging, math
 
 from datetime import datetime, timedelta, time
 from google.appengine.ext import ndb
-from python_files import datastore, randomUser, constants
+from python_files import datastore, randomUser, constants, kasware_os
 
 constants = constants.constants
 Theory = datastore.Theory
 KSU = datastore.KSU
 Event = datastore.Event
 DailyLog = datastore.DailyLog
+os_ksus = kasware_os.os_ksus
 
 
 template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
@@ -312,6 +313,12 @@ class SignUpLogIn(Handler):
 				theory.last_DailyLog = active_date
 				theory.put()
 
+				#Loads OS Ksus xx
+				for post_details in os_ksus:
+					ksu = KSU(theory=theory.key)
+					ksu = prepareInputForSaving(ksu, post_details)
+					ksu.put()
+
 				self.login(theory)
 				self.redirect('/MissionViewer?time_frame=Today')
 
@@ -364,11 +371,9 @@ class KsuEditor(Handler):
 		
 		if user_action == 'SaveChanges':
 			print
-			print
 			print 'REQUEST TO SAVE KSU:'
 			print 'POST DETAILS:'
 			print post_details
-			print
 			print
 
 			ksu = self.prepareInputForSaving(ksu, post_details)
@@ -379,6 +384,7 @@ class KsuEditor(Handler):
 
 		# self.write(post_details)
 		return
+
 
 
 
@@ -807,7 +813,7 @@ class EventViewer(Handler):
 		history = []
 		history_value = 0
 
-		for event in event_set:#xx 
+		for event in event_set:
 			ksu = KSU.get_by_id(event.ksu_id.id())
 			event.ksu_description = ksu.description
 			event.ksu_secondary_description = ksu.secondary_description
@@ -821,6 +827,7 @@ class EventViewer(Handler):
 				history_value -= event.score
 
 		return history, history_value
+
 
 #--- Development handlers ----------
 class PopulateRandomTheory(Handler):
@@ -880,6 +887,13 @@ class PopulateRandomTheory(Handler):
 					a_val = set_details[a_key]
 					setattr(new_ksu, a_key, a_val)
 			
+				
+				next_event = new_ksu.next_event
+				ksu_subtype = new_ksu.ksu_subtype
+
+				if ksu_subtype in ['KAS1','KAS3','KAS4','ImPe','EVPo'] and not next_event:
+					new_ksu.next_event = today
+
 				new_ksu.put()		
 		return
 
@@ -1074,6 +1088,89 @@ def update_next_event(self, user_action, post_details, ksu):
 
 	return		
 
+def prepareInputForSaving(ksu, post_details):
+
+	def determine_ksu_subtype(ksu, post_details):
+
+		ksu_type = ksu.ksu_type
+
+		if 'ksu_subtype' in post_details:
+			ksu_subtype = post_details['ksu_subtype']
+		else:
+			ksu_subtype = ksu_type
+
+		if ksu_subtype == 'KAS1or2':
+			if ksu.repeats == 'R000':
+				ksu_subtype = 'KAS2'
+			else:
+				ksu_subtype = 'KAS1'
+
+
+		return ksu_subtype
+
+
+	l_checkbox_attribute = [ 'is_active', 
+							 'is_critical', 
+							 'is_private']
+
+	d_repeats_on = {
+		'repeats_on_Mon': False,
+		'repeats_on_Tue': False, 
+		'repeats_on_Wed': False, 
+		'repeats_on_Thu': False,
+		'repeats_on_Fri': False,
+		'repeats_on_Sat': False,
+		'repeats_on_Sun': False}
+
+	for attribute in l_checkbox_attribute:
+		setattr(ksu, attribute, False)
+
+	d_attributeType = constants['d_attributeType']
+
+	for a_key in post_details:
+
+		a_val = post_details[a_key]
+		a_type = None
+		
+		if a_key in d_attributeType:
+			a_type = d_attributeType[a_key]
+		
+		if a_type == 'string':
+			setattr(ksu, a_key, a_val.encode('utf-8'))
+
+		if a_type == 'integer':
+			setattr(ksu, a_key, int(a_val))
+
+		if a_type == 'float':
+			setattr(ksu, a_key, float(a_val))
+
+		if a_type == 'date':
+			setattr(ksu, a_key, datetime.strptime(a_val, '%Y-%m-%d'))
+			if a_key == 'next_event':
+				setattr(ksu, 'pretty_'+a_key, datetime.strptime(a_val, '%Y-%m-%d').strftime('%a, %b %d, %Y'))
+
+		if a_type == 'time':
+			a_val = a_val[0:5]
+			setattr(ksu, a_key, datetime.strptime(a_val, '%H:%M').time())
+			setattr(ksu, 'pretty_'+a_key, a_val)
+
+		if a_type == 'checkbox':
+			setattr(ksu, a_key, True)
+
+		if a_type == 'checkbox_repeats_on':
+			d_repeats_on[a_key] = True
+
+	setattr(ksu, 'repeats_on', d_repeats_on)
+	
+	ksu.ksu_subtype = determine_ksu_subtype(ksu, post_details)
+
+	if ksu.ksu_subtype == 'ImPe':
+		ksu.secondary_description = 'Contact ' + ksu.description
+
+	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe','EVPo', 'RealitySnapshot', 'OpenPerception', 'FibonacciPerception', 'BinaryPerception'] and not ksu.next_event:
+		ksu.next_event = datetime.today() - timedelta(days=1)
+
+	return ksu
 
 
 #--- Validation and security functions ----------
