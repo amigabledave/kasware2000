@@ -55,6 +55,79 @@ def CreateOrEditKSU_request_handler(funcion):
 	return inner
 
 
+
+
+#--- Validation and security functions ----------
+secret = 'elzecreto'
+
+def make_secure_val(val):
+    return '%s|%s' % (val, hashlib.sha256(secret + val).hexdigest())
+
+def check_secure_val(secure_val):
+	val = secure_val.split('|')[0]
+	if secure_val == make_secure_val(val):
+		return val
+
+def make_salt(lenght = 5):
+    return ''.join(random.choice(string.letters) for x in range(lenght))
+
+def make_password_hash(email, password, salt = None):
+	if not salt:
+		salt = make_salt()
+	h = hashlib.sha256(email + password + salt).hexdigest()
+	return '%s|%s' % (h, salt)
+
+def validate_password(email, password, h):
+	salt = h.split('|')[1]
+	return h == make_password_hash(email, password, salt)
+
+def user_input_error(post_details):
+	for (attribute, value) in post_details.items():
+		user_error = input_error(attribute, value)
+		if user_error:
+			return user_error
+
+	if 'confirm_email' in post_details:
+		if post_details['email'] != post_details['confirm_email']:
+			return "Emails don't match"
+
+	return None
+
+
+def input_error(target_attribute, user_input):
+	
+	validation_attributes = ['first_name',
+							 'last_name', 
+							 'password',
+							 'email']
+
+
+	if target_attribute not in validation_attributes:
+		return None
+	
+	error_key = target_attribute + '_error' 
+		
+	if d_RE[target_attribute].match(user_input):
+		return None
+
+	else:
+		return d_RE[error_key]
+
+d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
+		'first_name_error': 'invalid first name syntax',
+		
+		'last_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
+		'last_name_error': 'invalid last name syntax',
+
+		'password': re.compile(r"^.{3,20}$"),
+		'password_error': 'invalid password syntax',
+		
+		'email': re.compile(r'^[\S]+@[\S]+\.[\S]+$'),
+		'email_error': 'invalid email syntax'}
+
+
+
+
 #-- Production Handlers
 class Handler(webapp2.RequestHandler):
 	def write(self, *a, **kw):
@@ -1179,74 +1252,6 @@ def prepareInputForSaving(ksu, post_details):
 		ksu.next_event = datetime.today() - timedelta(days=1)
 
 	return ksu
-
-
-#--- Validation and security functions ----------
-secret = 'elzecreto'
-
-def make_secure_val(val):
-    return '%s|%s' % (val, hashlib.sha256(secret + val).hexdigest())
-
-def check_secure_val(secure_val):
-	val = secure_val.split('|')[0]
-	if secure_val == make_secure_val(val):
-		return val
-
-def make_salt(lenght = 5):
-    return ''.join(random.choice(string.letters) for x in range(lenght))
-
-def make_password_hash(email, password, salt = None):
-	if not salt:
-		salt = make_salt()
-	h = hashlib.sha256(email + password + salt).hexdigest()
-	return '%s|%s' % (h, salt)
-
-def validate_password(email, password, h):
-	salt = h.split('|')[1]
-	return h == make_password_hash(email, password, salt)
-
-def user_input_error(post_details):
-	for (attribute, value) in post_details.items():
-		user_error = input_error(attribute, value)
-		if user_error:
-			return user_error
-
-	if 'confirm_email' in post_details:
-		if post_details['email'] != post_details['confirm_email']:
-			return "Emails don't match"
-
-	return None
-
-def input_error(target_attribute, user_input):
-	
-	validation_attributes = ['first_name',
-							 'last_name', 
-							 'password',
-							 'email']
-
-
-	if target_attribute not in validation_attributes:
-		return None
-	
-	error_key = target_attribute + '_error' 
-		
-	if d_RE[target_attribute].match(user_input):
-		return None
-
-	else:
-		return d_RE[error_key]
-
-d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
-		'first_name_error': 'invalid first name syntax',
-		
-		'last_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
-		'last_name_error': 'invalid last name syntax',
-
-		'password': re.compile(r"^.{3,20}$"),
-		'password_error': 'invalid password syntax',
-		
-		'email': re.compile(r'^[\S]+@[\S]+\.[\S]+$'),
-		'email_error': 'invalid email syntax'}
 
 
 
