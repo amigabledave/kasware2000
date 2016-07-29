@@ -125,6 +125,7 @@ class DailyLog(ndb.Model):
 	
 	SmartEffort = ndb.FloatProperty(default=0)
 	Stupidity = ndb.FloatProperty(default=0)
+
 	
 
 #--- Validation and security functions ----------

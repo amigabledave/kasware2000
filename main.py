@@ -55,79 +55,6 @@ def CreateOrEditKSU_request_handler(funcion):
 	return inner
 
 
-
-
-#--- Validation and security functions ----------
-secret = 'elzecreto'
-
-def make_secure_val(val):
-    return '%s|%s' % (val, hashlib.sha256(secret + val).hexdigest())
-
-def check_secure_val(secure_val):
-	val = secure_val.split('|')[0]
-	if secure_val == make_secure_val(val):
-		return val
-
-def make_salt(lenght = 5):
-    return ''.join(random.choice(string.letters) for x in range(lenght))
-
-def make_password_hash(email, password, salt = None):
-	if not salt:
-		salt = make_salt()
-	h = hashlib.sha256(email + password + salt).hexdigest()
-	return '%s|%s' % (h, salt)
-
-def validate_password(email, password, h):
-	salt = h.split('|')[1]
-	return h == make_password_hash(email, password, salt)
-
-def user_input_error(post_details):
-	for (attribute, value) in post_details.items():
-		user_error = input_error(attribute, value)
-		if user_error:
-			return user_error
-
-	if 'confirm_email' in post_details:
-		if post_details['email'] != post_details['confirm_email']:
-			return "Emails don't match"
-
-	return None
-
-
-def input_error(target_attribute, user_input):
-	
-	validation_attributes = ['first_name',
-							 'last_name', 
-							 'password',
-							 'email']
-
-
-	if target_attribute not in validation_attributes:
-		return None
-	
-	error_key = target_attribute + '_error' 
-		
-	if d_RE[target_attribute].match(user_input):
-		return None
-
-	else:
-		return d_RE[error_key]
-
-d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
-		'first_name_error': 'invalid first name syntax',
-		
-		'last_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
-		'last_name_error': 'invalid last name syntax',
-
-		'password': re.compile(r"^.{3,20}$"),
-		'password_error': 'invalid password syntax',
-		
-		'email': re.compile(r'^[\S]+@[\S]+\.[\S]+$'),
-		'email_error': 'invalid email syntax'}
-
-
-
-
 #-- Production Handlers
 class Handler(webapp2.RequestHandler):
 	def write(self, *a, **kw):
@@ -166,32 +93,40 @@ class Handler(webapp2.RequestHandler):
 		self.active_log = self.theory and self.get_active_log()
 
 
-	def get_active_log(self):
+	def get_active_log(self):#xx
 		theory = self.theory
 		
+		
+		if 'minimum_daily_effort' not in theory.kpts_goals: #Apendice - TBD despues de que se actualice mi cuenta.
+			theory.kpts_goals['minimum_daily_effort'] = theory.kpts_goals_parameters['minimum_daily_effort']
+			theory.put()
+
+		minimum_daily_effort = theory.kpts_goals['minimum_daily_effort']
+
 		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 
-		active_date = (datetime.today()-timedelta(hours=user_start_hour)).toordinal() # CC aqui puedo hacer creer al programa que es otro dia
+		active_date = (datetime.today()-timedelta(hours=user_start_hour)).toordinal()# TT Time Travel aqui puedo hacer creer al programa que es otro dia
 		last_DailyLog = theory.last_DailyLog
 		user_key = theory.key		
 
 		if last_DailyLog == active_date: 
-			active_log = DailyLog.query(DailyLog.theory == user_key ).filter(DailyLog.user_date == active_date).fetch()
+			active_log = DailyLog.query(DailyLog.theory == user_key).filter(DailyLog.user_date == active_date).fetch()
 			active_log = active_log[0]
 
 		else:
-			last_log = DailyLog.query(DailyLog.theory == user_key ).filter(DailyLog.user_date == last_DailyLog).fetch()
+			last_log = DailyLog.query(DailyLog.theory == user_key).filter(DailyLog.user_date == last_DailyLog).fetch()
 			last_log = last_log[0]
 			if last_log.user_date == (active_date - 1):
-				last_log = self.fix_last_log(last_log, active_date)
+				last_log = self.fix_last_log(last_log, active_date, minimum_daily_effort)
 			active_log = self.fill_log_gaps(theory, last_log, active_date)
 
 		return active_log
 
 
-	def fill_log_gaps(self, theory, last_log, active_date):
+	def fill_log_gaps(self, theory, last_log, active_date): #xx
 
+		minimum_daily_effort = theory.kpts_goals['minimum_daily_effort']
 		kpts_weekly_goals = theory.kpts_goals['kpts_weekly_goals']
 
 		latest_log = last_log
@@ -199,7 +134,7 @@ class Handler(webapp2.RequestHandler):
 
 		while latest_log_date < active_date:
 			print latest_log.user_date_date, latest_log.user_date, latest_log.EffortReserve, latest_log.Streak, latest_log.streak_start_date
-			latest_log = self.fill_one_log_gap(theory, latest_log, active_date, kpts_weekly_goals)
+			latest_log = self.fill_one_log_gap(theory, latest_log, active_date, kpts_weekly_goals, minimum_daily_effort)
 			latest_log_date = latest_log.user_date
 
 		print latest_log.user_date_date, latest_log.user_date, latest_log.EffortReserve, latest_log.Streak, latest_log.streak_start_date
@@ -208,28 +143,31 @@ class Handler(webapp2.RequestHandler):
 		return latest_log
 
 
-	def fix_last_log(self, last_log, active_date):
+	def fix_last_log(self, last_log, active_date, minimum_daily_effort):
 
 		EffortReserve = last_log.EffortReserve
-		PointsToGoal = last_log.PointsToGoal
+		# PointsToGoal = last_log.PointsToGoal #Se vuelve irrelevante 
 
 		if not last_log.goal_achieved:
-			if EffortReserve - PointsToGoal >= 0:
+			if EffortReserve - minimum_daily_effort >= 0:
 				last_log.goal_achieved = True
 				last_log.Streak = last_log.Streak + 1
-				last_log.EffortReserve = EffortReserve - PointsToGoal
-				last_log.PointsToGoal = 0 
+				last_log.EffortReserve = EffortReserve - minimum_daily_effort
+				# last_log.PointsToGoal = 0 #Se vuelve irrelevante 
 
 			else:
 				last_log.streak_start_date = active_date - 1
 				last_log.Streak = 0
 				last_log.EffortReserve = 0
-				last_log.PointsToGoal = last_log.PointsToGoal - last_log.EffortReserve	
+				# last_log.PointsToGoal = last_log.PointsToGoal - last_log.EffortReserve	
 			last_log.put()
 		return last_log		
 
 
-	def fill_one_log_gap(self, theory, last_log, active_date, kpts_weekly_goals):
+	def fill_one_log_gap(self, theory, last_log, active_date, kpts_weekly_goals, minimum_daily_effort): #xx Creo que ya no necesito kpts_weekly_goals
+
+		old_EffortReserve = last_log.EffortReserve
+		old_PointsToGoal = last_log.PointsToGoal
 
 		user_date = last_log.user_date + 1
 		user_date_date = datetime.fromordinal(user_date)
@@ -237,24 +175,32 @@ class Handler(webapp2.RequestHandler):
 		active_weekday = (user_date_date).weekday()
 		Goal = int(kpts_weekly_goals[active_weekday])
 
-		old_EffortReserve = last_log.EffortReserve
-		old_PointsToGoal = last_log.PointsToGoal
+		if (Goal + old_EffortReserve) < minimum_daily_effort:
+			Goal = minimum_daily_effort - old_EffortReserve
 
-		if old_EffortReserve - Goal >= 0:
+		if user_date == active_date:
+			if Goal == 0:
+				goal_achieved = True	
+				streak_start_date = last_log.streak_start_date
+				Streak = last_log.Streak + 1
+				EffortReserve = old_EffortReserve - minimum_daily_effort
+
+			else:			
+				goal_achieved = False
+				streak_start_date = last_log.streak_start_date
+
+				Streak = last_log.Streak
+				EffortReserve = old_EffortReserve
+
+			PointsToGoal = Goal
+
+		elif old_EffortReserve - minimum_daily_effort >= 0:
 			goal_achieved = True
 			streak_start_date = last_log.streak_start_date
 
 			Streak = last_log.Streak + 1
-			EffortReserve = old_EffortReserve - Goal
-			PointsToGoal = 0 
-
-		elif user_date == active_date:
-			goal_achieved = False
-			streak_start_date = last_log.streak_start_date
-
-			Streak = last_log.Streak
-			EffortReserve = old_EffortReserve 
-			PointsToGoal = Goal
+			EffortReserve = old_EffortReserve - minimum_daily_effort
+			PointsToGoal = Goal 
 
 		else:
 			goal_achieved = False
@@ -386,7 +332,7 @@ class SignUpLogIn(Handler):
 				theory.last_DailyLog = active_date
 				theory.put()
 
-				#Loads OS Ksus xx
+				#Loads OS Ksus
 				for post_details in os_ksus:
 					ksu = KSU(theory=theory.key)
 					ksu = prepareInputForSaving(ksu, post_details)
@@ -805,31 +751,27 @@ class EventHandler(Handler):
 		return
 
 
-	def update_active_log(self, event):
+	def update_active_log(self, event): #xx
 		active_log = self.active_log
+		minimum_daily_effort = self.theory.kpts_goals['minimum_daily_effort']
 
-		PointsToGoal = active_log.PointsToGoal
-		
 		if event.kpts_type == 'SmartEffort':
 			active_log.SmartEffort += event.score
-			PointsToGoal -= event.score
+			active_log.PointsToGoal -= event.score
+			active_log.EffortReserve += event.score
 
 		if event.kpts_type == 'Stupidity':
 			active_log.Stupidity += event.score
-			PointsToGoal += event.score
+			active_log.PointsToGoal += event.score
+			active_log.EffortReserve -= event.score
 
-		if not active_log.goal_achieved:
+		if not active_log.goal_achieved and active_log.PointsToGoal <= 0:
+			active_log.goal_achieved = True
+			active_log.Streak += 1
+			active_log.EffortReserve -= minimum_daily_effort 
 
-			if PointsToGoal <= 0:
-				active_log.goal_achieved = True
-				active_log.Streak += 1
-				active_log.EffortReserve -= PointsToGoal
-				active_log.PointsToGoal = 0
-			else:
-				active_log.PointsToGoal = PointsToGoal
-
-		else:
-			active_log.EffortReserve -= PointsToGoal
+		if active_log.PointsToGoal < 0:
+			active_log.PointsToGoal = 0
 
 		active_log.put()
 		
@@ -1029,6 +971,7 @@ def calculate_user_kpts_goals(kpts_goals_parameters):
 		kpts_weekly_goals.append(math.ceil(e * typical_day_minimum_effort))
 
 	user_kpts_goals = {
+		'minimum_daily_effort':minimum_daily_effort,
 		'typical_day_minimum_effort': math.ceil(typical_day_minimum_effort),
 		'kpts_weekly_goals': kpts_weekly_goals,
 		'active_days': math.ceil(active_days)
@@ -1252,6 +1195,74 @@ def prepareInputForSaving(ksu, post_details):
 		ksu.next_event = datetime.today() - timedelta(days=1)
 
 	return ksu
+
+
+#--- Validation and security functions ----------
+secret = 'elzecreto'
+
+def make_secure_val(val):
+    return '%s|%s' % (val, hashlib.sha256(secret + val).hexdigest())
+
+def check_secure_val(secure_val):
+	val = secure_val.split('|')[0]
+	if secure_val == make_secure_val(val):
+		return val
+
+def make_salt(lenght = 5):
+    return ''.join(random.choice(string.letters) for x in range(lenght))
+
+def make_password_hash(email, password, salt = None):
+	if not salt:
+		salt = make_salt()
+	h = hashlib.sha256(email + password + salt).hexdigest()
+	return '%s|%s' % (h, salt)
+
+def validate_password(email, password, h):
+	salt = h.split('|')[1]
+	return h == make_password_hash(email, password, salt)
+
+def user_input_error(post_details):
+	for (attribute, value) in post_details.items():
+		user_error = input_error(attribute, value)
+		if user_error:
+			return user_error
+
+	if 'confirm_email' in post_details:
+		if post_details['email'] != post_details['confirm_email']:
+			return "Emails don't match"
+
+	return None
+
+def input_error(target_attribute, user_input):
+	
+	validation_attributes = ['first_name',
+							 'last_name', 
+							 'password',
+							 'email']
+
+
+	if target_attribute not in validation_attributes:
+		return None
+	
+	error_key = target_attribute + '_error' 
+		
+	if d_RE[target_attribute].match(user_input):
+		return None
+
+	else:
+		return d_RE[error_key]
+
+d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
+		'first_name_error': 'invalid first name syntax',
+		
+		'last_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
+		'last_name_error': 'invalid last name syntax',
+
+		'password': re.compile(r"^.{3,20}$"),
+		'password_error': 'invalid password syntax',
+		
+		'email': re.compile(r'^[\S]+@[\S]+\.[\S]+$'),
+		'email_error': 'invalid email syntax'}
 
 
 
