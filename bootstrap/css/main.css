@@ -180,6 +180,24 @@ li a:hover:not(.active) {
 
 
 
+
+
+/* Helps with the auto resize of text areas */
+textarea{  
+  display:block;
+  box-sizing: padding-box;
+  /*overflow:hidden;*/
+  height: auto;
+
+/*  padding:10px;
+  width:250px;
+  font-size:14px;
+  margin:50px auto;
+  border-radius:8px;
+  border:6px solid #556677;*/
+}
+
+
 /*--- Base Formats----------------------------*/
 
 /*.container{

@@ -550,6 +550,12 @@ class MissionViewer(Handler):
 		return
 
 	def generate_todays_mission(self, time_frame):
+
+		def determine_rows(ksu_description):
+			if not ksu_description:
+				return 0
+			return int(math.ceil((len(ksu_description)/60.0)))
+
 		user_key = self.theory.key
 		ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True).order(KSU.next_event).order(KSU.best_time).fetch()
 
@@ -575,9 +581,11 @@ class MissionViewer(Handler):
 		for ksu in ksu_set:
 			ksu_subtype = ksu.ksu_subtype
 			next_event = ksu.next_event
+			ksu.description_rows = determine_rows(ksu.description)
+			ksu.secondary_description_rows = determine_rows(ksu.secondary_description)
 
 			if ksu_subtype in mission_sets:
-				
+
 				if not next_event:
 					someday_maybe.append(ksu)
 				elif today < next_event:

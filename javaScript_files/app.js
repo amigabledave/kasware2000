@@ -195,7 +195,7 @@ $('.UserActionButton').on('click', function(){
 	var event_comments = ksu.find('#event_comments').val()
 
 	var dissapear_before_done = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete', 'ViewerDelete','GraveyardDelete', 'GraveyardReanimate', 'MissionRecordValue']
-	
+
 	if ($.inArray(user_action, dissapear_before_done)!= -1){
 		ksu.animate({
 			"opacity" : "0",
@@ -368,6 +368,21 @@ for(x = 0; x < allRadios.length; x++){
 }
 
 
+// Hace que se resize las cajas de texto con autoexpand
+$(document)
+    .one('focus.textarea', '.autoExpand', function(){
+        var savedValue = this.value;
+        this.value = '';
+        this.baseScrollHeight = this.scrollHeight;
+        this.value = savedValue;
+    })
+    .on('input.textarea', '.autoExpand', function(){
+        var minRows = this.getAttribute('data-min-rows')|0,
+            rows;
+        this.rows = minRows;
+        rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 16);
+        this.rows = minRows + rows;
+    });
 
 
 // function al_cargar(){

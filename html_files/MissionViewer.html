@@ -25,7 +25,7 @@
 					{% if ksu.ksu_subtype in ['EVPo', 'ImPe'] %}
 						<textarea style="width:100%; height:20px; border:0;" class="QuickAttributeUpdate" name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>
 					{% else %}	
-						<textarea style="width:100%; height:20px; border:0;" class="QuickAttributeUpdate" name="description" id="description">{{ksu.description}}</textarea>
+						<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
 					{% endif %}
 					</div>
 				</div>
@@ -135,12 +135,12 @@
 					{% if ksu.ksu_subtype == 'OpenPerception' %}
 						<div class="col-xs-12">
 							<label>{{ksu.secondary_description}}</label>
-							<textarea style="width:100%;" class="form-control" name="event_comments" id="event_comments" placeholder="Your answer goes here"></textarea><span style="color:blue;">{% if ksu.best_time %}{{ksu.pretty_best_time}}{% endif %}</span>
+							<textarea style="width:100%;" class="form-control" name="event_comments" id="event_comments" rows="1" placeholder="Your answer goes here"></textarea><span style="color:blue;">{% if ksu.best_time %}{{ksu.pretty_best_time}}{% endif %}</span>
 						</div>
 
 					{% else %}
 						<div class="col-xs-8">
-							<textarea style="width:100%; border:0;" class="QuickAttributeUpdate" name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea><span style="color:blue;">{% if ksu.best_time %}{{ksu.pretty_best_time}}{% endif %}</span>
+							<textarea style="width:100%; border:0; font-weight:bold;" class="QuickAttributeUpdate" name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea><span style="color:blue;">{% if ksu.best_time %}{{ksu.pretty_best_time}}{% endif %}</span>
 						</div>
 
 						<div class="col-xs-4">
