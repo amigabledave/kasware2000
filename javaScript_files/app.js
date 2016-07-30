@@ -59,7 +59,6 @@ $('#ksu_type').on('change',function(){
 
 	if (this.value == 'KeyA'){
 		$('#KeyA').removeClass('hidden');
-		console.log('Una key action')
 		if ($('#ksu_id').val() == ''){
 			$('#KAS1or2').prop("checked", true);
 			$('#KeyA_KAS1or2').removeClass('hidden');
@@ -187,7 +186,10 @@ $('#repeats').on('change',function(){
 	}
 });
 
-$('.UserActionButton').on('click', function(){
+
+$(document).on('click', '.UserActionButton', function(){
+// $('.UserActionButton').on('click', function(){
+	console.log('Si esta detectando que se aprieta el boton');
 	var ksu = $(this).closest('#MissionKSU');
 	var ksu_id = ksu.attr("value");
 	var user_action = $(this).attr("value");
@@ -335,7 +337,15 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#kpts_value').val(0.25);
 
 		var new_ksu = $('#NewKSUTemplate').clone();
+		new_ksu.attr("id", "MissionKSU");
+		new_ksu.attr("value",data['ksu_id']);
+		new_ksu.find('#ksu_id').attr("value",data['ksu_id']);
+
 		new_ksu.find('#description').val(description);
+		new_ksu.find('#kpts_value').val(kpts_value);
+		new_ksu.find('#KsuKpts').text(kpts_value);
+		new_ksu.find('#pretty_best_time').text(best_time);
+
 		new_ksu.removeClass('hidden');
 		new_ksu.prependTo('#NewKSUsHolder');
 		new_ksu.fadeIn("slow");
@@ -345,8 +355,8 @@ $('.SaveNewKSUButton').on('click', function(){
 });
 
 
-
-$('.ShowDetailViewerButton').on('click', function(){
+$(document).on('click', '.ShowDetailViewerButton', function(){
+// $('.ShowDetailViewerButton').on('click', function(){
 	var ksu = $(this).closest('#MissionKSU');
 	
 	var ScoreDetail = ksu.find('#ScoreDetail');
