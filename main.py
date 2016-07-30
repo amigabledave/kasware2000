@@ -560,7 +560,7 @@ class MissionViewer(Handler):
 		print
 		user_key = self.theory.key
 
-		ksu_set, mission_value, todays_questions, reactive_mission = self.generate_todays_mission(time_frame)
+		ksu_set, mission_value, todays_questions, reactive_mission, today = self.generate_todays_mission(time_frame)
 
 		self.print_html('MissionViewer.html', 
 						ksu_set=ksu_set, 
@@ -568,7 +568,8 @@ class MissionViewer(Handler):
 						mission_value=mission_value, 
 						todays_questions=todays_questions,
 						reactive_mission=reactive_mission, 
-						constants=constants)
+						constants=constants,
+						today=today)
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -645,7 +646,7 @@ class MissionViewer(Handler):
 		else:
 			mission = someday_maybe
 		
-		return mission, mission_value, todays_questions, reactive_mission
+		return mission, mission_value, todays_questions, reactive_mission, today
 
 
 class EventHandler(Handler):
