@@ -46,7 +46,7 @@ def CreateOrEditKSU_request_handler(funcion):
 			self.redirect('/KsuEditor?ksu_id='+ksu_id+'&return_to='+return_to)
 			return
 
-		elif user_action == 'SearchTheory': #xx
+		elif user_action == 'SearchTheory': 
 			lookup_string = remplaza_acentos(self.request.get('lookup_string'))
 			# lookup_string = self.request.get('lookup_string').encode('utf-8')
 			self.redirect('/SetViewer?set_name=TheoryQuery&lookup_string='+lookup_string)
@@ -527,7 +527,7 @@ class SetViewer(Handler):
 		return
 
 
-	def search_theory(self, user_theory, lookup_string): #xx
+	def search_theory(self, user_theory, lookup_string):
 		# -*- coding: utf-8 -*-
 		lookup_words =	lookup_string.split(' ')
 		main_result = []
@@ -657,8 +657,29 @@ class EventHandler(Handler):
 		event_details = json.loads(self.request.body)
 		day_start_time = self.theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-
 		user_action = event_details['user_action']
+
+		if user_action == 'SaveNewKSU':#xx
+			print
+			print 'Si llego el AJAX Request. User action: ' + user_action + '. Event details: ' +  str(event_details)
+			print
+			
+			ksu = KSU(theory=self.theory.key)
+			event_details['is_active'] = True
+			if not event_details['best_time']:
+				del event_details['best_time']
+			ksu = prepareInputForSaving(ksu, event_details)
+			ksu.put()
+
+			self.response.out.write(json.dumps({
+				'mensaje':'KSU creado y guardado desde el viewer!',
+				'ksu_id': ksu.key.id(),
+				'description': ksu.description,
+				# 'next_event': ksu.next_event,
+				'kpts_value':ksu.kpts_value
+				}))
+			return
+
 		ksu = KSU.get_by_id(int(event_details['ksu_id']))
 		ksu_subtype = ksu.ksu_subtype
 
@@ -814,6 +835,10 @@ class EventHandler(Handler):
 
 		ksu.put()	
 		return updated_value
+
+
+	def create_new_ksu_from_viewer(self):
+		return
 
 
 class EventViewer(Handler):
@@ -1122,7 +1147,7 @@ def update_next_event(self, user_action, post_details, ksu):
 				return result
 
 
-			active_position = datetime.today().weekday()#xx
+			active_position = datetime.today().weekday()
 			repeats_on_list = reorginize_list(l_repeats_on, active_position)
 			i = 1
 			for weekday in repeats_on_list:
@@ -1229,7 +1254,7 @@ def update_next_event(self, user_action, post_details, ksu):
 
 	return		
 
-def prepareInputForSaving(ksu, post_details):
+def prepareInputForSaving(ksu, post_details): #xx
 
 	def determine_ksu_subtype(ksu, post_details):
 
@@ -1309,11 +1334,11 @@ def prepareInputForSaving(ksu, post_details):
 		ksu.secondary_description = 'Contact ' + ksu.description
 
 	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe','EVPo', 'RealitySnapshot', 'OpenPerception', 'FibonacciPerception', 'BinaryPerception'] and not ksu.next_event:
-		ksu.next_event = datetime.today() - timedelta(days=1) #xx
+		ksu.next_event = datetime.today() - timedelta(days=1)
 
 	return ksu
 
-def remplaza_acentos(palabra):#xx
+def remplaza_acentos(palabra):
 	# -*- coding: utf-8 -*-
 	letras_a_remplazar =[
 		['Á','A'],

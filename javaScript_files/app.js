@@ -292,6 +292,60 @@ $('.UserActionButton').on('click', function(){
 });
 
 
+$('.SaveNewKSUButton').on('click', function(){
+	var ksu = $(this).closest('#NewKSU');
+	var ksu_type = ksu.attr("ksutype");
+	var ksu_subtype = ksu.attr("ksusubtype");
+
+	var description = ksu.find('#description').val();
+	var next_event = ksu.find('#next_event').val();
+	var best_time = ksu.find('#best_time').val();
+	var kpts_value = ksu.find('#kpts_value option:selected').val();
+
+
+	ksu.fadeOut("slow")
+
+	// ksu.animate({
+	// 	"opacity" : "0",
+	// 	},{
+	// 		"complete" : function() {
+	// 		ksu.remove();
+	// 		}
+	// 	});
+
+	$.ajax({
+		type: "POST",
+		url: "/EventHandler",
+		dataType: 'json',
+		data: JSON.stringify({
+			'user_action': 'SaveNewKSU',
+			'ksu_type': ksu_type,
+			'ksu_subtype': ksu_subtype,
+			
+			'description':description,
+			'next_event':next_event,
+			'best_time':best_time,
+			'kpts_value': kpts_value
+		})
+	})
+	.done(function(data){
+		console.log(data);
+		ksu.find('#description').val('');
+		ksu.find('#best_time').val('');
+		ksu.find('#kpts_value').val(0.25);
+
+		var new_ksu = $('#NewKSUTemplate').clone();
+		new_ksu.find('#description').val(description);
+		new_ksu.removeClass('hidden');
+		new_ksu.prependTo('#NewKSUsHolder');
+		new_ksu.fadeIn("slow");
+
+		ksu.fadeIn("slow");		
+	});
+});
+
+
+
 $('.ShowDetailViewerButton').on('click', function(){
 	var ksu = $(this).closest('#MissionKSU');
 	
