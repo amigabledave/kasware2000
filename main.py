@@ -1,4 +1,5 @@
 #KASware V2.0.0 | Copyright 2016 Kasware Inc.
+# -*- coding: utf-8 -*-
 import webapp2, jinja2, os, re, random, string, hashlib, json, logging, math 
 
 from datetime import datetime, timedelta, time
@@ -45,8 +46,9 @@ def CreateOrEditKSU_request_handler(funcion):
 			self.redirect('/KsuEditor?ksu_id='+ksu_id+'&return_to='+return_to)
 			return
 
-		elif user_action == 'SearchTheory':
+		elif user_action == 'SearchTheory': #xx
 			lookup_string = remplaza_acentos(self.request.get('lookup_string'))
+			# lookup_string = self.request.get('lookup_string').encode('utf-8')
 			self.redirect('/SetViewer?set_name=TheoryQuery&lookup_string='+lookup_string)
 
 		else:
@@ -526,6 +528,7 @@ class SetViewer(Handler):
 
 
 	def search_theory(self, user_theory, lookup_string): #xx
+		# -*- coding: utf-8 -*-
 		lookup_words =	lookup_string.split(' ')
 		main_result = []
 		secondary_result = []
@@ -534,7 +537,8 @@ class SetViewer(Handler):
 				ksu.description=''
 			if not ksu.secondary_description:
 				ksu.secondary_description=''
-
+			
+			# ksu_description = ksu.description.lower() + ' ' + ksu.secondary_description.lower()
 			ksu_description = remplaza_acentos(ksu.description).lower() + ' ' + remplaza_acentos(ksu.secondary_description).lower()
 			if ksu_description.find(lookup_string) != -1:
 				main_result.append(ksu)
