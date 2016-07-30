@@ -584,7 +584,7 @@ class MissionViewer(Handler):
 			return int(math.ceil((len(ksu_description)/60.0)))
 
 		user_key = self.theory.key
-		ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True).order(KSU.next_event).order(KSU.best_time).fetch()
+		ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True).order(KSU.best_time).order(KSU.next_event).fetch()
 
 		day_start_time = self.theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
@@ -1121,7 +1121,8 @@ def update_next_event(self, user_action, post_details, ksu):
 					result.append(l[active_position]) 
 				return result
 
-			active_position = datetime.today().weekday()
+
+			active_position = datetime.today().weekday()#xx
 			repeats_on_list = reorginize_list(l_repeats_on, active_position)
 			i = 1
 			for weekday in repeats_on_list:
@@ -1146,7 +1147,7 @@ def update_next_event(self, user_action, post_details, ksu):
 			result = find_next_weekly_repetition(repeats_on)
 
 		return result
-	# today = datetime.today() + timedelta(days=20)
+	
 
 	day_start_time = self.theory.day_start_time
 	user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
@@ -1308,7 +1309,7 @@ def prepareInputForSaving(ksu, post_details):
 		ksu.secondary_description = 'Contact ' + ksu.description
 
 	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe','EVPo', 'RealitySnapshot', 'OpenPerception', 'FibonacciPerception', 'BinaryPerception'] and not ksu.next_event:
-		ksu.next_event = datetime.today() - timedelta(days=1)
+		ksu.next_event = datetime.today() - timedelta(days=1) #xx
 
 	return ksu
 

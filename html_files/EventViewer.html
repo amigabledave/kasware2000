@@ -34,7 +34,7 @@
 				</div>
 
 				<div class="row">
-					<div class="col-xs-12">{% if event.ksu_subtype in ['ImPe', 'EVPo'] %}{{event.ksu_secondary_description}}{% else %}{{event.ksu_description}}{% endif %}{% if event.comments %}<br><em>{{ event.comments }}</em>{% endif %}</div>
+					<div class="col-xs-12"><b>{% if event.ksu_subtype in ['ImPe', 'EVPo'] %}{{event.ksu_secondary_description}}{% else %}{{event.ksu_description}}{% endif %}</b>{% if event.comments %}<br><em>{{ event.comments }}</em>{% endif %}</div>
 				</div>
 
 			</div>
