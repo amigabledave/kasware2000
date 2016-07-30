@@ -46,7 +46,7 @@ def CreateOrEditKSU_request_handler(funcion):
 			return
 
 		elif user_action == 'SearchTheory':
-			lookup_string = self.request.get('lookup_string')
+			lookup_string = remplaza_acentos(self.request.get('lookup_string'))
 			self.redirect('/SetViewer?set_name=TheoryQuery&lookup_string='+lookup_string)
 
 		else:
@@ -93,9 +93,8 @@ class Handler(webapp2.RequestHandler):
 		self.active_log = self.theory and self.get_active_log()
 
 
-	def get_active_log(self):#xx
+	def get_active_log(self):
 		theory = self.theory
-		
 		
 		if 'minimum_daily_effort' not in theory.kpts_goals: #Apendice - TBD despues de que se actualice mi cuenta.
 			theory.kpts_goals['minimum_daily_effort'] = theory.kpts_goals_parameters['minimum_daily_effort']
@@ -124,7 +123,7 @@ class Handler(webapp2.RequestHandler):
 		return active_log
 
 
-	def fill_log_gaps(self, theory, last_log, active_date): #xx
+	def fill_log_gaps(self, theory, last_log, active_date):
 
 		minimum_daily_effort = theory.kpts_goals['minimum_daily_effort']
 		kpts_weekly_goals = theory.kpts_goals['kpts_weekly_goals']
@@ -164,7 +163,7 @@ class Handler(webapp2.RequestHandler):
 		return last_log		
 
 
-	def fill_one_log_gap(self, theory, last_log, active_date, kpts_weekly_goals, minimum_daily_effort): #xx Creo que ya no necesito kpts_weekly_goals
+	def fill_one_log_gap(self, theory, last_log, active_date, kpts_weekly_goals, minimum_daily_effort): #Creo que ya no necesito kpts_weekly_goals
 
 		old_EffortReserve = last_log.EffortReserve
 		old_PointsToGoal = last_log.PointsToGoal
@@ -526,13 +525,17 @@ class SetViewer(Handler):
 		return
 
 
-	def search_theory(self, user_theory, lookup_string):
-		lookup_string = lookup_string.lower()
+	def search_theory(self, user_theory, lookup_string): #xx
 		lookup_words =	lookup_string.split(' ')
 		main_result = []
 		secondary_result = []
 		for ksu in user_theory:
-			ksu_description = str(ksu.description).lower() + ' ' + str(ksu.secondary_description).lower()
+			if not ksu.description:
+				ksu.description=''
+			if not ksu.secondary_description:
+				ksu.secondary_description=''
+
+			ksu_description = remplaza_acentos(ksu.description).lower() + ' ' + remplaza_acentos(ksu.secondary_description).lower()
 			if ksu_description.find(lookup_string) != -1:
 				main_result.append(ksu)
 			else:
@@ -751,7 +754,7 @@ class EventHandler(Handler):
 		return
 
 
-	def update_active_log(self, event): #xx
+	def update_active_log(self, event):
 		active_log = self.active_log
 		minimum_daily_effort = self.theory.kpts_goals['minimum_daily_effort']
 
@@ -861,30 +864,138 @@ class PopulateRandomTheory(Handler):
 
 	def populateRandomTheory(self):
 
-		theory = self.theory
+		post_details = {'user_action':'Random_SignUp'}
+		user_action = 'Random_SignUp'
+
+		if user_action == 'Random_SignUp':
+			post_details.update(randomUser.createRandomUser()) ## Creates a random user for testing purposes
+		
+		if user_action == 'SignUp' or user_action == 'Random_SignUp':
+			input_error = user_input_error(post_details)
+			theory = Theory.get_by_email(post_details['email'])	
+			
+			if input_error:
+				self.print_html('SignUpLogIn.html', post_details=post_details, input_error=input_error)
+			
+			elif theory:
+				self.print_html('SignUpLogIn.html', post_details=post_details, input_error = 'That email is already register to another user!')
+
+			else:
+				password_hash = make_password_hash(post_details['email'], post_details['password'])
+				
+				kpts_goals_parameters = {
+						'typical_week_effort_distribution':[1, 1, 1, 1, 1, 0.5, 0],
+						'yearly_vacations_day': 12,
+						'yearly_shit_happens_days': 6,
+						'minimum_daily_effort':20}
+
+				categories = {
+					'Global':[
+						'Unassigned',
+						'0. End Value',
+						'1. Inner Peace & Consciousness',
+						'2. Fun & Exciting Situations', 	
+						'3. Meaning & Direction',
+						'4. Health & Vitality', 
+						'5. Love & Friendship', 
+						'6. Knowledge & Skills', 
+						'7. Outer Order & Peace', 
+						'8. Stuff',
+						'9. Money & Power'],
+					'Gene': ['Unassigned'],
+					'KeyA': ['Unassigned'],
+					'Obje': ['Unassigned'],
+					'Wish': [	
+						'Unassigned',	
+						'01. Being',
+						'02. Having',
+						'03. Doing',
+						'04. Geting done',
+						'05. TV Show',
+						'06. Movie',
+						'07. Tesis',
+						'08. Novel',
+						'09. Video Game',
+						'10. Board Game',
+						'11. City'],	
+					'Prin': ['Unassigned'],
+					'EVPo': ['Unassigned'],
+					'ImPe': ['Unassigned'],
+					'RTBG': ['Unassigned'],
+					'Idea': ['Unassigned'],
+					'NoAR': ['Unassigned'],
+					'MoRe': ['Unassigned'],
+					'ImIn': ['Unassigned']}
+
+				theory = Theory(
+					email=post_details['email'], 
+					password_hash=password_hash, 
+					first_name=post_details['first_name'], 
+					last_name=post_details['last_name'],
+					day_start_time=datetime.strptime('06:00', '%H:%M').time(),
+					kpts_goals_parameters=kpts_goals_parameters,
+					kpts_goals=calculate_user_kpts_goals(kpts_goals_parameters),
+					categories=categories,
+					last_DailyLog = datetime.today().toordinal())
+
+				theory.put()
+
+				#creates the first DailyLog entry
+				day_start_time = theory.day_start_time
+				user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
+				active_date = (datetime.today()-timedelta(hours=user_start_hour)).toordinal() 
+				active_date_date = datetime.fromordinal(active_date)
+				active_weekday = (datetime.today()-timedelta(hours=user_start_hour)).weekday()
+				goal = int(theory.kpts_goals['kpts_weekly_goals'][active_weekday])
+				
+				
+				active_log = DailyLog(
+					theory = theory.key,
+					
+					user_date_date = active_date_date,
+					user_date = active_date,
+					streak_start_date = active_date,
+					
+					Goal = goal,
+					PointsToGoal=goal)
+				active_log.put()
+
+				theory.last_DailyLog = active_date
+				theory.put()
+
+				#Loads OS Ksus
+				for post_details in os_ksus:
+					ksu = KSU(theory=theory.key)
+					ksu = prepareInputForSaving(ksu, post_details)
+					ksu.put()
+
+				self.login(theory)
+				# self.redirect('/MissionViewer?time_frame=Today')
+
+
 		theory_key = theory.key
 		username = theory.first_name + ' ' + theory.last_name
 
-		day_start_time = self.theory.day_start_time
+		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 		
 		today =(datetime.today()-timedelta(hours=user_start_hour))
 
 		theory_parameters = [
-			[10,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_value':0.25}],
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4', 'kpts_value':5}],
-			[2, {'ksu_type':'Obje', 'ksu_subtype':'Obje'}],
+			[3,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
+			[2, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
+			[2, {'ksu_type':'KeyA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
+			[2, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_value':0.25}],
+			[2, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4', 'kpts_value':5}],
+			[1, {'ksu_type':'Obje', 'ksu_subtype':'Obje'}],
 			[1, {'ksu_type':'Obje', 'ksu_subtype':'BigO'}],
-			[3, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
-			[3, {'ksu_type':'Wish', 'ksu_subtype':'Dream'}],
-			[3, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_event':today, 'kpts_value':1, 'frequency':7}],
-			[3, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_event':today, 'kpts_value':0.25, 'frequency':30}],
-			[3, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
-			[5, {'ksu_type':'Idea', 'ksu_subtype':'Principle'}],
-			[3, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
-			[2, {'ksu_type':'ImIn', 'ksu_subtype':'OpenPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[2, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
+			[2, {'ksu_type':'Wish', 'ksu_subtype':'Dream'}],
+			[2, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_event':today, 'kpts_value':1, 'frequency':7}],
+			[2, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_event':today, 'kpts_value':0.25, 'frequency':30}],
+			[2, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
+			[3, {'ksu_type':'Idea', 'ksu_subtype':'Principle'}],
+			[2, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
+			[1, {'ksu_type':'ImIn', 'ksu_subtype':'OpenPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[1, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[1, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[1, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}]
@@ -898,8 +1009,8 @@ class PopulateRandomTheory(Handler):
 
 			for i in range(1, set_size + 1):
 
-				description =  ksu_subtype + ' no. ' + str(i) + ' of ' + username
-				secondary_description = 'Secondary description of ' + ksu_subtype + ' no. ' + str(i)
+				description =  str(ksu_subtype + ' no. ' + str(i) + ' of ' + username).encode('utf-8')
+				secondary_description = str('Secondary description of ' + ksu_subtype + ' no. ' + str(i)).encode('utf-8')
 				new_ksu = KSU(
 					theory=theory_key,
 					description=description,
@@ -1196,6 +1307,27 @@ def prepareInputForSaving(ksu, post_details):
 
 	return ksu
 
+def remplaza_acentos(palabra):#xx
+	# -*- coding: utf-8 -*-
+	letras_a_remplazar =[
+		['Á','A'],
+		['á','a'],
+		['É','E'],
+		['é','e'],
+		['Í','I'],
+		['í','i'],
+		['Ó','O'],
+		['ó','o'],
+		['Ú','U'],
+		['ú','u'],
+		['Ñ','N'],
+		['ñ','n'],
+	]
+
+	for letra in letras_a_remplazar:
+		palabra = palabra.replace(letra[0].decode('utf-8'),letra[1])
+
+	return palabra
 
 #--- Validation and security functions ----------
 secret = 'elzecreto'
