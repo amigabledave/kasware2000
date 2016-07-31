@@ -59,7 +59,7 @@
 			<div class="col-xs-10">
 				<div class="row">
 					<div class="col-xs-12">
-						<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="2" data-min-rows='2' name="description" id="description"></textarea>
+						<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description"></textarea>
 					</div>
 				</div>
 
@@ -358,7 +358,7 @@
 
 						<div class="col-xs-2" style="padding-left:0; padding-right:5px;">
 
-						<span style="color:{% if ksu.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'ImPe', 'EVPo'] %}green{% elif ksu.ksu_subtype == 'KAS4' %}red{% else %}black{% endif %};" id="KsuKpts"> {% if ksu.kpts_value %}{{ksu.kpts_value}}{% else %}0{% endif %}</span><span> Kpts.</span>
+						<span style="color:{% if ksu.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'ImPe', 'EVPo'] %}#32CD32{% elif ksu.ksu_subtype == 'KAS4' %}red{% else %}black{% endif %};" id="KsuKpts"> {% if ksu.kpts_value %}{{ksu.kpts_value}}{% else %}0{% endif %}</span><span style="color:{% if ksu.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'ImPe', 'EVPo'] %}#32CD32{% elif ksu.ksu_subtype == 'KAS4' %}red{% else %}black{% endif %};"> Kpts.</span>
 						</div>
 					</div>
 				</div>
