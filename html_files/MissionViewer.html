@@ -8,7 +8,7 @@
 	</div>
 </div>
 
-<div class="row KSUdisplaySection" id="NewKSU" ksutype="KeyA" ksusubtype="KAS2" value="NewKSU" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+<div class="row KSUdisplaySection" id="NewKSU" ksutype="OTOA" ksusubtype="KAS2" value="NewKSU" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 	<form method="post">
 	<div class="col-xs-12">
 	<div class="row">
@@ -17,7 +17,7 @@
 		</div>
 
 		<div class="col-xs-11">
-			<textarea style="width:100%; border:0; font-size:14px;" class="autoExpand" rows="2" data-min-rows='2' name="description" id="description" placeholder="What do you want to achieve today?"></textarea>
+			<textarea style="width:100%; border:0; font-size:14px;" class="autoExpand" rows="2" data-min-rows='2' name="description" id="description" placeholder="{% if time_frame == 'Today' %}What do you want to achieve today?{% else %}What do you want to do someday?{% endif %}"></textarea>
 		</div>	
 	</div>
 
@@ -115,108 +115,104 @@
 <div id="NewKSUsHolder"></div>
 
 
-
-
 {% for ksu in ksu_set %}
 
-<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
-<form method="post">
-<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
-	<div class="col-xs-12">
-		<div class="row">
-			<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
-				<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton" name="action_description" value='MissionDone'><i class="glyphicon glyphicon-ok"></i></button>
+	<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+	<form method="post">
+	<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
+		<div class="col-xs-12">
+			<div class="row">
+				<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
+					<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton" name="action_description" value='MissionDone'><i class="glyphicon glyphicon-ok"></i></button>
+				</div>
+
+				<div class="col-xs-10">
+					<div class="row">
+						<div class="col-xs-12">
+						{% if ksu.ksu_subtype in ['EVPo', 'ImPe'] %}
+							<textarea style="width:100%; height:20px; border:0;" class="QuickAttributeUpdate" name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>
+						{% else %}	
+							<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
+						{% endif %}
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-10">
+							{% if time_frame in ['Upcoming','SomedayMaybe'] %}
+								<span style="color:blue;" id="pretty_next_event">
+									{% if ksu.next_event %}
+										{{ksu.pretty_next_event}}
+									{% endif %}
+								</span>
+							{% elif time_frame == 'Today' %}
+								<span style="color:blue;" id="pretty_best_time">
+									{% if ksu.best_time%}
+										{{ksu.pretty_best_time}}
+									{% endif %}
+								</span>
+							{% endif %}
+						</div>
+
+						<div class="col-xs-2" style="padding-left:0; padding-right:5px;">
+							<span class="MissionKsuKpts" id="KsuKpts">{% if ksu.kpts_value %}{{ksu.kpts_value}}{% else %}0{% endif %}</span><span class="MissionKsuKpts"> Kpts.</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-xs-1" style="padding:0;">
+						<button type="button" class="btn btn-default btn-circle ShowDetailViewerButton" id="ShowDetailViewerButton"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus"></span></button>
+				</div>			
 			</div>
 
-			<div class="col-xs-10">
-				<div class="row">
-					<div class="col-xs-12">
-					{% if ksu.ksu_subtype in ['EVPo', 'ImPe'] %}
-						<textarea style="width:100%; height:20px; border:0;" class="QuickAttributeUpdate" name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>
+			<div class="row hidden" id="ScoreDetail">
+				<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
+					
+					<div class="col-xs-4">
+					{% if time_frame == 'Today' %}
+						<label> Time </label>
+						<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" name="best_time" id="best_time" value={% if ksu %}{{ksu.best_time}}{% endif %}>
 					{% else %}	
-						<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
+						<label> Date </label>
+						<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" name="next_event" id="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
 					{% endif %}
 					</div>
-				</div>
 
-				<div class="row">
-					<div class="col-xs-10">
-						{% if time_frame in ['Upcoming','SomedayMaybe'] %}
-							<span style="color:blue;" id="pretty_next_event">
-								{% if ksu.next_event %}
-									{{ksu.pretty_next_event}}
+
+					<div class="col-xs-3">
+						<label> Reward </label>
+						<select class="form-control kpts_value QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+							{% for value in constants['l_Fibonacci'] %}
+								{% if value == ksu.kpts_value %}
+									<option selected="selected" value="{{value}}"> {{value}} </option>
+								{% else %}
+									<option value="{{value}}"> {{value}} </option>
 								{% endif %}
-							</span>
-						{% elif time_frame == 'Today' %}
-							<span style="color:blue;" id="pretty_best_time">
-								{% if ksu.best_time%}
-									{{ksu.pretty_best_time}}
-								{% endif %}
-							</span>
-						{% endif %}
+							{% endfor %}
+						</select>	
 					</div>
 
-					<div class="col-xs-2" style="padding-left:0; padding-right:5px;">
-						<span class="MissionKsuKpts" id="KsuKpts">{% if ksu.kpts_value %}{{ksu.kpts_value}}{% else %}0{% endif %}</span><span class="MissionKsuKpts"> Kpts.</span>
+
+					<div class="col-xs-5">
+					{% if time_frame == 'Today' %}					
+						<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionPush' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-forward"  style="margin-left:5px;"></span></button>
+						<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-remove""></span></button>
+					{% else %}
+						<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
+
+					{% endif %}
+						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='MissionDelete' style="margin-top:20px; margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+						<button type="submit" class="btn btn-primary btn-circle btn-lg" name="action_description" value='EditKSU' style="margin-top:20px;"><span class="glyphicon glyphicon-pencil"></span></button>
+
+
 					</div>
-				</div>
+
 			</div>
 
-			<div class="col-xs-1" style="padding:0;">
-					<button type="button" class="btn btn-default btn-circle ShowDetailViewerButton" id="ShowDetailViewerButton"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus"></span></button>
-			</div>			
 		</div>
-
-		<div class="row hidden" id="ScoreDetail">
-			<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
-				
-				<div class="col-xs-4">
-				{% if time_frame == 'Today' %}
-					<label> Time </label>
-					<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" name="best_time" id="best_time" value={% if ksu %}{{ksu.best_time}}{% endif %}>
-				{% else %}	
-					<label> Date </label>
-					<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" name="next_event" id="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
-				{% endif %}
-				</div>
-
-
-				<div class="col-xs-3">
-					<label> Reward </label>
-					<select class="form-control kpts_value QuickAttributeUpdate" name="kpts_value" id="kpts_value">
-						{% for value in constants['l_Fibonacci'] %}
-							{% if value == ksu.kpts_value %}
-								<option selected="selected" value="{{value}}"> {{value}} </option>
-							{% else %}
-								<option value="{{value}}"> {{value}} </option>
-							{% endif %}
-						{% endfor %}
-					</select>	
-				</div>
-
-
-				<div class="col-xs-5">
-				{% if time_frame == 'Today' %}					
-					<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionPush' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-forward"  style="margin-left:5px;"></span></button>
-					<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-remove""></span></button>
-				{% else %}
-					<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
-
-				{% endif %}
-					<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='MissionDelete' style="margin-top:20px; margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
-					<button type="submit" class="btn btn-primary btn-circle btn-lg" name="action_description" value='EditKSU' style="margin-top:20px;"><span class="glyphicon glyphicon-pencil"></span></button>
-
-
-				</div>
-
-		</div>
-
+	</form>		
 	</div>
-</form>		
-</div>
-
 {% endfor %}
-
 
 
 {% if time_frame == 'Today' %}
@@ -403,8 +399,117 @@
 	</div>
 
 	{% endfor %}
-
 {% endif %}
+
+{% if time_frame == 'Upcoming' %}
+	<div class="row">
+		<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10"> 
+			<div class="SectionTitle"> Someday Maybe </div>
+		</div>
+	</div>
+
+	{% for ksu in someday_maybe %}
+
+	<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+	<form method="post">
+	<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
+		<div class="col-xs-12">
+			<div class="row">
+				<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
+					<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton" name="action_description" value='MissionDone'><i class="glyphicon glyphicon-ok"></i></button>
+				</div>
+
+				<div class="col-xs-10">
+					<div class="row">
+						<div class="col-xs-12">
+						{% if ksu.ksu_subtype in ['EVPo', 'ImPe'] %}
+							<textarea style="width:100%; height:20px; border:0;" class="QuickAttributeUpdate" name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>
+						{% else %}	
+							<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
+						{% endif %}
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-10">
+							{% if time_frame in ['Upcoming','SomedayMaybe'] %}
+								<span style="color:blue;" id="pretty_next_event">
+									{% if ksu.next_event %}
+										{{ksu.pretty_next_event}}
+									{% endif %}
+								</span>
+							{% elif time_frame == 'Today' %}
+								<span style="color:blue;" id="pretty_best_time">
+									{% if ksu.best_time%}
+										{{ksu.pretty_best_time}}
+									{% endif %}
+								</span>
+							{% endif %}
+						</div>
+
+						<div class="col-xs-2" style="padding-left:0; padding-right:5px;">
+							<span class="MissionKsuKpts" id="KsuKpts">{% if ksu.kpts_value %}{{ksu.kpts_value}}{% else %}0{% endif %}</span><span class="MissionKsuKpts"> Kpts.</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-xs-1" style="padding:0;">
+						<button type="button" class="btn btn-default btn-circle ShowDetailViewerButton" id="ShowDetailViewerButton"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus"></span></button>
+				</div>			
+			</div>
+
+			<div class="row hidden" id="ScoreDetail">
+				<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
+					
+					<div class="col-xs-4">
+					{% if time_frame == 'Today' %}
+						<label> Time </label>
+						<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" name="best_time" id="best_time" value={% if ksu %}{{ksu.best_time}}{% endif %}>
+					{% else %}	
+						<label> Date </label>
+						<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" name="next_event" id="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+					{% endif %}
+					</div>
+
+
+					<div class="col-xs-3">
+						<label> Reward </label>
+						<select class="form-control kpts_value QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+							{% for value in constants['l_Fibonacci'] %}
+								{% if value == ksu.kpts_value %}
+									<option selected="selected" value="{{value}}"> {{value}} </option>
+								{% else %}
+									<option value="{{value}}"> {{value}} </option>
+								{% endif %}
+							{% endfor %}
+						</select>	
+					</div>
+
+
+					<div class="col-xs-5">
+					{% if time_frame == 'Today' %}					
+						<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionPush' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-forward"  style="margin-left:5px;"></span></button>
+						<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-remove""></span></button>
+					{% else %}
+						<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
+
+					{% endif %}
+						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='MissionDelete' style="margin-top:20px; margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+						<button type="submit" class="btn btn-primary btn-circle btn-lg" name="action_description" value='EditKSU' style="margin-top:20px;"><span class="glyphicon glyphicon-pencil"></span></button>
+
+
+					</div>
+
+			</div>
+
+		</div>
+	</form>		
+	</div>
+
+	{% endfor %}	
+{% endif %}
+
+
 
 {% endblock %}
 

@@ -318,6 +318,15 @@ class SignUpLogIn(Handler):
 				active_weekday = (datetime.today()-timedelta(hours=user_start_hour)).weekday()
 				goal = int(theory.kpts_goals['kpts_weekly_goals'][active_weekday])
 				
+				minimum_daily_effort = int(theory.kpts_goals['minimum_daily_effort'])
+				print
+				print "AQUI VIENE EL ESFUERZO MINIMO AL DIA"
+				print
+				print minimum_daily_effort
+				if goal < minimum_daily_effort:
+					print goal < minimum_daily_effort
+					goal = minimum_daily_effort
+
 				
 				active_log = DailyLog(
 					theory = theory.key,
@@ -556,7 +565,7 @@ class MissionViewer(Handler):
 		print
 		user_key = self.theory.key
 
-		ksu_set, mission_value, todays_questions, reactive_mission, today = self.generate_todays_mission(time_frame)
+		ksu_set, mission_value, todays_questions, reactive_mission, today, someday_maybe = self.generate_todays_mission(time_frame)
 
 		self.print_html('MissionViewer.html', 
 						ksu_set=ksu_set, 
@@ -565,7 +574,8 @@ class MissionViewer(Handler):
 						todays_questions=todays_questions,
 						reactive_mission=reactive_mission, 
 						constants=constants,
-						today=today)
+						today=today,
+						someday_maybe=someday_maybe)
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -603,6 +613,10 @@ class MissionViewer(Handler):
 
 		for ksu in ksu_set:
 			ksu_subtype = ksu.ksu_subtype
+			if ksu_subtype == 'KAS2':# Apendice - TBD despues de que se actualice mi cuenta.
+				ksu.ksu_type = 'OTOA'
+				ksu.put()
+
 			next_event = ksu.next_event
 			ksu.description_rows = determine_rows(ksu.description)
 			ksu.secondary_description_rows = determine_rows(ksu.secondary_description)
@@ -642,7 +656,7 @@ class MissionViewer(Handler):
 		else:
 			mission = someday_maybe
 		
-		return mission, mission_value, todays_questions, reactive_mission, today
+		return mission, mission_value, todays_questions, reactive_mission, today, someday_maybe
 
 
 class EventHandler(Handler):
@@ -1267,7 +1281,7 @@ def prepareInputForSaving(ksu, post_details):
 		else:
 			ksu_subtype = ksu_type
 
-		if ksu_subtype == 'OTOA':
+		if ksu_type == 'OTOA':
 			ksu_subtype = 'KAS2'
 
 		return ksu_subtype
