@@ -6,7 +6,9 @@ from datetime import datetime, timedelta, time
 from google.appengine.ext import ndb
 from python_files import datastore, randomUser, constants, kasware_os
 
+quotes = constants.quotes
 constants = constants.constants
+
 Theory = datastore.Theory
 KSU = datastore.KSU
 Event = datastore.Event
@@ -71,8 +73,10 @@ class Handler(webapp2.RequestHandler):
 		else:
 			return t.render(**kw)
 
-	def print_html(self, template, **kw):
-		self.write(self.render_html(template, **kw))
+	def print_html(self, template, **kw):##
+		quote =  quotes[random.randrange(0,500)]
+		quote['quote'] = quote['quote'].replace("&#39;","'")
+		self.write(self.render_html(template, quote=quote, **kw))
 
 	def set_secure_cookie(self, cookie_name, cookie_value):
 		cookie_secure_value = make_secure_val(cookie_value)
@@ -106,8 +110,8 @@ class Handler(webapp2.RequestHandler):
 
 		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-
-		active_date = (datetime.today()-timedelta(hours=user_start_hour)).toordinal()# TT Time Travel aqui puedo hacer creer al programa que es otro dia
+		active_date = (datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).toordinal()# TT Time Travel aqui puedo hacer creer al programa que es otro dia
+		
 		last_DailyLog = theory.last_DailyLog
 		user_key = theory.key		
 
@@ -303,6 +307,7 @@ class SignUpLogIn(Handler):
 					first_name=post_details['first_name'], 
 					last_name=post_details['last_name'],
 					day_start_time=datetime.strptime('06:00', '%H:%M').time(),
+					timezone=-4,
 					kpts_goals_parameters=kpts_goals_parameters,
 					kpts_goals=calculate_user_kpts_goals(kpts_goals_parameters),
 					categories=categories,
@@ -313,9 +318,9 @@ class SignUpLogIn(Handler):
 				#creates the first DailyLog entry
 				day_start_time = theory.day_start_time
 				user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-				active_date = (datetime.today()-timedelta(hours=user_start_hour)).toordinal() 
+				active_date = (datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).toordinal() 
 				active_date_date = datetime.fromordinal(active_date)
-				active_weekday = (datetime.today()-timedelta(hours=user_start_hour)).weekday()
+				active_weekday = (datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).weekday()
 				goal = int(theory.kpts_goals['kpts_weekly_goals'][active_weekday])
 				
 				minimum_daily_effort = int(theory.kpts_goals['minimum_daily_effort'])
@@ -365,11 +370,22 @@ class LogOut(Handler):
 		self.redirect('/')
 
 
-class Settings(Handler):
+class Settings(Handler):#xx
 
 	@super_user_bouncer
 	def get(self):
-		self.print_html('Settings.html', ksu={}, constants=constants)
+		theory = self.theory
+		today = datetime.today()
+
+		local_today = datetime.today()+timedelta(hours=theory.timezone)
+
+		day_start_time = theory.day_start_time
+		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
+		user_today = local_today-timedelta(hours=user_start_hour)
+
+		active_date = user_today.toordinal()
+		
+		self.print_html('Settings.html', today=today, local_today=local_today, user_today=user_today)
 
 
 class KsuEditor(Handler):
@@ -586,12 +602,13 @@ class MissionViewer(Handler):
 				return 0
 			return int(math.ceil((len(ksu_description)/60.0)))
 
-		user_key = self.theory.key
+		theory = self.theory
+		user_key = theory.key
 		ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True).order(KSU.best_time).order(KSU.next_event).fetch()
 
-		day_start_time = self.theory.day_start_time
+		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-		today =(datetime.today()-timedelta(hours=user_start_hour)).date()
+		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date()
 		
 		todays_mission = []
 		todays_timeless_mission = []
@@ -673,7 +690,7 @@ class EventHandler(Handler):
 			
 			ksu = KSU(theory=self.theory.key)
 			event_details['is_active'] = True
-			if not event_details['best_time']:
+			if 'best_time' in event_details and not event_details['best_time']:
 				del event_details['best_time']
 			ksu = prepareInputForSaving(ksu, event_details)
 			ksu.put()
@@ -705,7 +722,7 @@ class EventHandler(Handler):
 			theory=self.theory.key,
 			ksu_id =  ksu.key,
 			event_type = user_action,
-			user_date=(datetime.today()-timedelta(hours=user_start_hour)).toordinal(),
+			user_date=(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).toordinal(),
 			comments = event_details['event_comments'].encode('utf-8'))
 
 		if user_action == 'RecordValue':
@@ -869,7 +886,7 @@ class EventViewer(Handler):
 		
 		day_start_time = self.theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-		today =(datetime.today()-timedelta(hours=user_start_hour)).date().toordinal()
+		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
 
 		event_set = Event.query(Event.theory == user_key).filter(Event.user_date == today).order(-Event.created).fetch()
 		
@@ -970,6 +987,7 @@ class PopulateRandomTheory(Handler):
 					first_name=post_details['first_name'], 
 					last_name=post_details['last_name'],
 					day_start_time=datetime.strptime('06:00', '%H:%M').time(),
+					timezone=-4,
 					kpts_goals_parameters=kpts_goals_parameters,
 					kpts_goals=calculate_user_kpts_goals(kpts_goals_parameters),
 					categories=categories,
@@ -980,9 +998,9 @@ class PopulateRandomTheory(Handler):
 				#creates the first DailyLog entry
 				day_start_time = theory.day_start_time
 				user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-				active_date = (datetime.today()-timedelta(hours=user_start_hour)).toordinal() 
+				active_date = (datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).toordinal() 
 				active_date_date = datetime.fromordinal(active_date)
-				active_weekday = (datetime.today()-timedelta(hours=user_start_hour)).weekday()
+				active_weekday = (datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).weekday()
 				goal = int(theory.kpts_goals['kpts_weekly_goals'][active_weekday])
 				
 				
@@ -1015,7 +1033,7 @@ class PopulateRandomTheory(Handler):
 
 		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 		
-		today =(datetime.today()-timedelta(hours=user_start_hour))
+		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour))
 
 		theory_parameters = [
 			[3,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
@@ -1189,7 +1207,7 @@ def update_next_event(self, user_action, post_details, ksu):
 
 	day_start_time = self.theory.day_start_time
 	user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-	today =(datetime.today()-timedelta(hours=user_start_hour))
+	today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour))
 	tomorrow = today + timedelta(days=1)
 	ksu_subtype = ksu.ksu_subtype	
 	

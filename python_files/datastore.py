@@ -16,6 +16,7 @@ class Theory(ndb.Model):
  	#user settings
  	language = ndb.StringProperty(choices=('Spanish', 'English'), default='English')
  	hide_private_ksus = ndb.BooleanProperty(default=False)
+ 	timezone = ndb.IntegerProperty(default=-4) #Deberia de ser forzoza, pero para evitar errores por ahora no la solicito asi
  	day_start_time = ndb.TimeProperty()
  	kpts_goals_parameters = ndb.JsonProperty(required=True)
  	kpts_goals = ndb.JsonProperty(required=True)

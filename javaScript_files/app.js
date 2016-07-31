@@ -306,13 +306,17 @@ $('.SaveNewKSUButton').on('click', function(){
 	var ksu_subtype = ksu.attr("ksusubtype");
 
 	var description = ksu.find('#description').val();
+	var secondary_description = ksu.find('#secondary_description').val();
 	var next_event = ksu.find('#next_event').val();
 	var best_time = ksu.find('#best_time').val();
 	var kpts_value = ksu.find('#kpts_value option:selected').val();
 
+	if (description == ''){
+		description = ksu.find('#description').text();
+		secondary_description = ksu.find('#secondary_description').text();
+	};
 
 	ksu.fadeOut("slow")
-
 	// ksu.animate({
 	// 	"opacity" : "0",
 	// 	},{
@@ -331,6 +335,7 @@ $('.SaveNewKSUButton').on('click', function(){
 			'ksu_subtype': ksu_subtype,
 			
 			'description':description,
+			'secondary_description':secondary_description,
 			'next_event':next_event,
 			'best_time':best_time,
 			'kpts_value': kpts_value
