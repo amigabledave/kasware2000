@@ -60,13 +60,19 @@ $('#ksu_type').on('change',function(){
 	if (this.value == 'KeyA'){
 		$('#KeyA').removeClass('hidden');
 		if ($('#ksu_id').val() == ''){
-			$('#KAS1or2').prop("checked", true);
-			$('#KeyA_KAS1or2').removeClass('hidden');
+			$('#KAS1').prop("checked", true);
+			$('#KeyA_KAS1').removeClass('hidden');
 		}
 
 	} else {
 		$('#KeyA').addClass('hidden');
 	}	
+
+	if (this.value == 'OTOA'){
+		$('#OTOA').removeClass('hidden');
+	} else {
+		$('#OTOA').addClass('hidden');
+	}
 
 	if (this.value == 'Obje'){
 		$('#Obje').removeClass('hidden');
@@ -142,10 +148,10 @@ $('#ksu_type').on('change',function(){
 $('input[type=radio][name=ksu_subtype]').on('change',function(){
 	
 
-	if (this.value == 'KAS1or2'){
-		$('#KeyA_KAS1or2').removeClass('hidden');
+	if (this.value == 'KAS1'){
+		$('#KeyA_KAS1').removeClass('hidden');
 	} else {
-		$('#KeyA_KAS1or2').addClass('hidden');
+		$('#KeyA_KAS1').addClass('hidden');
 	}
 
 	if (this.value == 'KAS3'){

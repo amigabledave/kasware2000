@@ -478,13 +478,9 @@ class KsuEditor(Handler):
 			ksu_subtype = post_details['ksu_subtype']
 		else:
 			ksu_subtype = ksu_type
-
-		if ksu_subtype == 'KAS1or2':
-			if ksu.repeats == 'R000':
-				ksu_subtype = 'KAS2'
-			else:
-				ksu_subtype = 'KAS1'
-
+		
+		if ksu_subtype == 'OTOA':
+			ksu_subtype = 'KAS2'
 
 		return ksu_subtype
 
@@ -659,7 +655,7 @@ class EventHandler(Handler):
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 		user_action = event_details['user_action']
 
-		if user_action == 'SaveNewKSU':#xx
+		if user_action == 'SaveNewKSU':
 			print
 			print 'Si llego el AJAX Request. User action: ' + user_action + '. Event details: ' +  str(event_details)
 			print
@@ -1013,7 +1009,7 @@ class PopulateRandomTheory(Handler):
 		theory_parameters = [
 			[3,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
 			[2, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
-			[2, {'ksu_type':'KeyA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
+			[2, {'ksu_type':'OTOA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
 			[2, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_value':0.25}],
 			[2, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4', 'kpts_value':5}],
 			[1, {'ksu_type':'Obje', 'ksu_subtype':'Obje'}],
@@ -1146,12 +1142,18 @@ def update_next_event(self, user_action, post_details, ksu):
 					result.append(l[active_position]) 
 				return result
 
+			active_position = datetime.today().weekday() #xx
 
-			active_position = datetime.today().weekday()
+			if active_position == 0: #No tengo ni puta idea que pasa aqui, pero necesito recalibrar porque parece que tomo el sabado como el ultimo dia de la semana
+				active_position = 6
+			else:
+				active_position -= 1
+
 			repeats_on_list = reorginize_list(l_repeats_on, active_position)
+
 			i = 1
 			for weekday in repeats_on_list:
-				if weekday:
+				if weekday: #xx
 					return i
 				else:
 					i += 1
@@ -1179,10 +1181,10 @@ def update_next_event(self, user_action, post_details, ksu):
 	today =(datetime.today()-timedelta(hours=user_start_hour))
 	tomorrow = today + timedelta(days=1)
 	ksu_subtype = ksu.ksu_subtype	
-	days_to_next_event = days_to_next_event(ksu)
-
+	
 	if ksu_subtype == 'KAS1':
 		next_event = ksu.next_event
+		days_to_next_event = days_to_next_event(ksu)
 
 		if not next_event:
 			ksu.next_event = today
@@ -1254,7 +1256,7 @@ def update_next_event(self, user_action, post_details, ksu):
 
 	return		
 
-def prepareInputForSaving(ksu, post_details): #xx
+def prepareInputForSaving(ksu, post_details):
 
 	def determine_ksu_subtype(ksu, post_details):
 
@@ -1265,12 +1267,8 @@ def prepareInputForSaving(ksu, post_details): #xx
 		else:
 			ksu_subtype = ksu_type
 
-		if ksu_subtype == 'KAS1or2':
-			if ksu.repeats == 'R000':
-				ksu_subtype = 'KAS2'
-			else:
-				ksu_subtype = 'KAS1'
-
+		if ksu_subtype == 'OTOA':
+			ksu_subtype = 'KAS2'
 
 		return ksu_subtype
 

@@ -74,11 +74,12 @@ d_SetTitles = {
 
 d_KsuTypes = {
 	'Gene': '00. Unassigned',
-	'KeyA': '01. Key Action',
+	'OTOA': '01. One Time Only Action',
+	'KeyA': '02. Key Action',
 	# 'MinO': '02. Mini Objective',
-	'Obje': '02. Objective',
+	'Obje': '03. Objective',
 	# 'Drea': '04. Dream',
-	'Wish': '03. Wish',
+	'Wish': '04. Wish',
 	'EVPo': '05. End Value Mine',
 	'ImPe': '06. Important Person',
 	'Idea': '07. Wise Idea',
@@ -93,8 +94,8 @@ d_KsuTypes = makeDictionaryFromTupleList(l_KsuTypes)
 d_KsuSubtypes = {
 	'Gene':'Unassigned',
 	'KeyA':'Key Action',
-	'KAS1':'Key Repetitive Action',
-	'KAS2':'Key Action',
+	'KAS1':'Key Proactive Action',
+	'KAS2':'One Time Only Action',
 	'KAS3':'Key Reaction',
 	'KAS4':'Key Action To Avoid',
 
@@ -122,8 +123,7 @@ d_KsuSubtypes = {
 	'BinaryPerception': 'Binary Perception Indicator',
 	'FibonacciPerception': 'Fibonacci Perception Indicator'} 
 
-d_repeats = {'R000':'Never',
-			 'R001':'Daily',
+d_repeats = {'R001':'Daily',
 			 'R007':'Weekly',
 			 'R030':'Monthly',
 			 'R365':'Yearly'}
@@ -306,6 +306,8 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 
 			 'd_SetViewerDetails':d_SetViewerDetails,
 			 'd_displayValues':d_displayValues}
+
+
 
 
 			 
