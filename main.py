@@ -722,7 +722,7 @@ class EventHandler(Handler):
 			theory=self.theory.key,
 			ksu_id =  ksu.key,
 			event_type = user_action,
-			user_date=(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).toordinal(),
+			user_date=(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).toordinal(),
 			comments = event_details['event_comments'].encode('utf-8'))
 
 		if user_action == 'RecordValue':
@@ -1207,7 +1207,7 @@ def update_next_event(self, user_action, post_details, ksu):
 
 	day_start_time = self.theory.day_start_time
 	user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-	today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour))
+	today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour))
 	tomorrow = today + timedelta(days=1)
 	ksu_subtype = ksu.ksu_subtype	
 	
