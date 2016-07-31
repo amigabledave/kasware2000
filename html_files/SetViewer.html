@@ -29,7 +29,7 @@
 									<span style="color:blue; font-style:italic; font-weight:bold;"> Must avoid:</span> 
 								{% endif %}								
 
-								<span style="{% if ksu.is_critical %}color:red;{% endif %}"><span id="is_active" style="{% if not ksu.is_active %}color:#D3D3D3;{% endif %}"><b>{{ksu.description}}{{ksu.ksu_subtype}}</b></span></span>
+								<span style="{% if ksu.is_critical %}color:red;{% endif %}"><span id="is_active" style="{% if not ksu.is_active %}color:#D3D3D3;{% endif %}"><b>{{ksu.description}}</b></span></span>
 								
 								{% if ksu.ksu_type in ['ImIn', 'Obje'] %}
 									<br><span style="color:grey; font-style:italic; font-size:13px;">{{ksu.secondary_description}}</span> 
@@ -44,7 +44,7 @@
 							<br>
 							<div class="col-xs-{% if ksu.ksu_type == 'RTBG' %}12{% else %}6{% endif %}">
 								<label class="displaySectionBulletContent">
-									{% if ksu.global_category != 'Unassigned' %}
+									{% if ksu.global_category != 'Unassigned' and ksu.global_category %}
 										{{ksu.global_category}}
 									{% else %}
 										<br>

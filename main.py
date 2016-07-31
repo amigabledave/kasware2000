@@ -319,10 +319,7 @@ class SignUpLogIn(Handler):
 				goal = int(theory.kpts_goals['kpts_weekly_goals'][active_weekday])
 				
 				minimum_daily_effort = int(theory.kpts_goals['minimum_daily_effort'])
-				print
-				print "AQUI VIENE EL ESFUERZO MINIMO AL DIA"
-				print
-				print minimum_daily_effort
+
 				if goal < minimum_daily_effort:
 					print goal < minimum_daily_effort
 					goal = minimum_daily_effort
@@ -726,7 +723,7 @@ class EventHandler(Handler):
 				update_next_event(self, user_action, {}, ksu)
 				
 				if ksu_subtype == 'KAS2':
-					ksu.in_graveyard = True
+					ksu.is_deleted = True
 
 				ksu.put()
 
