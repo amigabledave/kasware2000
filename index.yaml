@@ -74,6 +74,14 @@ indexes:
 - kind: KSU
   properties:
   - name: in_graveyard
+  - name: is_private
+  - name: ksu_type
+  - name: theory
+  - name: created
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
   - name: ksu_type
   - name: theory
   - name: created

@@ -607,7 +607,10 @@ class SetViewer(Handler):
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == True, KSU.is_deleted == False).order(KSU.created).fetch()
 		
 		else:
-			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(KSU.created).fetch()
+			if self.theory.hide_private_ksus:
+				ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name,  KSU.is_private == False).order(KSU.created).fetch()
+			else:
+				ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(KSU.created).fetch()
 		
 		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name)
 
