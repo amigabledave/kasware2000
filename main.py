@@ -886,7 +886,7 @@ class EventViewer(Handler):
 		
 		day_start_time = self.theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
+		today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
 
 		event_set = Event.query(Event.theory == user_key).filter(Event.user_date == today).order(-Event.created).fetch()
 		
