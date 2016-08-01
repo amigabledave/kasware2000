@@ -391,42 +391,44 @@ class Settings(Handler):
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
 	def post(self, user_action, post_details):
-		theory = self.theory
-		print
-		print post_details
-		theory.first_name = post_details['first_name'].encode('utf-8') 
-		theory.last_name = post_details['last_name'].encode('utf-8')	
- 	
- 		theory.language = str(post_details['language'])
- 		
- 		if 'hide_private_ksus' in post_details:
- 			theory.hide_private_ksus = True
-		else:
-			theory.hide_private_ksus = False
-
-	 	theory.timezone = int(post_details['timezone'])
-
-		theory.day_start_time = datetime.strptime(post_details['day_start_time'][0:5], '%H:%M').time()
-
-	 	theory.kpts_goals_parameters = {
-			'typical_week_effort_distribution':[
-				float(post_details['typical_week_effort_distribution_Mon']),
-				float(post_details['typical_week_effort_distribution_Tue']),
-				float(post_details['typical_week_effort_distribution_Wed']),
-				float(post_details['typical_week_effort_distribution_Thu']),
-				float(post_details['typical_week_effort_distribution_Fri']),
-				float(post_details['typical_week_effort_distribution_Sat']),
-				float(post_details['typical_week_effort_distribution_Sun'])],
-			'yearly_vacations_day': int(post_details['yearly_vacations_day']),
-			'yearly_shit_happens_days': int(post_details['yearly_shit_happens_days']),
-			'minimum_daily_effort':float(post_details['minimum_daily_effort'])}
- 	
- 		
 		
- 		theory.kpts_goals = calculate_user_kpts_goals(theory.kpts_goals_parameters)
-		
-		active_log = self.update_active_log_based_on_new_kpts_goals(theory.kpts_goals) 		
- 		theory.put()
+		if user_action == 'SaveChanges':
+			theory = self.theory
+			print
+			print post_details
+			theory.first_name = post_details['first_name'].encode('utf-8') 
+			theory.last_name = post_details['last_name'].encode('utf-8')	
+	 	
+	 		theory.language = str(post_details['language'])
+	 		
+	 		if 'hide_private_ksus' in post_details:
+	 			theory.hide_private_ksus = True
+			else:
+				theory.hide_private_ksus = False
+
+		 	theory.timezone = int(post_details['timezone'])
+
+			theory.day_start_time = datetime.strptime(post_details['day_start_time'][0:5], '%H:%M').time()
+
+		 	theory.kpts_goals_parameters = {
+				'typical_week_effort_distribution':[
+					float(post_details['typical_week_effort_distribution_Mon']),
+					float(post_details['typical_week_effort_distribution_Tue']),
+					float(post_details['typical_week_effort_distribution_Wed']),
+					float(post_details['typical_week_effort_distribution_Thu']),
+					float(post_details['typical_week_effort_distribution_Fri']),
+					float(post_details['typical_week_effort_distribution_Sat']),
+					float(post_details['typical_week_effort_distribution_Sun'])],
+				'yearly_vacations_day': int(post_details['yearly_vacations_day']),
+				'yearly_shit_happens_days': int(post_details['yearly_shit_happens_days']),
+				'minimum_daily_effort':float(post_details['minimum_daily_effort'])}
+	 	
+	 		
+			
+	 		theory.kpts_goals = calculate_user_kpts_goals(theory.kpts_goals_parameters)
+			
+			active_log = self.update_active_log_based_on_new_kpts_goals(theory.kpts_goals) 		
+	 		theory.put()
  		self.redirect('/MissionViewer?time_frame=Today')
 
 
