@@ -370,7 +370,7 @@ class LogOut(Handler):
 		self.redirect('/')
 
 
-class Settings(Handler):#xx
+class Settings(Handler):
 
 	@super_user_bouncer
 	def get(self):
@@ -386,6 +386,74 @@ class Settings(Handler):#xx
 		active_date = user_today.toordinal()
 		
 		self.print_html('Settings.html', today=today, local_today=local_today, user_today=user_today)
+
+
+	@super_user_bouncer
+	@CreateOrEditKSU_request_handler	
+	def post(self, user_action, post_details):
+		theory = self.theory
+		print
+		print post_details
+		theory.first_name = post_details['first_name'].encode('utf-8') 
+		theory.last_name = post_details['last_name'].encode('utf-8')	
+ 	
+ 		theory.language = str(post_details['language'])
+ 		
+ 		if 'hide_private_ksus' in post_details:
+ 			theory.hide_private_ksus = True
+		else:
+			theory.hide_private_ksus = False
+
+	 	theory.timezone = int(post_details['timezone'])
+
+		theory.day_start_time = datetime.strptime(post_details['day_start_time'][0:5], '%H:%M').time()
+
+	 	theory.kpts_goals_parameters = {
+			'typical_week_effort_distribution':[
+				float(post_details['typical_week_effort_distribution_Mon']),
+				float(post_details['typical_week_effort_distribution_Tue']),
+				float(post_details['typical_week_effort_distribution_Wed']),
+				float(post_details['typical_week_effort_distribution_Thu']),
+				float(post_details['typical_week_effort_distribution_Fri']),
+				float(post_details['typical_week_effort_distribution_Sat']),
+				float(post_details['typical_week_effort_distribution_Sun'])],
+			'yearly_vacations_day': int(post_details['yearly_vacations_day']),
+			'yearly_shit_happens_days': int(post_details['yearly_shit_happens_days']),
+			'minimum_daily_effort':float(post_details['minimum_daily_effort'])}
+ 	
+ 		
+		
+ 		theory.kpts_goals = calculate_user_kpts_goals(theory.kpts_goals_parameters)
+		
+		active_log = self.update_active_log_based_on_new_kpts_goals(theory.kpts_goals) 		
+ 		theory.put()
+ 		self.redirect('/MissionViewer?time_frame=Today')
+
+
+	def update_active_log_based_on_new_kpts_goals(self, new_kpts_goals):
+		active_log = self.active_log
+
+		new_minimum_daily_effort = new_kpts_goals['minimum_daily_effort']
+
+		user_date = active_log.user_date
+		user_date_date = datetime.fromordinal(user_date)
+
+		active_weekday = (user_date_date).weekday()
+		new_Goal = int(new_kpts_goals['kpts_weekly_goals'][active_weekday])
+
+		if new_Goal + active_log.EffortReserve < new_minimum_daily_effort:
+			new_Goal = new_minimum_daily_effort
+
+		new_PointsToGoal = new_Goal - active_log.SmartEffort + active_log.Stupidity
+
+		if new_PointsToGoal < 0:
+			new_minimum_dayly_effort = 0
+
+ 		active_log.Goal = new_Goal
+		active_log.PointsToGoal = new_PointsToGoal
+						
+		active_log.put()
+		return 
 
 
 class KsuEditor(Handler):
@@ -420,6 +488,8 @@ class KsuEditor(Handler):
 
 			ksu = self.prepareInputForSaving(ksu, post_details)
 			update_next_event(self, user_action, post_details, ksu)
+			print 'Asi queda el KSU'
+			print ksu
 			ksu.put()
 		
 		self.redirect(return_to)
@@ -604,7 +674,11 @@ class MissionViewer(Handler):
 
 		theory = self.theory
 		user_key = theory.key
-		ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True).order(KSU.best_time).order(KSU.next_event).fetch()
+		
+		if theory.hide_private_ksus:
+			ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True, KSU.is_private == False).order(KSU.best_time).order(KSU.next_event).fetch()
+		else:
+			ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True).order(KSU.best_time).order(KSU.next_event).fetch()
 
 		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
@@ -1102,7 +1176,7 @@ def adjust_post_details(post_details):
 			details[attribute] = value
 	return details
 
-def determine_return_to(self):
+def determine_return_to(self): #xx
 
 	return_to = self.request.get('return_to')
 	if not return_to:
@@ -1171,18 +1245,21 @@ def update_next_event(self, user_action, post_details, ksu):
 					result.append(l[active_position]) 
 				return result
 
-			active_position = datetime.today().weekday() #xx
+			day_start_time = self.theory.day_start_time
+			user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
+			today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour))
 
-			if active_position == 0: #No tengo ni puta idea que pasa aqui, pero necesito recalibrar porque parece que tomo el sabado como el ultimo dia de la semana
-				active_position = 6
-			else:
-				active_position -= 1
+			active_position = today.weekday() #Creo que esto ya va corregir el problema de que no detectaba bien en que dia de la semana estabamos parados
+			# if active_position == 0: #Creo que el tema era la cuestion de la zona horaria! --- Apendice?
+			# 	active_position = 6
+			# else:
+			# 	active_position -= 1
 
 			repeats_on_list = reorginize_list(l_repeats_on, active_position)
 
 			i = 1
 			for weekday in repeats_on_list:
-				if weekday: #xx
+				if weekday:
 					return i
 				else:
 					i += 1

@@ -33,6 +33,16 @@ indexes:
   - name: in_graveyard
   - name: is_active
   - name: is_deleted
+  - name: is_private
+  - name: theory
+  - name: best_time
+  - name: next_event
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: is_active
+  - name: is_deleted
   - name: theory
   - name: best_time
   - name: next_event
