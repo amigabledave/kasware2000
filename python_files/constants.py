@@ -150,7 +150,7 @@ d_SetViewerDetails = {
 	
 	'Gene':{},
 
-	'KeyA':{'QuickAdd':{'description_placeholder':'Describe your new key action'}},
+	'KeyA':{'QuickAdd':{'description_placeholder':'Describe your new Key Action'}},
 
 	'KAS1':{
 		'attributes': ['pretty_next_event'],
@@ -180,7 +180,8 @@ d_SetViewerDetails = {
 		'detailsLabel':'Stupidity Punishment',
 		'buttons':['Done']},
 
-	'Obje':{		
+	'Obje':{
+		'QuickAdd':{'description_placeholder':'Describe your new Objective'},		
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Target Date'},
 		'columns':{'pretty_next_event':6},
@@ -194,7 +195,8 @@ d_SetViewerDetails = {
 		'detailsLabel':'',
 		'buttons':['Done']},
 
-	'Wish':{ 		
+	'Wish':{
+		'QuickAdd':{'description_placeholder':'Describe your new Wish'}, 		
 		'attributes': ['money_cost'],
 		'fields': {'money_cost':'Money required ($)'},
 		'columns':{'money_cost':6},
@@ -208,21 +210,24 @@ d_SetViewerDetails = {
 		'detailsLabel':'',
 		'buttons':['Done']},
 
-	'EVPo': { 		
+	'EVPo': { 
+		'QuickAdd':{'description_placeholder':'Describe your new End Value Mine'},		
 		'attributes': ['frequency'],
 		'fields': {'frequency':'Charging time (days)'},
 		'columns':{'frequency':6},
 		'detailsLabel':'Trigger Effort Reward',
 		'buttons':['Done', 'SendToMission']},
 
-	'ImPe': { 		
+	'ImPe': { 
+		'QuickAdd':{'description_placeholder':'What is the name of your new Important Person'},		
 		'attributes': ['frequency'], 
 		'fields': {'frequency':'Contact Frequency (days)'},
 		'columns':{'frequency':6},
 		'detailsLabel':'Contract Effort Reward',
 		'buttons':['Done', 'SendToMission']},
 
-	'Idea': { 		
+	'Idea': {
+		'QuickAdd':{'description_placeholder':'Describe a new Idea'}, 		
 		'attributes': ['source'],
 		'fields': {'source':'Source'},
 		'columns':{'source':6},
@@ -236,7 +241,8 @@ d_SetViewerDetails = {
 		'detailsLabel':'',
 		'buttons':['Done']},
 
-	'RTBG': { 		
+	'RTBG': { 
+			'QuickAdd':{'description_placeholder':'Describe your new Reason To Be Greatfun'},		
 			'attributes': [],
 			'fields': {},
 			'columns':{},
@@ -250,7 +256,8 @@ d_SetViewerDetails = {
 			'detailsLabel':'',
 			'buttons':[]},
 
-	'ImIn': { 		
+	'ImIn': { 
+		'QuickAdd':{'description_placeholder':'What is your new Indicator?'},		
 		'attributes': [], 
 		'fields': {},
 		'columns':{},

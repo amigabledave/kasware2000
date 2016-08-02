@@ -323,28 +323,21 @@ $('.SaveNewKSUButton').on('click', function(){
 	var is_critical = ksu.find('#is_critical').is(':checked');
 	var is_private = ksu.find('#is_private').is(':checked');
 	
-	var repeats_on_Mon = ksu.find('#repeats_on_Mon');
-	var repeats_on_Tue = ksu.find('#repeats_on_Tue'); 
-	var repeats_on_Wed = ksu.find('#repeats_on_Wed'); 
-	var repeats_on_Thu = ksu.find('#repeats_on_Thu');
-	var repeats_on_Fri = ksu.find('#repeats_on_Fri');
-	var repeats_on_Sat = ksu.find('#repeats_on_Sat');
-	var repeats_on_Sun = ksu.find('#repeats_on_Sun');
+	var repeats_on_Mon = ksu.find('#repeats_on_Mon').is(':checked');
+	var repeats_on_Tue = ksu.find('#repeats_on_Tue').is(':checked'); 
+	var repeats_on_Wed = ksu.find('#repeats_on_Wed').is(':checked'); 
+	var repeats_on_Thu = ksu.find('#repeats_on_Thu').is(':checked');
+	var repeats_on_Fri = ksu.find('#repeats_on_Fri').is(':checked');
+	var repeats_on_Sat = ksu.find('#repeats_on_Sat').is(':checked');
+	var repeats_on_Sun = ksu.find('#repeats_on_Sun').is(':checked');
 
-
-	console.log('Asi se ve un checkbox');
-	if(ksu.find('#is_critical').is(':checked')){
-		console.log(ksu.find('#is_critical').is(':checked'))
-	} else {
-		console.log('No es critico!')
-	};
-
-	// var checkboxes = [is_active, is_critical, is_private]
 	
 	if (description == ''){
 		description = ksu.find('#description').text();
 		secondary_description = ksu.find('#secondary_description').text();
 	};
+	console.log('Esto es critico?');
+	console.log(ksu.find('#is_critical').is(':checked'));
 
 	ksu.fadeOut("slow")
 	
@@ -373,13 +366,13 @@ $('.SaveNewKSUButton').on('click', function(){
 			'frequency':frequency,
 			'repeats':repeats,
 	
-			// 'repeats_on_Mon':repeats_on_Mon,
-			// 'repeats_on_Tue':repeats_on_Tue,
-			// 'repeats_on_Wed':repeats_on_Wed,
-			// 'repeats_on_Thu':repeats_on_Thu,
-			// 'repeats_on_Fri':repeats_on_Fri,
-			// 'repeats_on_Sat':repeats_on_Sat,
-			// 'repeats_on_Sun':repeats_on_Sun
+			'repeats_on_Mon':repeats_on_Mon,
+			'repeats_on_Tue':repeats_on_Tue,
+			'repeats_on_Wed':repeats_on_Wed,
+			'repeats_on_Thu':repeats_on_Thu,
+			'repeats_on_Fri':repeats_on_Fri,
+			'repeats_on_Sat':repeats_on_Sat,
+			'repeats_on_Sun':repeats_on_Sun
 		})
 	})
 	.done(function(data){
@@ -394,9 +387,13 @@ $('.SaveNewKSUButton').on('click', function(){
 		new_ksu.find('#ksu_id').attr("value",data['ksu_id']);
 
 		new_ksu.find('#description').val(description);
+		new_ksu.find('#secondary_description').val(secondary_description);
 		new_ksu.find('#kpts_value').val(kpts_value);
 		new_ksu.find('#KsuKpts').text(kpts_value);
 		new_ksu.find('#pretty_best_time').text(best_time);
+
+		new_ksu.find('#global_category').text(global_category);
+		new_ksu.find('#ksu_subtype').text(ksu_subtype);
 
 		new_ksu.removeClass('hidden');
 		new_ksu.prependTo('#NewKSUsHolder');

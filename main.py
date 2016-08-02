@@ -1446,7 +1446,9 @@ def prepareInputForSaving(ksu, post_details):
 			setattr(ksu, a_key, a_val)
 
 		if a_type == 'checkbox_repeats_on':
-			d_repeats_on[a_key] = True
+			if a_val == 'on':
+				a_val = True
+			d_repeats_on[a_key] = a_val
 
 	setattr(ksu, 'repeats_on', d_repeats_on)
 	
