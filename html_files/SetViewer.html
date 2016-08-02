@@ -9,6 +9,7 @@
 	</div>
 </div>
 
+{% if set_name != 'Graveyard' %}
 <div class="row KSUdisplaySection" id="NewKSU" value="NewKSU" ksutype="{{set_name}}" ksusubtype="" style="margin-top: 0px; padding-bottom:8px;">
 	<form method="post">
 		<div class="col-xs-12" style="">
@@ -334,6 +335,8 @@
 </div>
 
 <div id="NewKSUsHolder"></div>
+{% endif %}
+
 
 {% for ksu in ksu_set %}
 

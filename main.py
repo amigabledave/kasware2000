@@ -710,38 +710,60 @@ class EventHandler(Handler):
 			kpts_type = event.kpts_type
 			score = event.score
 
-			if kpts_type == 'Stupidity':
-				score = -score
-			elif kpts_type != 'SmartEffort':
-				score = 0 
-
-
-			
 			active_log = self.active_log
+			Streak = active_log.Streak
+	
 			EffortReserve = active_log.EffortReserve
-			PointsToGoal = active_log.PointsToGoal
 			Goal = active_log.Goal
-			SmartEffort = active_log.SmartEffort
-			Stupidity = active_log.Stupidity
+
+			if kpts_type == 'Stupidity':
+				active_log.Stupidity -= score
+				
+			elif kpts_type == 'SmartEffort':
+				active_log.SmartEffort -= score
+
+			new_SmartEffort = active_log.SmartEffort
+			new_Stupidity = active_log.Stupidity
 
 			minimum_daily_effort = self.theory.kpts_goals['minimum_daily_effort']			
 			new_EffortReserve = EffortReserve - score
+			active_log.EffortReserve = new_EffortReserve
+
 			
-			new_PointsToGoal = Goal - SmartEffort + Stupidity + score
+			new_PointsToGoal = Goal - new_SmartEffort + new_Stupidity 
+			if new_PointsToGoal < 0:
+				new_PointsToGoal = 0
+			active_log.PointsToGoal = new_PointsToGoal
 			
-			# if new_PointsToGoal
-			# goal_achieved #xx
+			if not active_log.goal_achieved and new_PointsToGoal == 0:
+				active_log.goal_achieved = True				
+				active_log.Streak += 1
+				active_log.EffortReserve = new_EffortReserve - minimum_daily_effort
+			
+			elif active_log.goal_achieved and new_PointsToGoal > 0:
+				active_log.goal_achieved = False				
+				active_log.Streak -= 1
+				active_log.EffortReserve = new_EffortReserve + minimum_daily_effort
 
-
-						
-
+			active_log.put()
+ 			
 			event.is_deleted = True
 			event.put()
 			
+			ksu = KSU.get_by_id(event.ksu_id.id())
+			ksu.in_graveyard = False
+			ksu.is_deleted = False
+			day_start_time = self.theory.day_start_time
+			user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
+			today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour))
+			ksu.next_event = today
+			ksu.put()
 
-
-			print 'Event is deleted?'
-			print event.is_deleted
+			self.response.out.write(json.dumps({
+				'mensaje':'Evento revertido',
+				'PointsToGoal':active_log.PointsToGoal,
+				'EffortReserve':active_log.EffortReserve,
+				'Streak':active_log.Streak})) 
 			return
 
 		ksu = KSU.get_by_id(int(event_details['ksu_id']))
@@ -818,7 +840,7 @@ class EventHandler(Handler):
 			ksu.put()
 
 
-		self.update_active_log(event)#xx
+		self.update_active_log(event)
 		event.put()		
 
 		active_log = self.active_log
@@ -928,7 +950,7 @@ class EventViewer(Handler):
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 		today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
 
-		event_set = Event.query(Event.theory == user_key).filter(Event.user_date == today).order(-Event.created).fetch()
+		event_set = Event.query(Event.theory == user_key).filter(Event.user_date == today, Event.is_deleted == False).order(-Event.created).fetch()
 		
 		history = []
 		history_value = 0
