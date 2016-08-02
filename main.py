@@ -346,7 +346,7 @@ class SignUpLogIn(Handler):
 				#Loads OS Ksus
 				for post_details in os_ksus:
 					ksu = KSU(theory=theory.key)
-					ksu = prepareInputForSaving(ksu, post_details)
+					ksu = prepareInputForSaving(theory, ksu, post_details)
 					ksu.put()
 
 				self.login(theory)
@@ -466,8 +466,15 @@ class KsuEditor(Handler):
 			ksu = constants['default_ksu']
 		else: 
 			ksu = KSU.get_by_id(int(ksu_id))
-		categories = self.theory.categories
-		self.print_html('KsuEditor.html', ksu=ksu, constants=constants, categories=categories)
+
+		#Apendice - TBD after update	
+		theory = self.theory 
+		if 'tags' not in theory.categories:
+			theory.categories['tags'] = []
+			theory.put()
+		#####
+		tags = self.theory.categories['tags']
+		self.print_html('KsuEditor.html', ksu=ksu, constants=constants, tags=tags)
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -481,10 +488,12 @@ class KsuEditor(Handler):
 		return_to = determine_return_to(self)
 		
 		if user_action == 'SaveChanges':
-
-			ksu = prepareInputForSaving(ksu, post_details) #BUG ALERT! Hice que esta funcion fuera global - veamos si esto causa issues
+			ksu = prepareInputForSaving(self.theory, ksu, post_details) #BUG ALERT! Hice que esta funcion fuera global - veamos si esto causa issues
 			update_next_event(self, user_action, post_details, ksu)
 			ksu.put()
+			print#xx
+			print 'Asi se ven las tags del usuario en este momento'
+			print self.theory.categories['tags']
 		
 		self.redirect(return_to)
 		return
@@ -689,7 +698,7 @@ class EventHandler(Handler):
 				if a_val == '':
 					del new_event_details[a_key]
 
-			ksu = prepareInputForSaving(ksu, new_event_details)
+			ksu = prepareInputForSaving(self.theory, ksu, new_event_details)
 			ksu.put()
 
 			self.response.out.write(json.dumps({
@@ -1089,7 +1098,7 @@ class PopulateRandomTheory(Handler):
 				#Loads OS Ksus
 				for post_details in os_ksus:
 					ksu = KSU(theory=theory.key)
-					ksu = prepareInputForSaving(ksu, post_details)
+					ksu = prepareInputForSaving(theory, ksu, post_details)
 					ksu.put()
 
 				self.login(theory)
@@ -1356,7 +1365,7 @@ def update_next_event(self, user_action, post_details, ksu):
 
 	return		
 
-def prepareInputForSaving(ksu, post_details):
+def prepareInputForSaving(theory, ksu, post_details):
 
 	def determine_ksu_subtype(ksu, post_details):
 
@@ -1428,9 +1437,12 @@ def prepareInputForSaving(ksu, post_details):
 				a_val = True
 			d_repeats_on[a_key] = a_val
 
-		if a_type =='user_tags':
-			a_val = prepare_tags_for_saving(a_val)[0]
+		if a_type =='user_tags': #xx
+			a_val, tags = prepare_tags_for_saving(a_val)
 			setattr(ksu, a_key, a_val.encode('utf-8'))
+			update_user_tags(theory, tags)
+			theory.categories['tags'] = update_user_tags(theory, tags)
+			theory.put()
 
 	setattr(ksu, 'repeats_on', d_repeats_on)
 	
@@ -1489,6 +1501,15 @@ def prepare_tags_for_saving(tags_string):
 			final_tags_string += ', '
 
 	return final_tags_string, tags
+
+def update_user_tags(theory, tags):
+
+	current_tags = theory.categories['tags']
+	for tag in tags:
+		if tag not in current_tags:
+			current_tags.append(tag)
+	return sorted(current_tags)
+	
 
 
 
