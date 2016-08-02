@@ -23,7 +23,7 @@ d_attributeType = {
 	'ksu_type':'string',
 	'ksu_subtype':'string',
 
-	'tags':'string',
+	'tags':'user_tags',
 	'global_category':'string',
 	'local_category':'string',
 	'parent_id':'ndb_key', 		

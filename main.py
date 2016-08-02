@@ -1423,6 +1423,10 @@ def prepareInputForSaving(ksu, post_details):
 				a_val = True
 			d_repeats_on[a_key] = a_val
 
+		if a_type =='user_tags':
+			a_val = prepare_tags_for_saving(a_val)[0]
+			setattr(ksu, a_key, a_val.encode('utf-8'))
+
 	setattr(ksu, 'repeats_on', d_repeats_on)
 	
 	ksu.ksu_subtype = determine_ksu_subtype(ksu, post_details)
@@ -1454,11 +1458,34 @@ def remplaza_acentos(palabra):
 		['Ñ','N'],
 		['ñ','n'],
 	]
-
+	palabra = palabra.encode('utf-8')
+	palabra = palabra.decode('utf-8')
 	for letra in letras_a_remplazar:
 		palabra = palabra.replace(letra[0].decode('utf-8'),letra[1])
 
 	return palabra
+
+def prepare_tags_for_saving(tags_string):
+
+	tags_string = remplaza_acentos(tags_string)
+	valid_characters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','_',',']
+	clean_tags_string = ''
+	for i in range(0,len(tags_string)):
+		character = tags_string[i]
+		if character in valid_characters:
+			clean_tags_string += character
+	tags = clean_tags_string.split(',')
+	final_tags_string = ''
+	i = len(tags)
+	for tag in tags:
+		i -= 1
+		final_tags_string += tag
+		if i > 0:
+			final_tags_string += ', '
+
+	return final_tags_string, tags
+
+
 
 #--- Validation and security functions ----------
 secret = 'elzecreto'
