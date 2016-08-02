@@ -829,6 +829,8 @@ class EventHandler(Handler):
 
 		if user_action in ['MissionDelete', 'ViewerDelete']:
 			ksu.in_graveyard = True
+			if ksu_subtype in ['Gene','KAS2']:
+				ksu.is_deleted = True
 			ksu.put()
 
 		if user_action == 'GraveyardReanimate':

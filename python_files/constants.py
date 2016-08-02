@@ -23,6 +23,7 @@ d_attributeType = {
 	'ksu_type':'string',
 	'ksu_subtype':'string',
 
+	'tags':'string',
 	'global_category':'string',
 	'local_category':'string',
 	'parent_id':'ndb_key', 		
@@ -57,7 +58,7 @@ d_SetTitles = {
 	'Today':"Today's Mission",
 	'Upcoming':'Upcoming',
 	'SomedayMaybe': 'Someday Maybe', 
-	'Gene': 'Unassigned KSUs',
+	'Gene': 'In-Basket',
 	'KeyA': 'Key Actions Set',
 	# 'MinO': '02. Mini Objective',
 	'Obje': 'Objectives',

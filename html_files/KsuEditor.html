@@ -24,7 +24,7 @@
 
 		<label> KSU Type </label>
 		<select class="form-control" name="ksu_type" id="ksu_type">
-			{% for type in constants['l_KsuTypes'] %}
+			{% for type in constants['l_KsuTypes'] %}		
 				{% if type[0] == ksu.ksu_type %}
 					<option selected="selected" value="{{type[0]}}"> {{type[1]}} </option>
 				{% else %}
@@ -424,47 +424,30 @@
 
 	
 <hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">		
-<div class="form-group" id="FooterClasificationAttributes">
-
-	<div class="col-xs-4">
-		<label> Global Category </label>
-			<select class="form-control" name="global_category" id="global_category">
-				{% for category in categories['Global'] %}
-					{% if category == ksu.global_category %}
-						<option selected="selected" value="{{category}}">{{category}}</option>
-					{% else %}
-						<option value="{{category}}"> {{category}} </option>
-					{% endif %}
-				{% endfor %}
-			</select>
-	</div>
-
-	<div class="col-xs-4">
-		<label> Local Category </label>
-			<select class="form-control" name="local_category" id="local_category">
-				{% for category in categories[ksu.ksu_type] %}
-					{% if category == ksu.local_category %}
-						<option selected="selected" value="{{category}}">{{category}}</option>
-					{% else %}
-						<option value="{{category}}"> {{category}} </option>
-					{% endif %}
-				{% endfor %}
-			</select>
-	</div>
-
-	<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-		<label> Parent KSU </label>
-		<input type="text" class="form-control" name="parent_ksu" placeholder="Lookuplaceholder..." value="">
-	</div>	
-</div>
 
 <div class="form-group" id="FooterCommentsAndCheckboxes">
-	<div class="col-xs-8">
-		<label> Comments </label>
-		<textarea class="form-control" name="comments">{% if ksu and ksu.comments %}{{ksu.comments}}{% endif %}</textarea> 
+	<div class="col-xs-9">
+		<div class="row">
+			<div class="col-xs-3 text-right">
+				<b>Tags</b>
+			</div>	
+			<div class="col-xs-9" style="padding-left:0;">
+			<textarea class="form-control autoExpand" rows="1" data-min-rows='1' name="tags" placeholder="Tags - Please sparate using comas">{% if ksu and ksu.tags %}{{ksu.tags}}{% endif %}</textarea> 
+			</div>
+		</div>
+		<div class="row" style="margin-top:10px;">
+			<div class="col-xs-3 text-right">
+				<b>Comments</b>
+			</div>	
+			<div class="col-xs-9" style="padding-left:0;">			
+			<textarea class="form-control autoExpand" rows="1" data-min-rows='1' name="comments" placeholder="Comments - Anything to add?">{% if ksu and ksu.comments %}{{ksu.comments}}{% endif %}</textarea> 
+			</div>
+		</div>
+
+
 	</div>
 
-	<div class="col-xs-4">
+	<div class="col-xs-3">
 
 		<div class="checkbox"> 
 			<label> <input type="checkbox" name="is_active" {% if not ksu %}checked{% elif ksu and ksu.is_active %}checked{% endif %}> <b> Active </b> </label> 
