@@ -718,12 +718,17 @@ class EventHandler(Handler):
 
 			if kpts_type == 'Stupidity':
 				active_log.Stupidity -= score
+				score = score * (-1)
 				
 			elif kpts_type == 'SmartEffort':
 				active_log.SmartEffort -= score
 
+			else:
+				score = 0
+
 			new_SmartEffort = active_log.SmartEffort
 			new_Stupidity = active_log.Stupidity
+
 
 			minimum_daily_effort = self.theory.kpts_goals['minimum_daily_effort']			
 			new_EffortReserve = EffortReserve - score
