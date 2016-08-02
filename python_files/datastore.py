@@ -54,13 +54,11 @@ class KSU(ndb.Model):
 	comments = ndb.TextProperty()
 	ksu_type = ndb.StringProperty()
 	ksu_subtype = ndb.StringProperty()
+	kpts_value = ndb.FloatProperty()
 
 	global_category = ndb.StringProperty()
 	local_category = ndb.StringProperty()
 	parent_id = ndb.KeyProperty() # Ahora me esta dando un error porque lo estoy ligando a la misma clase que estoy definiendo
-
-	kpts_value = ndb.FloatProperty()
-	is_special = ndb.BooleanProperty(default=False)
 		
 	is_active = ndb.BooleanProperty(default=True)
 	is_critical = ndb.BooleanProperty(default=False)

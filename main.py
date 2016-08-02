@@ -549,8 +549,10 @@ class KsuEditor(Handler):
 				setattr(ksu, a_key, datetime.strptime(a_val, '%H:%M').time())
 				setattr(ksu, 'pretty_'+a_key, a_val)
 
-			if a_type == 'checkbox':
-				setattr(ksu, a_key, True)
+			if a_type == 'checkbox':	
+				if a_val == 'on':
+					a_val = True
+				setattr(ksu, a_key, a_val)
 
 			if a_type == 'checkbox_repeats_on':
 				d_repeats_on[a_key] = True
@@ -612,7 +614,9 @@ class SetViewer(Handler):
 			else:
 				ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(KSU.created).fetch()
 		
-		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name)
+		
+		categories = self.theory.categories # por el quick adder
+		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, categories=categories) #
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -767,11 +771,18 @@ class EventHandler(Handler):
 			print 'Si llego el AJAX Request. User action: ' + user_action + '. Event details: ' +  str(event_details)
 			print
 			
-			ksu = KSU(theory=self.theory.key)
+			ksu = KSU(theory=self.theory.key) #xx
 			event_details['is_active'] = True
-			if 'best_time' in event_details and not event_details['best_time']:
-				del event_details['best_time']
-			ksu = prepareInputForSaving(ksu, event_details)
+
+			new_event_details = event_details.copy()
+			for a_key in event_details:
+				a_val = event_details[a_key]
+				if a_val == '':
+					del new_event_details[a_key]
+
+			# if 'best_time' in event_details and not event_details['best_time']:
+			# 	del event_details['best_time']
+			ksu = prepareInputForSaving(ksu, new_event_details)
 			ksu.put()
 
 			self.response.out.write(json.dumps({
@@ -1430,7 +1441,9 @@ def prepareInputForSaving(ksu, post_details):
 			setattr(ksu, 'pretty_'+a_key, a_val)
 
 		if a_type == 'checkbox':
-			setattr(ksu, a_key, True)
+			if a_val == 'on':
+				a_val = True
+			setattr(ksu, a_key, a_val)
 
 		if a_type == 'checkbox_repeats_on':
 			d_repeats_on[a_key] = True

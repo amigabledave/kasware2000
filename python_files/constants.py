@@ -150,7 +150,7 @@ d_SetViewerDetails = {
 	
 	'Gene':{},
 
-	'KeyA':{},
+	'KeyA':{'QuickAdd':{'description_placeholder':'Describe your new key action'}},
 
 	'KAS1':{
 		'attributes': ['pretty_next_event'],

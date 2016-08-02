@@ -166,6 +166,8 @@ $('input[type=radio][name=ksu_subtype]').on('change',function(){
 		$('#KeyA_KAS4').addClass('hidden');
 		
 	}
+
+	$('#NewKSU').attr("ksusubtype", this.value);
 });
 
 
@@ -311,20 +313,41 @@ $('.SaveNewKSUButton').on('click', function(){
 	var best_time = ksu.find('#best_time').val();
 	var kpts_value = ksu.find('#kpts_value option:selected').val();
 
+	var global_category = ksu.find('#global_category').val();
+	var local_category = ksu.find('#local_category').val();
+		
+	var frequency = ksu.find('#frequency').val();
+	var repeats = ksu.find('#repeats').val();		
+
+	var is_active = ksu.find('#is_active').is(':checked');
+	var is_critical = ksu.find('#is_critical').is(':checked');
+	var is_private = ksu.find('#is_private').is(':checked');
+	
+	var repeats_on_Mon = ksu.find('#repeats_on_Mon');
+	var repeats_on_Tue = ksu.find('#repeats_on_Tue'); 
+	var repeats_on_Wed = ksu.find('#repeats_on_Wed'); 
+	var repeats_on_Thu = ksu.find('#repeats_on_Thu');
+	var repeats_on_Fri = ksu.find('#repeats_on_Fri');
+	var repeats_on_Sat = ksu.find('#repeats_on_Sat');
+	var repeats_on_Sun = ksu.find('#repeats_on_Sun');
+
+
+	console.log('Asi se ve un checkbox');
+	if(ksu.find('#is_critical').is(':checked')){
+		console.log(ksu.find('#is_critical').is(':checked'))
+	} else {
+		console.log('No es critico!')
+	};
+
+	// var checkboxes = [is_active, is_critical, is_private]
+	
 	if (description == ''){
 		description = ksu.find('#description').text();
 		secondary_description = ksu.find('#secondary_description').text();
 	};
 
 	ksu.fadeOut("slow")
-	// ksu.animate({
-	// 	"opacity" : "0",
-	// 	},{
-	// 		"complete" : function() {
-	// 		ksu.remove();
-	// 		}
-	// 	});
-
+	
 	$.ajax({
 		type: "POST",
 		url: "/EventHandler",
@@ -338,7 +361,25 @@ $('.SaveNewKSUButton').on('click', function(){
 			'secondary_description':secondary_description,
 			'next_event':next_event,
 			'best_time':best_time,
-			'kpts_value': kpts_value
+			'kpts_value': kpts_value,
+
+			'global_category ':global_category, 
+			'local_category':local_category, 
+		
+			'is_active':is_active,
+			'is_critical':is_critical, 
+			'is_private':is_private,
+
+			'frequency':frequency,
+			'repeats':repeats,
+	
+			// 'repeats_on_Mon':repeats_on_Mon,
+			// 'repeats_on_Tue':repeats_on_Tue,
+			// 'repeats_on_Wed':repeats_on_Wed,
+			// 'repeats_on_Thu':repeats_on_Thu,
+			// 'repeats_on_Fri':repeats_on_Fri,
+			// 'repeats_on_Sat':repeats_on_Sat,
+			// 'repeats_on_Sun':repeats_on_Sun
 		})
 	})
 	.done(function(data){
