@@ -9,10 +9,10 @@
 
 {% for event in history %}
 
-<div class="row KSUdisplaySection" id="MissionKSU" value="{{event.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+<div class="row KSUdisplaySection" id="ViewerEvent" value="{{event.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 <form method="post">
 <input type="text" class="form-control hidden" name="event_id" id="event_id" value="{{event.key.id()}}">
-	<div class="col-xs-12">
+	<div class="col-xs-11">
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="row">
@@ -40,6 +40,9 @@
 			</div>
 
 		</div>
+	</div>
+	<div class="col-xs-1" style="padding:5px;">
+		<button type="button" class="btn btn-danger btn-circle btn-lg DeleteEventButton" name="action_description" value='DeleteEvent'"><span class="glyphicon glyphicon-trash"></span></button>
 	</div>
 </form>		
 </div>

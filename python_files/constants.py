@@ -148,7 +148,7 @@ d_repeats_legend = {
 
 d_SetViewerDetails = {
 	
-	'Gene':{},
+	'Gene':{'QuickAdd':{'description_placeholder':'Describe your new KASware Standard Unit'}},
 
 	'KeyA':{'QuickAdd':{'description_placeholder':'Describe your new Key Action'}},
 

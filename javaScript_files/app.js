@@ -404,6 +404,42 @@ $('.SaveNewKSUButton').on('click', function(){
 });
 
 
+$('.DeleteEventButton').on('click', function(){
+	var event = $(this).closest('#ViewerEvent');
+	var event_id = event.attr("value");
+		
+	event.fadeOut("slow")
+	
+	$.ajax({
+		type: "POST",
+		url: "/EventHandler",
+		dataType: 'json',
+		data: JSON.stringify({
+			'user_action': 'DeleteEvent',
+			'event_id': event_id,
+		})
+	})
+	.done(function(data){
+		console.log(data);
+
+		var PointsToGoal = data['PointsToGoal'];
+
+		if ( PointsToGoal <= 0){
+			PointsToGoal = 'Achieved!'
+		}; 
+	
+		$('#PointsToGoal').text(' ' + PointsToGoal);
+		$('#EffortReserve').text(' ' + data['EffortReserve']);
+		$('#Streak').text(' ' + data['Streak']);
+	
+	});
+});
+
+
+
+
+
+
 $(document).on('click', '.ShowDetailViewerButton', function(){
 // $('.ShowDetailViewerButton').on('click', function(){
 	var ksu = $(this).closest('#MissionKSU');

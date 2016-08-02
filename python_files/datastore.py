@@ -70,7 +70,7 @@ class KSU(ndb.Model):
 
 	next_event = ndb.DateProperty()
 	pretty_next_event = ndb.StringProperty()
-	frequency = ndb.IntegerProperty()
+	frequency = ndb.IntegerProperty(default=1)
 	repeats = ndb.StringProperty() # KAS1 Specific		
 	repeats_on = ndb.JsonProperty() #Day's of the week when it repeats if the frequency is Weekly, elese the repetition date is the same day of the month or year
 	best_time = ndb.TimeProperty()
@@ -90,6 +90,7 @@ class Event(ndb.Model):
 	ksu_id = ndb.KeyProperty(kind=KSU, required=True)	
 	created = ndb.DateTimeProperty(auto_now_add=True)	
 	last_modified = ndb.DateTimeProperty(auto_now=True)
+	is_deleted = ndb.BooleanProperty(default=False)
 
 	# base properties
 	user_date_date = ndb.DateTimeProperty(auto_now_add=True)	

@@ -266,7 +266,6 @@ class SignUpLogIn(Handler):
 				categories = {
 					'Global':[
 						'Unassigned',
-						'0. End Value',
 						'1. Inner Peace & Consciousness',
 						'2. Fun & Exciting Situations', 	
 						'3. Meaning & Direction',
@@ -482,103 +481,13 @@ class KsuEditor(Handler):
 		return_to = determine_return_to(self)
 		
 		if user_action == 'SaveChanges':
-			print
-			print 'REQUEST TO SAVE KSU:'
-			print 'POST DETAILS:'
-			print post_details
-			print
 
-			ksu = self.prepareInputForSaving(ksu, post_details)
+			ksu = prepareInputForSaving(ksu, post_details) #BUG ALERT! Hice que esta funcion fuera global - veamos si esto causa issues
 			update_next_event(self, user_action, post_details, ksu)
-			print 'Asi queda el KSU'
-			print ksu
 			ksu.put()
 		
 		self.redirect(return_to)
-
-		# self.write(post_details)
 		return
-
-
-
-
-	def prepareInputForSaving(self, ksu, post_details):
-
-		l_checkbox_attribute = [ 'is_active', 
-								 'is_critical', 
-								 'is_private']
-
-		d_repeats_on = {
-			'repeats_on_Mon': False,
-			'repeats_on_Tue': False, 
-			'repeats_on_Wed': False, 
-			'repeats_on_Thu': False,
-			'repeats_on_Fri': False,
-			'repeats_on_Sat': False,
-			'repeats_on_Sun': False}
-
-		for attribute in l_checkbox_attribute:
-			setattr(ksu, attribute, False)
-
-		d_attributeType = constants['d_attributeType']
-
-		for a_key in post_details:
-
-			a_val = post_details[a_key]
-			a_type = None
-			
-			if a_key in d_attributeType:
-				a_type = d_attributeType[a_key]
-			
-			if a_type == 'string':
-				setattr(ksu, a_key, a_val.encode('utf-8'))
-
-			if a_type == 'integer':
-				setattr(ksu, a_key, int(a_val))
-
-			if a_type == 'float':
-				setattr(ksu, a_key, float(a_val))
-
-			if a_type == 'date':
-				setattr(ksu, a_key, datetime.strptime(a_val, '%Y-%m-%d'))
-				if a_key == 'next_event':
-					setattr(ksu, 'pretty_'+a_key, datetime.strptime(a_val, '%Y-%m-%d').strftime('%a, %b %d, %Y'))
-
-			if a_type == 'time':
-				a_val = a_val[0:5]
-				setattr(ksu, a_key, datetime.strptime(a_val, '%H:%M').time())
-				setattr(ksu, 'pretty_'+a_key, a_val)
-
-			if a_type == 'checkbox':	
-				if a_val == 'on':
-					a_val = True
-				setattr(ksu, a_key, a_val)
-
-			if a_type == 'checkbox_repeats_on':
-				d_repeats_on[a_key] = True
-
-		setattr(ksu, 'repeats_on', d_repeats_on)
-		
-		ksu.ksu_subtype = self.determine_ksu_subtype(ksu, post_details)
-
-		if ksu.ksu_subtype == 'ImPe':
-			ksu.secondary_description = 'Contact ' + ksu.description
-
-		return ksu
-
-	def determine_ksu_subtype(self, ksu, post_details):
-
-		ksu_type = ksu.ksu_type
-
-		if 'ksu_subtype' in post_details:
-			ksu_subtype = post_details['ksu_subtype']
-		else:
-			ksu_subtype = ksu_type
-		
-		if ksu_subtype == 'OTOA':
-			ksu_subtype = 'KAS2'
-
-		return ksu_subtype
 
 
 class Home(Handler):
@@ -771,7 +680,7 @@ class EventHandler(Handler):
 			print 'Si llego el AJAX Request. User action: ' + user_action + '. Event details: ' +  str(event_details)
 			print
 			
-			ksu = KSU(theory=self.theory.key) #xx
+			ksu = KSU(theory=self.theory.key)
 			event_details['is_active'] = True
 
 			new_event_details = event_details.copy()
@@ -780,8 +689,6 @@ class EventHandler(Handler):
 				if a_val == '':
 					del new_event_details[a_key]
 
-			# if 'best_time' in event_details and not event_details['best_time']:
-			# 	del event_details['best_time']
 			ksu = prepareInputForSaving(ksu, new_event_details)
 			ksu.put()
 
@@ -792,6 +699,49 @@ class EventHandler(Handler):
 				# 'next_event': ksu.next_event,
 				'kpts_value':ksu.kpts_value
 				}))
+			return
+
+		if user_action == 'DeleteEvent':
+			print
+			print 'Si llego el AJAX Request. User action: ' + user_action + '. Event details: ' +  str(event_details)
+			print
+			
+			event = Event.get_by_id(int(event_details['event_id']))
+			kpts_type = event.kpts_type
+			score = event.score
+
+			if kpts_type == 'Stupidity':
+				score = -score
+			elif kpts_type != 'SmartEffort':
+				score = 0 
+
+
+			
+			active_log = self.active_log
+			EffortReserve = active_log.EffortReserve
+			PointsToGoal = active_log.PointsToGoal
+			Goal = active_log.Goal
+			SmartEffort = active_log.SmartEffort
+			Stupidity = active_log.Stupidity
+
+			minimum_daily_effort = self.theory.kpts_goals['minimum_daily_effort']			
+			new_EffortReserve = EffortReserve - score
+			
+			new_PointsToGoal = Goal - SmartEffort + Stupidity + score
+			
+			# if new_PointsToGoal
+			# goal_achieved #xx
+
+
+						
+
+			event.is_deleted = True
+			event.put()
+			
+
+
+			print 'Event is deleted?'
+			print event.is_deleted
 			return
 
 		ksu = KSU.get_by_id(int(event_details['ksu_id']))
@@ -868,7 +818,7 @@ class EventHandler(Handler):
 			ksu.put()
 
 
-		self.update_active_log(event)
+		self.update_active_log(event)#xx
 		event.put()		
 
 		active_log = self.active_log
@@ -1036,7 +986,6 @@ class PopulateRandomTheory(Handler):
 				categories = {
 					'Global':[
 						'Unassigned',
-						'0. End Value',
 						'1. Inner Peace & Consciousness',
 						'2. Fun & Exciting Situations', 	
 						'3. Meaning & Direction',
@@ -1192,7 +1141,7 @@ def adjust_post_details(post_details):
 			details[attribute] = value
 	return details
 
-def determine_return_to(self): #xx
+def determine_return_to(self):
 
 	return_to = self.request.get('return_to')
 	if not return_to:
@@ -1459,6 +1408,9 @@ def prepareInputForSaving(ksu, post_details):
 
 	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe','EVPo', 'RealitySnapshot', 'OpenPerception', 'FibonacciPerception', 'BinaryPerception'] and not ksu.next_event:
 		ksu.next_event = datetime.today() - timedelta(days=1)
+
+	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe','EVPo', 'RealitySnapshot', 'OpenPerception', 'FibonacciPerception', 'BinaryPerception'] and not ksu.frequency:
+		ksu.frequency = 1
 
 	return ksu
 
