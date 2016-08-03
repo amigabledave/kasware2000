@@ -354,21 +354,21 @@
 			<div class="col-xs-11">
 
 				<div class="row"">
-					<div class="col-xs-11" style="font-size:14px; padding-right:0;">
+					<div class="col-xs-11" style="font-size:14px;">
 						<div>
 						{% if ksu.ksu_subtype == 'KAS3' %}	
-							<span style="color:blue; font-style:italic; font-weight:bold; ; font-size:12px;">When: </span>
+							<span style="color:blue; font-style:italic; font-weight:bold; font-size:12px;">When: </span>
 							<span style="{% if ksu.is_critical %}color:red;{% endif %}"><span id="is_active" style="{% if not ksu.is_active %}color:#D3D3D3;{% endif %}"> 
-							<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea></span></span>
+							<textarea style="width:100%; border:0; font-weight:bold;" class="QuickAttributeUpdate autoExpand" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea></span></span>
 							<span style="color:blue; font-style:italic; font-weight:bold;">I will: </span>
 						{% endif %}
 
 						{% if ksu.ksu_subtype == 'KAS4' %}	
-							<span style="color:blue; font-style:italic; font-weight:bold; ; font-size:12px;"> Must avoid:</span> 
+							<span style="color:blue; font-style:italic; font-weight:bold; font-size:12px;"> Must avoid:</span> 
 						{% endif %}								
 
 						<span style="{% if ksu.is_critical %}color:red;{% endif %}"><span id="is_active" style="{% if not ksu.is_active %}color:#D3D3D3;{% endif %}">
-						<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea></span></span>
+						<textarea style="width:100%; border:0; font-weight:bold;" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea></span></span>
 
 						
 						{% if ksu.ksu_type in ['ImIn', 'Obje'] %}
