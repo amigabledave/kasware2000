@@ -263,42 +263,6 @@ class SignUpLogIn(Handler):
 						'yearly_shit_happens_days': 6,
 						'minimum_daily_effort':20}
 
-				categories = {
-					'Global':[
-						'Unassigned',
-						'1. Inner Peace & Consciousness',
-						'2. Fun & Exciting Situations', 	
-						'3. Meaning & Direction',
-						'4. Health & Vitality', 
-						'5. Love & Friendship', 
-						'6. Knowledge & Skills', 
-						'7. Outer Order & Peace', 
-						'8. Stuff',
-						'9. Money & Power'],
-					'Gene': ['Unassigned'],
-					'KeyA': ['Unassigned'],
-					'Obje': ['Unassigned'],
-					'Wish': [	
-						'Unassigned',	
-						'01. Being',
-						'02. Having',
-						'03. Doing',
-						'04. Geting done',
-						'05. TV Show',
-						'06. Movie',
-						'07. Tesis',
-						'08. Novel',
-						'09. Video Game',
-						'10. Board Game',
-						'11. City'],	
-					'Prin': ['Unassigned'],
-					'EVPo': ['Unassigned'],
-					'ImPe': ['Unassigned'],
-					'RTBG': ['Unassigned'],
-					'Idea': ['Unassigned'],
-					'NoAR': ['Unassigned'],
-					'MoRe': ['Unassigned'],
-					'ImIn': ['Unassigned']}
 
 				theory = Theory(
 					email=post_details['email'], 
@@ -309,7 +273,7 @@ class SignUpLogIn(Handler):
 					timezone=-4,
 					kpts_goals_parameters=kpts_goals_parameters,
 					kpts_goals=calculate_user_kpts_goals(kpts_goals_parameters),
-					categories=categories,
+					categories={'tags':[]},
 					last_DailyLog = datetime.today().toordinal())
 
 				theory.put()
@@ -491,9 +455,6 @@ class KsuEditor(Handler):
 			ksu = prepareInputForSaving(self.theory, ksu, post_details) #BUG ALERT! Hice que esta funcion fuera global - veamos si esto causa issues
 			update_next_event(self, user_action, post_details, ksu)
 			ksu.put()
-			print#xx
-			print 'Asi se ven las tags del usuario en este momento'
-			print self.theory.categories['tags']
 		
 		self.redirect(return_to)
 		return
@@ -533,8 +494,8 @@ class SetViewer(Handler):
 				ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(KSU.created).fetch()
 		
 		
-		categories = self.theory.categories # por el quick adder
-		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, categories=categories) #
+		tags = categories = self.theory.categories['tags'] # por el quick adder
+		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags) #
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -1021,43 +982,6 @@ class PopulateRandomTheory(Handler):
 						'yearly_shit_happens_days': 6,
 						'minimum_daily_effort':20}
 
-				categories = {
-					'Global':[
-						'Unassigned',
-						'1. Inner Peace & Consciousness',
-						'2. Fun & Exciting Situations', 	
-						'3. Meaning & Direction',
-						'4. Health & Vitality', 
-						'5. Love & Friendship', 
-						'6. Knowledge & Skills', 
-						'7. Outer Order & Peace', 
-						'8. Stuff',
-						'9. Money & Power'],
-					'Gene': ['Unassigned'],
-					'KeyA': ['Unassigned'],
-					'Obje': ['Unassigned'],
-					'Wish': [	
-						'Unassigned',	
-						'01. Being',
-						'02. Having',
-						'03. Doing',
-						'04. Geting done',
-						'05. TV Show',
-						'06. Movie',
-						'07. Tesis',
-						'08. Novel',
-						'09. Video Game',
-						'10. Board Game',
-						'11. City'],	
-					'Prin': ['Unassigned'],
-					'EVPo': ['Unassigned'],
-					'ImPe': ['Unassigned'],
-					'RTBG': ['Unassigned'],
-					'Idea': ['Unassigned'],
-					'NoAR': ['Unassigned'],
-					'MoRe': ['Unassigned'],
-					'ImIn': ['Unassigned']}
-
 				theory = Theory(
 					email=post_details['email'], 
 					password_hash=password_hash, 
@@ -1067,7 +991,7 @@ class PopulateRandomTheory(Handler):
 					timezone=-4,
 					kpts_goals_parameters=kpts_goals_parameters,
 					kpts_goals=calculate_user_kpts_goals(kpts_goals_parameters),
-					categories=categories,
+					categories={'tags':[]},
 					last_DailyLog = datetime.today().toordinal())
 
 				theory.put()
@@ -1146,8 +1070,7 @@ class PopulateRandomTheory(Handler):
 				new_ksu = KSU(
 					theory=theory_key,
 					description=description,
-					secondary_description=secondary_description,
-					global_category = 'Unassigned')
+					secondary_description=secondary_description)
 
 				for a_key in set_details:
 					a_val = set_details[a_key]

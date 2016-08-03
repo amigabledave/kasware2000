@@ -1,30 +1,3 @@
-var userCategories = {
-	'Gene': ['Unassigned'],
-	'KeyA': ['Unassigned'],
-	'Obje': ['Unassigned'],
-	'Wish': [	
-		'Unassigned',	
-		'01. Being',
-		'02. Having',
-		'03. Doing',
-		'04. Geting done',
-		'05. TV Show',
-		'06. Movie',
-		'07. Tesis',
-		'08. Novel',
-		'09. Video Game',
-		'10. Board Game',
-		'11. City'],	
-	'Prin': ['Unassigned'],
-	'EVPo': ['Unassigned'],
-	'ImPe': ['Unassigned'],
-	'RTBG': ['Unassigned'],
-	'Idea': ['Unassigned'],
-	'NoAR': ['Unassigned'],
-	'MoRe': ['Unassigned'],
-	'ImIn': ['Unassigned']}
-
-
 $('.DummyInput').on('change',function(){
 	
 	var ksu_attr = $(this).attr("ksuattr");
@@ -134,14 +107,6 @@ $('#ksu_type').on('change',function(){
 	}
 
 	$('#KsuEditorTitle').text(d_EditorTitle[this.value]);
-
-	var new_catDropdown = '<select class="form-control" name="local_category" id="local_category">';	
-	local_categories = userCategories[this.value];
-	for( c in local_categories){
-		new_catDropdown = new_catDropdown + '<option value="' + local_categories[c] + '">' + local_categories[c] + '</option>'
-	}
-	new_catDropdown = new_catDropdown + '</select>'
-	$('#local_category').replaceWith(new_catDropdown);
 });
 
 
@@ -313,9 +278,9 @@ $('.SaveNewKSUButton').on('click', function(){
 	var best_time = ksu.find('#best_time').val();
 	var kpts_value = ksu.find('#kpts_value option:selected').val();
 
-	var global_category = ksu.find('#global_category').val();
-	var local_category = ksu.find('#local_category').val();
-		
+	var tags = ksu.find('#tags_value').val();
+	var comments = ksu.find('#comments').val();
+
 	var frequency = ksu.find('#frequency').val();
 	var repeats = ksu.find('#repeats').val();		
 
@@ -356,8 +321,8 @@ $('.SaveNewKSUButton').on('click', function(){
 			'best_time':best_time,
 			'kpts_value': kpts_value,
 
-			'global_category ':global_category, 
-			'local_category':local_category, 
+			'tags':tags,
+			'comments':comments, 
 		
 			'is_active':is_active,
 			'is_critical':is_critical, 
@@ -392,7 +357,7 @@ $('.SaveNewKSUButton').on('click', function(){
 		new_ksu.find('#KsuKpts').text(kpts_value);
 		new_ksu.find('#pretty_best_time').text(best_time);
 
-		new_ksu.find('#global_category').text(global_category);
+		new_ksu.find('#tags').text(tags);
 		new_ksu.find('#ksu_subtype').text(ksu_subtype);
 
 		new_ksu.removeClass('hidden');

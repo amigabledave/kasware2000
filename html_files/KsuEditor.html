@@ -428,13 +428,8 @@
 <div class="form-group" id="FooterCommentsAndCheckboxes">
 	<div class="col-xs-8">
 		<div class="row">
-<!-- 			<div class="col-xs-3 text-right">
-				<b>Tags</b>
-			</div>	 -->
 			<div class="col-xs-12">
-<!-- 			<textarea class="form-control autoExpand" rows="1" data-min-rows='1' name="tags" placeholder="Tags - Please sparate using comas">{% if ksu and ksu.tags %}{{ksu.tags}}{% endif %}</textarea> 
- -->
-				<input class="form-control" list="tags" name="tags" placeholder="Tags - Please sparate using comas" value="{% if ksu and ksu.tags %}{{ksu.tags}}{% endif %}">
+ 				<input class="form-control" list="tags" name="tags" placeholder="Tags - Please sparate using comas" value="{% if ksu and ksu.tags %}{{ksu.tags}}{% endif %}">
 				<datalist id="tags">
 					{% for tag in tags %}
 						<option value="{{tag}}">
@@ -443,15 +438,10 @@
 			</div>
 		</div>
 		<div class="row" style="margin-top:10px;">
-<!-- 			<div class="col-xs-3 text-right">
-				<b>Comments</b>
-			</div>	 -->
 			<div class="col-xs-12">			
-			<textarea class="form-control autoExpand" rows="1" data-min-rows='1' name="comments" placeholder="Comments - Anything to add?">{% if ksu and ksu.comments %}{{ksu.comments}}{% endif %}</textarea> 
+				<textarea class="form-control autoExpand" rows="1" data-min-rows='1' name="comments" placeholder="Comments - Anything to add?">{% if ksu and ksu.comments %}{{ksu.comments}}{% endif %}</textarea> 
 			</div>
 		</div>
-
-
 	</div>
 
 	<div class="col-xs-4">

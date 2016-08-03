@@ -220,25 +220,26 @@
 	<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:8px;">		
 	<div class="row" id="FooterClasificationAttributes">
 
-		<div class="col-xs-4">
-			<label> Global Category </label>
-				<select class="form-control" name="global_category" id="global_category">
-					{% for category in categories['Global'] %}
-						<option value="{{category}}"> {{category}} </option>
-					{% endfor %}
-				</select>
+		<div class="col-xs-9">
+			<div class="row">
+				<div class="col-xs-12">				
+					<input class="form-control" list="tags" name="tags" id="tags_value" placeholder="Tags - Please sparate using comas">
+					<datalist id="tags">
+						{% for tag in tags %}
+							<option value="{{tag}}">
+						{% endfor %}
+					</datalist>
+				</div>
+			</div>
+
+			<div class="row" style="margin-top:10px;">
+				<div class="col-xs-12">
+				<textarea class="form-control autoExpand" rows="1" data-min-rows='1' id="comments" placeholder="Comments - Anything to add?"></textarea>
+				</div>
+			</div>
 		</div>
 
-		<div class="col-xs-4">
-			<label> Local Category </label>
-				<select class="form-control" name="local_category" id="local_category">
-					{% for category in categories[set_name] %}
-						<option value="{{category}}"> {{category}} </option>
-					{% endfor %}
-				</select>
-		</div>
-
-		<div class="col-xs-2">
+		<div class="col-xs-3">
 			<div class="checkbox"> 
 				<label> <input type="checkbox" id="is_active" checked> <b> Active </b> </label> 
 			</div>
@@ -246,8 +247,7 @@
 			<div class="checkbox"> 
 				<label> <input type="checkbox" id="is_critical"> <b> Critical </b> </label> 
 			</div>
-		</div>
-		<div class="col-xs-2" style="padding-left:0;">
+
 			<div class="checkbox"> 
 	 			<label> <input type="checkbox" id="is_private"> <b> Private </b> </label> 
 	 		</div>
@@ -278,7 +278,7 @@
 					<br>
 					<div class="col-xs-12">
 						<label class="displaySectionBulletContent">
-						<span id="global_category"></span>
+						<span id="tags"></span>
 								<br>	
 						<div class="displaySectionBulletContent"> 
 						<span id="ksu_subtype"></span>	
@@ -373,17 +373,20 @@
 					<br>
 					<div class="col-xs-{% if ksu.ksu_type == 'RTBG' %}12{% else %}6{% endif %}">
 						<label class="displaySectionBulletContent">
-							{% if ksu.global_category != 'Unassigned' and ksu.global_category %}
-								{{ksu.global_category}}
+							{% if ksu.tags %}
+								{{ksu.tags}}
 							{% else %}
 								<br>
 							{% endif %}
 						<div class="displaySectionBulletContent"> 
-							{% if ksu.ksu_subtype %}
+						{% if ksu.ksu_subtype != 'Gene' %}
+
+							{% if ksu.ksu_subtype != 'Gene' %}
 								{{constants['d_KsuSubtypes'][ksu.ksu_subtype]}}
 							{% else %}
 								{{constants['d_KsuTypes'][ksu.ksu_type]}}
 							{% endif %}
+						{% endif %}
 						</div>
 						</label>
 					</div>	

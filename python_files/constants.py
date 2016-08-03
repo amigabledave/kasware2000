@@ -24,8 +24,6 @@ d_attributeType = {
 	'ksu_subtype':'string',
 
 	'tags':'user_tags',
-	'global_category':'string',
-	'local_category':'string',
 	'parent_id':'ndb_key', 		
 
 	'kpts_value':'float',
