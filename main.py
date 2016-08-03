@@ -475,6 +475,8 @@ class SetViewer(Handler):
 	def get(self):
 		set_name = self.request.get('set_name')
 		user_key = self.theory.key
+		lookup_string =''
+
 		if not set_name:
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(KSU.created).fetch()
 		
@@ -482,7 +484,7 @@ class SetViewer(Handler):
 			lookup_string = self.request.get('lookup_string')
 			user_theory = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(KSU.created).fetch()
 			ksu_set = self.search_theory(user_theory, lookup_string)
-			set_name = 'You searched for: ' + lookup_string
+			lookup_string = 'You searched for: ' + lookup_string
 		
 		elif set_name == 'Graveyard':
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == True, KSU.is_deleted == False).order(KSU.created).fetch()
@@ -495,7 +497,7 @@ class SetViewer(Handler):
 		
 		
 		tags = categories = self.theory.categories['tags'] # por el quick adder
-		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags) #
+		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, lookup_string=lookup_string) #
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -513,9 +515,11 @@ class SetViewer(Handler):
 				ksu.description=''
 			if not ksu.secondary_description:
 				ksu.secondary_description=''
+			if not ksu.tags:
+				ksu.tags =''
 			
 			# ksu_description = ksu.description.lower() + ' ' + ksu.secondary_description.lower()
-			ksu_description = remplaza_acentos(ksu.description).lower() + ' ' + remplaza_acentos(ksu.secondary_description).lower()
+			ksu_description = remplaza_acentos(ksu.description).lower() + ' ' + remplaza_acentos(ksu.secondary_description).lower() + ' ' + remplaza_acentos(ksu.tags).lower()
 			if ksu_description.find(lookup_string) != -1:
 				main_result.append(ksu)
 			else:

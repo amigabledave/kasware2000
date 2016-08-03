@@ -55,6 +55,8 @@ default_ksu = {}
 d_SetTitles = {
 	'Today':"Today's Mission",
 	'Upcoming':'Upcoming',
+	'Graveyard':'Graveyard',
+
 	'SomedayMaybe': 'Someday Maybe', 
 	'Gene': 'In-Basket',
 	'KeyA': 'Key Actions Set',

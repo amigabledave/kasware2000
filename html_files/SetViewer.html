@@ -5,11 +5,17 @@
 <!-- Section title -->
 <div class="row">
 	<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10"> 
-		<div class="SectionTitle"> {{constants['d_SetTitles'][set_name]}}{% if not constants['d_SetTitles'][set_name] %}{{set_name}}{% endif %} </div>	
+		<div class="SectionTitle"> 
+		{% if set_name == 'TheoryQuery' %}
+			{{lookup_string}}
+		{% else %}
+			{{constants['d_SetTitles'][set_name]}}
+		{% endif %}
+		</div>	
 	</div>
 </div>
 
-{% if set_name != 'Graveyard' %}
+{% if set_name not in ['Graveyard', 'TheoryQuery'] %}
 <div class="row KSUdisplaySection" id="NewKSU" value="NewKSU" ksutype="{{set_name}}" ksusubtype="" style="margin-top: 0px; padding-bottom:8px;">
 	<form method="post">
 		<div class="col-xs-12" style="">
