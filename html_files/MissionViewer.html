@@ -25,13 +25,24 @@
 		<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
 
 		<div class="col-xs-4">				
-			<label> Date </label>
-			<input type="date" class="form-control" style="padding-right:3px;" name="next_event" id="next_event" value="{{today}}">
+		<label> Tags </label>
+			<input class="form-control" list="tags" id="tags_value" placeholder="Tag, Tag, Tag">
+			<datalist id="tags">
+				{% for tag in tags %}
+					<option value="{{tag}}">
+				{% endfor %}
+			</datalist>
 		</div>
 
 		<div class="col-xs-4">
+		{% if time_frame == 'Today' %}
 			<label> Time </label>
 			<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control" name="best_time" id="best_time">
+			<input type="date" class="form-control hidden" style="padding-right:3px;" name="next_event" id="next_event" value="{{today}}">
+		{% else %}
+			<label> Date </label>
+			<input type="date" class="form-control" style="padding-right:3px;" name="next_event" id="next_event" value="{{today}}">
+		{% endif %}
 		</div>
 
 		<div class="col-xs-4">
@@ -138,7 +149,7 @@
 					</div>
 
 					<div class="row">
-						<div class="col-xs-10">
+						<div class="col-xs-4">
 							{% if time_frame in ['Upcoming','SomedayMaybe'] %}
 								<span style="color:blue;" id="pretty_next_event">
 									{% if ksu.next_event %}
@@ -146,7 +157,7 @@
 									{% endif %}
 								</span>
 							{% elif time_frame == 'Today' %}
-								<span style="color:blue;" id="pretty_best_time">
+								<span style="color:blue; font-weight:bold;" id="pretty_best_time">
 									{% if ksu.best_time%}
 										{{ksu.pretty_best_time}}
 									{% endif %}
@@ -154,8 +165,14 @@
 							{% endif %}
 						</div>
 
-						<div class="col-xs-2" style="padding-left:0; padding-right:5px;">
-							<span class="MissionKsuKpts" id="KsuKpts">{% if ksu.kpts_value %}{{ksu.kpts_value}}{% else %}0{% endif %}</span><span class="MissionKsuKpts"> Kpts.</span>
+						<div class="col-xs-6">
+							{% if ksu.tags %}	
+								<span style="color:purple; font-weight:bold;" id="tags">{{ksu.tags}}</span>
+							{% endif %}
+						</div>
+
+						<div class="col-xs-2" style="padding-left:0; font-weight:bold; padding-right:5px; text-align:right;">
+							<span class="MissionKsuKpts" id="KsuKpts">{% if ksu.kpts_value %}{{ksu.kpts_value}}{% else %}0{% endif %}</span><!-- <span class="MissionKsuKpts"> Kpts.</span> -->
 						</div>
 					</div>
 				</div>

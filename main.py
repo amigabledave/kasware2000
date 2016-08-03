@@ -541,10 +541,10 @@ class MissionViewer(Handler):
 	@super_user_bouncer
 	def get(self):
 		time_frame = self.request.get('time_frame')
-		print
-		print time_frame
-		print
-		user_key = self.theory.key
+
+		# user_key = self.theory.key - To be deleted tan pronto vea que no se desmadra nada
+
+		tags = self.theory.categories['tags']
 
 		ksu_set, mission_value, todays_questions, reactive_mission, today, someday_maybe = self.generate_todays_mission(time_frame)
 
@@ -556,7 +556,8 @@ class MissionViewer(Handler):
 						reactive_mission=reactive_mission, 
 						constants=constants,
 						today=today,
-						someday_maybe=someday_maybe)
+						someday_maybe=someday_maybe,
+						tags=tags)
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
