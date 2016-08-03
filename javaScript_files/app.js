@@ -402,9 +402,6 @@ $('.DeleteEventButton').on('click', function(){
 
 
 
-
-
-
 $(document).on('click', '.ShowDetailViewerButton', function(){
 // $('.ShowDetailViewerButton').on('click', function(){
 	var ksu = $(this).closest('#MissionKSU');
@@ -436,6 +433,9 @@ $('.QuickAttributeUpdate').on('focusout', function(){
 	var attr_value = $(this).val();
 	var ksu = $(this).closest('#MissionKSU');
 	var ksu_id = ksu.attr("value");
+
+	console.log(attr_key);
+	console.log(attr_value);
 
 	$.ajax({
 		type: "POST",

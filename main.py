@@ -495,6 +495,12 @@ class SetViewer(Handler):
 			else:
 				ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(KSU.created).fetch()
 		
+
+		for ksu in ksu_set:
+			ksu.description_rows = determine_rows(ksu.description)
+			ksu.secondary_description_rows = determine_rows(ksu.secondary_description)
+			ksu.comments_rows = determine_rows(ksu.comments)
+
 		
 		tags = categories = self.theory.categories['tags'] # por el quick adder
 		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, lookup_string=lookup_string) #
@@ -558,11 +564,6 @@ class MissionViewer(Handler):
 		return
 
 	def generate_todays_mission(self, time_frame):
-
-		def determine_rows(ksu_description):
-			if not ksu_description:
-				return 0
-			return int(math.ceil((len(ksu_description)/60.0)))
 
 		theory = self.theory
 		user_key = theory.key
@@ -883,6 +884,9 @@ class EventHandler(Handler):
 			ksu.secondary_description = attr_value.encode('utf-8')			
 			updated_value = ksu.secondary_description
 
+		elif attr_key == 'comments':
+			ksu.comments = attr_value.encode('utf-8')			
+			updated_value = ksu.comments
 
 		elif attr_key == 'best_time':
 			attr_val = attr_value[0:5]
@@ -1438,6 +1442,10 @@ def update_user_tags(theory, tags):
 	return sorted(current_tags)
 	
 
+def determine_rows(ksu_description):
+	if not ksu_description:
+		return 0
+	return int(math.ceil((len(ksu_description)/60.0)))
 
 
 #--- Validation and security functions ----------
