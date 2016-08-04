@@ -452,10 +452,17 @@ class KsuEditor(Handler):
 		return_to = determine_return_to(self)
 		
 		if user_action == 'SaveChanges':
+			print
+			print 'Estos son los detalles'
+			print post_details
+			print ksu
 			ksu = prepareInputForSaving(self.theory, ksu, post_details) #BUG ALERT! Hice que esta funcion fuera global - veamos si esto causa issues
 			update_next_event(self, user_action, post_details, ksu)
+			print 'Asi queda la fecha del siguiente evento'
+			print ksu.next_event
+			print
 			ksu.put()
-		
+
 		self.redirect(return_to)
 		return
 
@@ -903,6 +910,14 @@ class EventHandler(Handler):
 		elif attr_key == 'kpts_value':
 			ksu.kpts_value = float(attr_value)
 			updated_value = ksu.kpts_value 
+
+		elif attr_key == 'tags': #xx
+			theory = self.theory
+			attr_value, tags = prepare_tags_for_saving(attr_value)
+			ksu.tags = attr_value.encode('utf-8')
+			update_user_tags(theory, tags)
+			theory.categories['tags'] = update_user_tags(theory, tags)
+			theory.put()
 
 
 		ksu.put()	

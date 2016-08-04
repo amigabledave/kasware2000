@@ -159,9 +159,8 @@ $('#repeats').on('change',function(){
 	}
 });
 
-
-$(document).on('click', '.UserActionButton', function(){
 // $('.UserActionButton').on('click', function(){
+$(document).on('click', '.UserActionButton', function(){
 	console.log('Si esta detectando que se aprieta el boton');
 	var ksu = $(this).closest('#MissionKSU');
 	var ksu_id = ksu.attr("value");
@@ -344,6 +343,8 @@ $('.SaveNewKSUButton').on('click', function(){
 		console.log(data);
 		ksu.find('#description').val('');
 		ksu.find('#best_time').val('');
+		ksu.find('#next_event').val('');
+		ksu.find('#tags_value').val('');
 		ksu.find('#kpts_value').val(0.25);
 
 		var new_ksu = $('#NewKSUTemplate').clone();
@@ -354,10 +355,10 @@ $('.SaveNewKSUButton').on('click', function(){
 		new_ksu.find('#description').val(description);
 		new_ksu.find('#secondary_description').val(secondary_description);
 		new_ksu.find('#kpts_value').val(kpts_value);
-		new_ksu.find('#KsuKpts').text(kpts_value);
-		new_ksu.find('#pretty_best_time').text(best_time);
+		new_ksu.find('#best_time').val(best_time);
+		new_ksu.find('#next_event').val(next_event);
 
-		new_ksu.find('#tags').text(tags);
+		new_ksu.find('#tags').val(tags);
 		new_ksu.find('#ksu_subtype').text(ksu_subtype);
 
 		new_ksu.removeClass('hidden');
@@ -401,9 +402,9 @@ $('.DeleteEventButton').on('click', function(){
 });
 
 
-
-$(document).on('click', '.ShowDetailViewerButton', function(){
 // $('.ShowDetailViewerButton').on('click', function(){
+$(document).on('click', '.ShowDetailViewerButton', function(){
+
 	var ksu = $(this).closest('#MissionKSU');
 	
 	var ScoreDetail = ksu.find('#ScoreDetail');
@@ -411,24 +412,13 @@ $(document).on('click', '.ShowDetailViewerButton', function(){
 
 	var GlaphiconDiv = ksu.find('#PlusMinusGlyphicon');
 	GlaphiconDiv.toggleClass('glyphicon-minus');
-	GlaphiconDiv.toggleClass('glyphicon-plus');
-	
+	GlaphiconDiv.toggleClass('glyphicon-plus');	
 });
 
 
-var updateKsuScore = function(x){	
-	var ksu = $(x).closest('#MissionKSU');
-	var kpts_value = ksu.find('#kpts_value').val();
-	var score = ksu.find('#KsuKpts');	
-	score.text(kpts_value);
-};
 
-$('.kpts_value').on('change', function(){
-	updateKsuScore(this);
-});
-
-
-$('.QuickAttributeUpdate').on('focusout', function(){
+// $('.QuickAttributeUpdate').on('focusout', function(){
+$(document).on('focusout', '.QuickAttributeUpdate', function(){
 	var attr_key = $(this).attr("name");
 	var attr_value = $(this).val();
 	var ksu = $(this).closest('#MissionKSU');
@@ -452,11 +442,6 @@ $('.QuickAttributeUpdate').on('focusout', function(){
 	.done(function(data){
 		console.log(data['updated_value']);
 
-		if (attr_key == 'best_time'){
-			ksu.find('#pretty_best_time').text(data['updated_value'])};
-
-		if (attr_key == 'next_event'){
-			ksu.find('#pretty_next_event').text(data['updated_value'])};
 
 		if (attr_key == 'description'){
 			ksu.find('#description').val(data['updated_value'])};
