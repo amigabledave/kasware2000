@@ -924,13 +924,14 @@ class EventHandler(Handler):
 			theory.put()
 
 		elif attr_key == 'importance':
-			print 'Ya se dio cuenta que es importante'
-			print 'El valor antes de actualizar es'
-			print ksu.importance
 			ksu.importance = int(attr_value)
 			updated_value = ksu.importance
-			print 'El valor actualizado es'
-			print ksu.importance
+
+		elif attr_key in ['is_critical', 'is_private', 'is_active']:
+			if attr_value == 'on':
+				attr_value = True
+			setattr(ksu, attr_key, attr_value)
+
 		ksu.put()	
 		return updated_value
 

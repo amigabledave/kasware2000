@@ -159,6 +159,34 @@ $('#repeats').on('change',function(){
 	}
 });
 
+
+
+$(document).on('change', '.KsuEditor_Repeats', function(){
+
+	var ksu = $(this).closest('#MissionKSU');
+
+	d_repeats_legend = {
+	'R001':'Days',
+	'R007':'Weeks',
+	'R030':'Months',
+	'R365':'Years'};
+
+	if (this.value != 'R000') {
+		ksu.find('#repeatsDetails').removeClass('hidden');
+		if (this.value == 'R007'){
+			ksu.find('#repeats_on').removeClass('hidden');
+			ksu.find('#repeats_every').addClass('hidden');
+		} else {
+			ksu.find('#repeats_on').addClass('hidden');
+			ksu.find('#repeats_every').removeClass('hidden');
+		}
+		ksu.find('#repeats_every_footnote').text(d_repeats_legend[this.value]);
+	} else {
+		ksu.find('#repeatsDetails').addClass('hidden');
+	}
+});
+
+
 // $('.UserActionButton').on('click', function(){
 $(document).on('click', '.UserActionButton', function(){
 	console.log('Si esta detectando que se aprieta el boton');
@@ -416,11 +444,15 @@ $(document).on('click', '.ShowDetailViewerButton', function(){
 });
 
 
-
 // $('.QuickAttributeUpdate').on('focusout', function(){
 $(document).on('focusout', '.QuickAttributeUpdate', function(){
 	var attr_key = $(this).attr("name");
+	var attr_type = $(this).attr("type");
 	var attr_value = $(this).val();
+	if( attr_type == 'checkbox'){
+		attr_value = $(this).is(':checked');
+	};
+
 	var ksu = $(this).closest('#MissionKSU');
 	var ksu_id = ksu.attr("value");
 
@@ -442,6 +474,19 @@ $(document).on('focusout', '.QuickAttributeUpdate', function(){
 	.done(function(data){
 		console.log(data['updated_value']);
 
+		if( attr_type == 'checkbox'){
+			var description = ksu.find('#description');
+			var is_critical = ksu.find('#is_critical').is(':checked');
+			var is_active = ksu.find('#is_active').is(':checked');
+			console.log(is_active, is_critical);
+			if(is_critical && is_active){
+				description.css('color', 'red');
+			} else if (is_active){
+				description.css('color', 'black');
+			} else {
+				description.css('color', '#D3D3D3');
+			};
+		};
 
 		if (attr_key == 'description'){
 			ksu.find('#description').val(data['updated_value'])};
