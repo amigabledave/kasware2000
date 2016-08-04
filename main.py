@@ -883,7 +883,11 @@ class EventHandler(Handler):
 
 	def update_single_attribute(self, ksu, attr_key, attr_value):
 		updated_value = None
-
+		print
+		print 'Va a intentar actualizar de forma individual'
+		print attr_key
+		print 'Con el valor de'
+		print attr_value
 		if attr_key == 'description':
 			ksu.description = attr_value.encode('utf-8')			
 			updated_value = ksu.description
@@ -919,7 +923,14 @@ class EventHandler(Handler):
 			theory.categories['tags'] = update_user_tags(theory, tags)
 			theory.put()
 
-
+		elif attr_key == 'importance':
+			print 'Ya se dio cuenta que es importante'
+			print 'El valor antes de actualizar es'
+			print ksu.importance
+			ksu.importance = int(attr_value)
+			updated_value = ksu.importance
+			print 'El valor actualizado es'
+			print ksu.importance
 		ksu.put()	
 		return updated_value
 
