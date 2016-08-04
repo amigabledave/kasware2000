@@ -888,17 +888,10 @@ class EventHandler(Handler):
 		print attr_key
 		print 'Con el valor de'
 		print attr_value
-		if attr_key == 'description':
-			ksu.description = attr_value.encode('utf-8')			
-			updated_value = ksu.description
-
-		elif attr_key == 'secondary_description':
-			ksu.secondary_description = attr_value.encode('utf-8')			
-			updated_value = ksu.secondary_description
-
-		elif attr_key == 'comments':
-			ksu.comments = attr_value.encode('utf-8')			
-			updated_value = ksu.comments
+		
+		if attr_key in ['description', 'secondary_description', 'comments', 'repeats']:
+			setattr(ksu, attr_key, attr_value.encode('utf-8'))		
+			updated_value = attr_value.encode('utf-8')
 
 		elif attr_key == 'best_time':
 			attr_val = attr_value[0:5]
@@ -915,7 +908,7 @@ class EventHandler(Handler):
 			ksu.kpts_value = float(attr_value)
 			updated_value = ksu.kpts_value 
 
-		elif attr_key == 'tags': #xx
+		elif attr_key == 'tags':
 			theory = self.theory
 			attr_value, tags = prepare_tags_for_saving(attr_value)
 			ksu.tags = attr_value.encode('utf-8')
@@ -923,14 +916,17 @@ class EventHandler(Handler):
 			theory.categories['tags'] = update_user_tags(theory, tags)
 			theory.put()
 
-		elif attr_key == 'importance':
-			ksu.importance = int(attr_value)
-			updated_value = ksu.importance
+		elif attr_key in ['importance', 'frequency']:
+			setattr(ksu, attr_key, int(attr_value))	
+			updated_value = int(attr_value)
 
 		elif attr_key in ['is_critical', 'is_private', 'is_active']:
 			if attr_value == 'on':
 				attr_value = True
 			setattr(ksu, attr_key, attr_value)
+
+		elif attr_key in ['repeats_on_Mon', 'repeats_on_Tue', 'repeats_on_Wed', 'repeats_on_Thu', 'repeats_on_Fri', 'repeats_on_Sat', 'repeats_on_Sun']:
+			ksu.repeats_on[attr_key] = attr_value #xx
 
 		ksu.put()	
 		return updated_value
@@ -1469,7 +1465,6 @@ def update_user_tags(theory, tags):
 			current_tags.append(tag)
 	return sorted(current_tags)
 	
-
 def determine_rows(ksu_description):
 	if not ksu_description:
 		return 0

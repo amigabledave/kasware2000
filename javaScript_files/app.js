@@ -305,6 +305,7 @@ $('.SaveNewKSUButton').on('click', function(){
 	var best_time = ksu.find('#best_time').val();
 	var kpts_value = ksu.find('#kpts_value option:selected').val();
 
+	var importance = ksu.find('#importance').val();
 	var tags = ksu.find('#tags_value').val();
 	var comments = ksu.find('#comments').val();
 
@@ -328,8 +329,6 @@ $('.SaveNewKSUButton').on('click', function(){
 		description = ksu.find('#description').text();
 		secondary_description = ksu.find('#secondary_description').text();
 	};
-	console.log('Esto es critico?');
-	console.log(ksu.find('#is_critical').is(':checked'));
 
 	ksu.fadeOut("slow")
 	
@@ -348,6 +347,7 @@ $('.SaveNewKSUButton').on('click', function(){
 			'best_time':best_time,
 			'kpts_value': kpts_value,
 
+			'importance':importance,
 			'tags':tags,
 			'comments':comments, 
 		
@@ -373,9 +373,20 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#best_time').val('');
 		ksu.find('#next_event').val('');
 		ksu.find('#tags_value').val('');
+		ksu.find('#importance').val(2);
 		ksu.find('#kpts_value').val(0.25);
+		ksu.find('#is_critical').prop('checked', false);
+		ksu.find('#is_active').prop('checked', true);
+		
 
-		var new_ksu = $('#NewKSUTemplate').clone();
+		var Templates = {
+			'KAS1': $('#NewKSUTemplate_KAS1').clone(),
+			'KAS3': $('#NewKSUTemplate_KAS3').clone(),
+			'KAS4': $('#NewKSUTemplate_KAS4').clone()
+		}
+
+		var new_ksu = Templates[ksu_subtype];
+
 		new_ksu.attr("id", "MissionKSU");
 		new_ksu.attr("value",data['ksu_id']);
 		new_ksu.find('#ksu_id').attr("value",data['ksu_id']);
@@ -386,12 +397,23 @@ $('.SaveNewKSUButton').on('click', function(){
 		new_ksu.find('#best_time').val(best_time);
 		new_ksu.find('#next_event').val(next_event);
 
+		new_ksu.find('#importance').val(importance);
 		new_ksu.find('#tags').val(tags);
 		new_ksu.find('#ksu_subtype').text(ksu_subtype);
+
+		new_ksu.find('#is_critical').prop('checked', is_critical);
 
 		new_ksu.removeClass('hidden');
 		new_ksu.prependTo('#NewKSUsHolder');
 		new_ksu.fadeIn("slow");
+
+		if(is_critical && is_active){
+			new_ksu.find('#description').css('color', 'red');				
+		} else if (is_active){
+			new_ksu.find('#description').css('color', 'black');				
+		} else {
+			new_ksu.find('#description').css('color', '#D3D3D3');
+		};
 
 		ksu.fadeIn("slow");		
 	});
@@ -476,13 +498,14 @@ $(document).on('focusout', '.QuickAttributeUpdate', function(){
 
 		if( attr_type == 'checkbox'){
 			var description = ksu.find('#description');
+			var secondary_description = ksu.find('#secondary_description');
 			var is_critical = ksu.find('#is_critical').is(':checked');
 			var is_active = ksu.find('#is_active').is(':checked');
 			console.log(is_active, is_critical);
 			if(is_critical && is_active){
-				description.css('color', 'red');
+				description.css('color', 'red');				
 			} else if (is_active){
-				description.css('color', 'black');
+				description.css('color', 'black');				
 			} else {
 				description.css('color', '#D3D3D3');
 			};

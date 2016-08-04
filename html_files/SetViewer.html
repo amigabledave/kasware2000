@@ -38,7 +38,7 @@
 				</div>	
 
 				<div class="col-xs-5">
-					<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0;" type="text" list="tags" name="tags" id="tags" placeholder="Tag"> 
+					<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; color:purple;" type="text" list="tags" name="tags" id="tags" placeholder="Tag"> 
 					<datalist id="tags">
 						{% for tag in tags %}
 							<option value="{{tag}}">
@@ -111,7 +111,7 @@
 					</select> 
 				</div>
 
-				<div class="col-xs-8 hidden" id="repeats_on">
+				<div class="col-xs-8 {% if ksu.repeats != 'R007' %}hidden{% endif %}" id="repeats_on">
 				<div class="row" style="margin-top:15px;">
 			 		<div style="display: table; float:left; margin-right:15px;">
 			 		<div class="col-xs-1" style="margin-right:10px;">
@@ -146,7 +146,6 @@
 							<label> Every </label>
 							<input type="number" min="1" class="form-control" style="padding-right:3px;" name="frequency" id="frequency" placeholder="1"> 		
 						</div>
-						
 						<div id="repeats_every_footnote" class="col-xs-8" style="position: absolute; bottom: 0; right: 0; padding-left: 0; font-style: italic;">Days
 						</div>									
 					</div>		
@@ -372,6 +371,635 @@
 	</div>
 </div>
 
+<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_KAS1" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+		<div class="row" style="min-height: 45px">
+			<div class="col-xs-12" style="padding-right:0px">
+
+				<div class="row"">
+					<div class="col-xs-10" style="font-size:13px; padding-right:0;">
+						<div>
+						
+
+														
+
+						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_KAS1</textarea>
+
+						
+
+						</div>
+					</div>
+
+					<form method="post">
+					<input type="text" class="form-control hidden" name="ksu_id" value="4519817423880192">
+
+					<div class="col-xs-2" style="padding-left:25px;">
+
+						
+						
+							<button type="submit" class="btn btn-default btn-circle displaySectionVerticalButton" name='action_description' value="EditKSU">
+							  	<span class="glyphicon glyphicon-pencil"></span>
+						  	</button>
+
+					  	 
+								
+					</div>
+					</form>							
+				</div>
+
+				<div class="row" style="margin-top:5px;">
+					<div class="col-xs-12">
+						<div class="row">
+							<div class="col-xs-5 displaySectionBulletContent" style="color:purple;" >
+								<div style="margin-top:7px;">
+								
+									
+										Key Proactive Action
+									
+								</div>
+							</div>	
+
+							<div class="col-xs-4">
+								<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; margin-top:7px;" type="text" list="tags" name="tags" id="tags" value=""> 
+							</div>
+
+							<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+								<select class="QuickAttributeUpdate" style="border:0; color:purple; margin-top:7px;" name="importance" id="importance">
+								
+																						
+										
+											<option value="1"> 1 </option>
+										
+																						
+										
+											<option selected="selected" value="2"> 2 </option>
+										
+																						
+										
+											<option value="3"> 3 </option>
+										
+									
+								
+								</select>	
+							</div>
+							<div class="col-xs-2" style="padding-left:25px;">
+							
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span>
+					  			</button>
+					  			
+							</div>
+						</div>						
+					</div>
+				</div>						
+			</div>
+		</div>
+		<div class="row hidden" id="ScoreDetail">
+			<div class="col-xs-12">
+				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="checkbox"> 
+							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+						</div>
+					</div>	
+
+					<div class="col-xs-2" style="padding-left:8px;">
+						<div class="checkbox"> 
+							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+						</div>			
+					</div>
+
+					<div class="col-xs-2" style="padding-left:3px;">
+						<div class="checkbox"> 
+				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+				 		</div>
+					</div>
+
+					<div class="col-xs-2">
+					</div>
+					
+
+					<div class="col-xs-4">
+					
+
+					
+						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
+					
+
+					
+						<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
+					
+
+						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete' style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+					</div>
+				
+				</div>					
+				<div class="row" id="KsuPlusOptions">
+					<div class="col-xs-12">
+					
+						<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">	
+							<div class="row">
+								<div class="col-xs-4">
+									<label> Reward</label>
+									<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+										
+																																
+												<option selected="selected" value="0.25"> 0.25 </option>
+											
+										
+											
+												<option value="1"> 1 </option>							
+											
+										
+											
+												<option value="2"> 2 </option>							
+											
+										
+											
+												<option value="3"> 3 </option>							
+											
+										
+											
+												<option value="5"> 5 </option>							
+											
+										
+											
+												<option value="8"> 8 </option>							
+											
+										
+											
+												<option value="13"> 13 </option>							
+											
+										
+									</select>	
+								</div>
+
+								<div class="col-xs-4">
+									<label> Next Event </label>
+									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" name="next_event" id="next_event" value="2016-08-03">
+								</div>	
+
+								<div class="col-xs-4">
+									<label> Preferred Time </label>
+									<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" name="best_time" id="best_time" value="">	
+								</div>				
+							</div>
+							
+
+							<div class="row" style="margin-top:10px;">
+								<div class="col-xs-4">
+									<label> Repeats </label>
+									<select id="repeats" class="form-control KsuEditor_Repeats QuickAttributeUpdate" name="repeats">
+										
+											
+											<option value="R001" selected="selected"> Daily </option>
+																	
+										
+											
+											<option value="R007"> Weekly </option>	
+																	
+										
+											
+											<option value="R030"> Monthly </option>	
+																	
+										
+											
+											<option value="R365"> Yearly </option>	
+																	
+										
+									</select> 
+								</div>
+
+								<div class="col-xs-8 hidden" id="repeats_on">
+								<div class="row" style="margin-top:15px;">
+							 		<div style="display: table; float:left; margin-right:15px;">
+							 		<div class="col-xs-1" style="margin-right:10px;">
+							 			<label style="display:table-row;"><b>Mon
+							 			<input style="display:table-row; width:100%;" type="checkbox"   class="QuickAttributeUpdate" name="repeats_on_Mon" id="repeats_on_Mon"></b></label>		
+							 		</div><div class="col-xs-1" style="margin-right:10px;">
+							 			<label style="display:table-row;"><b>Tue 
+							 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Tue" id="repeats_on_Tue"></b></label>
+									</div><div class="col-xs-1" style="margin-right:10px;">
+							 			<label style="display:table-row;"><b>Wed
+							 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Wed" id="repeats_on_Wed"></b></label> 
+									</div><div class="col-xs-1" style="margin-right:10px;">			 			
+							 			<label style="display:table-row;"><b>Thu 
+							 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Thu" id="repeats_on_Thu"></b></label>
+									</div><div class="col-xs-1" style="margin-right:10px;">			 		
+							 			<label style="display:table-row;"><b>Fri
+							 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Fri" id="repeats_on_Fri"></b></label> 
+									</div><div class="col-xs-1" style="margin-right:10px;">			 		
+							 			<label style="display:table-row;"><b>Sat 
+							 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Sat" id="repeats_on_Sat"></b></label>
+							 		</div><div class="col-xs-1" style="margin-right:10px;">
+							 			<label style="display:table-row;"><b>Sun 
+							 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Sun" id="repeats_on_Sun"></b></label>
+							 		</div></div>
+								</div>
+								</div>
+
+								<div class="col-xs-8 " id="repeats_every">
+
+									<div class="row">
+										<div class="col-xs-4">
+											<label> Every </label>
+											<input type="number" min="1" class="form-control QuickAttributeUpdate" style="padding-right:3px;" name="frequency" id="frequency" placeholder="1" value="1"> 		
+										</div>
+										
+										<div id="repeats_every_footnote" class="col-xs-8" style="position: absolute; bottom: 0; right: 0; padding-left: 0; font-style: italic;">Days
+										</div>									
+									</div>		
+								</div>
+							</div>
+						
+					</div>
+					<div class="col-xs-12">
+						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+						<div class="row">
+							<div class="col-xs-12" style="padding-right:0;">
+								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+							</div>
+
+						</div>
+					</div>
+				</div>
+		</div>
+		</div>
+	</div>
+</div>
+
+<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_KAS3" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+		<div class="row" style="min-height: 45px">
+
+			<div class="col-xs-12" style="padding-right:0px">
+
+				<div class="row"">
+					<div class="col-xs-10" style="font-size:13px; padding-right:0;">
+						<div>
+							
+							<span style="color:#32CD32; font-style:italic; font-weight:bold; font-size:12px;">Target Reaction: </span>
+							<textarea style="width:100%; font-style:italic; border:0;" class="QuickAttributeUpdate autoExpand" rows="0" data-min-rows='0' name="secondary_description" id="secondary_description">None</textarea>
+						
+
+														
+
+						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_KAS3</textarea>
+
+						
+
+						</div>
+					</div>
+
+					<form method="post">
+					<input type="text" class="form-control hidden" name="ksu_id" value="5927192307433472">
+
+					<div class="col-xs-2" style="padding-left:25px;">
+
+						
+						
+							<button type="submit" class="btn btn-default btn-circle displaySectionVerticalButton" name='action_description' value="EditKSU">
+							  	<span class="glyphicon glyphicon-pencil"></span>
+						  	</button>
+
+					  	 
+								
+					</div>
+					</form>							
+				</div>
+
+				<div class="row" style="margin-top:5px;">
+					<div class="col-xs-12">
+						<div class="row">
+							<div class="col-xs-5 displaySectionBulletContent" style="color:purple;" >
+								<div style="margin-top:7px;">
+								
+									
+										Key Reaction
+									
+								</div>
+							</div>	
+
+							<div class="col-xs-4">
+								<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; margin-top:7px;" type="text" list="tags" name="tags" id="tags" value=""> 
+							</div>
+
+							<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+								<select class="QuickAttributeUpdate" style="border:0; color:purple; margin-top:7px;" name="importance" id="importance">
+								
+																						
+										
+											<option value="1"> 1 </option>
+										
+																						
+										
+											<option selected="selected" value="2"> 2 </option>
+										
+																						
+										
+											<option value="3"> 3 </option>
+										
+									
+								
+								</select>	
+							</div>
+							<div class="col-xs-2" style="padding-left:25px;">
+							
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span>
+					  			</button>
+					  			
+							</div>
+						</div>						
+					</div>
+				</div>						
+			</div>
+		</div>
+
+		<div class="row hidden" id="ScoreDetail">
+			<div class="col-xs-12">
+				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="checkbox"> 
+							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+						</div>
+					</div>	
+
+					<div class="col-xs-2" style="padding-left:8px;">
+						<div class="checkbox"> 
+							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+						</div>			
+					</div>
+
+					<div class="col-xs-2" style="padding-left:3px;">
+						<div class="checkbox"> 
+				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+				 		</div>
+					</div>
+
+					<div class="col-xs-3">
+					</div>
+					
+
+					<div class="col-xs-3">
+					
+
+					
+						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
+					
+
+					
+
+						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete' style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+					</div>
+				
+				</div>					
+				<div class="row" id="KsuPlusOptions">
+					<div class="col-xs-12">
+					
+						<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">		
+						<div class="row">
+							<div class="col-xs-4">		
+							<label> Reward</label>
+							<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+								
+																														
+										<option selected="selected" value="0.25"> 0.25 </option>
+									
+								
+									
+										<option value="1"> 1 </option>							
+									
+								
+									
+										<option value="2"> 2 </option>							
+									
+								
+									
+										<option value="3"> 3 </option>							
+									
+								
+									
+										<option value="5"> 5 </option>							
+									
+								
+									
+										<option value="8"> 8 </option>							
+									
+								
+									
+										<option value="13"> 13 </option>							
+									
+								
+							</select>
+							</div>
+						</div>
+						
+					</div>
+					<div class="col-xs-12">
+						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+						<div class="row">
+							<div class="col-xs-12" style="padding-right:0;">
+								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+							</div>
+
+						</div>
+					</div>
+				</div>
+		</div>
+		</div>
+	</div>
+</div>
+
+<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_KAS4" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+		<div class="row" style="min-height: 45px">
+
+			<div class="col-xs-12" style="padding-right:0px">
+
+				<div class="row"">
+					<div class="col-xs-10" style="font-size:13px; padding-right:0;">
+						<div>
+						
+
+							
+							<span style="color:red; font-style:italic; font-weight:bold; font-size:12px;"> Must avoid:</span> 
+														
+
+						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Templete_KAS4</textarea>
+
+						
+
+						</div>
+					</div>
+
+					<form method="post">
+					<input type="text" class="form-control hidden" name="ksu_id" value="5364242354012160">
+
+					<div class="col-xs-2" style="padding-left:25px;">
+
+						
+						
+							<button type="submit" class="btn btn-default btn-circle displaySectionVerticalButton" name='action_description' value="EditKSU">
+							  	<span class="glyphicon glyphicon-pencil"></span>
+						  	</button>
+
+					  	 
+								
+					</div>
+					</form>							
+				</div>
+
+				<div class="row" style="margin-top:5px;">
+					<div class="col-xs-12">
+						<div class="row">
+							<div class="col-xs-5 displaySectionBulletContent" style="color:purple;" >
+								<div style="margin-top:7px;">
+								
+									
+										Key Action To Avoid
+									
+								</div>
+							</div>	
+
+							<div class="col-xs-4">
+								<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; margin-top:7px;" type="text" list="tags" name="tags" id="tags" value=""> 
+							</div>
+
+							<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+								<select class="QuickAttributeUpdate" style="border:0; color:purple; margin-top:7px;" name="importance" id="importance">
+								
+																						
+										
+											<option value="1"> 1 </option>
+										
+																						
+										
+											<option selected="selected" value="2"> 2 </option>
+										
+																						
+										
+											<option value="3"> 3 </option>
+										
+									
+								
+								</select>	
+							</div>
+							<div class="col-xs-2" style="padding-left:25px;">
+							
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span>
+					  			</button>
+					  			
+							</div>
+						</div>						
+					</div>
+				</div>						
+			</div>
+		</div>
+
+		<div class="row hidden" id="ScoreDetail">
+			<div class="col-xs-12">
+				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="checkbox"> 
+							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+						</div>
+					</div>	
+
+					<div class="col-xs-2" style="padding-left:8px;">
+						<div class="checkbox"> 
+							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+						</div>			
+					</div>
+
+					<div class="col-xs-2" style="padding-left:3px;">
+						<div class="checkbox"> 
+				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+				 		</div>
+					</div>
+
+					<div class="col-xs-3">
+					</div>
+					
+
+					<div class="col-xs-3">
+					
+
+					
+						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
+					
+
+					
+
+						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete' style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+					</div>
+				
+				</div>					
+				<div class="row" id="KsuPlusOptions">
+					<div class="col-xs-12">
+					
+						<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">
+						<div class="row" style="margin-bottom:8px;">
+							<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+									<label> Punishment </label>
+									<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+																																
+											
+											<option selected="selected" value="0.25"> 0.25 </option>
+											
+																																
+											
+											<option value="1"> 1 </option>								
+											
+																																
+											
+											<option value="2"> 2 </option>								
+											
+																																
+											
+											<option value="3"> 3 </option>								
+											
+																																
+											
+											<option value="5"> 5 </option>								
+											
+																																
+											
+											<option value="8"> 8 </option>								
+											
+																																
+											
+											<option value="13"> 13 </option>								
+											
+										
+									</select>	
+							</div>
+							<div class="col-xs-9">
+								<label>Valid Exceptions</label>
+								<textarea class="form-control QuickAttributeUpdate autoExpand" rows="0" data-min-rows='0' name="secondary_description" id="secondary_description" placeholder="e.g. When I'am on vacation, When the food its free!"></textarea>	
+							</div>		
+						</div>
+						
+					</div>
+					<div class="col-xs-12">
+						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+						<div class="row">
+							<div class="col-xs-12" style="padding-right:0;">
+								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+							</div>
+
+						</div>
+					</div>
+				</div>
+		</div>
+		</div>
+	</div>
+</div>
+
 <div id="NewKSUsHolder"></div>
 {% endif %}
 
@@ -388,14 +1016,12 @@
 					<div class="col-xs-10" style="font-size:13px; padding-right:0;">
 						<div>
 						{% if ksu.ksu_subtype == 'KAS3' %}	
-							<span style="color:blue; font-style:italic; font-weight:bold; font-size:12px;">When: </span>
-							<span style="{% if ksu.is_critical %}color:red;{% endif %}"><span id="is_active" style="{% if not ksu.is_active %}color:#D3D3D3;{% endif %}"> 
-							<textarea style="width:100%; border:0; font-weight:bold;" class="QuickAttributeUpdate autoExpand" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea></span></span>
-							<span style="color:blue; font-style:italic; font-weight:bold;">I will: </span>
+							<span style="color:#32CD32; font-style:italic; font-weight:bold; font-size:12px;">Target Reaction: </span>
+							<textarea style="width:100%; font-style:italic; border:0;" class="QuickAttributeUpdate autoExpand" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>
 						{% endif %}
 
 						{% if ksu.ksu_subtype == 'KAS4' %}	
-							<span style="color:blue; font-style:italic; font-weight:bold; font-size:12px;"> Must avoid:</span> 
+							<span style="color:red; font-style:italic; font-weight:bold; font-size:12px;"> Must avoid:</span> 
 						{% endif %}								
 
 						<textarea style="width:100%; border:0; font-weight:bold; {% if ksu.is_critical and ksu.is_active %}color:red;{% elif not ksu.is_active %}color:#D3D3D3;{% endif %}" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
@@ -486,7 +1112,7 @@
 
 		<div class="row hidden" id="ScoreDetail">
 			<div class="col-xs-12">
-				<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
+				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
 				<div class="row">
 					<div class="col-xs-2">
 						<div class="checkbox"> 
@@ -506,8 +1132,11 @@
 				 		</div>
 					</div>
 
-					<div class="col-xs-{% if ksu.ksu_type in ['Idea', 'RTBG', 'Gene'] %}4{% elif ksu.ksu_type in ['ImIn', 'Obje', 'Wish'] %}3{% else %}2{% endif %}"></div>
-					<div class="col-xs-{% if ksu.ksu_type in ['Idea', 'RTBG', 'Gene'] %}2{% elif ksu.ksu_type in ['ImIn', 'Obje', 'Wish'] %}3{% else %}4{% endif %}">
+					<div class="col-xs-{% if ksu.ksu_type in ['Idea', 'RTBG', 'Gene'] %}4{% elif ksu.ksu_type in ['ImIn', 'Obje', 'Wish'] %}3{% elif ksu.ksu_subtype in ['KAS3', 'KAS4'] %}3{% else %}2{% endif %}">
+					</div>
+					
+
+					<div class="col-xs-{% if ksu.ksu_type in ['Idea', 'RTBG', 'Gene'] %}2{% elif ksu.ksu_type in ['ImIn', 'Obje', 'Wish'] %}3{% elif ksu.ksu_subtype in ['KAS3', 'KAS4'] %}3{% else %}4{% endif %}">
 					{% if 'Record' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}
 						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
 					{% endif %}
@@ -523,11 +1152,11 @@
 						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete' style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
 					</div>
 				
-				</div>
-				<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">					
+				</div>					
 				<div class="row" id="KsuPlusOptions">
-					{% if ksu.ksu_subtype == 'KAS1' %}
-						<div class="col-xs-12">	
+					<div class="col-xs-12">
+					{%   if ksu.ksu_subtype == 'KAS1' %}
+						<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">	
 							<div class="row">
 								<div class="col-xs-4">
 									<label> Reward</label>
@@ -557,37 +1186,41 @@
 							<div class="row" style="margin-top:10px;">
 								<div class="col-xs-4">
 									<label> Repeats </label>
-									<select id="repeats" class="form-control KsuEditor_Repeats" name="repeats">
+									<select id="repeats" class="form-control KsuEditor_Repeats QuickAttributeUpdate" name="repeats">
 										{% for f in constants['l_repeats'] %}
-											<option value="{{f[0]}}"> {{f[1]}} </option>							
+											{% if f[0] == ksu.repeats %}
+											<option value="{{f[0]}}" selected="selected"> {{f[1]}} </option>
+											{% else %}
+											<option value="{{f[0]}}"> {{f[1]}} </option>	
+											{% endif %}						
 										{% endfor %}
 									</select> 
 								</div>
 
-								<div class="col-xs-8 hidden" id="repeats_on">
+								<div class="col-xs-8 {% if ksu.repeats != 'R007'%}hidden{% endif %}" id="repeats_on">
 								<div class="row" style="margin-top:15px;">
 							 		<div style="display: table; float:left; margin-right:15px;">
 							 		<div class="col-xs-1" style="margin-right:10px;">
 							 			<label style="display:table-row;"><b>Mon
-							 			<input style="display:table-row; width:100%;" type="checkbox" id="repeats_on_Mon"></b></label>		
+							 			<input style="display:table-row; width:100%;" type="checkbox" {% if ksu and ksu.repeats_on['repeats_on_Mon']%}checked{% endif %}  class="QuickAttributeUpdate" name="repeats_on_Mon" id="repeats_on_Mon"></b></label>		
 							 		</div><div class="col-xs-1" style="margin-right:10px;">
 							 			<label style="display:table-row;"><b>Tue 
-							 			<input style="display:table-row; width:100%;" type="checkbox" id="repeats_on_Tue"></b></label>
+							 			<input style="display:table-row; width:100%;" type="checkbox" {% if ksu and ksu.repeats_on['repeats_on_Tue']%}checked{% endif %} class="QuickAttributeUpdate" name="repeats_on_Tue" id="repeats_on_Tue"></b></label>
 									</div><div class="col-xs-1" style="margin-right:10px;">
 							 			<label style="display:table-row;"><b>Wed
-							 			<input style="display:table-row; width:100%;" type="checkbox" id="repeats_on_Wed"></b></label> 
+							 			<input style="display:table-row; width:100%;" type="checkbox" {% if ksu and ksu.repeats_on['repeats_on_Wed']%}checked{% endif %} class="QuickAttributeUpdate" name="repeats_on_Wed" id="repeats_on_Wed"></b></label> 
 									</div><div class="col-xs-1" style="margin-right:10px;">			 			
 							 			<label style="display:table-row;"><b>Thu 
-							 			<input style="display:table-row; width:100%;" type="checkbox" id="repeats_on_Thu"></b></label>
+							 			<input style="display:table-row; width:100%;" type="checkbox" {% if ksu and ksu.repeats_on['repeats_on_Thu']%}checked{% endif %} class="QuickAttributeUpdate" name="repeats_on_Thu" id="repeats_on_Thu"></b></label>
 									</div><div class="col-xs-1" style="margin-right:10px;">			 		
 							 			<label style="display:table-row;"><b>Fri
-							 			<input style="display:table-row; width:100%;" type="checkbox" id="repeats_on_Fri"></b></label> 
+							 			<input style="display:table-row; width:100%;" type="checkbox" {% if ksu and ksu.repeats_on['repeats_on_Fri']%}checked{% endif %} class="QuickAttributeUpdate" name="repeats_on_Fri" id="repeats_on_Fri"></b></label> 
 									</div><div class="col-xs-1" style="margin-right:10px;">			 		
 							 			<label style="display:table-row;"><b>Sat 
-							 			<input style="display:table-row; width:100%;" type="checkbox" id="repeats_on_Sat"></b></label>
+							 			<input style="display:table-row; width:100%;" type="checkbox" {% if ksu and ksu.repeats_on['repeats_on_Sat']%}checked{% endif %} class="QuickAttributeUpdate" name="repeats_on_Sat" id="repeats_on_Sat"></b></label>
 							 		</div><div class="col-xs-1" style="margin-right:10px;">
 							 			<label style="display:table-row;"><b>Sun 
-							 			<input style="display:table-row; width:100%;" type="checkbox" id="repeats_on_Sun"></b></label>
+							 			<input style="display:table-row; width:100%;" type="checkbox" {% if ksu and ksu.repeats_on['repeats_on_Sun']%}checked{% endif %} class="QuickAttributeUpdate" name="repeats_on_Sun" id="repeats_on_Sun"></b></label>
 							 		</div></div>
 								</div>
 								</div>
@@ -597,7 +1230,7 @@
 									<div class="row">
 										<div class="col-xs-4">
 											<label> Every </label>
-											<input type="number" min="1" class="form-control QuickAttributeUpdate" style="padding-right:3px;" name="frequency" id="frequency" placeholder="1"> 		
+											<input type="number" min="1" class="form-control QuickAttributeUpdate" style="padding-right:3px;" name="frequency" id="frequency" placeholder="1" value="{% if ksu.frequency %}{{ksu.frequency}}{% endif %}"> 		
 										</div>
 										
 										<div id="repeats_every_footnote" class="col-xs-8" style="position: absolute; bottom: 0; right: 0; padding-left: 0; font-style: italic;">Days
@@ -605,16 +1238,51 @@
 									</div>		
 								</div>
 							</div>
-
-	
+					{% elif ksu.ksu_subtype == 'KAS3' %}
+						<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">		
+						<div class="row">
+							<div class="col-xs-4">		
+							<label> Reward</label>
+							<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+								{% for value in constants['l_Fibonacci'] %}
+									{% if ksu.kpts_value == value %}																					
+										<option selected="selected" value="{{value}}"> {{value}} </option>
+									{% else %}
+										<option value="{{value}}"> {{value}} </option>							
+									{% endif %}
+								{% endfor %}
+							</select>
+							</div>
 						</div>
-					{% endif %}
+					{% elif ksu.ksu_subtype == 'KAS4' %}
+						<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">
+						<div class="row" style="margin-bottom:8px;">
+							<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+									<label> Punishment </label>
+									<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+										{% for value in constants['l_Fibonacci'] %}																						
+											{% if ksu.kpts_value == value %}
+											<option selected="selected" value="{{value}}"> {{value}} </option>
+											{% else %}
+											<option value="{{value}}"> {{value}} </option>								
+											{% endif %}
+										{% endfor %}
+									</select>	
+							</div>
+							<div class="col-xs-9">
+								<label>Valid Exceptions</label>
+								<textarea class="form-control QuickAttributeUpdate autoExpand" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description" placeholder="e.g. When I'am on vacation, When the food its free!">{% if ksu.secondary_description %}{{ ksu.secondary_description }}{% endif %}</textarea>	
+							</div>		
+						</div>
+					{% endif %}	
+					</div>
 					<div class="col-xs-12">
-						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
+						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
 						<div class="row">
 							<div class="col-xs-12" style="padding-right:0;">
-								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="2" data-min-rows='2' name="comments" id="comments" placeholder="Comments">{% if ksu.comments %}{{ ksu.comments }}{% endif %}</textarea>	
+								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments">{% if ksu.comments %}{{ ksu.comments }}{% endif %}</textarea>	
 							</div>
+
 						</div>
 					</div>
 				</div>
