@@ -916,7 +916,7 @@ class EventHandler(Handler):
 			theory.categories['tags'] = update_user_tags(theory, tags)
 			theory.put()
 
-		elif attr_key in ['importance', 'frequency']:
+		elif attr_key in ['importance', 'frequency', 'money_cost']:
 			setattr(ksu, attr_key, int(attr_value))	
 			updated_value = int(attr_value)
 
@@ -1069,7 +1069,7 @@ class PopulateRandomTheory(Handler):
 		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour))
 
 		theory_parameters = [
-			[0,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
+			[0	,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
 			[0, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
 			[0, {'ksu_type':'OTOA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
 			[0, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_value':0.25}],

@@ -325,6 +325,9 @@ $('.SaveNewKSUButton').on('click', function(){
 	var repeats_on_Sat = ksu.find('#repeats_on_Sat').is(':checked');
 	var repeats_on_Sun = ksu.find('#repeats_on_Sun').is(':checked');
 
+	var money_cost = ksu.find('#money_cost').val();
+	var birthday = ksu.find('#birthday').val();
+
 	
 	if (description == ''){
 		description = ksu.find('#description').text();
@@ -365,7 +368,10 @@ $('.SaveNewKSUButton').on('click', function(){
 			'repeats_on_Thu':repeats_on_Thu,
 			'repeats_on_Fri':repeats_on_Fri,
 			'repeats_on_Sat':repeats_on_Sat,
-			'repeats_on_Sun':repeats_on_Sun
+			'repeats_on_Sun':repeats_on_Sun,
+
+			'money_cost':money_cost,
+
 		})
 	})
 	.done(function(data){
@@ -379,7 +385,8 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#kpts_value').val(0.25);
 		ksu.find('#is_critical').prop('checked', false);
 		ksu.find('#is_active').prop('checked', true);
-		
+		ksu.find('#money_cost').val('');
+
 		if (ksu_subtype == ''){
 			ksu_subtype = ksu_type
 		};
@@ -393,8 +400,11 @@ $('.SaveNewKSUButton').on('click', function(){
 			'KAS1': $('#NewKSUTemplate_KAS1').clone(),
 			'KAS3': $('#NewKSUTemplate_KAS3').clone(),
 			'KAS4': $('#NewKSUTemplate_KAS4').clone(),
+			
 			'Obje': $('#NewKSUTemplate_Obje').clone(),
-			'BigO': $('#NewKSUTemplate_BigO').clone()
+			'BigO': $('#NewKSUTemplate_BigO').clone(),
+			'Wish': $('#NewKSUTemplate_Wish').clone(),
+			'Dream': $('#NewKSUTemplate_Dream').clone()
 		}
 
 
@@ -415,6 +425,10 @@ $('.SaveNewKSUButton').on('click', function(){
 		new_ksu.find('#ksu_subtype').text(ksu_subtype);
 
 		new_ksu.find('#is_critical').prop('checked', is_critical);
+		new_ksu.find('#is_active').prop('checked', is_active);
+		new_ksu.find('#is_private').prop('checked', is_private);
+
+		new_ksu.find('#money_cost').val(money_cost);
 
 		new_ksu.removeClass('hidden');
 		new_ksu.prependTo('#NewKSUsHolder');
