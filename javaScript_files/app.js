@@ -370,6 +370,7 @@ $('.SaveNewKSUButton').on('click', function(){
 	.done(function(data){
 		console.log(data);
 		ksu.find('#description').val('');
+		ksu.find('#secondary_description').val('');
 		ksu.find('#best_time').val('');
 		ksu.find('#next_event').val('');
 		ksu.find('#tags_value').val('');
@@ -378,12 +379,23 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#is_critical').prop('checked', false);
 		ksu.find('#is_active').prop('checked', true);
 		
+		if (ksu_subtype == ''){
+			ksu_subtype = ksu_type
+		};
+
+		console.log('Este es el tipo de KSU que ando pidiendo guardar:');
+		console.log(ksu_type);
+		console.log(ksu_subtype);
 
 		var Templates = {
+			'KeyA': $('#NewKSUTemplate_KeyA').clone(),
 			'KAS1': $('#NewKSUTemplate_KAS1').clone(),
 			'KAS3': $('#NewKSUTemplate_KAS3').clone(),
-			'KAS4': $('#NewKSUTemplate_KAS4').clone()
+			'KAS4': $('#NewKSUTemplate_KAS4').clone(),
+			'Obje': $('#NewKSUTemplate_Obje').clone(),
+			'BigO': $('#NewKSUTemplate_Obje').clone()
 		}
+
 
 		var new_ksu = Templates[ksu_subtype];
 

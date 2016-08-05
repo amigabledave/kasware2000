@@ -1069,24 +1069,24 @@ class PopulateRandomTheory(Handler):
 		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour))
 
 		theory_parameters = [
-			[3,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
-			[2, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
-			[2, {'ksu_type':'OTOA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
-			[2, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_value':0.25}],
-			[2, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4', 'kpts_value':5}],
-			[1, {'ksu_type':'Obje', 'ksu_subtype':'Obje'}],
-			[1, {'ksu_type':'Obje', 'ksu_subtype':'BigO'}],
-			[2, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
-			[2, {'ksu_type':'Wish', 'ksu_subtype':'Dream'}],
-			[2, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_event':today, 'kpts_value':1, 'frequency':7}],
-			[2, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_event':today, 'kpts_value':0.25, 'frequency':30}],
-			[2, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
-			[3, {'ksu_type':'Idea', 'ksu_subtype':'Principle'}],
-			[2, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
-			[1, {'ksu_type':'ImIn', 'ksu_subtype':'OpenPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
-			[1, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
-			[1, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
-			[1, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}]
+			[0,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
+			[0, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
+			[0, {'ksu_type':'OTOA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
+			[0, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_value':0.25}],
+			[0, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4', 'kpts_value':5}],
+			[0, {'ksu_type':'Obje', 'ksu_subtype':'Obje'}],
+			[0, {'ksu_type':'Obje', 'ksu_subtype':'BigO'}],
+			[0, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
+			[0, {'ksu_type':'Wish', 'ksu_subtype':'Dream'}],
+			[0, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_event':today, 'kpts_value':1, 'frequency':7}],
+			[0, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_event':today, 'kpts_value':0.25, 'frequency':30}],
+			[0, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
+			[0, {'ksu_type':'Idea', 'ksu_subtype':'Principle'}],
+			[0, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
+			[0, {'ksu_type':'ImIn', 'ksu_subtype':'OpenPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[0, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[0, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[0, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}]
 		]
 
 		for e in theory_parameters:

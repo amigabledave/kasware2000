@@ -183,7 +183,9 @@ d_SetViewerDetails = {
 		'buttons':['Done']},
 
 	'Obje':{
-		'QuickAdd':{'description_placeholder':'Describe your new Objective'},		
+		'QuickAdd':{
+			'description':'Describe your new Objective',
+			'secondary_description':'Define success (e.g. $1,000,000 in my bank acount)'},				
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Target Date'},
 		'columns':{'pretty_next_event':6},
