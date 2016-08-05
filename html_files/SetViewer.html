@@ -207,16 +207,22 @@
 		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 		<div class="row">		
 			<div class="col-xs-4">
-				<label> Target date </label>
-				<input type="date" class="form-control DummyInput" style="padding-right:3px;"  ksuattr="next_event">		
-			</div>
-			<div class="col-xs-4"></div>
-			<div class="col-xs-4" style="padding-left:0;">
 				<label class="radio-inline">
-					<input type="radio" name="ksu_subtype" id="ksu_subtype" value="BigO"><b>Big Objective<b></label>
+					<input type="radio" name="ksu_subtype" value="BigO"> Big Objective </label>
 			</div>
 			
+			<div class="col-xs-2"></div>
+			<div class="col-xs-2" style="text-align:right;"><b>Target Date </b></div>
+			<div class="col-xs-4" style="padding-left:0px;">
+				<input type="date" class="form-control DummyInput" style="padding-right:3px;" ksuattr="next_event">		
+			</div>
 		</div>
+
+
+
+
+
+
 	</div>
 
 
@@ -1137,7 +1143,7 @@
 								<div style="margin-top:7px;">
 								
 									
-										Sprint Goal
+										Objective
 									
 								</div>
 							</div>	
@@ -1222,16 +1228,11 @@
 					
 					<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 					<div class="row">		
-						<div class="col-xs-4">
-							<label> Target date </label>
-							<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="None">		
+						<div class="col-xs-6"></div>
+						<div class="col-xs-2" style="text-align:right;"><b>Target Date </b></div>
+						<div class="col-xs-4" style="padding-left:0px;">
+							<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event">		
 						</div>
-						<div class="col-xs-4"></div>
-						<div class="col-xs-4" style="padding-left:0;">
-							<label class="radio-inline">
-								<input type="radio" name="ksu_subtype QuickAttributeUpdate" id="ksu_subtype" value="BigO" > Big Objective </label>
-						</div>
-						
 					</div>	
 						
 					</div>
@@ -1377,16 +1378,11 @@
 					
 					<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 					<div class="row">		
-						<div class="col-xs-4">
-							<label> Target date </label>
-							<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="None">		
+						<div class="col-xs-6"></div>
+						<div class="col-xs-2" style="text-align:right;"><b>Target Date </b></div>
+						<div class="col-xs-4" style="padding-left:0px;">
+							<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event">		
 						</div>
-						<div class="col-xs-4"></div>
-						<div class="col-xs-4" style="padding-left:0;">
-							<label class="radio-inline">
-								<input type="radio" name="ksu_subtype QuickAttributeUpdate" id="ksu_subtype" value="BigO" checked="checked"> Big Objective </label>
-						</div>
-						
 					</div>	
 						
 					</div>
@@ -1683,17 +1679,12 @@
 						</div>
 					{% elif ksu.ksu_type == 'Obje' %}
 					<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-					<div class="row">		
-						<div class="col-xs-4">
-							<label> Target date </label>
+					<div class="row">								
+						<div class="col-xs-6"></div>
+						<div class="col-xs-2" style="text-align:right;"><b>Target Date </b></div>
+						<div class="col-xs-4" style="padding-left:0px;">
 							<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">		
 						</div>
-						<div class="col-xs-4"></div>
-						<div class="col-xs-4" style="padding-left:0;">
-							<label class="radio-inline">
-								<input type="radio" name="ksu_subtype QuickAttributeUpdate" id="ksu_subtype" value="BigO" {% if ksu.ksu_subtype == 'BigO' %} checked="checked" {% endif %}> Big Objective </label>
-						</div>
-						
 					</div>	
 					{% endif %}	
 					</div>

@@ -101,7 +101,7 @@ d_KsuSubtypes = {
 	'KAS3':'Key Reaction',
 	'KAS4':'Key Action To Avoid',
 
-	'Obje': 'Sprint Goal',
+	'Obje': 'Objective',
 
 	'BigO': 'Big Objective',
 	

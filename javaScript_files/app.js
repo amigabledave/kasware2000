@@ -131,7 +131,8 @@ $('input[type=radio][name=ksu_subtype]').on('change',function(){
 		$('#KeyA_KAS4').addClass('hidden');
 		
 	}
-
+	console.log('Se detecto el cambio de KSU_SUBTYPE');
+	console.log(this.value);
 	$('#NewKSU').attr("ksusubtype", this.value);
 });
 
@@ -393,7 +394,7 @@ $('.SaveNewKSUButton').on('click', function(){
 			'KAS3': $('#NewKSUTemplate_KAS3').clone(),
 			'KAS4': $('#NewKSUTemplate_KAS4').clone(),
 			'Obje': $('#NewKSUTemplate_Obje').clone(),
-			'BigO': $('#NewKSUTemplate_Obje').clone()
+			'BigO': $('#NewKSUTemplate_BigO').clone()
 		}
 
 
