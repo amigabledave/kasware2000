@@ -301,6 +301,42 @@ $(document).on('click', '.UserActionButton', function(){
 });
 
 
+
+function getURLParameter(url, name) {
+    return (RegExp(name + '=' + '(.+?)(&|$)').exec(url)||[,null])[1];
+}
+
+
+$(document).on('click', '.RedirectUserButton', function(){
+	var ksu = $(this).closest('#MissionKSU');
+	var ksu_id = ksu.attr("value");
+	var user_action = $(this).attr("value");
+
+    current_url = return_to = window.location.href
+
+    return_to = '&return_to=' + window.location.pathname
+
+    var set_name = getURLParameter(current_url, 'set_name');
+    if (set_name){
+    	return_to = return_to + '?set_name=' + set_name 
+    }
+    var time_frame = getURLParameter(current_url, 'time_frame');
+    if (time_frame){
+    	return_to = return_to + '?time_frame=' + time_frame
+    }
+    
+	if (user_action == 'EditKSU'){	
+		window.location.href = '/KsuEditor?ksu_id=' + ksu_id + return_to;
+
+	} else if ( user_action == 'ViewKSUHistory') {
+		window.location.href = '/HistoryViewer?ksu_id='+ksu_id;
+	}
+
+	
+});
+
+
+
 $('.SaveNewKSUButton').on('click', function(){
 	var ksu = $(this).closest('#NewKSU');
 	var ksu_type = ksu.attr("ksutype");

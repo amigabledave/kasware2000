@@ -945,30 +945,41 @@ class EventHandler(Handler):
 		return
 
 
-class EventViewer(Handler):
+class HistoryViewer(Handler):
 
 	@super_user_bouncer
 	def get(self):
+		history_title = 'Todays Events'
+		ksu_id = self.request.get('ksu_id')
+		
+		if ksu_id:
+			history_title = 'KSU history'
+
 		history_start = self.request.get('history_start')
 		history_end = self.request.get('history_end')
 
-		history, history_value = self.retrieve_history(history_start, history_end)
+		history, history_value = self.retrieve_history(ksu_id, history_start, history_end)
 
-		self.print_html('EventViewer.html', history=history, history_start=history_start, history_end=history_end, history_value=history_value, constants=constants)
+		self.print_html('HistoryViewer.html', history_title=history_title, history=history, history_start=history_start, history_end=history_end, history_value=history_value, constants=constants)
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
 	def post(self, user_action, post_details):
 		return
 
-	def retrieve_history(self, history_start, history_end):
+	def retrieve_history(self, ksu_id, history_start, history_end):
 		user_key = self.theory.key
 		
 		day_start_time = self.theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 		today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
 
-		event_set = Event.query(Event.theory == user_key).filter(Event.user_date == today, Event.is_deleted == False).order(-Event.created).fetch()
+		if ksu_id:
+			ksu = KSU.get_by_id(int(ksu_id))
+			ksu_key = ksu.key
+			event_set = Event.query(Event.ksu_id == ksu_key).filter(Event.user_date == today, Event.is_deleted == False).order(-Event.created).fetch()
+		else:
+			event_set = Event.query(Event.theory == user_key).filter(Event.user_date == today, Event.is_deleted == False).order(-Event.created).fetch()
 		
 		history = []
 		history_value = 0
@@ -1401,7 +1412,7 @@ def prepareInputForSaving(theory, ksu, post_details):
 				a_val = True
 			d_repeats_on[a_key] = a_val
 
-		if a_type =='user_tags': #xx
+		if a_type =='user_tags':
 			a_val, tags = prepare_tags_for_saving(a_val)
 			setattr(ksu, a_key, a_val.encode('utf-8'))
 			update_user_tags(theory, tags)
@@ -1561,7 +1572,7 @@ app = webapp2.WSGIApplication([
 							    ('/SetViewer', SetViewer),
 						
 							    ('/EventHandler',EventHandler),
-							    ('/EventViewer', EventViewer),
+							    ('/HistoryViewer', HistoryViewer),
 
 							    ('/PopulateRandomTheory',PopulateRandomTheory)
 								], debug=True)

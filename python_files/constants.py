@@ -90,7 +90,7 @@ d_KsuTypes = {
 	# 'Prin': '10. Principle',
 	# 'NoAR': '11. Reminder',
 	# 'MoRe': '12. Money Requirement',
-	'Diary': '09. Diary Section',
+	'Diary':'09. Diary Entry',
 	'ImIn': '10. Indicator'}
 l_KsuTypes = sorted(d_KsuTypes.items(), key=operator.itemgetter(1))
 l_KsuTypes = removeNumbers(l_KsuTypes, 4)
@@ -123,7 +123,7 @@ d_KsuSubtypes = {
 
 	'ImIn': 'Indicator',
 	'RealitySnapshot':'Reality Indicator',
-	'Diary': 'Diary Section',
+	'Diary': 'Diary Entry',
 	'BinaryPerception': 'Binary Perception Indicator',
 	'FibonacciPerception': 'Fibonacci Perception Indicator'} 
 
@@ -161,6 +161,7 @@ d_SetViewerDetails = {
 		'fields': {'pretty_next_event':'Next Event'},
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'Effort Reward',
+		'buttons_col':3,
 		'buttons':['Done', 'SendToMission']},
 
 	'KAS2':{		
@@ -168,12 +169,14 @@ d_SetViewerDetails = {
 		'fields': {'pretty_next_event':'Scheduled for'},
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'Effort Reward',
+		'buttons_col':3,
 		'buttons':['Done', 'SendToMission']},
 
 	'KAS3':{
 		'attributes': ['kpts_value'],
 		'fields': {'kpts_value':'Reward (Kpts.)'},
 		'columns': {'kpts_value':6},
+		'buttons_col':2,
 		'detailsLabel':'Effort Reward',
 		'buttons': ['Done']},
 
@@ -182,6 +185,7 @@ d_SetViewerDetails = {
 		'fields': {'kpts_value':'Punishment (Kpts.)'},
 		'columns':{'kpts_value':6},
 		'detailsLabel':'Stupidity Punishment',
+		'buttons_col':2,
 		'buttons':['Done']},
 
 	'Obje':{
@@ -192,6 +196,7 @@ d_SetViewerDetails = {
 		'fields': {'pretty_next_event':'Target Date'},
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'',
+		'buttons_col':1,
 		'buttons':['Done']},
 
 	'BigO':{		
@@ -199,6 +204,7 @@ d_SetViewerDetails = {
 		'fields': {'pretty_next_event':'Target Date'},
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'',
+		'buttons_col':1,
 		'buttons':['Done']},
 
 	'Wish':{
@@ -207,6 +213,7 @@ d_SetViewerDetails = {
 		'fields': {'money_cost':'Money required ($)'},
 		'columns':{'money_cost':6},
 		'detailsLabel':'',
+		'buttons_col':1,
 		'buttons':['Done']},
 
 	'Dream':{ 		
@@ -214,6 +221,7 @@ d_SetViewerDetails = {
 		'fields': {'money_cost':'Money required ($USD)'},
 		'columns':{'money_cost':6},
 		'detailsLabel':'',
+		'buttons_col':1,
 		'buttons':['Done']},
 
 	'EVPo': { 
@@ -225,6 +233,7 @@ d_SetViewerDetails = {
 		'fields': {'frequency':'Charging time (days)'},
 		'columns':{'frequency':6},
 		'detailsLabel':'Trigger Effort Reward',
+		'buttons_col':3,
 		'buttons':['Done', 'SendToMission']},
 
 	'ImPe': { 
@@ -234,6 +243,7 @@ d_SetViewerDetails = {
 		'fields': {'frequency':'Contact Frequency (days)'},
 		'columns':{'frequency':6},
 		'detailsLabel':'Contract Effort Reward',
+		'buttons_col':3,
 		'buttons':['Done', 'SendToMission']},
 
 	'Idea': {
@@ -242,6 +252,7 @@ d_SetViewerDetails = {
 		'fields': {'source':'Source'},
 		'columns':{'source':6},
 		'detailsLabel':'',
+		'buttons_col':0,
 		'buttons':[]},
 
 	'Principle': { 		
@@ -249,32 +260,25 @@ d_SetViewerDetails = {
 		'fields': {'source':'Source'},
 		'columns':{'source':6},
 		'detailsLabel':'',
-		'buttons':['Done']},
+		'buttons_col':0,
+		'buttons':[]},
 
 	'RTBG': { 
-			'QuickAdd':{'description':'Describe your new Reason To Be Greatfun'},		
+			'QuickAdd':{'description_placeholder':'Describe your new Reason To Be Greatfun'},		
 			'attributes': [],
 			'fields': {},
 			'columns':{},
 			'detailsLabel':'',
+			'buttons_col':0,
 			'buttons':[]},
 
-	'Diary': { 
-		'QuickAdd':{
-			'description':'Whats the name of your new Diary Section?',
-			'secondary_description':'Section entry question'},		
-		'attributes': [], 
-		'fields': {},
-		'columns':{},
-		'detailsLabel':'',
-		'buttons':[]},
-
 	'ImIn': { 
-		'QuickAdd':{'description_placeholder':'What is your new Indicator?'},		
+		'QuickAdd':{'description':'What is your new Indicator?'},		
 		'attributes': [], 
 		'fields': {},
 		'columns':{},
 		'detailsLabel':'',
+		'buttons_col':0,
 		'buttons':[]},
 
 	'BinaryPerception': { 		
@@ -282,6 +286,7 @@ d_SetViewerDetails = {
 		'fields': {'pretty_next_event':'Next Question'},
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'',
+		'buttons_col':2,
 		'buttons':['Record']},
 
 	'FibonacciPerception': { 		
@@ -289,14 +294,29 @@ d_SetViewerDetails = {
 		'fields': {'pretty_next_event':'Next Question'},
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'',
+		'buttons_col':2,
 		'buttons':['Record']},
+
 
 	'RealitySnapshot': { 		
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Next Question'},
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'',
+		'buttons_col':2,
 		'buttons':['Record']},
+
+	'Diary': { 
+		'QuickAdd':
+			{'description':'What is your new Diary section?',
+			'secondary_description':'Section entry question'},		
+		'attributes': [], 
+		'fields': {},
+		'columns':{},
+		'detailsLabel':'',
+		'buttons_col':2,
+		'buttons':['Record']}
+
 }
 
 d_displayValues = {}

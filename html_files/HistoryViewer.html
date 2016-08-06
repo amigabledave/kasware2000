@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row">
+	<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10"> 
+		<div class="SectionTitle">{{history_title}}{% if history_title == 'Todays Events' %}(<span id="HistoryValue">{{history_value}}</span> Kpts.){% endif %}</div>
+	</div>
+</div>
+
+{% for event in history %}
+
+<div class="row KSUdisplaySection" id="ViewerEvent" value="{{event.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+<form method="post">
+<input type="text" class="form-control hidden" name="event_id" id="event_id" value="{{event.key.id()}}">
+	<div class="col-xs-11">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="row">
+
+					<div class="col-xs-6">
+						<span style="color:blue;" id="event_ksu_subtype">{{event.pretty_ksu_subtype}}</span>
+					</div>
+
+					<div class="col-xs-4">
+						<span style="color:blue;" id="event_pretty_date">{{event.pretty_date}}</span>
+					</div>
+
+
+					<div class="col-xs-2" style="padding-left:0; padding-right:5px;">
+					{% if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'EVPo', 'ImPe', 'BinaryPerception', 'RealitySnapshot', 'FibonacciPerception'] %}
+						<span style="color:{% if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'ImPe', 'EVPo'] %}green{% elif event.ksu_subtype == 'KAS4' %}red{% else %}black{% endif %};" id="event_score">{{event.score}}{% if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'ImPe', 'EVPo'] %} Kpts.{% endif %}</span>
+					{% endif %}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-12"><b>{% if event.ksu_subtype in ['ImPe', 'EVPo'] %}{{event.ksu_secondary_description}}{% else %}{{event.ksu_description}}{% endif %}</b>{% if event.comments %}<br><em>{{ event.comments }}</em>{% endif %}</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+	<div class="col-xs-1" style="padding:5px;">
+		<button type="button" class="btn btn-danger btn-circle btn-lg DeleteEventButton" name="action_description" value='DeleteEvent'"><span class="glyphicon glyphicon-trash"></span></button>
+	</div>
+</form>		
+</div>
+
+{% endfor %}
+
+{% endblock %}
+
+
