@@ -102,10 +102,6 @@ class Handler(webapp2.RequestHandler):
 	def get_active_log(self):
 		theory = self.theory
 		
-		if 'minimum_daily_effort' not in theory.kpts_goals: #Apendice - TBD despues de que se actualice mi cuenta.
-			theory.kpts_goals['minimum_daily_effort'] = theory.kpts_goals_parameters['minimum_daily_effort']
-			theory.put()
-
 		minimum_daily_effort = theory.kpts_goals['minimum_daily_effort']
 
 		day_start_time = theory.day_start_time
@@ -431,12 +427,6 @@ class KsuEditor(Handler):
 		else: 
 			ksu = KSU.get_by_id(int(ksu_id))
 
-		#Apendice - TBD after update	
-		theory = self.theory 
-		if 'tags' not in theory.categories:
-			theory.categories['tags'] = []
-			theory.put()
-		#####
 		tags = self.theory.categories['tags']
 		self.print_html('KsuEditor.html', ksu=ksu, constants=constants, tags=tags)
 
@@ -607,8 +597,15 @@ class MissionViewer(Handler):
 			if ksu_subtype in ['OpenPerception', 'Diary']:
 				ksu.ksu_type = 'Diary'
 				ksu.ksu_subtype = 'Diary'
-				# ksu.next_event = today
-				ksu.put()
+			
+			if ksu_subtype in ['Obje', 'BigO']:
+				ksu.ksu_type = 'Obje'
+				ksu.ksu_subtype = 'BigO'				
+
+			if ksu_subtype in ['Principle', 'Dream']:
+				ksu.ksu_subtype = ksu.ksu_type
+
+			ksu.put()
 			###
 				
 			next_event = ksu.next_event
@@ -803,7 +800,7 @@ class EventHandler(Handler):
 				event.kpts_type = 'Stupidity'
 				event.score = float(event_details['kpts_value'])				
 
-			if ksu_subtype in ['Obje','BigO','Wish','Dream']:
+			if ksu_subtype in ['BigO','Wish']:
 				ksu.in_graveyard = True
 				ksu.put()
 
@@ -1094,14 +1091,11 @@ class PopulateRandomTheory(Handler):
 			[0, {'ksu_type':'OTOA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
 			[0, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_value':0.25}],
 			[0, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4', 'kpts_value':5}],
-			[0, {'ksu_type':'Obje', 'ksu_subtype':'Obje'}],
-			[0, {'ksu_type':'Obje', 'ksu_subtype':'BigO'}],
+			[0, {'ksu_type':'BigO', 'ksu_subtype':'BigO'}],
 			[0, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
-			[0, {'ksu_type':'Wish', 'ksu_subtype':'Dream'}],
 			[0, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_event':today, 'kpts_value':1, 'frequency':7}],
 			[0, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_event':today, 'kpts_value':0.25, 'frequency':30}],
 			[0, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
-			[0, {'ksu_type':'Idea', 'ksu_subtype':'Principle'}],
 			[0, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
 			[0, {'ksu_type':'Diary', 'ksu_subtype':'Diary', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[0, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],

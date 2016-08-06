@@ -47,10 +47,10 @@ $('#ksu_type').on('change',function(){
 		$('#OTOA').addClass('hidden');
 	}
 
-	if (this.value == 'Obje'){
-		$('#Obje').removeClass('hidden');
+	if (this.value == 'BigO'){
+		$('#BigO').removeClass('hidden');
 	} else {
-		$('#Obje').addClass('hidden');
+		$('#BigO').addClass('hidden');
 	}
 
 	if (this.value == 'Wish'){
@@ -98,17 +98,14 @@ $('#ksu_type').on('change',function(){
 	d_EditorTitle = {
 		'Gene': 'KASware Standard Unit Editor',
 		'KeyA': 'Key Action Editor',
-		// 'MinO': 'Mini Objective Editor',
-		'Obje': 'Objective Editor',
-		'Drea': 'Dream Editor',
+
+		'BigO': 'Objective Editor',
 		'Wish': 'Wish Editor',
-		// 'Prin': 'Principle Editor',
+
 		'EVPo': 'End Value Mine Editor',
 		'ImPe': 'Important Person Editor',
 		'RTBG': 'Reason To Be Grateful Editor',
 		'Idea': 'Bit of Wisdom Editor',
-		'NoAR': 'Reminder Editor',
-		'MoRe': 'Money Requirement Editor',
 		'ImIn': 'Indicator Editor'
 	}
 
@@ -284,7 +281,7 @@ $(document).on('click', '.UserActionButton', function(){
 
 		};
 		
-		var dissapear_after_done_subtypes = ['KAS2', 'Wish', 'Dream', 'Obje', 'BigO'];
+		var dissapear_after_done_subtypes = ['KAS2', 'Wish', 'BigO'];
 		var dissapear_after_done_actions = ['ViewerDone'];
 
 		if (($.inArray(ksu_subtype, dissapear_after_done_subtypes)!= -1) && ($.inArray(user_action, dissapear_after_done_actions)!= -1)){
@@ -448,15 +445,13 @@ $('.SaveNewKSUButton').on('click', function(){
 			'KAS3': $('#NewKSUTemplate_KAS3').clone(),
 			'KAS4': $('#NewKSUTemplate_KAS4').clone(),
 			
-			'Obje': $('#NewKSUTemplate_Obje').clone(),
 			'BigO': $('#NewKSUTemplate_BigO').clone(),
 			'Wish': $('#NewKSUTemplate_Wish').clone(),
-			'Dream': $('#NewKSUTemplate_Dream').clone(),
-
+			
 			'EVPo': $('#NewKSUTemplate_EVPo').clone(),
 			'ImPe': $('#NewKSUTemplate_ImPe').clone(),
-			'Idea': $('#NewKSUTemplate_Idea').clone(),
-			'Principle': $('#NewKSUTemplate_Principle').clone(),
+			'Idea': $('#NewKSUTemplate_Idea').clone()
+			
 		}
 
 

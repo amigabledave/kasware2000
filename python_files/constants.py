@@ -61,17 +61,12 @@ d_SetTitles = {
 	'SomedayMaybe': 'Someday Maybe', 
 	'Gene': 'In-Basket',
 	'KeyA': 'Key Actions Set',
-	# 'MinO': '02. Mini Objective',
-	'Obje': 'Objectives',
-	# 'Drea': '04. Dream',
+	'BigO': 'Objectives',
 	'Wish': 'Wishes',
 	'EVPo': 'End Value Mines',
 	'ImPe': 'Important People',
 	'Idea': 'Wisdom',
 	'RTBG': 'Reasons To Be Grateful',
-	# 'Prin': '10. Principle',
-	# 'NoAR': '11. Reminder',
-	# 'MoRe': '12. Money Requirement',
 	'ImIn': 'Indicator',
 	'Diary':'Diary'}
 
@@ -79,17 +74,12 @@ d_KsuTypes = {
 	'Gene': '00. Unassigned',
 	'OTOA': '01. One Time Only Action',
 	'KeyA': '02. Key Action',
-	# 'MinO': '02. Mini Objective',
-	'Obje': '03. Objective',
-	# 'Drea': '04. Dream',
+	'BigO': '03. Objective',
 	'Wish': '04. Wish',
 	'EVPo': '05. End Value Mine',
 	'ImPe': '06. Important Person',
 	'Idea': '07. Bit of Wisdom',
 	'RTBG': '08. Reason To Be Grateful',
-	# 'Prin': '10. Principle',
-	# 'NoAR': '11. Reminder',
-	# 'MoRe': '12. Money Requirement',
 	'Diary':'09. Diary Entry',
 	'ImIn': '10. Indicator'}
 l_KsuTypes = sorted(d_KsuTypes.items(), key=operator.itemgetter(1))
@@ -103,27 +93,16 @@ d_KsuSubtypes = {
 	'KAS3':'Key Reaction',
 	'KAS4':'Key Action To Avoid',
 
-	'Obje': 'Objective',
-
 	'BigO': 'Big Objective',
-	
 	'Wish': 'Wish',
-
-	'Dream': 'Dream',
-
 	'EVPo': 'End Value Mine',
-
 	'ImPe': 'Important Person',
-
 	'Idea': 'Bit of Wisdom',
-	'Principle': 'Principle',
-
 	'RTBG': 'Reason To Be Grateful',
-	'RTBSDG': 'Reason To Be Super Duper Grateful',
 
+	'Diary': 'Diary Entry',
 	'ImIn': 'Indicator',
 	'RealitySnapshot':'Reality Indicator',
-	'Diary': 'Diary Entry',
 	'BinaryPerception': 'Binary Perception Indicator',
 	'FibonacciPerception': 'Fibonacci Perception Indicator'} 
 
@@ -188,18 +167,10 @@ d_SetViewerDetails = {
 		'buttons_col':2,
 		'buttons':['Done']},
 
-	'Obje':{
+	'BigO':{
 		'QuickAdd':{
 			'description':'Describe your new Objective',
 			'secondary_description':'Define success (e.g. $1,000,000 in my bank acount)'},				
-		'attributes': ['pretty_next_event'],
-		'fields': {'pretty_next_event':'Target Date'},
-		'columns':{'pretty_next_event':6},
-		'detailsLabel':'',
-		'buttons_col':1,
-		'buttons':['Done']},
-
-	'BigO':{		
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Target Date'},
 		'columns':{'pretty_next_event':6},
@@ -216,13 +187,6 @@ d_SetViewerDetails = {
 		'buttons_col':1,
 		'buttons':['Done']},
 
-	'Dream':{ 		
-		'attributes': ['money_cost'],
-		'fields': {'money_cost':'Money required ($USD)'},
-		'columns':{'money_cost':6},
-		'detailsLabel':'',
-		'buttons_col':1,
-		'buttons':['Done']},
 
 	'EVPo': { 
 		'QuickAdd':{
@@ -255,13 +219,6 @@ d_SetViewerDetails = {
 		'buttons_col':0,
 		'buttons':[]},
 
-	'Principle': { 		
-		'attributes': ['source'],
-		'fields': {'source':'Source'},
-		'columns':{'source':6},
-		'detailsLabel':'',
-		'buttons_col':0,
-		'buttons':[]},
 
 	'RTBG': { 
 			'QuickAdd':{'description_placeholder':'Describe your new Reason To Be Greatfun'},		
