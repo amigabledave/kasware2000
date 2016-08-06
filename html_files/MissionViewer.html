@@ -278,18 +278,18 @@
 				<div class="col-xs-10">
 					<div class="row">
 
-					{% if ksu.ksu_subtype == 'OpenPerception' %}
+					{% if ksu.ksu_subtype == 'Diary' %}
 						<div class="col-xs-12">
 							<label>{{ksu.secondary_description}}</label>
 							<textarea style="width:100%;" class="form-control" name="event_comments" id="event_comments" rows="1" placeholder="Your answer goes here"></textarea><span style="color:blue;">{% if ksu.best_time %}{{ksu.pretty_best_time}}{% endif %}</span>
 						</div>
 
 					{% else %}
-						<div class="col-xs-8">
+						<div class="col-xs-10">
 							<textarea style="width:100%; border:0; font-weight:bold;" class="QuickAttributeUpdate" name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea><span style="color:blue;">{% if ksu.best_time %}{{ksu.pretty_best_time}}{% endif %}</span>
 						</div>
 
-						<div class="col-xs-4">
+						<div class="col-xs-2" style="padding-left:0;">
 							{% if ksu.ksu_subtype in ['BinaryPerception', 'FibonacciPerception'] %}
 								<select class="form-control" name="indicator_value" id="select_indicator_value">
 									{% if ksu.ksu_subtype == 'BinaryPerception' %}
@@ -313,7 +313,7 @@
 
 				<div class="col-xs-1" style="padding:0;">
 
-					{% if ksu.ksu_subtype == 'OpenPerception' %}
+					{% if ksu.ksu_subtype == 'Diary' %}
 						<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-bottom:10px;"><span class="glyphicon glyphicon-remove"></span></button>
 					{% endif %}
 
@@ -325,7 +325,7 @@
 				<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
 				
 					<div class="col-xs-8">
-						{% if ksu.ksu_subtype != 'OpenPerception' %}
+						{% if ksu.ksu_subtype != 'Diary' %}
 							<textarea style="width:100%;" class="form-control" name="event_comments" id="event_comments" placeholder="Comment on this result"></textarea>
 						{% endif %}
 					</div>

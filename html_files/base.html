@@ -104,6 +104,7 @@
 		{% else %}
 			<div class="col-xs-2" style="width:15%">
 				<ul class="LeftNavigationBar">
+				  <li><a {% if set_name == 'Gene' %} class="active" {% endif %} href="/SetViewer?set_name=Gene">In-Basket</a></li>
 				  <li><a {% if time_frame == 'Today' %} class="active" {% endif %} href="/MissionViewer?time_frame=Today">Today's Mission</a></li>
 				  <li><a {% if time_frame == 'Upcoming' %} class="active" {% endif %} href="/MissionViewer?time_frame=Upcoming">Upcoming</a></li>
 				  <br>
@@ -114,9 +115,9 @@
 				  <li><a {% if set_name == 'ImPe' %} class="active" {% endif %} href="/SetViewer?set_name=ImPe">Important People</a></li>				  
 				  <li><a {% if set_name == 'Idea' %} class="active" {% endif %} href="/SetViewer?set_name=Idea">Wisdom</a></li>
 				  <li><a {% if set_name == 'RTBG' %} class="active" {% endif %} href="/SetViewer?set_name=RTBG">Reasons to be Grateful</a></li>
-				  <li><a {% if set_name == 'ImIn' %} class="active" {% endif %} href="/SetViewer?set_name=ImIn">Indicators</a></li>
 				  <br>
-				  <li><a {% if set_name == 'Gene' %} class="active" {% endif %} href="/SetViewer?set_name=Gene">In-Basket</a></li>
+				  <li><a {% if set_name == 'Diary' %} class="active" {% endif %} href="/SetViewer?set_name=Diary">Diary</a></li>
+				  <li><a {% if set_name == 'ImIn' %} class="active" {% endif %} href="/SetViewer?set_name=ImIn">Indicators</a></li>
 				  <li><a {% if set_name == 'Graveyard' %} class="active" {% endif %} href="/SetViewer?set_name=Graveyard"> Graveyard </a></li>
 				</ul>														
 			</div>

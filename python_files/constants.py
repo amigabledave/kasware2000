@@ -72,7 +72,8 @@ d_SetTitles = {
 	# 'Prin': '10. Principle',
 	# 'NoAR': '11. Reminder',
 	# 'MoRe': '12. Money Requirement',
-	'ImIn': 'Indicator'}
+	'ImIn': 'Indicator',
+	'Diary':'Diary'}
 
 d_KsuTypes = {
 	'Gene': '00. Unassigned',
@@ -89,7 +90,8 @@ d_KsuTypes = {
 	# 'Prin': '10. Principle',
 	# 'NoAR': '11. Reminder',
 	# 'MoRe': '12. Money Requirement',
-	'ImIn': '09. Indicator'}
+	'Diary': '09. Diary Section',
+	'ImIn': '10. Indicator'}
 l_KsuTypes = sorted(d_KsuTypes.items(), key=operator.itemgetter(1))
 l_KsuTypes = removeNumbers(l_KsuTypes, 4)
 d_KsuTypes = makeDictionaryFromTupleList(l_KsuTypes)
@@ -121,7 +123,7 @@ d_KsuSubtypes = {
 
 	'ImIn': 'Indicator',
 	'RealitySnapshot':'Reality Indicator',
-	'OpenPerception': 'Open Perception Indicator',
+	'Diary': 'Diary Section',
 	'BinaryPerception': 'Binary Perception Indicator',
 	'FibonacciPerception': 'Fibonacci Perception Indicator'} 
 
@@ -250,19 +252,22 @@ d_SetViewerDetails = {
 		'buttons':['Done']},
 
 	'RTBG': { 
-			'QuickAdd':{'description_placeholder':'Describe your new Reason To Be Greatfun'},		
+			'QuickAdd':{'description':'Describe your new Reason To Be Greatfun'},		
 			'attributes': [],
 			'fields': {},
 			'columns':{},
 			'detailsLabel':'',
 			'buttons':[]},
 
-	'RTBSDG': { 		
-			'attributes': [],
-			'fields': {},
-			'columns':{},
-			'detailsLabel':'',
-			'buttons':[]},
+	'Diary': { 
+		'QuickAdd':{
+			'description':'Whats the name of your new Diary Section?',
+			'secondary_description':'Section entry question'},		
+		'attributes': [], 
+		'fields': {},
+		'columns':{},
+		'detailsLabel':'',
+		'buttons':[]},
 
 	'ImIn': { 
 		'QuickAdd':{'description_placeholder':'What is your new Indicator?'},		
@@ -280,13 +285,6 @@ d_SetViewerDetails = {
 		'buttons':['Record']},
 
 	'FibonacciPerception': { 		
-		'attributes': ['pretty_next_event'],
-		'fields': {'pretty_next_event':'Next Question'},
-		'columns':{'pretty_next_event':6},
-		'detailsLabel':'',
-		'buttons':['Record']},
-
-	'OpenPerception': { 		
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Next Question'},
 		'columns':{'pretty_next_event':6},

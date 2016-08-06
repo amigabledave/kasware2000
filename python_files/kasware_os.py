@@ -27,7 +27,7 @@ os_ksus = [
 
 	{'description':'Oportunities for improvement',
 	 'secondary_description':"Is there anything I could have done differently to have a more fun/productive day?",
-	 'ksu_type':'ImIn',
+	 'ksu_type':'Diary',
 	 'ksu_subtype':'OpenPerception',
 	 'best_time':'20:31:00',
 	 'is_active':True, 
@@ -35,7 +35,7 @@ os_ksus = [
 
 	{'description':'Reasons to be proud',
 	 'secondary_description':"Did I do anything today that I'm particularty proud off?",
-	 'ksu_type':'ImIn',
+	 'ksu_type':'Diary',
 	 'ksu_subtype':'OpenPerception',
 	 'best_time':'20:33:00',
 	 'is_active':True, 
@@ -43,7 +43,7 @@ os_ksus = [
 
 	{'description':'Reasons to be ashame',
 	 'secondary_description':"Did I do anything today that I'm particularty ashamed off?",
-	 'ksu_type':'ImIn',
+	 'ksu_type':'Diary',
 	 'ksu_subtype':'OpenPerception',
 	 'best_time':'20:35:00',
 	 'is_active':True, 

@@ -89,6 +89,12 @@ $('#ksu_type').on('change',function(){
 		$('#ImIn').addClass('hidden');
 	}
 
+	if (this.value == 'Diary'){
+		$('#Diary').removeClass('hidden');
+	} else {
+		$('#Diary').addClass('hidden');
+	}
+
 	d_EditorTitle = {
 		'Gene': 'KASware Standard Unit Editor',
 		'KeyA': 'Key Action Editor',
@@ -97,10 +103,10 @@ $('#ksu_type').on('change',function(){
 		'Drea': 'Dream Editor',
 		'Wish': 'Wish Editor',
 		// 'Prin': 'Principle Editor',
-		'EVPo': 'End Value Editor',
+		'EVPo': 'End Value Mine Editor',
 		'ImPe': 'Important Person Editor',
 		'RTBG': 'Reason To Be Grateful Editor',
-		'Idea': 'Wise Idea Editor',
+		'Idea': 'Bit of Wisdom Editor',
 		'NoAR': 'Reminder Editor',
 		'MoRe': 'Money Requirement Editor',
 		'ImIn': 'Indicator Editor'

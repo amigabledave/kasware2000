@@ -597,15 +597,20 @@ class MissionViewer(Handler):
 		someday_maybe = []
 
 		mission_sets = ['KAS1', 'KAS2', 'EVPo', 'ImPe']
-		questions_sets = ['RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'OpenPerception']
+		questions_sets = ['RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'Diary']
 
 
 		for ksu in ksu_set:
 			ksu_subtype = ksu.ksu_subtype
-			if ksu_subtype == 'KAS2':# Apendice - TBD despues de que se actualice mi cuenta.
-				ksu.ksu_type = 'OTOA'
+									
+			# Apendice - TBD despues de que se actualice mi cuenta.
+			if ksu_subtype in ['OpenPerception', 'Diary']:
+				ksu.ksu_type = 'Diary'
+				ksu.ksu_subtype = 'Diary'
+				# ksu.next_event = today
 				ksu.put()
-
+			###
+				
 			next_event = ksu.next_event
 			ksu.description_rows = determine_rows(ksu.description)
 			ksu.secondary_description_rows = determine_rows(ksu.secondary_description)
@@ -1087,7 +1092,7 @@ class PopulateRandomTheory(Handler):
 			[0, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
 			[0, {'ksu_type':'Idea', 'ksu_subtype':'Principle'}],
 			[0, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
-			[0, {'ksu_type':'ImIn', 'ksu_subtype':'OpenPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[0, {'ksu_type':'Diary', 'ksu_subtype':'Diary', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[0, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[0, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[0, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}]
@@ -1304,7 +1309,7 @@ def update_next_event(self, user_action, post_details, ksu):
 			ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
 
 
-	elif ksu_subtype in ['EVPo', 'ImPe', 'RealitySnapshot', 'FibonacciPerception', 'BinaryPerception', 'OpenPerception']:
+	elif ksu_subtype in ['EVPo', 'ImPe', 'RealitySnapshot', 'FibonacciPerception', 'BinaryPerception', 'Diary']:
 		
 		next_event = ksu.next_event
 
@@ -1410,10 +1415,10 @@ def prepareInputForSaving(theory, ksu, post_details):
 	if ksu.ksu_subtype == 'ImPe':
 		ksu.secondary_description = 'Contact ' + ksu.description
 
-	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe','EVPo', 'RealitySnapshot', 'OpenPerception', 'FibonacciPerception', 'BinaryPerception'] and not ksu.next_event:
+	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe','EVPo', 'RealitySnapshot', 'Diary', 'FibonacciPerception', 'BinaryPerception'] and not ksu.next_event:
 		ksu.next_event = datetime.today() - timedelta(days=1)
 
-	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe','EVPo', 'RealitySnapshot', 'OpenPerception', 'FibonacciPerception', 'BinaryPerception'] and not ksu.frequency:
+	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe','EVPo', 'RealitySnapshot', 'Diary', 'FibonacciPerception', 'BinaryPerception'] and not ksu.frequency:
 		ksu.frequency = 1
 
 	return ksu
