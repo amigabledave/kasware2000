@@ -902,7 +902,11 @@ class EventHandler(Handler):
 		elif attr_key == 'next_event':
 			ksu.next_event = datetime.strptime(attr_value, '%Y-%m-%d')
 			ksu.pretty_next_event = datetime.strptime(attr_value, '%Y-%m-%d').strftime('%a, %b %d, %Y')
-			updated_value = ksu.pretty_next_event
+			updated_value = ksu.pretty_next_event.strftime('%a, %b %d, %Y')
+
+		elif attr_key == 'birthday':
+			ksu.birthday = datetime.strptime(attr_value, '%Y-%m-%d')
+			updated_value = ksu.birthday
 
 		elif attr_key == 'kpts_value':
 			ksu.kpts_value = float(attr_value)
@@ -1440,7 +1444,7 @@ def remplaza_acentos(palabra):
 def prepare_tags_for_saving(tags_string):
 
 	tags_string = remplaza_acentos(tags_string)
-	valid_characters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','_',',']
+	valid_characters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','_',',','1','2','3','4','5','6','7','8','9','0']
 	clean_tags_string = ''
 	for i in range(0,len(tags_string)):
 		character = tags_string[i]

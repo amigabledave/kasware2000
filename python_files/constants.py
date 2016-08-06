@@ -216,7 +216,7 @@ d_SetViewerDetails = {
 
 	'EVPo': { 
 		'QuickAdd':{
-			'description':'Describe your new End Value Mine (e.g. being at the movies)',
+			'description':'Describe your new End Value Mine',
 			'secondary_description':'Trigger action description (e.g. buy movie tickets")'
 			},		
 		'attributes': ['frequency'],
@@ -226,7 +226,8 @@ d_SetViewerDetails = {
 		'buttons':['Done', 'SendToMission']},
 
 	'ImPe': { 
-		'QuickAdd':{'description_placeholder':'What is the name of your new Important Person'},		
+		'QuickAdd':{
+			'description':'Who is your new Important Person?'},		
 		'attributes': ['frequency'], 
 		'fields': {'frequency':'Contact Frequency (days)'},
 		'columns':{'frequency':6},
