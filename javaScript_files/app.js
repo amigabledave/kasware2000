@@ -378,6 +378,7 @@ $('.SaveNewKSUButton').on('click', function(){
 	.done(function(data){
 		console.log(data);
 		ksu.find('#description').val('');
+		ksu.find('#comments').val('');
 		ksu.find('#secondary_description').val('');
 		ksu.find('#best_time').val('');
 		ksu.find('#next_event').val('');
@@ -388,6 +389,7 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#is_active').prop('checked', true);
 		ksu.find('#money_cost').val('');
 		ksu.find('#birthday').val('');
+		ksu.find('#Idea_SecondaryDescription').val('');
 
 		if (ksu_subtype == ''){
 			ksu_subtype = ksu_type
@@ -411,6 +413,8 @@ $('.SaveNewKSUButton').on('click', function(){
 
 			'EVPo': $('#NewKSUTemplate_EVPo').clone(),
 			'ImPe': $('#NewKSUTemplate_ImPe').clone(),
+			'Idea': $('#NewKSUTemplate_Idea').clone(),
+			'Principle': $('#NewKSUTemplate_Principle').clone(),
 		}
 
 

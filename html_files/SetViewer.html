@@ -304,6 +304,21 @@
 		</div>
 	</div>
 
+	<div class="{% if set_name != 'Idea' %}hidden{% endif %}" id="Idea">
+		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+
+		<div class="row">
+			<div class="col-xs-3" style="padding-right:0;">
+				<label class="radio-inline">
+					<input type="radio" name="ksu_subtype" value="Principle" {% if ksu.ksu_subtype == 'Principle' %} checked="checked" {% endif %}> This idea is one of my principles </label>
+			</div>
+
+			<div class="col-xs-9">
+				<label> Source </label>
+				<textarea type="text" class="form-control DummyInput autoExpands" rows="1" data-min-rows='1' id="Idea_SecondaryDescription" ksuattr="secondary_description" placeholder="e.g. name of a person, book or a link to an article" value="{% if ksu and ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}"></textarea>
+			</div>
+		</div>
+	</div>
 
 
 	<div class="{% if set_name != 'ImIn' %}hidden{% endif %}" id="ImIn">
@@ -2185,6 +2200,303 @@
 	</div>
 </div>
 
+<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_Idea" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+		<div class="row" style="min-height: 45px">
+
+			<div class="col-xs-12" style="padding-right:0px">
+
+				<div class="row" "="">
+					<div class="col-xs-10" style="font-size:13px; padding-right:0;">
+						<div>
+						
+
+														
+
+						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows="1" name="description" id="description">Template_Idea</textarea>
+
+						
+
+						</div>
+					</div>
+
+					<form method="post">
+
+					<div class="col-xs-2" style="padding-left:25px;">
+
+						
+						
+							<button type="submit" class="btn btn-default btn-circle displaySectionVerticalButton" name="action_description" value="EditKSU">
+							  	<span class="glyphicon glyphicon-pencil"></span>
+						  	</button>
+
+					  	 
+								
+					</div>
+					</form>							
+				</div>
+
+				<div class="row" style="margin-top:5px;">
+					<div class="col-xs-12">
+						<div class="row">
+							<div class="col-xs-5 displaySectionBulletContent" style="color:purple;">
+								<div style="margin-top:7px;">
+								
+									
+										Bit of Wisdom
+									
+								</div>
+							</div>	
+
+							<div class="col-xs-4">
+								<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; margin-top:7px;" type="text" list="tags" name="tags" id="tags" value=""> 
+							</div>
+
+							<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+								<select class="QuickAttributeUpdate" style="border:0; color:purple; margin-top:7px;" name="importance" id="importance">
+								
+																						
+										
+											<option value="1"> 1 </option>
+										
+																						
+										
+											<option selected="selected" value="2"> 2 </option>
+										
+																						
+										
+											<option value="3"> 3 </option>
+										
+									
+								
+								</select>	
+							</div>
+							<div class="col-xs-2" style="padding-left:25px;">
+							
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span>
+					  			</button>
+					  			
+							</div>
+						</div>						
+					</div>
+				</div>						
+			</div>
+		</div>
+
+		<div class="row hidden" id="ScoreDetail">
+			<div class="col-xs-12">
+				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="checkbox"> 
+							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked=""> <b> Active </b> </label> 
+						</div>
+					</div>	
+
+					<div class="col-xs-2" style="padding-left:8px;">
+						<div class="checkbox"> 
+							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical"> <b> Critical </b> </label> 
+						</div>			
+					</div>
+
+					<div class="col-xs-2" style="padding-left:3px;">
+						<div class="checkbox"> 
+				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate"> <b> Private </b> </label> 
+				 		</div>
+					</div>
+
+					<div class="col-xs-4">
+					</div>
+					
+
+					<div class="col-xs-2">					
+
+						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value="ViewerDelete" style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+					</div>
+				
+				</div>					
+				<div class="row" id="KsuPlusOptions">
+					<div class="col-xs-12">
+					
+						
+						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+
+						<div class="row">
+							<div class="col-xs-2" style="text-align:right; padding-right:0;">
+								<b>Source</b>
+							</div>
+							<div class="col-xs-10">
+								<textarea type="text" class="form-control autoExpands QuickAttributeUpdate" rows="1" data-min-rows="1" id="secondary_description" name="secondary_description" placeholder="e.g. name of a person, book or a link to an article"></textarea>
+							</div>
+						</div>
+	
+						
+					</div>
+					<div class="col-xs-12">
+						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+						<div class="row">
+							<div class="col-xs-12" style="padding-right:0;">
+								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows="3" name="comments" id="comments" placeholder="Comments"></textarea>	
+							</div>
+
+						</div>
+					</div>
+				</div>
+		</div>
+		</div>
+	</div>
+</div>
+
+<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_Principle" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+		<div class="row" style="min-height: 45px">
+
+			<div class="col-xs-12" style="padding-right:0px">
+
+				<div class="row" "="">
+					<div class="col-xs-10" style="font-size:13px; padding-right:0;">
+						<div>
+						
+
+														
+
+						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows="1" name="description" id="description">Template_Idea</textarea>
+
+						
+
+						</div>
+					</div>
+
+					<form method="post">
+
+					<div class="col-xs-2" style="padding-left:25px;">
+
+						
+						
+							<button type="submit" class="btn btn-default btn-circle displaySectionVerticalButton" name="action_description" value="EditKSU">
+							  	<span class="glyphicon glyphicon-pencil"></span>
+						  	</button>
+
+					  	 
+								
+					</div>
+					</form>							
+				</div>
+
+				<div class="row" style="margin-top:5px;">
+					<div class="col-xs-12">
+						<div class="row">
+							<div class="col-xs-5 displaySectionBulletContent" style="color:purple;">
+								<div style="margin-top:7px;">
+								
+									
+										Principle
+									
+								</div>
+							</div>	
+
+							<div class="col-xs-4">
+								<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; margin-top:7px;" type="text" list="tags" name="tags" id="tags" value=""> 
+							</div>
+
+							<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+								<select class="QuickAttributeUpdate" style="border:0; color:purple; margin-top:7px;" name="importance" id="importance">
+								
+																						
+										
+											<option value="1"> 1 </option>
+										
+																						
+										
+											<option selected="selected" value="2"> 2 </option>
+										
+																						
+										
+											<option value="3"> 3 </option>
+										
+									
+								
+								</select>	
+							</div>
+							<div class="col-xs-2" style="padding-left:25px;">
+							
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span>
+					  			</button>
+					  			
+							</div>
+						</div>						
+					</div>
+				</div>						
+			</div>
+		</div>
+
+		<div class="row hidden" id="ScoreDetail">
+			<div class="col-xs-12">
+				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="checkbox"> 
+							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked=""> <b> Active </b> </label> 
+						</div>
+					</div>	
+
+					<div class="col-xs-2" style="padding-left:8px;">
+						<div class="checkbox"> 
+							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical"> <b> Critical </b> </label> 
+						</div>			
+					</div>
+
+					<div class="col-xs-2" style="padding-left:3px;">
+						<div class="checkbox"> 
+				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate"> <b> Private </b> </label> 
+				 		</div>
+					</div>
+
+					<div class="col-xs-4">
+					</div>
+					
+
+					<div class="col-xs-2">					
+
+						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value="ViewerDelete" style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+					</div>
+				
+				</div>					
+				<div class="row" id="KsuPlusOptions">
+					<div class="col-xs-12">
+					
+						
+						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+
+						<div class="row">
+							<div class="col-xs-2" style="text-align:right; padding-right:0;">
+								<b>Source</b>
+							</div>
+							<div class="col-xs-10">
+								<textarea type="text" class="form-control autoExpands QuickAttributeUpdate" rows="1" data-min-rows="1" id="secondary_description" name="secondary_description" placeholder="e.g. name of a person, book or a link to an article"></textarea>
+							</div>
+						</div>
+	
+						
+					</div>
+					<div class="col-xs-12">
+						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+						<div class="row">
+							<div class="col-xs-12" style="padding-right:0;">
+								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows="3" name="comments" id="comments" placeholder="Comments"></textarea>	
+							</div>
+
+						</div>
+					</div>
+				</div>
+		</div>
+		</div>
+	</div>
+</div>
+
+
 
 <div id="NewKSUsHolder"></div>
 {% endif %}
@@ -2542,7 +2854,19 @@
 								</select>	
 							</div>
 						</div>
+					{% elif ksu.ksu_type == 'Idea' %}
+						
+						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 
+						<div class="row">
+							<div class="col-xs-2" style="text-align:right; padding-right:0;">
+								<b>Source</b>
+							</div>
+							<div class="col-xs-10">
+								<textarea type="text" class="form-control autoExpands QuickAttributeUpdate" rows="1" data-min-rows='1' id="secondary_description" name="secondary_description" placeholder="e.g. name of a person, book or a link to an article">{% if ksu and ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
+							</div>
+						</div>
+	
 					{% endif %}	
 					</div>
 					<div class="col-xs-12">

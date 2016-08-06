@@ -67,7 +67,7 @@ d_SetTitles = {
 	'Wish': 'Wishes',
 	'EVPo': 'End Value Mines',
 	'ImPe': 'Important People',
-	'Idea': 'Wise Ideas',
+	'Idea': 'Wisdom',
 	'RTBG': 'Reasons To Be Grateful',
 	# 'Prin': '10. Principle',
 	# 'NoAR': '11. Reminder',
@@ -84,7 +84,7 @@ d_KsuTypes = {
 	'Wish': '04. Wish',
 	'EVPo': '05. End Value Mine',
 	'ImPe': '06. Important Person',
-	'Idea': '07. Wise Idea',
+	'Idea': '07. Bit of Wisdom',
 	'RTBG': '08. Reason To Be Grateful',
 	# 'Prin': '10. Principle',
 	# 'NoAR': '11. Reminder',
@@ -113,7 +113,7 @@ d_KsuSubtypes = {
 
 	'ImPe': 'Important Person',
 
-	'Idea': 'Wise Idea',
+	'Idea': 'Bit of Wisdom',
 	'Principle': 'Principle',
 
 	'RTBG': 'Reason To Be Grateful',
@@ -235,7 +235,7 @@ d_SetViewerDetails = {
 		'buttons':['Done', 'SendToMission']},
 
 	'Idea': {
-		'QuickAdd':{'description_placeholder':'Describe a new Idea'}, 		
+		'QuickAdd':{'description':'Tell me a deep and meaningfull idea'}, 		
 		'attributes': ['source'],
 		'fields': {'source':'Source'},
 		'columns':{'source':6},
