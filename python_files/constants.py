@@ -200,7 +200,7 @@ d_SetViewerDetails = {
 		'buttons':['Done']},
 
 	'Wish':{
-		'QuickAdd':{'description_placeholder':'Describe your new Wish'}, 		
+		'QuickAdd':{'description':'Describe your new Wish'}, 		
 		'attributes': ['money_cost'],
 		'fields': {'money_cost':'Money required ($)'},
 		'columns':{'money_cost':6},
@@ -215,7 +215,10 @@ d_SetViewerDetails = {
 		'buttons':['Done']},
 
 	'EVPo': { 
-		'QuickAdd':{'description_placeholder':'Describe your new End Value Mine'},		
+		'QuickAdd':{
+			'description':'Describe your new End Value Mine (e.g. being at the movies)',
+			'secondary_description':'Trigger action description (e.g. buy movie tickets")'
+			},		
 		'attributes': ['frequency'],
 		'fields': {'frequency':'Charging time (days)'},
 		'columns':{'frequency':6},

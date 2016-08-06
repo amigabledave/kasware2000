@@ -398,13 +398,16 @@ $('.SaveNewKSUButton').on('click', function(){
 		var Templates = {
 			'KeyA': $('#NewKSUTemplate_KeyA').clone(),
 			'KAS1': $('#NewKSUTemplate_KAS1').clone(),
+			'KAS2': $('#NewKSUTemplate_KAS2').clone(),
 			'KAS3': $('#NewKSUTemplate_KAS3').clone(),
 			'KAS4': $('#NewKSUTemplate_KAS4').clone(),
 			
 			'Obje': $('#NewKSUTemplate_Obje').clone(),
 			'BigO': $('#NewKSUTemplate_BigO').clone(),
 			'Wish': $('#NewKSUTemplate_Wish').clone(),
-			'Dream': $('#NewKSUTemplate_Dream').clone()
+			'Dream': $('#NewKSUTemplate_Dream').clone(),
+
+			'EVPo': $('#NewKSUTemplate_EVPo').clone()
 		}
 
 
