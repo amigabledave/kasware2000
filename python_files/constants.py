@@ -14,6 +14,7 @@ def makeDictionaryFromTupleList(tupleList):
 
 
 l_Fibonacci = [0.25,1,2,3,5,8,13]
+l_Fibonacci_1_8 = [1,2,3,5,8]
 d_attributeType = {
 
 	'description':'string',
@@ -280,6 +281,7 @@ d_displayValues = {}
 d_displayValues.update(d_repeats)
 
 constants = {'l_Fibonacci':l_Fibonacci,
+			 'l_Fibonacci_1_8':l_Fibonacci_1_8,
 			 'd_attributeType':d_attributeType,
 			 'default_ksu':default_ksu,
 			 'd_SetTitles':d_SetTitles,

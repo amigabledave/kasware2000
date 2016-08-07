@@ -172,35 +172,33 @@
 	</div>
 </div>
 
-
 <div class="{% if ksu.ksu_type != 'OTOA' %}hidden{% endif %}" id="OTOA">
-<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:12px;">	
-<div class="form-group">
-	<div class="col-xs-4">
-		<label> Reward</label>
-		<select class="form-control DummyInput" ksuattr="kpts_value">
-			{% for value in constants['l_Fibonacci'] %}
-				{% if value == ksu.kpts_value %}
-					<option selected="selected" value="{{value}}"> {{value}} </option>
-				{% else %}
-					<option value="{{value}}"> {{value}} </option>
-				{% endif %}
-			{% endfor %}
-		</select>	
+	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:12px;">	
+	<div class="form-group">
+		<div class="col-xs-4">
+			<label> Reward</label>
+			<select class="form-control DummyInput" ksuattr="kpts_value">
+				{% for value in constants['l_Fibonacci'] %}
+					{% if value == ksu.kpts_value %}
+						<option selected="selected" value="{{value}}"> {{value}} </option>
+					{% else %}
+						<option value="{{value}}"> {{value}} </option>
+					{% endif %}
+				{% endfor %}
+			</select>	
+		</div>
+
+		<div class="col-xs-4">
+			<label> Next Event </label>
+			<input type="date" class="form-control DummyInput" style="padding-right:3px;" ksuattr="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+		</div>	
+
+		<div class="col-xs-4">
+			<label> Preferred Time </label>
+			<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control DummyInput" ksuattr="best_time" value={% if ksu %}{{ksu.best_time}}{% endif %}>	
+		</div>				
 	</div>
-
-	<div class="col-xs-4">
-		<label> Next Event </label>
-		<input type="date" class="form-control DummyInput" style="padding-right:3px;" ksuattr="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
-	</div>	
-
-	<div class="col-xs-4">
-		<label> Preferred Time </label>
-		<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control DummyInput" ksuattr="best_time" value={% if ksu %}{{ksu.best_time}}{% endif %}>	
-	</div>				
 </div>
-</div>
-
 
 
 <div class="{% if ksu.ksu_type != 'ImIn' %}hidden{% endif %}" id="ImIn">
@@ -405,39 +403,37 @@
 <div class="{% if ksu.ksu_type != 'Wish' %}hidden{% endif %}" id="Wish">
 	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 	<div class="form-group">
-
-		<div class="col-xs-4"> 
-			<label> Money Cost </label>			
-			<input type="number" min="0" class="form-control" name="money_cost" placeholder="e.g. $50" value="{% if ksu %}{{ksu.money_cost}}{% endif %}">
+		<div class="col-xs-3" style="text-align:right;"><b>Excitement Level</b></div>
+		<div class="col-xs-3">
+			<select class="form-control DummyInput" ksuattr="kpts_value">
+				{% for value in constants['l_Fibonacci_1_8'] %}														
+					<option value="{{value}}"> {{value}} </option>							
+				{% endfor %}
+			</select>
 		</div>
-
-		<div class="col-xs-6" style="padding-left:0;">
-			<label class="radio-inline">
-				<input type="radio" name="ksu_subtype" value="Dream" {% if ksu.ksu_subtype == 'Dream' %} checked="checked" {% endif %}> This wish is one of my dreams :) </label>
+		<div class="col-xs-3" style="text-align:right;"><b>Money Cost ($) </b></div>
+		<div class="col-xs-3" style="padding-left:0px;">
+			<input type="number" min="0" class="form-control" id="money_cost" name="money_cost" placeholder="e.g. $500">		
 		</div>
 	</div>
 </div>
 
-<div class="{% if ksu.ksu_type != 'Obje' %}hidden{% endif %}" id="Obje">
+<div class="{% if ksu.ksu_type != 'BigO' %}hidden{% endif %}" id="BigO">
 
 	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-	<div class="form-group">
-		<div class="col-xs-6">
-			<label>Success Definition</label>
-			<textarea class="form-control DummyInput" ksuattr="secondary_description" placeholder="e.g. $1,000,000,000 USD in my bank acount">{% if ksu and ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>	
+	<div class="form-group">			
+		<div class="col-xs-3" style="text-align:right;"><b>Achievement Value</b></div>
+		<div class="col-xs-3">
+			<select class="form-control DummyInput" ksuattr="kpts_value">
+				{% for value in constants['l_Fibonacci_1_8'] %}														
+					<option value="{{value}}"> {{value}} </option>							
+				{% endfor %}
+			</select>
+		</div>			
+		<div class="col-xs-2" style="text-align:right;"><b>Target Date </b></div>
+		<div class="col-xs-4" style="padding-left:0px;">
+			<input type="date" class="form-control DummyInput" style="padding-right:3px;" ksuattr="next_event">		
 		</div>
-
-		<div class="col-xs-4">
-			<label> Target date </label>
-			<input type="date" class="form-control DummyInput" style="padding-right:3px;" ksuattr="next_event" value="{% if ksu %}{{ksu.target_date}}{% endif %}">		
-		</div>
-
-		<div class="col-xs-2" style="padding-left:0;">
-			<label class="radio-inline">
-				<input type="radio" name="ksu_subtype" value="BigO" {% if ksu.ksu_subtype == 'BigO' %} checked="checked" {% endif %}> Big Objective </label>
-		</div>
-
-
 	</div>
 </div>
 

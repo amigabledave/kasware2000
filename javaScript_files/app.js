@@ -373,6 +373,10 @@ $('.SaveNewKSUButton').on('click', function(){
 		secondary_description = ksu.find('#secondary_description').text();
 	};
 
+	if ((ksu_type == 'BigO' || ksu_type == 'Wish' ) && kpts_value == '0.25'){
+		kpts_value = 1
+	}
+
 	ksu.fadeOut("slow")
 	
 	$.ajax({
