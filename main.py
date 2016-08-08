@@ -608,15 +608,6 @@ class MissionViewer(Handler):
 			ksu.put()
 			###
 	
-
-			#xx  Debuging - TBD
-			print remplaza_acentos(ksu.description)
-			print ksu.ksu_type		
-			print ksu.ksu_subtype
-			print ksu.next_event
-			###
-
-
 			next_event = ksu.next_event
 			ksu.description_rows = determine_rows(ksu.description)
 			ksu.secondary_description_rows = determine_rows(ksu.secondary_description)
@@ -955,38 +946,76 @@ class HistoryViewer(Handler):
 
 	@super_user_bouncer
 	def get(self):
-		history_title = 'Todays Events'
+		history_title = 'History'
 		ksu_id = self.request.get('ksu_id')
 		
 		if ksu_id:
 			history_title = 'KSU history'
 
-		history_start = self.request.get('history_start')
+		day_start_time = self.theory.day_start_time
+		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
+		today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
+
+
+		history_start = self.request.get('history_start') #xx
+		if history_start:
+			history_start = int(history_start)
+		else:
+			history_start = today
+
 		history_end = self.request.get('history_end')
+		if history_end:
+			history_end = int(history_end)
+		else:
+			history_end = today
 
 		history, history_value = self.retrieve_history(ksu_id, history_start, history_end)
+		history_start = datetime.fromordinal(history_start)
+		history_end = datetime.fromordinal(history_end)
 
 		self.print_html('HistoryViewer.html', history_title=history_title, history=history, history_start=history_start, history_end=history_end, history_value=history_value, constants=constants)
 
-	@super_user_bouncer
+
+	@super_user_bouncer #xx 
 	@CreateOrEditKSU_request_handler	
 	def post(self, user_action, post_details):
+
+		redirect_to = '/HistoryViewer'
+
+		day_start_time = self.theory.day_start_time
+		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 #xx
+		today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
+
+		print
+		print 'These are the post details:'
+		print post_details
+		print
+		
+		if 'post_history_start' in post_details:
+			history_start = (datetime.strptime(post_details['post_history_start'], '%Y-%m-%d')).date().toordinal()
+			redirect_to += '?history_start='+str(history_start)
+
+		
+		if 'post_history_end' in post_details:
+			history_end = (datetime.strptime(post_details['post_history_end'], '%Y-%m-%d')).date().toordinal()
+			redirect_to += '&history_end='+str(history_end)
+		
+		self.redirect(redirect_to)
 		return
 
 	def retrieve_history(self, ksu_id, history_start, history_end):
 		user_key = self.theory.key
 		
-		day_start_time = self.theory.day_start_time
-		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-		today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
-
 		if ksu_id:
 			ksu = KSU.get_by_id(int(ksu_id))
 			ksu_key = ksu.key
-			event_set = Event.query(Event.ksu_id == ksu_key).filter(Event.user_date == today, Event.is_deleted == False).order(-Event.created).fetch()
+			event_set = Event.query(Event.ksu_id == ksu_key).filter(Event.is_deleted == False, Event.user_date >= history_start, Event.user_date <= history_end).order(-Event.user_date,-Event.created).fetch()
 		else:
-			event_set = Event.query(Event.theory == user_key).filter(Event.user_date == today, Event.is_deleted == False).order(-Event.created).fetch()
+			event_set = Event.query(Event.theory == user_key).filter(Event.is_deleted == False, Event.user_date >= history_start, Event.user_date <= history_end).order(-Event.user_date,-Event.created).fetch()
 		
+		day_start_time = self.theory.day_start_time
+		user_start_hour = day_start_time.hour + day_start_time.minute/60.0
+
 		history = []
 		history_value = 0
 
@@ -995,8 +1024,8 @@ class HistoryViewer(Handler):
 			event.ksu_description = ksu.description
 			event.ksu_secondary_description = ksu.secondary_description
 			event.ksu_subtype = ksu.ksu_subtype
-			event.pretty_ksu_subtype = constants['d_KsuSubtypes'][ksu.ksu_subtype]
-			event.pretty_date = event.user_date_date.strftime('%a, %b %d, %Y')
+			event.pretty_ksu_subtype = constants['d_KsuSubtypes'][ksu.ksu_subtype] #xx
+			event.pretty_date = (event.user_date_date+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).date().strftime('%a, %b %d, %Y')
 			history.append(event)
 			if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'EVPo', 'ImPe']:
 				history_value += event.score

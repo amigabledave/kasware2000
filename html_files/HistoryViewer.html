@@ -3,9 +3,30 @@
 
 <div class="row">
 	<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10"> 
-		<div class="SectionTitle">{{history_title}}{% if history_title == 'Todays Events' %}(<span id="HistoryValue">{{history_value}}</span> Kpts.){% endif %}</div>
+		<div class="SectionTitle">{{history_title}}</div>
 	</div>
 </div>
+
+<div class="row KSUdisplaySection" id="HistoryMiniDashboard" value="" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+	<form method="post">
+	<div class="col-xs-11">
+		<div class="row">
+			<div class="col-xs-6">
+				<label> From </label>
+				<input type="date" class="form-control" style="padding-right:3px;" id="history_start" name="post_history_start" value={{history_start}}>
+			</div>
+			<div class="col-xs-6">
+				<label> To </label>
+				<input type="date" class="form-control" style="padding-right:3px;" id="history_end" name="post_history_end" value={{history_end}}>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-1" style="padding:1px;">
+		<button type="submit" class="btn btn-primary btn-circle btn-lg" name="action_description" value='RefreshHistory'"><span class="glyphicon glyphicon-refresh"></span></button>
+	</div>
+	</form>		
+</div>
+
 
 {% for event in history %}
 
@@ -41,7 +62,7 @@
 
 		</div>
 	</div>
-	<div class="col-xs-1" style="padding:5px;">
+	<div class="col-xs-1" style="padding:1px;">
 		<button type="button" class="btn btn-danger btn-circle btn-lg DeleteEventButton" name="action_description" value='DeleteEvent'"><span class="glyphicon glyphicon-trash"></span></button>
 	</div>
 </form>		

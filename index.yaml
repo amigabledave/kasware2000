@@ -28,6 +28,15 @@ indexes:
 
 - kind: Event
   properties:
+  - name: is_deleted
+  - name: theory
+  - name: user_date
+    direction: desc
+  - name: created
+    direction: desc
+
+- kind: Event
+  properties:
   - name: theory
   - name: user_date
   - name: created
