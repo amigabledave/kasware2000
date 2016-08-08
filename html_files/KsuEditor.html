@@ -224,7 +224,7 @@
 	<div class="form-group">
 		<div class="col-xs-12">
 			<label> Data generating question </label>
-			<input type="text" class="form-control DummyInput" ksuattr="secondary_description" placeholder="e.g. Am I exited about the day that I'm about to live?" value="{% if ksu and ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}">
+			<input type="text" class="form-control DummyInput" ksuattr="secondary_description" placeholder="e.g. Whats my weight?" value="{% if ksu and ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}">
 		</div>		
 	</div>
 
@@ -244,23 +244,6 @@
 			<label> Question time </label>
 			<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control DummyInput" ksuattr="best_time" value={% if ksu %}{{ksu.best_time}}{% endif %}>	
 		</div>
-
-<!-- 		<div class="col-xs-3">
-			<label> Target Min. </label>			
-			<input type="number" step="0.01" min="0" class="form-control" name="target_min" placeholder="e.g 0.5" value="{% if ksu %}{{ksu.target_min}}{% endif %}">
-		</div>
-		
-		<div class="col-xs-3">
-			<label> Target Max. </label>			
-			<input type="number" step="0.01" min="0" class="form-control" name="target_max" placeholder="e.g. 100" value="{% if ksu %}{{ksu.target_max}}{% endif %}">
-		</div>
-
-		<div class="col-xs-2"> 
-			<div class="checkbox"> 
-				<label> <input type="checkbox" name="reverse_target"{% if ksu.reverse_target %}checked{% endif %}> <b> Reverse Target </b></label> 
-			</div>
-		</div> -->
-
 	</div>	
 </div>
 
@@ -295,20 +278,6 @@
 
 
 <div class="{% if ksu.ksu_type != 'RTBG' %}hidden{% endif %}" id="RTBG">
-	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-	<div class="form-group">
-
-		<div class="col-xs-4">
-			<label> Reason Birthday </label>
-			<input type="date" class="form-control" style="padding-right:3px;" id="birthday" name="birthday" value="{% if ksu %}{{ksu.birthday}}{% endif %}">
-		</div>
-
-		<div class="col-xs-6" style="padding-left:0;">
-			<label class="radio-inline">
-				<input type="radio" name="ksu_subtype" value="RTBSDG" {% if ksu.ksu_subtype == 'RTBSDG' %} checked="checked" {% endif %}> I'm Super Duper Grateful About This :) </label>
-		</div>
-		
-	</div>
 </div>
 
 <div class="{% if ksu.ksu_type != 'ImPe' %}hidden{% endif %}" id="ImPe">

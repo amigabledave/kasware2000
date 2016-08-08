@@ -164,9 +164,9 @@
 					<div class="row">
 						<div class="col-xs-12">
 						{% if ksu.ksu_subtype in ['EVPo', 'ImPe'] %}
-							<textarea style="width:100%; height:20px; border:0;" class="QuickAttributeUpdate" name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>
+							<textarea style="width:100%; height:20px; border:0; {% if ksu.is_critical %}color:#B22222;{% endif %}" class="QuickAttributeUpdate" name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>
 						{% else %}	
-							<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
+							<textarea style="width:100%; border:0; {% if ksu.is_critical %}color:#B22222;{% endif %}" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
 						{% endif %}
 						</div>
 					</div>
@@ -372,7 +372,7 @@
 					{% if ksu.ksu_subtype == 'KAS3' %}
 					<div class="row" style="margin-bottom:3px;">
 						<div class="col-xs-12">					
-							<span style="color:blue; font-style:italic;"> When:</span> <span style="{% if ksu.is_critical %}color:red;{% endif %}">{{ksu.secondary_description}}</span>
+							<span style="color:blue; font-style:italic;"> When:</span> <span style="{% if ksu.is_critical %}color:#B22222;{% endif %}">{{ksu.secondary_description}}</span>
 						</div>
 					</div>
 					{% endif %}
@@ -384,7 +384,7 @@
 						{% elif ksu.ksu_subtype == 'KAS3' %}
 							<span style="color:blue; font-style:italic;"> I will: </span>						
 						{% endif %}								
-						<span style="{% if ksu.is_critical %}color:red;{% endif %}">{{ksu.description}}</span></span>
+						<span style="{% if ksu.is_critical %}color:#B22222;{% endif %}">{{ksu.description}}</span></span>
 						</div>
 					</div>
 

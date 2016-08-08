@@ -607,7 +607,16 @@ class MissionViewer(Handler):
 
 			ksu.put()
 			###
-				
+	
+
+			#xx  Debuging - TBD
+			print remplaza_acentos(ksu.description)
+			print ksu.ksu_type		
+			print ksu.ksu_subtype
+			print ksu.next_event
+			###
+
+
 			next_event = ksu.next_event
 			ksu.description_rows = determine_rows(ksu.description)
 			ksu.secondary_description_rows = determine_rows(ksu.secondary_description)
@@ -674,7 +683,7 @@ class EventHandler(Handler):
 				if a_val == '':
 					del new_event_details[a_key]
 
-			ksu = prepareInputForSaving(self.theory, ksu, new_event_details)
+			ksu = prepareInputForSaving(self.theory, ksu, new_event_details) 
 			ksu.put()
 
 			self.response.out.write(json.dumps({
@@ -904,11 +913,11 @@ class EventHandler(Handler):
 		elif attr_key == 'next_event':
 			ksu.next_event = datetime.strptime(attr_value, '%Y-%m-%d')
 			ksu.pretty_next_event = datetime.strptime(attr_value, '%Y-%m-%d').strftime('%a, %b %d, %Y')
-			updated_value = ksu.pretty_next_event.strftime('%a, %b %d, %Y')
+			updated_value = ksu.next_event.strftime('%a, %b %d, %Y')
 
 		elif attr_key == 'birthday':
 			ksu.birthday = datetime.strptime(attr_value, '%Y-%m-%d')
-			updated_value = ksu.birthday
+			updated_value = ksu.birthday.strftime('%a, %b %d, %Y')
 
 		elif attr_key == 'kpts_value':
 			ksu.kpts_value = float(attr_value)
@@ -932,7 +941,7 @@ class EventHandler(Handler):
 			setattr(ksu, attr_key, attr_value)
 
 		elif attr_key in ['repeats_on_Mon', 'repeats_on_Tue', 'repeats_on_Wed', 'repeats_on_Thu', 'repeats_on_Fri', 'repeats_on_Sat', 'repeats_on_Sun']:
-			ksu.repeats_on[attr_key] = attr_value #xx
+			ksu.repeats_on[attr_key] = attr_value 
 
 		ksu.put()	
 		return updated_value
@@ -1422,6 +1431,8 @@ def prepareInputForSaving(theory, ksu, post_details):
 
 	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe','EVPo', 'RealitySnapshot', 'Diary', 'FibonacciPerception', 'BinaryPerception'] and not ksu.next_event:
 		ksu.next_event = datetime.today() - timedelta(days=1)
+	print ksu.ksu_type
+	print ksu.next_event
 
 	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe','EVPo', 'RealitySnapshot', 'Diary', 'FibonacciPerception', 'BinaryPerception'] and not ksu.frequency:
 		ksu.frequency = 1

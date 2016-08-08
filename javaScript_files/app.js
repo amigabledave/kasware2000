@@ -28,6 +28,11 @@ $('.DummyInput').on('change',function(){
 });
 
 
+$('.QuickKsuDescription').on('focusin', function(){
+	$('#QuickKsuSubtypeDetails').removeClass('hidden');
+});
+
+
 $('#ksu_type').on('change',function(){
 
 	if (this.value == 'KeyA'){
@@ -454,8 +459,13 @@ $('.SaveNewKSUButton').on('click', function(){
 			
 			'EVPo': $('#NewKSUTemplate_EVPo').clone(),
 			'ImPe': $('#NewKSUTemplate_ImPe').clone(),
-			'Idea': $('#NewKSUTemplate_Idea').clone()
-			
+			'Idea': $('#NewKSUTemplate_Idea').clone(),
+			'RTBG': $('#NewKSUTemplate_RTBG').clone(),
+
+			'RealitySnapshot': $('#NewKSUTemplate_RealitySnapshot').clone(),
+			'BinaryPerception': $('#NewKSUTemplate_BinaryPerception').clone(),
+			'FibonacciPerception': $('#NewKSUTemplate_FibonacciPerception').clone(),
+			'Diary': $('#NewKSUTemplate_Diary').clone()
 		}
 
 
@@ -490,13 +500,14 @@ $('.SaveNewKSUButton').on('click', function(){
 		new_ksu.fadeIn("slow");
 
 		if(is_critical && is_active){
-			new_ksu.find('#description').css('color', 'red');				
+			new_ksu.find('#description').css('color', '#B22222');				
 		} else if (is_active){
 			new_ksu.find('#description').css('color', 'black');				
 		} else {
 			new_ksu.find('#description').css('color', '#D3D3D3');
 		};
 
+		$('#QuickKsuSubtypeDetails').addClass('hidden');
 		ksu.fadeIn("slow");		
 	});
 });
@@ -585,7 +596,7 @@ $(document).on('focusout', '.QuickAttributeUpdate', function(){
 			var is_active = ksu.find('#is_active').is(':checked');
 			console.log(is_active, is_critical);
 			if(is_critical && is_active){
-				description.css('color', 'red');				
+				description.css('color', '#B22222');				
 			} else if (is_active){
 				description.css('color', 'black');				
 			} else {

@@ -132,9 +132,12 @@ d_repeats_legend = {
 
 d_SetViewerDetails = {
 	
-	'Gene':{'QuickAdd':{'description_placeholder':'Describe your new KASware Standard Unit'}},
+	'Gene':{
+		'buttons_col':0},
 
-	'KeyA':{'QuickAdd':{'description_placeholder':'Describe your new Key Action'}},
+	'KeyA':{
+		'QuickAdd':{'description':'Describe your new Key Action'},
+		'buttons_col':2},
 
 	'KAS1':{
 		'attributes': ['pretty_next_event'],
@@ -170,7 +173,7 @@ d_SetViewerDetails = {
 
 	'BigO':{
 		'QuickAdd':{
-			'description':'Describe your new Objective',
+			'description':'What do you want to achieve?',
 			'secondary_description':'Define success (e.g. $1,000,000 in my bank acount)'},				
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Target Date'},
@@ -180,7 +183,7 @@ d_SetViewerDetails = {
 		'buttons':['Done']},
 
 	'Wish':{
-		'QuickAdd':{'description':'Describe your new Wish'}, 		
+		'QuickAdd':{'description':'What do you wish for?'}, 		
 		'attributes': ['money_cost'],
 		'fields': {'money_cost':'Money required ($)'},
 		'columns':{'money_cost':6},
@@ -222,7 +225,7 @@ d_SetViewerDetails = {
 
 
 	'RTBG': { 
-			'QuickAdd':{'description_placeholder':'Describe your new Reason To Be Greatfun'},		
+			'QuickAdd':{'description':'What are you greateful for?'},		
 			'attributes': [],
 			'fields': {},
 			'columns':{},
@@ -231,7 +234,9 @@ d_SetViewerDetails = {
 			'buttons':[]},
 
 	'ImIn': { 
-		'QuickAdd':{'description':'What is your new Indicator?'},		
+		'QuickAdd':{
+			'description':'What is your new Indicator?',
+			'secondary_description': 'Data generating question (e.g. Whats my weight?'},		
 		'attributes': [], 
 		'fields': {},
 		'columns':{},
@@ -244,7 +249,7 @@ d_SetViewerDetails = {
 		'fields': {'pretty_next_event':'Next Question'},
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'',
-		'buttons_col':2,
+		'buttons_col':1,
 		'buttons':['Record']},
 
 	'FibonacciPerception': { 		
@@ -252,7 +257,7 @@ d_SetViewerDetails = {
 		'fields': {'pretty_next_event':'Next Question'},
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'',
-		'buttons_col':2,
+		'buttons_col':1,
 		'buttons':['Record']},
 
 
@@ -261,20 +266,19 @@ d_SetViewerDetails = {
 		'fields': {'pretty_next_event':'Next Question'},
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'',
-		'buttons_col':2,
+		'buttons_col':1,
 		'buttons':['Record']},
 
 	'Diary': { 
 		'QuickAdd':
 			{'description':'What is your new Diary section?',
-			'secondary_description':'Section entry question'},		
+			'secondary_description':'Entry question (e.g. What was the best part of my day today?)'},		
 		'attributes': [], 
 		'fields': {},
 		'columns':{},
 		'detailsLabel':'',
-		'buttons_col':2,
+		'buttons_col':1,
 		'buttons':['Record']}
-
 }
 
 d_displayValues = {}
