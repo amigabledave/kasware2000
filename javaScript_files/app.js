@@ -1,3 +1,15 @@
+$('#ShowHideReactiveMission').on('click', function(){
+	
+	$('#reactive_mission').toggleClass('hidden');
+
+	var GlaphiconDiv = $('#MissionPlusMinusGlyphicon');
+	GlaphiconDiv.toggleClass('glyphicon-minus');
+	GlaphiconDiv.toggleClass('glyphicon-plus');	
+});
+
+
+
+
 $('.DummyInput').on('change',function(){
 	
 	var ksu_attr = $(this).attr("ksuattr");

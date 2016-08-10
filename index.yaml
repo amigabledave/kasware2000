@@ -102,6 +102,16 @@ indexes:
 - kind: KSU
   properties:
   - name: in_graveyard
+  - name: is_active
+  - name: is_deleted
+  - name: theory
+  - name: next_event
+  - name: best_time
+  - name: importance
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
   - name: is_deleted
   - name: theory
   - name: created

@@ -3,9 +3,185 @@
 
 
 <div class="row">
-	<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10"> 
+	<div class="col-xs-10"> 
 		<div class="SectionTitle"> {{constants['d_SetTitles'][time_frame]}}{% if time_frame == 'Today' %} (<span id="MissionValue">{{mission_value}} </span> Kpts.){% endif %}</div>
 	</div>
+
+	<div class="col-xs-2" style="padding:0;">
+			<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;" id="ShowHideReactiveMission"><span id="MissionPlusMinusGlyphicon" class="glyphicon glyphicon-minus" style="font-size:25px;"></span></button>
+	</div>
+
+</div>
+
+<div class="" id="reactive_mission">
+	{% if time_frame == 'Today' and reactive_mission %}
+		<div class="row">
+			<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+				<div class="SectionTitle" style="font-size:22px; margin-top:0px;"> Reactive Mission </div>
+			</div>
+		</div>
+
+		{% for ksu in reactive_mission %}
+
+		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+		<form method="post">
+		<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
+			<div class="col-xs-12">
+				<div class="row">
+					<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
+						<button type="button" class="btn btn-{% if ksu.ksu_subtype == 'KAS3' %}success{% else %}danger{% endif %} btn-circle btn-lg UserActionButton" name="action_description" value='ReactiveMissionDone'><i class="glyphicon glyphicon-ok"></i></button>
+					</div>
+
+					<div class="col-xs-10">
+						<div class="row">
+							<div class="col-xs-12">
+							
+							{% if ksu.ksu_subtype == 'KAS3' %}	
+								<span style="color:#32CD32; font-style:italic; font-weight:bold; font-size:12px;">Target Reaction: </span>
+								<textarea style="width:100%; font-weight:normal; font-style:italic; border:0;" class="QuickAttributeUpdate autoExpand" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>
+							{% endif %}
+
+							{% if ksu.ksu_subtype == 'KAS4' %}	
+								<span style="color:red; font-style:italic; font-weight:bold; font-size:12px;"> Must avoid:</span> 
+							{% endif %}								
+
+							<textarea style="width:100%; border:0; font-weight:bold; {% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#D3D3D3;{% endif %}" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
+
+							</div>
+						</div>
+
+
+						<div class="row" style="margin-top:5px;">
+							
+							<div class="col-xs-1">
+									<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold;" name="importance" id="importance">
+										{% for value in range(1,4) %}													
+											{% if value == ksu.importance %}
+												<option selected="selected" value="{{value}}"> {{value}} </option>
+											{% else %}
+												<option value="{{value}}"> {{value}} </option>
+											{% endif %}
+										{% endfor %}
+									</select>
+							</div>
+							
+							<div class="col-xs-1"></div>
+
+							<div class="col-xs-8">
+								<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; width:170px; text-align:center;" placeholder="Tag" type="text" list="tags" name="tags" id="tags" value="{% if ksu.tags %}{{ksu.tags}}{% endif %}"> 
+							</div>
+
+							<div class="col-xs-2" style="padding-left:0; font-weight:bold; padding-right:5px; text-align:right;">
+								<select class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0;{% if ksu.ksu_subtype == 'KAS4' %}color:red;{% endif %}" name="kpts_value" id="kpts_value">
+									{% for value in constants['l_Fibonacci'] %}
+										{% if value == ksu.kpts_value %}
+											<option selected="selected" value="{{value}}"> {{value}} </option>
+										{% else %}
+											<option value="{{value}}"> {{value}} </option>
+										{% endif %}
+									{% endfor %}
+								</select>	
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xs-1" style="padding:0;">
+							<button type="button" class="btn btn-default btn-circle ShowDetailViewerButton" id="ShowDetailViewerButton"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus"></span></button>
+					</div>			
+				</div>
+
+			<div class="row hidden" id="ScoreDetail">
+				<div class="col-xs-12">
+					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+					<div class="row">
+						<div class="col-xs-2">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" {% if ksu.is_active %}checked{% endif %}> <b> Active </b> </label> 
+							</div>
+						</div>	
+
+						<div class="col-xs-2" style="padding-left:8px;">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" {% if ksu.is_critical %}checked{% endif %}> <b> Critical </b> </label> 
+							</div>			
+						</div>
+
+						<div class="col-xs-2" style="padding-left:3px;">
+							<div class="checkbox"> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" {% if ksu.is_private %}checked{% endif %}> <b> Private </b> </label> 
+					 		</div>
+						</div>
+
+						<div class="col-xs-2"></div>
+						
+						<div class="col-xs-4">
+								<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-right:10px;"><span class="glyphicon glyphicon-remove""></span></button>
+								<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='MissionDelete' style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+								<button type="button" class="btn btn-primary btn-circle btn-lg RedirectUserButton" name="action_description" value='EditKSU' style=""><span class="glyphicon glyphicon-pencil"></span></button>
+						</div>
+				
+					</div>					
+					<div class="row" id="KsuPlusOptions">
+						<div class="col-xs-12">
+						{% if ksu.ksu_subtype == 'KAS3' %}
+							<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">		
+							<div class="row">
+								<div class="col-xs-4">		
+								<label> Reward</label>
+								<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+									{% for value in constants['l_Fibonacci'] %}
+										{% if ksu.kpts_value == value %}																					
+											<option selected="selected" value="{{value}}"> {{value}} </option>
+										{% else %}
+											<option value="{{value}}"> {{value}} </option>							
+										{% endif %}
+									{% endfor %}
+								</select>
+								</div>
+							</div>
+						{% elif ksu.ksu_subtype == 'KAS4' %}
+							<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">
+							<div class="row" style="margin-bottom:8px;">
+								<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+										<label> Punishment </label>
+										<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+											{% for value in constants['l_Fibonacci'] %}																						
+												{% if ksu.kpts_value == value %}
+												<option selected="selected" value="{{value}}"> {{value}} </option>
+												{% else %}
+												<option value="{{value}}"> {{value}} </option>								
+												{% endif %}
+											{% endfor %}
+										</select>	
+								</div>
+								<div class="col-xs-9">
+									<label>Valid Exceptions</label>
+									<textarea class="form-control QuickAttributeUpdate autoExpand" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description" placeholder="e.g. When I'am on vacation, When the food its free!">{% if ksu.secondary_description %}{{ ksu.secondary_description }}{% endif %}</textarea>	
+								</div>		
+							</div>
+						{% endif %}		
+							<hr class="hr-1px-gray" style="{% if ksu.ksu_subtype == 'KAS2' %}margin-top:0px;{% else %}margin-top:10px;{% endif %} margin-bottom:0px;">
+							<div class="row">
+								<div class="col-xs-12">
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments">{% if ksu.comments %}{{ ksu.comments }}{% endif %}</textarea>	
+								</div>
+							</div>		
+						</div>
+					</div>
+				</div>	
+			</div>
+
+
+			</div>
+		</form>		
+		</div>
+		{% endfor %}
+		<div class="row">
+			<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10"> 
+				<div class="SectionTitle" style="font-size:22px;"> Proactive Mission </div>
+			</div>
+		</div>
+	{% endif %}
 </div>
 
 <div class="row KSUdisplaySection" id="NewKSU" ksutype="OTOA" ksusubtype="KAS2" value="NewKSU" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
@@ -46,7 +222,12 @@
 				{% endif %}
 				
 				<div class="col-xs-6">
-					<input style="color:purple; font-weight:bold; border:0; width:170px; text-align:center;" type="text" list="tags" name="tags" id="tags" placeholder="Tag"> 
+					<input style="color:purple; font-weight:bold; text-align:center; border:0; color:purple;" type="text" list="tags" name="tags" id="tags_value" placeholder="Tag"> 
+					<datalist id="tags">
+						{% for tag in tags %}
+							<option value="{{tag}}">
+						{% endfor %}
+					</datalist>
 				</div>
 
 				<div class="col-xs-2" style="padding-left:0; font-weight:bold; padding-right:5px; text-align:right;">
@@ -200,8 +381,6 @@
 		</div>
 	</div>
 </div>
-
-
 
 <div id="NewKSUsHolder"></div>
 
@@ -674,100 +853,7 @@
 	</form>		
 	</div>
 
-	{% endfor %}
-
-	{% if reactive_mission %}
-		<div class="row">
-			<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10"> 
-				<div class="SectionTitle" style="font-size:22px;"> Reactions to have and actions to avoid </div>
-			</div>
-		</div>
-	{% endif %}
-
-
-	{% for ksu in reactive_mission %}
-
-	<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
-	<form method="post">
-	<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
-		<div class="col-xs-12">
-			<div class="row">
-				<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
-					<button type="button" class="btn btn-{% if ksu.ksu_subtype == 'KAS3' %}success{% else %}danger{% endif %} btn-circle btn-lg UserActionButton" name="action_description" value='ReactiveMissionDone'><i class="glyphicon glyphicon-ok"></i></button>
-				</div>
-
-				<div class="col-xs-10">
-					
-					{% if ksu.ksu_subtype == 'KAS3' %}
-					<div class="row" style="margin-bottom:3px;">
-						<div class="col-xs-12">					
-							<span style="color:blue; font-style:italic;"> When:</span> <span style="{% if ksu.is_critical %}color:#B22222;{% endif %}">{{ksu.secondary_description}}</span>
-						</div>
-					</div>
-					{% endif %}
-
-					<div class="row">
-						<div class="col-xs-12">
-						{% if ksu.ksu_subtype == 'KAS4' %}	
-							<span style="color:blue; font-style:italic;"> Must avoid:</span> 						
-						{% elif ksu.ksu_subtype == 'KAS3' %}
-							<span style="color:blue; font-style:italic;"> I will: </span>						
-						{% endif %}								
-						<span style="{% if ksu.is_critical %}color:#B22222;{% endif %}">{{ksu.description}}</span></span>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-xs-10">
-						</div>
-
-						<div class="col-xs-2" style="padding-left:0; padding-right:5px;">
-
-						<span style="color:{% if ksu.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'ImPe', 'EVPo'] %}#32CD32{% elif ksu.ksu_subtype == 'KAS4' %}red{% else %}black{% endif %};" id="KsuKpts"> {% if ksu.kpts_value %}{{ksu.kpts_value}}{% else %}0{% endif %}</span><span style="color:{% if ksu.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'ImPe', 'EVPo'] %}#32CD32{% elif ksu.ksu_subtype == 'KAS4' %}red{% else %}black{% endif %};"> Kpts.</span>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-xs-1" style="padding:0;">
-						<button type="button" class="btn btn-default btn-circle ShowDetailViewerButton" id="ShowDetailViewerButton"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus"></span></button>
-				</div>			
-			</div>
-
-			<div class="row hidden" id="ScoreDetail">
-				<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
-					
-					<div class="col-xs-5">
-					</div>
-
-					<div class="col-xs-3">
-						<label> {% if ksu.ksu_subtype == 'KAS3' %}Reward{% else %}Punishment{% endif %}</label>
-						<select class="form-control kpts_value QuickAttributeUpdate" name="kpts_value" id="kpts_value">
-							{% for value in constants['l_Fibonacci'] %}
-								{% if value == ksu.kpts_value %}
-									<option selected="selected" value="{{value}}"> {{value}} </option>
-								{% else %}
-									<option value="{{value}}"> {{value}} </option>
-								{% endif %}
-							{% endfor %}
-						</select>	
-					</div>
-
-					<div class="col-xs-4">
-					{% if time_frame == 'Today' %}					
-						<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionPush' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-remove"></span></button>
-
-					{% endif %}
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='MissionDelete' style="margin-top:20px; margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
-						<button type="submit" class="btn btn-primary btn-circle btn-lg" name="action_description" value='EditKSU' style="margin-top:20px;"><span class="glyphicon glyphicon-pencil"></span></button>
-
-					</div>
-			</div>
-
-		</div>
-	</form>		
-	</div>
-
-	{% endfor %}
+	{% endfor %}	
 {% endif %}
 
 {% if time_frame == 'Upcoming' %}

@@ -539,8 +539,6 @@ class MissionViewer(Handler):
 	def get(self):
 		time_frame = self.request.get('time_frame')
 
-		# user_key = self.theory.key - To be deleted tan pronto vea que no se desmadra nada
-
 		tags = self.theory.categories['tags']
 
 		ksu_set, mission_value, todays_questions, reactive_mission, today, someday_maybe = self.generate_todays_mission(time_frame)
@@ -567,9 +565,9 @@ class MissionViewer(Handler):
 		user_key = theory.key
 		
 		if theory.hide_private_ksus:
-			ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True, KSU.is_private == False).order(KSU.importance).order(KSU.best_time).order(KSU.next_event).fetch()
+			ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True, KSU.is_private == False).order(KSU.next_event).order(KSU.best_time).order(KSU.importance).fetch()
 		else:
-			ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True).order(KSU.importance).order(KSU.best_time).order(KSU.next_event).fetch()
+			ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True).order(KSU.next_event).order(KSU.best_time).order(KSU.importance).fetch()
 
 		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
@@ -629,16 +627,20 @@ class MissionViewer(Handler):
 				if today >= next_event:
 					todays_questions.append(ksu)
 
-			elif ksu_subtype == 'KAS3' and today >= next_event:
-				KAS3_mission.append(ksu)
 
-			elif ksu_subtype == 'KAS4' and today >= next_event:
-				KAS4_mission.append(ksu)
+			elif ksu_subtype in ['KAS3','KAS4'] and today >= next_event:
+				reactive_mission.append(ksu)
+
+			# elif ksu_subtype == 'KAS3' and today >= next_event:
+			# 	KAS3_mission.append(ksu)
+
+			# elif ksu_subtype == 'KAS4' and today >= next_event:
+			# 	KAS4_mission.append(ksu)
 
 
 		if time_frame == 'Today':
 			mission = todays_mission + todays_timeless_mission
-			reactive_mission = KAS3_mission + KAS4_mission
+			# reactive_mission = KAS3_mission + KAS4_mission
 
 			
 		elif time_frame == 'Upcoming':
