@@ -47,6 +47,13 @@ os_ksus = [
 	 'ksu_subtype':'Diary',
 	 'best_time':'20:35:00',
 	 'is_active':True, 
+	 'frequency':1},
+
+	 {'description':'Beautiful Quotes',
+	 'secondary_description':"Did I hear any new beautiful Quote Today?",
+	 'ksu_type':'Diary',
+	 'ksu_subtype':'Diary',
+	 'is_active':False, 
 	 'frequency':1}
 
 ]

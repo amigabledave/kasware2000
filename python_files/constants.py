@@ -64,11 +64,11 @@ d_SetTitles = {
 	'KeyA': 'Key Actions Set',
 	'BigO': 'Objectives',
 	'Wish': 'Wishes',
-	'EVPo': 'End Value Mines',
+	'EVPo': 'Joy Generators',
 	'ImPe': 'Important People',
-	'Idea': 'Wisdom',
+	'Idea': 'Principles',
 	'RTBG': 'Reasons To Be Grateful',
-	'ImIn': 'Indicator',
+	'ImIn': 'Indicators',
 	'Diary':'Diary'}
 
 d_KsuTypes = {
@@ -77,9 +77,10 @@ d_KsuTypes = {
 	'KeyA': '02. Key Action',
 	'BigO': '03. Objective',
 	'Wish': '04. Wish',
-	'EVPo': '05. End Value Mine',
-	'ImPe': '06. Important Person',
-	'Idea': '07. Bit of Wisdom',
+	'Idea': '05. Principle',
+	'EVPo': '06. Joy Generator',
+	'ImPe': '07. Important Person',
+	
 	'RTBG': '08. Reason To Be Grateful',
 	'Diary':'09. Diary Entry',
 	'ImIn': '10. Indicator'}
@@ -96,9 +97,9 @@ d_KsuSubtypes = {
 
 	'BigO': 'Big Objective',
 	'Wish': 'Wish',
-	'EVPo': 'End Value Mine',
+	'EVPo': 'Joy Generator',
 	'ImPe': 'Important Person',
-	'Idea': 'Bit of Wisdom',
+	'Idea': 'Principle',
 	'RTBG': 'Reason To Be Grateful',
 
 	'Diary': 'Diary Entry',
@@ -194,7 +195,7 @@ d_SetViewerDetails = {
 
 	'EVPo': { 
 		'QuickAdd':{
-			'description':'Describe your new End Value Mine',
+			'description':'Describe your new Joy Generator',
 			'secondary_description':'Trigger action description (e.g. buy movie tickets")'
 			},		
 		'attributes': ['frequency'],
@@ -215,7 +216,7 @@ d_SetViewerDetails = {
 		'buttons':['Done', 'SendToMission']},
 
 	'Idea': {
-		'QuickAdd':{'description':'Tell me a deep and meaningfull idea'}, 		
+		'QuickAdd':{'description':'What are your Principles?'}, 		
 		'attributes': ['source'],
 		'fields': {'source':'Source'},
 		'columns':{'source':6},
