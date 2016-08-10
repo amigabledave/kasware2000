@@ -11,6 +11,7 @@
 <div class="row KSUdisplaySection" id="NewKSU" ksutype="OTOA" ksusubtype="KAS2" value="NewKSU" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 	<form method="post">
 	<input type="checkbox" id="is_active"  class="hidden" checked>
+	<input type="date" class="hidden" id="next_event" name="next_event" value="{{today}}">
 	<div class="col-xs-12">
 	<div class="row">
 		<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
@@ -18,46 +19,45 @@
 		</div>
 
 		<div class="col-xs-11">
-			<textarea style="width:100%; border:0; font-size:14px;" class="autoExpand" rows="2" data-min-rows='2' name="description" id="description" placeholder="{% if time_frame == 'Today' %}What do you want to achieve today?{% else %}What do you want to do someday?{% endif %}"></textarea>
+			<textarea style="width:100%; border:0; font-size:14px;" class="autoExpand" rows="1" data-min-rows='1' name="description" id="description" placeholder="{% if time_frame == 'Today' %}What do you want to achieve today?{% else %}What do you want to do someday?{% endif %}"></textarea>
 		</div>	
 	</div>
 
 	<div class="row" style="margin-top:2px;">
-		<div class="col-xs-1"></div>
-		<div class="col-xs-10">
-			<div class="row">
-				<div class="col-xs-4">
-					{% if time_frame == 'Today' %}
-						<input type="date" class="hidden" name="next_event" id="next_event" value="{{today}}">
-						<input style="padding-right:2px; padding-left:4px; border:0; color:blue;" type="time" name="best_time" id="best_time">
-					{% else %}	
-						<input type="date" class="QuickAttributeUpdate" style="padding-right:2px; padding-left:0; border:0; color:blue; width:127px;" name="next_event" id="next_event">
-					{% endif %}
-				</div>
+		<div class="col-xs-1"></div>	
 
-				<div class="col-xs-6">
-					<input style="color:purple; font-weight:bold; border:0;" type="text" list="tags" id="tags_value" name="tags" placeholder="Tag"> 
-					<datalist id="tags">
-						{% for tag in tags %}
-							<option value="{{tag}}">
+		<div class="col-xs-10">
+			<div class="row" style="margin-top:2px;">
+				{% if time_frame == 'Today' %}
+				<div class="col-xs-3">	
+						<input style="padding-right:2px; padding-left:4px; border:0; color:purple; width:100px;" type="time" name="best_time" id="best_time">
+				</div>
+				<div class="col-xs-1" style="padding-left:0px;">
+					<select style="border:0; color:purple; font-weight:bold;" name="importance" id="importance">
+						{% for value in range(1,4) %}													
+							<option value="{{value}}"> {{value}} </option>							
 						{% endfor %}
-					</datalist>
+					</select>
+				</div>
+				{% else %}
+				<div class="col-xs-4">	
+						<input type="date" style="padding-right:2px; padding-left:4px; border:0; color:purple; width:127px;" name="next_event" id="next_event">
+				</div>
+				{% endif %}
+				
+				<div class="col-xs-6">
+					<input style="color:purple; font-weight:bold; border:0; width:170px; text-align:center;" type="text" list="tags" name="tags" id="tags" placeholder="Tag"> 
 				</div>
 
 				<div class="col-xs-2" style="padding-left:0; font-weight:bold; padding-right:5px; text-align:right;">
-					
-					<select class="MissionKsuKpts" style="border:0" name="kpts_value" id="kpts_value">
+					<select class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0" name="kpts_value" id="kpts_value">
 						{% for value in constants['l_Fibonacci'] %}
-							{% if value == 3 %}
-								<option selected="selected" value="{{value}}"> {{value}} </option>
-							{% else %}
-								<option value="{{value}}"> {{value}} </option>
-							{% endif %}
+							<option value="{{value}}"> {{value}} </option>
 						{% endfor %}
 					</select>	
-				</div>				
+				</div>		
 			</div>
-		</div>	
+		</div>
 		<div class="col-xs-1"></div>
 	</div>
 	
@@ -66,46 +66,83 @@
 </div>
 
 <div class="row KSUdisplaySection hidden" id="NewKSUTemplate_KAS2" value="NewKSUid" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
-	<form method="post">
 	<div class="col-xs-12">
 		<div class="row">
 			<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
-				<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton" name="action_description" value='MissionDone'><span class="glyphicon glyphicon-ok"></span></button>
+				<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton" name="action_description" value="MissionDone"><i class="glyphicon glyphicon-ok"></i></button>
 			</div>
 
 			<div class="col-xs-10">
 				<div class="row">
 					<div class="col-xs-12">
-						<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description"></textarea>
+						
+						<textarea style="width:100%; border:0; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows="1" name="description" id="description">Template_KAS2</textarea>
+					
 					</div>
 				</div>
 
-				<div class="row" style="margin-top:2px;">
+				<div class="row" style="margin-top:5px;">
 
-					<div class="col-xs-4">
-						{% if time_frame == 'Today' %}
-							<input style="padding-right:2px; padding-left:4px; border:0; color:blue;" class="QuickAttributeUpdate" type="time" name="best_time" id="best_time">
-						{% else %}	
-							<input type="date" class="QuickAttributeUpdate" style="padding-right:2px; padding-left:0; border:0; color:blue; width:127px;" name="next_event" id="next_event">
-						{% endif %}
+					
+					<div class="col-xs-3">	
+							<input style="padding-right:2px; padding-left:4px; border:0; color:purple; width:100px;" type="time" class="QuickAttributeUpdate" name="best_time" id="best_time" value="None">
 					</div>
-
+					<div class="col-xs-1" style="padding-left:0px;">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold;" name="importance" id="importance">
+																					
+									
+										<option selected="selected" value="1"> 1 </option>
+									
+																					
+									
+										<option value="2"> 2 </option>
+									
+																					
+									
+										<option value="3"> 3 </option>
+									
+								
+							</select>
+					</div>
+					
+					
 					<div class="col-xs-6">
-						<input style="color:purple; font-weight:bold; border:0;" type="text" list="tags" id="tags" name="tags" class="QuickAttributeUpdate"> 
+						<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; width:170px; text-align:center;" placeholder="Tag" type="text" list="tags" name="tags" id="tags" value=""> 
 					</div>
 
 					<div class="col-xs-2" style="padding-left:0; font-weight:bold; padding-right:5px; text-align:right;">
-						
-						<select class="MissionKsuKpts QuickAttributeUpdate" style="border:0" name="kpts_value" id="kpts_value">
-							{% for value in constants['l_Fibonacci'] %}
-									<option value="{{value}}"> {{value}} </option>
-							{% endfor %}
+						<select class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0" name="kpts_value" id="kpts_value">
+							
+								
+									<option selected="selected" value="0.25"> 0.25 </option>
+								
+							
+								
+									<option value="1"> 1 </option>
+								
+							
+								
+									<option value="2"> 2 </option>
+								
+							
+								
+									<option value="3"> 3 </option>
+								
+							
+								
+									<option value="5"> 5 </option>
+								
+							
+								
+									<option value="8"> 8 </option>
+								
+							
+								
+									<option value="13"> 13 </option>
+								
+							
 						</select>	
 					</div>
-
-
-
-
 				</div>
 			</div>
 
@@ -113,115 +150,111 @@
 					<button type="button" class="btn btn-default btn-circle ShowDetailViewerButton" id="ShowDetailViewerButton"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus"></span></button>
 			</div>			
 		</div>
-
 		<div class="row hidden" id="ScoreDetail">
-			<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
-				
-				<div class="col-xs-4">
-					<label> Time </label>
-					<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" name="best_time" id="best_time" value="">
-				</div>
+			<div class="col-xs-12">
+				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="checkbox"> 
+							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked=""> <b> Active </b> </label> 
+						</div>
+					</div>	
 
-				<div class="col-xs-3">
-					<label> Reward </label>
-					<select class="form-control kpts_value QuickAttributeUpdate" name="kpts_value" id="kpts_value">	
-						<option value="0.25">0.25</option>
-						<option value="1">1</option>
-						<option value="2">2</option>							
-						<option value="3">3</option>
-						<option value="5">5</option>
-						<option value="8">8</option>
-						<option value="13">13</option>
-					</select>	
-				</div>
+					<div class="col-xs-2" style="padding-left:8px;">
+						<div class="checkbox"> 
+							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical"> <b> Critical </b> </label> 
+						</div>			
+					</div>
 
-				<div class="col-xs-5">
-					<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionPush' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-forward"  style="margin-left:5px;"></span></button>
-					<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-remove""></span></button>
-					<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='MissionDelete' style="margin-top:20px; margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
-					<button type="submit" class="btn btn-primary btn-circle btn-lg" name="action_description" value='EditKSU' style="margin-top:20px;"><span class="glyphicon glyphicon-pencil"></span></button>
+					<div class="col-xs-2" style="padding-left:3px;">
+						<div class="checkbox"> 
+				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate"> <b> Private </b> </label> 
+				 		</div>
+					</div>
+
+					<div class="col-xs-1"></div>
+					
+					<div class="col-xs-5">
+											
+							<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value="MissionPush" style="margin-right:10px;"><span class="glyphicon glyphicon-forward" style="margin-left:5px;"></span></button>
+							<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value="MissionSkip" style="margin-right:10px;"><span class="glyphicon glyphicon-remove" "=""></span></button>
+						
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value="MissionDelete" style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+							<button type="button" class="btn btn-primary btn-circle btn-lg RedirectUserButton" name="action_description" value="EditKSU" style=""><span class="glyphicon glyphicon-pencil"></span></button>
+					</div>
+			
+				</div>					
+				<div class="row" id="KsuPlusOptions">
+					<div class="col-xs-12">
+							
+
+						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:0px;">
+						<div class="row">
+							<div class="col-xs-12">
+								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows="3" name="comments" id="comments" placeholder="Comments"></textarea>	
+							</div>
+						</div>		
+					</div>
 				</div>
+			</div>	
 		</div>
 	</div>
-	</form>		
 </div>
+
+
 
 <div id="NewKSUsHolder"></div>
 
 
 {% for ksu in ksu_set %}
 
-	<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
-	<form method="post">
-	<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
-		<div class="col-xs-12">
-			<div class="row">
-				<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
-					<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton" name="action_description" value='MissionDone'><i class="glyphicon glyphicon-ok"></i></button>
+<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+	<div class="col-xs-12">
+		<div class="row">
+			<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
+				<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton" name="action_description" value='MissionDone'><i class="glyphicon glyphicon-ok"></i></button>
+			</div>
+
+			<div class="col-xs-10">
+				<div class="row">
+					<div class="col-xs-12">
+					{% if ksu.ksu_subtype in ['EVPo', 'ImPe'] %}
+						<textarea style="width:100%; height:20px; border:0; {% if ksu.is_critical %}color:#B22222;{% endif %}" class="QuickAttributeUpdate" name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>
+					{% else %}	
+						<textarea style="width:100%; border:0; {% if ksu.is_critical %}color:#B22222;{% endif %}" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
+					{% endif %}
+					</div>
 				</div>
 
-				<div class="col-xs-10">
-					<div class="row">
-						<div class="col-xs-12">
-						{% if ksu.ksu_subtype in ['EVPo', 'ImPe'] %}
-							<textarea style="width:100%; height:20px; border:0; {% if ksu.is_critical %}color:#B22222;{% endif %}" class="QuickAttributeUpdate" name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>
-						{% else %}	
-							<textarea style="width:100%; border:0; {% if ksu.is_critical %}color:#B22222;{% endif %}" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
-						{% endif %}
-						</div>
+				<div class="row" style="margin-top:5px;">
+
+					{% if time_frame == 'Today' %}
+					<div class="col-xs-3">	
+							<input style="padding-right:2px; padding-left:4px; border:0; color:purple; width:100px;" type="time" class="QuickAttributeUpdate" name="best_time" id="best_time" value={% if ksu %}{{ksu.best_time}}{% endif %}>
 					</div>
-
-					<div class="row" style="margin-top:2px;">
-						<div class="col-xs-4">
-							{% if time_frame == 'Today' %}
-								<input style="padding-right:2px; padding-left:4px; border:0; color:blue;" type="time" class="QuickAttributeUpdate" name="best_time" id="best_time" value={% if ksu %}{{ksu.best_time}}{% endif %}>
-							{% else %}	
-								<input type="date" class="QuickAttributeUpdate" style="padding-right:2px; padding-left:4px; border:0; color:blue; width:127px;" name="next_event" id="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
-							{% endif %}
-						</div>
-
-						<div class="col-xs-6">
-							<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0;" type="text" list="tags" name="tags" id="tags" value="{% if ksu.tags %}{{ksu.tags}}{% endif %}"> 
-						</div>
-
-						<div class="col-xs-2" style="padding-left:0; font-weight:bold; padding-right:5px; text-align:right;">
-							<!-- <span class="MissionKsuKpts" id="KsuKpts">{% if ksu.kpts_value %}{{ksu.kpts_value}}{% else %}0{% endif %}</span> -->
-							<select class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0" name="kpts_value" id="kpts_value">
-								{% for value in constants['l_Fibonacci'] %}
-									{% if value == ksu.kpts_value %}
+					<div class="col-xs-1" style="padding-left:0px;">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold;" name="importance" id="importance">
+								{% for value in range(1,4) %}													
+									{% if value == ksu.importance %}
 										<option selected="selected" value="{{value}}"> {{value}} </option>
 									{% else %}
 										<option value="{{value}}"> {{value}} </option>
 									{% endif %}
 								{% endfor %}
-							</select>	
-
-						</div>
+							</select>
 					</div>
-				</div>
-
-				<div class="col-xs-1" style="padding:0;">
-						<button type="button" class="btn btn-default btn-circle ShowDetailViewerButton" id="ShowDetailViewerButton"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus"></span></button>
-				</div>			
-			</div>
-
-			<div class="row hidden" id="ScoreDetail">
-				<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:10px;">
-					
-					<div class="col-xs-4">
-					{% if time_frame == 'Today' %}
-						<label> Time </label>
-						<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" name="best_time" id="best_time" value={% if ksu %}{{ksu.best_time}}{% endif %}>
-					{% else %}	
-						<label> Date </label>
-						<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" name="next_event" id="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+					{% else %}
+					<div class="col-xs-4">	
+							<input type="date" class="QuickAttributeUpdate" style="padding-right:2px; padding-left:4px; border:0; color:purple; width:127px;" name="next_event" id="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+					</div>
 					{% endif %}
+					
+					<div class="col-xs-6">
+						<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; width:170px; text-align:center;" placeholder="Tag" type="text" list="tags" name="tags" id="tags" value="{% if ksu.tags %}{{ksu.tags}}{% endif %}"> 
 					</div>
 
-
-					<div class="col-xs-3">
-						<label> Reward </label>
-						<select class="form-control kpts_value QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+					<div class="col-xs-2" style="padding-left:0; font-weight:bold; padding-right:5px; text-align:right;">
+						<select class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0" name="kpts_value" id="kpts_value">
 							{% for value in constants['l_Fibonacci'] %}
 								{% if value == ksu.kpts_value %}
 									<option selected="selected" value="{{value}}"> {{value}} </option>
@@ -231,27 +264,323 @@
 							{% endfor %}
 						</select>	
 					</div>
-
-
-					<div class="col-xs-5">
-					{% if time_frame == 'Today' %}					
-						<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionPush' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-forward"  style="margin-left:5px;"></span></button>
-						<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-remove""></span></button>
-					{% else %}
-						<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-top:20px; margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
-
-					{% endif %}
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='MissionDelete' style="margin-top:20px; margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
-						<button type="submit" class="btn btn-primary btn-circle btn-lg" name="action_description" value='EditKSU' style="margin-top:20px;"><span class="glyphicon glyphicon-pencil"></span></button>
-
-
-					</div>
-
+				</div>
 			</div>
 
+			<div class="col-xs-1" style="padding:0;">
+					<button type="button" class="btn btn-default btn-circle ShowDetailViewerButton" id="ShowDetailViewerButton"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus"></span></button>
+			</div>			
 		</div>
-	</form>		
+		<div class="row hidden" id="ScoreDetail">
+			<div class="col-xs-12">
+				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="checkbox"> 
+							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" {% if ksu.is_active %}checked{% endif %}> <b> Active </b> </label> 
+						</div>
+					</div>	
+
+					<div class="col-xs-2" style="padding-left:8px;">
+						<div class="checkbox"> 
+							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" {% if ksu.is_critical %}checked{% endif %}> <b> Critical </b> </label> 
+						</div>			
+					</div>
+
+					<div class="col-xs-2" style="padding-left:3px;">
+						<div class="checkbox"> 
+				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" {% if ksu.is_private %}checked{% endif %}> <b> Private </b> </label> 
+				 		</div>
+					</div>
+
+					<div class="col-xs-1"></div>
+					
+					<div class="col-xs-5">
+						{% if time_frame == 'Today' %}					
+							<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionPush' style="margin-right:10px;"><span class="glyphicon glyphicon-forward"  style="margin-left:5px;"></span></button>
+							<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-right:10px;"><span class="glyphicon glyphicon-remove""></span></button>
+						{% else %}
+							<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
+
+						{% endif %}
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='MissionDelete' style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+							<button type="button" class="btn btn-primary btn-circle btn-lg RedirectUserButton" name="action_description" value='EditKSU' style=""><span class="glyphicon glyphicon-pencil"></span></button>
+					</div>
+			
+				</div>					
+				<div class="row" id="KsuPlusOptions">
+					<div class="col-xs-12">
+					{%   if ksu.ksu_subtype == 'KAS1' %}
+						<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">	
+						<div class="row">
+							<div class="col-xs-4">
+								<label> Reward</label>
+								<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+									{% for value in constants['l_Fibonacci'] %}
+										{% if ksu.kpts_value == value %}																					
+											<option selected="selected" value="{{value}}"> {{value}} </option>
+										{% else %}
+											<option value="{{value}}"> {{value}} </option>							
+										{% endif %}
+									{% endfor %}
+								</select>	
+							</div>
+
+							<div class="col-xs-4">
+								<label> Next Event </label>
+								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" name="next_event" id="next_event" value="{% if ksu.next_event %}{{ksu.next_event}}{% endif %}">
+							</div>	
+
+							<div class="col-xs-4">
+								<label> Preferred Time </label>
+								<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" name="best_time" id="best_time" value="{% if ksu.best_time %}{{ksu.best_time}}{% endif %}">	
+							</div>				
+						</div>
+						
+						<div class="row" style="margin-top:10px;">
+							<div class="col-xs-4">
+								<label> Repeats </label>
+								<select id="repeats" class="form-control KsuEditor_Repeats QuickAttributeUpdate" name="repeats">
+									{% for f in constants['l_repeats'] %}
+										{% if f[0] == ksu.repeats %}
+										<option value="{{f[0]}}" selected="selected"> {{f[1]}} </option>
+										{% else %}
+										<option value="{{f[0]}}"> {{f[1]}} </option>	
+										{% endif %}						
+									{% endfor %}
+								</select> 
+							</div>
+
+							<div class="col-xs-8 {% if ksu.repeats != 'R007'%}hidden{% endif %}" id="repeats_on">
+							<div class="row" style="margin-top:15px;">
+						 		<div style="display: table; float:left; margin-right:15px;">
+						 		<div class="col-xs-1" style="margin-right:10px;">
+						 			<label style="display:table-row;"><b>Mon
+						 			<input style="display:table-row; width:100%;" type="checkbox" {% if ksu and ksu.repeats_on['repeats_on_Mon']%}checked{% endif %}  class="QuickAttributeUpdate" name="repeats_on_Mon" id="repeats_on_Mon"></b></label>		
+						 		</div><div class="col-xs-1" style="margin-right:10px;">
+						 			<label style="display:table-row;"><b>Tue 
+						 			<input style="display:table-row; width:100%;" type="checkbox" {% if ksu and ksu.repeats_on['repeats_on_Tue']%}checked{% endif %} class="QuickAttributeUpdate" name="repeats_on_Tue" id="repeats_on_Tue"></b></label>
+								</div><div class="col-xs-1" style="margin-right:10px;">
+						 			<label style="display:table-row;"><b>Wed
+						 			<input style="display:table-row; width:100%;" type="checkbox" {% if ksu and ksu.repeats_on['repeats_on_Wed']%}checked{% endif %} class="QuickAttributeUpdate" name="repeats_on_Wed" id="repeats_on_Wed"></b></label> 
+								</div><div class="col-xs-1" style="margin-right:10px;">			 			
+						 			<label style="display:table-row;"><b>Thu 
+						 			<input style="display:table-row; width:100%;" type="checkbox" {% if ksu and ksu.repeats_on['repeats_on_Thu']%}checked{% endif %} class="QuickAttributeUpdate" name="repeats_on_Thu" id="repeats_on_Thu"></b></label>
+								</div><div class="col-xs-1" style="margin-right:10px;">			 		
+						 			<label style="display:table-row;"><b>Fri
+						 			<input style="display:table-row; width:100%;" type="checkbox" {% if ksu and ksu.repeats_on['repeats_on_Fri']%}checked{% endif %} class="QuickAttributeUpdate" name="repeats_on_Fri" id="repeats_on_Fri"></b></label> 
+								</div><div class="col-xs-1" style="margin-right:10px;">			 		
+						 			<label style="display:table-row;"><b>Sat 
+						 			<input style="display:table-row; width:100%;" type="checkbox" {% if ksu and ksu.repeats_on['repeats_on_Sat']%}checked{% endif %} class="QuickAttributeUpdate" name="repeats_on_Sat" id="repeats_on_Sat"></b></label>
+						 		</div><div class="col-xs-1" style="margin-right:10px;">
+						 			<label style="display:table-row;"><b>Sun 
+						 			<input style="display:table-row; width:100%;" type="checkbox" {% if ksu and ksu.repeats_on['repeats_on_Sun']%}checked{% endif %} class="QuickAttributeUpdate" name="repeats_on_Sun" id="repeats_on_Sun"></b></label>
+						 		</div></div>
+							</div>
+							</div>
+
+							<div class="col-xs-8 {% if ksu.repeats == 'R007'%}hidden{% endif %}" id="repeats_every">
+
+								<div class="row">
+									<div class="col-xs-4">
+										<label> Every </label>
+										<input type="number" min="1" class="form-control QuickAttributeUpdate" style="padding-right:3px;" name="frequency" id="frequency" placeholder="1" value="{% if ksu.frequency %}{{ksu.frequency}}{% endif %}"> 		
+									</div>
+									
+									<div id="repeats_every_footnote" class="col-xs-8" style="position: absolute; bottom: 0; right: 0; padding-left: 0; font-style: italic;">Days
+									</div>									
+								</div>		
+							</div>
+						</div>
+					{% elif ksu.ksu_subtype == 'KAS3' %}
+						<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">		
+						<div class="row">
+							<div class="col-xs-4">		
+							<label> Reward</label>
+							<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+								{% for value in constants['l_Fibonacci'] %}
+									{% if ksu.kpts_value == value %}																					
+										<option selected="selected" value="{{value}}"> {{value}} </option>
+									{% else %}
+										<option value="{{value}}"> {{value}} </option>							
+									{% endif %}
+								{% endfor %}
+							</select>
+							</div>
+						</div>
+					{% elif ksu.ksu_subtype == 'KAS4' %}
+						<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">
+						<div class="row" style="margin-bottom:8px;">
+							<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+									<label> Punishment </label>
+									<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+										{% for value in constants['l_Fibonacci'] %}																						
+											{% if ksu.kpts_value == value %}
+											<option selected="selected" value="{{value}}"> {{value}} </option>
+											{% else %}
+											<option value="{{value}}"> {{value}} </option>								
+											{% endif %}
+										{% endfor %}
+									</select>	
+							</div>
+							<div class="col-xs-9">
+								<label>Valid Exceptions</label>
+								<textarea class="form-control QuickAttributeUpdate autoExpand" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description" placeholder="e.g. When I'am on vacation, When the food its free!">{% if ksu.secondary_description %}{{ ksu.secondary_description }}{% endif %}</textarea>	
+							</div>		
+						</div>
+					{% elif ksu.ksu_type == 'EVPo' %}
+						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+						<div class="row">
+							<div class="col-xs-4"> 
+								<label> Charging Time (Days) </label>			
+								<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.frequency}}{% endif %}">
+							</div>
+
+							<div class="col-xs-4">
+								<label> Next Trigger Event </label>
+								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+							</div>
+
+							<div class="col-xs-4">
+								<label> Trigger Effort Reward</label>
+								<select class="form-control QuickAttributeUpdate" id="kpts_value" name="kpts_value">
+									{% for value in constants['l_Fibonacci'] %}
+										{% if value == ksu.kpts_value %}
+											<option selected="selected" value="{{value}}"> {{value}} </option>
+										{% else %}
+											<option value="{{value}}"> {{value}} </option>
+										{% endif %}
+									{% endfor %}
+								</select>	
+							</div>
+						</div>
+
+						<div class="row" style="margin-top:3px;">
+							<div class="col-xs-12">
+								<label> Trigger Action Description </label>
+								<textarea class="form-control QuickAttributeUpdate autoExpand"  id="secondary_description" name="secondary_description" rows="1" data-min-rows='1' placeholder="e.g. Buy tickets to go watch a movie">{% if ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea> 
+							</div>
+						</div>
+					{% elif ksu.ksu_type == 'ImPe' %}
+						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+						<div class="row">
+							<div class="col-xs-3">
+								<label> Birthday </label>
+								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;"  id="birthday" name="birthday" value="{% if ksu %}{{ksu.birthday}}{% endif %}">	
+							</div>
+
+							<div class="col-xs-3"> 
+								<label> Contact Freq. </label>			
+								<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="E.g. 7" value="{% if ksu %}{{ksu.frequency}}{% endif %}">
+							</div>
+
+							<div class="col-xs-3">
+								<label> Next Contact </label>
+								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+							</div>	
+
+							<div class="col-xs-3">
+								<label> C. Reward</label>
+								<select class="form-control QuickAttributeUpdate" id="kpts_value" name="kpts_value">
+									{% for value in constants['l_Fibonacci'] %}
+										{% if value == ksu.kpts_value %}
+											<option selected="selected" value="{{value}}"> {{value}} </option>
+										{% else %}
+											<option value="{{value}}"> {{value}} </option>
+										{% endif %}
+									{% endfor %}
+								</select>	
+							</div>
+						</div>
+					{% elif ksu.ksu_type == 'ImIn' %}
+						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+						<div class="row">
+						<div class="col-xs-1">						
+							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
+						</div>
+						<div class="col-xs-3">
+							{% if ksu.ksu_subtype in ['BinaryPerception', 'FibonacciPerception'] %}
+								<select class="form-control" name="indicator_value" id="select_indicator_value">
+									{% if ksu.ksu_subtype == 'BinaryPerception' %}
+										<option value="1"> Yes </option>
+										<option value="0"> No </option>
+									{% elif ksu.ksu_subtype == 'FibonacciPerception' %}
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option selected="selected" value="3">3</option>
+										<option value="5">5</option>
+										<option value="8">8</option>
+									{% endif %}
+								</select>
+							{% elif ksu.ksu_subtype == 'RealitySnapshot' %}
+								<input type="number" min="0" class="form-control" style="padding-right:3px;" name="indicator_value" id="open_indicator_value" placeholder="0">
+							{% endif %}
+						</div>
+						<div class="col-xs-8">
+							<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_comments" id="event_comments" placeholder="Comment on this result"></textarea>
+						</div>
+						</div>
+
+						<hr class="hr-1px-gray" style="margin-top:8px; margin-bottom:8px;">
+						<div class="row">
+							<div class="col-xs-4">
+								<label> Question Frequency </label>			
+								<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.frequency}}{% endif %}">
+							</div>
+
+							<div class="col-xs-4">
+								<label> Next Question </label>
+								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+							</div>
+
+							<div class="col-xs-4">
+								<label> Question time </label>
+								<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" id="best_time" name="best_time" value={% if ksu %}{{ksu.best_time}}{% endif %}>	
+							</div>
+						</div>
+					{% elif ksu.ksu_type == 'Diary'%}
+						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+						<div class="row">
+						<div class="col-xs-1">						
+							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
+						</div>
+
+						<div class="col-xs-11">
+							<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_comments" id="event_comments" placeholder="Anything new you would like to record?"></textarea>
+						</div>
+						</div>
+
+						<hr class="hr-1px-gray" style="margin-top:8px; margin-bottom:8px;">
+						<div class="row">
+							<div class="col-xs-4">
+								<label> Question Frequency </label>			
+								<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.frequency}}{% endif %}">
+							</div>
+
+							<div class="col-xs-4">
+								<label> Next Question </label>
+								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+							</div>
+
+							<div class="col-xs-4">
+								<label> Question time </label>
+								<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" id="best_time" name="best_time" value={% if ksu %}{{ksu.best_time}}{% endif %}>	
+							</div>
+						</div>
+					{% endif %}		
+
+						<hr class="hr-1px-gray" style="{% if ksu.ksu_subtype == 'KAS2' %}margin-top:0px;{% else %}margin-top:10px;{% endif %} margin-bottom:0px;">
+						<div class="row">
+							<div class="col-xs-12">
+								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments">{% if ksu.comments %}{{ ksu.comments }}{% endif %}</textarea>	
+							</div>
+						</div>		
+					</div>
+				</div>
+			</div>	
+		</div>
 	</div>
+</div>
 {% endfor %}
 
 
