@@ -439,18 +439,46 @@ $('.SaveNewKSUButton').on('click', function(){
 		console.log(data);
 		ksu.find('#description').val('');
 		ksu.find('#comments').val('');
-		ksu.find('#secondary_description').val('');
-		ksu.find('#best_time').val('');
-		ksu.find('#next_event').val('');
-		ksu.find('#tags_value').val('');
-		ksu.find('#importance').val(2);
-		ksu.find('#kpts_value').val(0.25);
 		ksu.find('#is_critical').prop('checked', false);
 		ksu.find('#is_active').prop('checked', true);
-		ksu.find('#money_cost').val('');
-		ksu.find('#birthday').val('');
+		
+		ksu.find('#secondary_description').val('');
+		ksu.find('#KAS3_secondary_description').val('');
+		ksu.find('#KAS4_secondary_description').val('');
+		ksu.find('#EVPo_secondary_description').val('');
 		ksu.find('#Idea_SecondaryDescription').val('');
 
+		ksu.find('#best_time').val('');
+		ksu.find('#ImIn_best_time').val('');
+		ksu.find('#Diary_best_time').val('');
+
+		ksu.find('#next_event').val('');
+		ksu.find('#BigO_next_event').val('');
+		ksu.find('#EVPo_next_event').val('');
+		ksu.find('#ImPe_next_event').val('')
+		ksu.find('#ImIn_next_event').val('')
+		ksu.find('#Diary_next_event').val('')
+
+		ksu.find('#tags_value').val('');
+		ksu.find('#importance').val(2);
+
+		ksu.find('#kpts_value').val(0.25);
+		ksu.find('#KAS3_kpts_value').val(0.25);
+		ksu.find('#KAS4_kpts_value').val(0.25);
+		ksu.find('#BigO_kpts_value').val(1);
+		ksu.find('#Wish_kpts_value').val(1);
+		ksu.find('#EVPo_kpts_value').val(0.25);
+		ksu.find('#ImPe_kpts_value').val(0.25);
+
+		ksu.find('#frequency').val('');
+		ksu.find('#EVPo_frequency').val('');
+		ksu.find('#ImPe_frequency').val('');
+		ksu.find('#ImIn_frequency').val('');
+		ksu.find('#Diary_frequency').val('');
+
+		ksu.find('#money_cost').val('');
+		ksu.find('#birthday').val('');
+		
 		if (ksu_subtype == ''){
 			ksu_subtype = ksu_type
 		};
