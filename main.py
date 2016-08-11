@@ -475,22 +475,22 @@ class SetViewer(Handler):
 		lookup_string =''
 
 		if not set_name:
-			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(KSU.created).fetch()
+			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(KSU.importance).order(KSU.created).fetch()
 		
 		elif set_name == 'TheoryQuery':
 			lookup_string = self.request.get('lookup_string')
-			user_theory = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(KSU.created).fetch()
+			user_theory = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(KSU.importance).order(KSU.created).fetch()
 			ksu_set = self.search_theory(user_theory, lookup_string)
 			lookup_string = 'You searched for: ' + lookup_string
 		
 		elif set_name == 'Graveyard':
-			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == True, KSU.is_deleted == False).order(KSU.created).fetch()
+			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == True, KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch()
 		
 		else:
 			if self.theory.hide_private_ksus:
-				ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name,  KSU.is_private == False).order(KSU.created).fetch()
+				ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name,  KSU.is_private == False).order(KSU.importance).order(KSU.created).fetch()
 			else:
-				ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(KSU.created).fetch()
+				ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(KSU.importance).order(KSU.created).fetch()
 		
 
 		for ksu in ksu_set:
@@ -1136,21 +1136,21 @@ class PopulateRandomTheory(Handler):
 		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour))
 
 		theory_parameters = [
-			[5	,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
-			[5, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
-			[10, {'ksu_type':'OTOA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
-			[5, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_value':0.25}],
-			[5, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4', 'kpts_value':5}],
-			[5, {'ksu_type':'BigO', 'ksu_subtype':'BigO'}],
-			[5, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
-			[5, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_event':today, 'kpts_value':1, 'frequency':7}],
-			[5, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_event':today, 'kpts_value':0.25, 'frequency':30}],
-			[5, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
-			[5, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
-			[5, {'ksu_type':'Diary', 'ksu_subtype':'Diary', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
-			[5, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
-			[5, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
-			[5, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}]
+			[0	,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
+			[0, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
+			[0, {'ksu_type':'OTOA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
+			[0, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_value':0.25}],
+			[0, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4', 'kpts_value':5}],
+			[0, {'ksu_type':'BigO', 'ksu_subtype':'BigO'}],
+			[0, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
+			[0, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_event':today, 'kpts_value':1, 'frequency':7}],
+			[0, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_event':today, 'kpts_value':0.25, 'frequency':30}],
+			[0, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
+			[0, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
+			[0, {'ksu_type':'Diary', 'ksu_subtype':'Diary', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[0, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[0, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[0, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}]
 		]
 
 		for e in theory_parameters:

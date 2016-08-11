@@ -460,7 +460,7 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#Diary_next_event').val('')
 
 		ksu.find('#tags_value').val('');
-		ksu.find('#importance').val(2);
+		ksu.find('#importance').val(3);
 
 		ksu.find('#kpts_value').val(0.25);
 		ksu.find('#KAS3_kpts_value').val(0.25);
