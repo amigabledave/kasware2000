@@ -2968,10 +2968,10 @@
 	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
 		<div class="row" style="min-height: 45px">
 
-			<div class="col-xs-12" style="padding-right:0px">
+			<div class="col-xs-12">
 
 				<div class="row">
-					<div class="col-xs-10" style="font-size:13px; padding-right:0;">
+					<div class="col-xs-11" style="font-size:13px;">
 						<div>
 						{% if ksu.ksu_subtype == 'KAS3' %}	
 							<span style="color:#32CD32; font-style:italic; font-weight:bold; font-size:12px;">Target Reaction: </span>
@@ -2993,26 +2993,17 @@
 						</div>
 					</div>
 
-					<form method="post">
-					<div class="col-xs-2" style="padding-left:25px;">
-
-						{% if not ksu.in_graveyard %}
-						
-							<!-- <button type="submit" class="btn btn-default btn-circle displaySectionVerticalButton" name='action_description' value="EditKSU"> -->
-							<button type="button" class="btn btn-default btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' value="EditKSU">
-							  	<span class="glyphicon glyphicon-pencil"></span>
-						  	</button>
-
-					  	{% else %}
-
-							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton UserActionButton" name='action_description' value="GraveyardReanimate">
-							  	<span class="glyphicon glyphicon-flash"></span>
-						  	</button>
-
-					  	{% endif %} 
-								
+					
+					<div class="col-xs-1" style="padding-left:0px;">						
+						{% if not ksu.in_graveyard %}						
+							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+						{% else %}
+							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton UserActionButton" name='action_description' value="GraveyardReanimate"><span class="glyphicon glyphicon-flash"></span></button>
+						{% endif %}
 					</div>
-					</form>							
+
+					 		
 				</div>
 
 				<div class="row" style="margin-top:5px;">
@@ -3029,7 +3020,7 @@
 								{% endif %}</div>
 							</div>	
 
-							<div class="col-xs-4">
+							<div class="col-xs-5">
 								<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; margin-top:7px;" type="text" list="tags" name="tags" id="tags" value="{% if ksu.tags %}{{ksu.tags}}{% endif %}"> 
 							</div>
 
@@ -3050,12 +3041,8 @@
 								{% endif %}
 								</select>	
 							</div>
-							<div class="col-xs-2" style="padding-left:25px;">
-							{% if set_name != 'Graveyard' %}
-								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
-									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span>
-					  			</button>
-					  		{% else %}
+							<div class="col-xs-1" style="padding-left:0px;">
+							{% if set_name == 'Graveyard' %}
 								<button type="button" class="btn btn-danger btn-circle displaySectionVerticalButton UserActionButton" name='action_description' value='GraveyardDelete'>
 									<span class="glyphicon glyphicon-trash"></span>
 							  	</button>
@@ -3089,10 +3076,10 @@
 				 		</div>
 					</div>
 
-					<div class="col-xs-{{4 - constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons_col']}}">
+					<div class="col-xs-{{3 - constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons_col']}}">
 					</div>
 					
-					<div class="col-xs-{{constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons_col'] + 2}}">
+					<div class="col-xs-{{constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons_col'] + 3}}">
 
 					{% if 'Done' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}
 						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
@@ -3106,8 +3093,10 @@
 						<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
 					{% endif %}
 
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete' style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+						<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
+							  	<span class="glyphicon glyphicon-pencil"></span></button>
 
+						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
 					</div>
 				
 				</div>					

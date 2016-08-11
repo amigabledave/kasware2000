@@ -1534,7 +1534,7 @@ def update_user_tags(theory, tags):
 def determine_rows(ksu_description):
 	if not ksu_description:
 		return 0
-	return int(math.ceil((len(ksu_description)/60.0)))
+	return int(math.ceil((len(ksu_description)/64.0)))
 
 
 #--- Validation and security functions ----------
