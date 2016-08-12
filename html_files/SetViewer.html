@@ -403,2146 +403,2147 @@
 	</form>
 </div>
 
+<div class="hidden" id="NewKSUTemplates">
 
-<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_KAS1" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
-	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
-		<div class="row" style="min-height: 45px">
+	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_KAS1" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+			<div class="row" style="min-height: 45px">
 
-			<div class="col-xs-12">
+				<div class="col-xs-12">
 
-				<div class="row">
-					<div class="col-xs-11" style="font-size:13px;">
-						<div>
-						
+					<div class="row">
+						<div class="col-xs-11" style="font-size:13px;">
+							<div>
+							
 
-														
+															
 
-						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_KAS1</textarea>
+							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_KAS1</textarea>
 
-						
+							
 
+							</div>
 						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">						
+													
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+							
+						</div> 		
 					</div>
 
-					<div class="col-xs-1" style="padding-left:0px;">						
-												
-							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
-								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
-						
-					</div> 		
-				</div>
+					<div class="row" style="margin-top:3px;">
 
-				<div class="row" style="margin-top:3px;">
-
-					<div class="col-xs-10">
-						<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
-					</div>
-					
-					<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
-						<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+						<div class="col-xs-10">
+							<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
+						</div>
 						
-																				
-								
-									<option value="1"> 1 </option>
-								
-																				
-								
-									<option value="2"> 2 </option>
-								
-																				
-								
-									<option selected="selected" value="3"> 3 </option>
+						<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+							
+																					
+									
+										<option value="1"> 1 </option>
+									
+																					
+									
+										<option value="2"> 2 </option>
+									
+																					
+									
+										<option selected="selected" value="3"> 3 </option>
+									
 								
 							
-						
-						</select>	
-					</div>
+							</select>	
+						</div>
 
-					<div class="col-xs-1" style="padding-left:0px;">
+						<div class="col-xs-1" style="padding-left:0px;">
+							
+						</div>
+					</div>						
+				</div>
+			</div>
+
+			<div class="row hidden" id="ScoreDetail">
+				<div class="col-xs-12">
+					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+					<div class="row">
+						<div class="col-xs-2">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+							</div>
+						</div>	
+
+						<div class="col-xs-2" style="padding-left:8px;">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+							</div>			
+						</div>
+
+						<div class="col-xs-2" style="padding-left:3px;">
+							<div class="checkbox"> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+					 		</div>
+						</div>
+
+						<div class="col-xs-0">
+						</div>
 						
+						<div class="col-xs-6">
+
+						
+							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
+						
+
+						
+							<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
+						
+
+						
+							<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
+						
+
+							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
+								  	<span class="glyphicon glyphicon-pencil"></span></button>
+
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
+						</div>
+					
+					</div>					
+					<div class="row" id="KsuPlusOptions">
+						<div class="col-xs-12">
+						
+							<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">	
+								<div class="row">
+									<div class="col-xs-4">
+										<label> Reward</label>
+										<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+											
+																																	
+													<option selected="selected" value="0.25"> 0.25 </option>
+												
+											
+												
+													<option value="1"> 1 </option>							
+												
+											
+												
+													<option value="2"> 2 </option>							
+												
+											
+												
+													<option value="3"> 3 </option>							
+												
+											
+												
+													<option value="5"> 5 </option>							
+												
+											
+												
+													<option value="8"> 8 </option>							
+												
+											
+												
+													<option value="13"> 13 </option>							
+												
+											
+										</select>	
+									</div>
+
+									<div class="col-xs-4">
+										<label> Next Event </label>
+										<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" name="next_event" id="next_event" value="2016-08-10">
+									</div>	
+
+									<div class="col-xs-4">
+										<label> Preferred Time </label>
+										<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" name="best_time" id="best_time" value="">	
+									</div>				
+								</div>
+								
+
+								<div class="row" style="margin-top:10px;">
+									<div class="col-xs-4">
+										<label> Repeats </label>
+										<select id="repeats" class="form-control KsuEditor_Repeats QuickAttributeUpdate" name="repeats">
+											
+												
+												<option value="R001" selected="selected"> Daily </option>
+																		
+											
+												
+												<option value="R007"> Weekly </option>	
+																		
+											
+												
+												<option value="R030"> Monthly </option>	
+																		
+											
+												
+												<option value="R365"> Yearly </option>	
+																		
+											
+										</select> 
+									</div>
+
+									<div class="col-xs-8 hidden" id="repeats_on">
+									<div class="row" style="margin-top:15px;">
+								 		<div style="display: table; float:left; margin-right:15px;">
+								 		<div class="col-xs-1" style="margin-right:10px;">
+								 			<label style="display:table-row;"><b>Mon
+								 			<input style="display:table-row; width:100%;" type="checkbox"   class="QuickAttributeUpdate" name="repeats_on_Mon" id="repeats_on_Mon"></b></label>		
+								 		</div><div class="col-xs-1" style="margin-right:10px;">
+								 			<label style="display:table-row;"><b>Tue 
+								 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Tue" id="repeats_on_Tue"></b></label>
+										</div><div class="col-xs-1" style="margin-right:10px;">
+								 			<label style="display:table-row;"><b>Wed
+								 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Wed" id="repeats_on_Wed"></b></label> 
+										</div><div class="col-xs-1" style="margin-right:10px;">			 			
+								 			<label style="display:table-row;"><b>Thu 
+								 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Thu" id="repeats_on_Thu"></b></label>
+										</div><div class="col-xs-1" style="margin-right:10px;">			 		
+								 			<label style="display:table-row;"><b>Fri
+								 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Fri" id="repeats_on_Fri"></b></label> 
+										</div><div class="col-xs-1" style="margin-right:10px;">			 		
+								 			<label style="display:table-row;"><b>Sat 
+								 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Sat" id="repeats_on_Sat"></b></label>
+								 		</div><div class="col-xs-1" style="margin-right:10px;">
+								 			<label style="display:table-row;"><b>Sun 
+								 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Sun" id="repeats_on_Sun"></b></label>
+								 		</div></div>
+									</div>
+									</div>
+
+									<div class="col-xs-8 " id="repeats_every">
+
+										<div class="row">
+											<div class="col-xs-4">
+												<label> Every </label>
+												<input type="number" min="1" class="form-control QuickAttributeUpdate" style="padding-right:3px;" name="frequency" id="frequency" placeholder="1" value="1"> 		
+											</div>
+											
+											<div id="repeats_every_footnote" class="col-xs-8" style="position: absolute; bottom: 0; right: 0; padding-left: 0; font-style: italic;">Days
+											</div>									
+										</div>		
+									</div>
+								</div>
+							
+						</div>
+						<div class="col-xs-12">
+							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+							<div class="row">
+								<div class="col-xs-12">
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+								</div>
+
+							</div>
+						</div>
 					</div>
-				</div>						
+			</div>
 			</div>
 		</div>
+	</div>
 
-		<div class="row hidden" id="ScoreDetail">
-			<div class="col-xs-12">
-				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
-				<div class="row">
-					<div class="col-xs-2">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_KAS3" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+			<div class="row" style="min-height: 45px">
+
+				<div class="col-xs-12">
+
+					<div class="row">
+						<div class="col-xs-11" style="font-size:13px;">
+							<div>
+								
+								<span style="color:#32CD32; font-style:italic; font-weight:bold; font-size:12px;">Target Reaction: </span>
+								<textarea style="width:100%; font-weight:normal; font-style:italic; border:0;" class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description">None</textarea>
+							
+
+															
+
+							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_KAS2</textarea>
+
+							
+
+							</div>
 						</div>
-					</div>	
 
-					<div class="col-xs-2" style="padding-left:8px;">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
-						</div>			
+						<div class="col-xs-1" style="padding-left:0px;">						
+													
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+							
+						</div> 		
 					</div>
 
-					<div class="col-xs-2" style="padding-left:3px;">
-						<div class="checkbox"> 
-				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
-				 		</div>
-					</div>
+					<div class="row" style="margin-top:3px;">
 
-					<div class="col-xs-0">
-					</div>
-					
-					<div class="col-xs-6">
+						<div class="col-xs-10">
+							<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
+						</div>
+						
+						<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+							
+																					
+									
+										<option value="1"> 1 </option>
+									
+																					
+									
+										<option value="2"> 2 </option>
+									
+																					
+									
+										<option selected="selected" value="3"> 3 </option>
+									
+								
+							
+							</select>	
+						</div>
 
-					
-						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
-					
+						<div class="col-xs-1" style="padding-left:0px;">
+							
+						</div>
+					</div>						
+				</div>
+			</div>
 
-					
-						<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
-					
+			<div class="row hidden" id="ScoreDetail">
+				<div class="col-xs-12">
+					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+					<div class="row">
+						<div class="col-xs-2">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+							</div>
+						</div>	
 
-					
-						<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
-					
+						<div class="col-xs-2" style="padding-left:8px;">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+							</div>			
+						</div>
 
-						<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
-							  	<span class="glyphicon glyphicon-pencil"></span></button>
+						<div class="col-xs-2" style="padding-left:3px;">
+							<div class="checkbox"> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+					 		</div>
+						</div>
 
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
-					</div>
-				
-				</div>					
-				<div class="row" id="KsuPlusOptions">
-					<div class="col-xs-12">
+						<div class="col-xs-1">
+						</div>
+						
+						<div class="col-xs-5">
+
+						
+							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
+						
+
+						
+
+						
+							<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
+						
+
+							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
+								  	<span class="glyphicon glyphicon-pencil"></span></button>
+
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
+						</div>
 					
-						<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">	
+					</div>					
+					<div class="row" id="KsuPlusOptions">
+						<div class="col-xs-12">
+						
+							<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">		
 							<div class="row">
-								<div class="col-xs-4">
-									<label> Reward</label>
-									<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+								<div class="col-xs-4">		
+								<label> Reward</label>
+								<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+									
+																															
+											<option selected="selected" value="0.25"> 0.25 </option>
 										
-																																
+									
+										
+											<option value="1"> 1 </option>							
+										
+									
+										
+											<option value="2"> 2 </option>							
+										
+									
+										
+											<option value="3"> 3 </option>							
+										
+									
+										
+											<option value="5"> 5 </option>							
+										
+									
+										
+											<option value="8"> 8 </option>							
+										
+									
+										
+											<option value="13"> 13 </option>							
+										
+									
+								</select>
+								</div>
+							</div>
+							
+						</div>
+						<div class="col-xs-12">
+							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+							<div class="row">
+								<div class="col-xs-12">
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+								</div>
+
+							</div>
+						</div>
+					</div>
+			</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_KAS4" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+			<div class="row" style="min-height: 45px">
+
+				<div class="col-xs-12">
+
+					<div class="row">
+						<div class="col-xs-11" style="font-size:13px;">
+							<div>
+							
+
+								
+								<span style="color:red; font-style:italic; font-weight:bold; font-size:12px;"> Must avoid:</span> 
+															
+
+							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_KAS3</textarea>
+
+							
+
+							</div>
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">						
+													
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+							
+						</div> 		
+					</div>
+
+					<div class="row" style="margin-top:3px;">
+
+						<div class="col-xs-10">
+							<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
+						</div>
+						
+						<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+							
+																					
+									
+										<option value="1"> 1 </option>
+									
+																					
+									
+										<option value="2"> 2 </option>
+									
+																					
+									
+										<option selected="selected" value="3"> 3 </option>
+									
+								
+							
+							</select>	
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">
+							
+						</div>
+					</div>						
+				</div>
+			</div>
+
+			<div class="row hidden" id="ScoreDetail">
+				<div class="col-xs-12">
+					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+					<div class="row">
+						<div class="col-xs-2">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+							</div>
+						</div>	
+
+						<div class="col-xs-2" style="padding-left:8px;">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+							</div>			
+						</div>
+
+						<div class="col-xs-2" style="padding-left:3px;">
+							<div class="checkbox"> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+					 		</div>
+						</div>
+
+						<div class="col-xs-1">
+						</div>
+						
+						<div class="col-xs-5">
+
+						
+							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
+						
+
+						
+
+						
+							<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
+						
+
+							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
+								  	<span class="glyphicon glyphicon-pencil"></span></button>
+
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
+						</div>
+					
+					</div>					
+					<div class="row" id="KsuPlusOptions">
+						<div class="col-xs-12">
+						
+							<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">
+							<div class="row" style="margin-bottom:8px;">
+								<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+										<label> Punishment </label>
+										<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+																																	
+												
+												<option selected="selected" value="0.25"> 0.25 </option>
+												
+																																	
+												
+												<option value="1"> 1 </option>								
+												
+																																	
+												
+												<option value="2"> 2 </option>								
+												
+																																	
+												
+												<option value="3"> 3 </option>								
+												
+																																	
+												
+												<option value="5"> 5 </option>								
+												
+																																	
+												
+												<option value="8"> 8 </option>								
+												
+																																	
+												
+												<option value="13"> 13 </option>								
+												
+											
+										</select>	
+								</div>
+								<div class="col-xs-9">
+									<label>Valid Exceptions</label>
+									<textarea class="form-control QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description" placeholder="e.g. When I'am on vacation, When the food its free!">Exception</textarea>	
+								</div>		
+							</div>
+							
+						</div>
+						<div class="col-xs-12">
+							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+							<div class="row">
+								<div class="col-xs-12">
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+								</div>
+
+							</div>
+						</div>
+					</div>
+			</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_BigO" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+			<div class="row" style="min-height: 45px">
+
+				<div class="col-xs-12">
+
+					<div class="row">
+						<div class="col-xs-11" style="font-size:13px;">
+							<div>
+							
+
+															
+
+							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_BigO</textarea>
+
+							
+								<span style="color:grey; font-style:italic; font-size:13px;">
+								<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description">Success</textarea>	
+								</span> 
+							
+
+							</div>
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">						
+													
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+							
+						</div> 		
+					</div>
+
+					<div class="row" style="margin-top:3px;">
+
+						<div class="col-xs-10">
+							<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
+						</div>
+						
+						<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+							
+																					
+									
+										<option value="1"> 1 </option>
+									
+																					
+									
+										<option value="2"> 2 </option>
+									
+																					
+									
+										<option selected="selected" value="3"> 3 </option>
+									
+								
+							
+							</select>	
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">
+							
+						</div>
+					</div>						
+				</div>
+			</div>
+
+			<div class="row hidden" id="ScoreDetail">
+				<div class="col-xs-12">
+					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+					<div class="row">
+						<div class="col-xs-2">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+							</div>
+						</div>	
+
+						<div class="col-xs-2" style="padding-left:8px;">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+							</div>			
+						</div>
+
+						<div class="col-xs-2" style="padding-left:3px;">
+							<div class="checkbox"> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+					 		</div>
+						</div>
+
+						<div class="col-xs-2">
+						</div>
+						
+						<div class="col-xs-4">
+
+						
+							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
+						
+
+						
+
+						
+
+							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
+								  	<span class="glyphicon glyphicon-pencil"></span></button>
+
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
+						</div>
+					
+					</div>					
+					<div class="row" id="KsuPlusOptions">
+						<div class="col-xs-12">
+						
+							<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+							<div class="row">								
+								<div class="col-xs-3" style="text-align:right;"><b>Achievement Value</b></div>
+								<div class="col-xs-3">
+								<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+									
+																															
+											<option selected="selected" value="1"> 1 </option>
+										
+									
+										
+											<option value="2"> 2 </option>							
+										
+									
+										
+											<option value="3"> 3 </option>							
+										
+									
+										
+											<option value="5"> 5 </option>							
+										
+									
+										
+											<option value="8"> 8 </option>							
+										
+									
+								</select>
+								</div>
+
+								<div class="col-xs-2" style="text-align:right;"><b>Target Date </b></div>
+								<div class="col-xs-4" style="padding-left:0px;">
+									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="None">		
+								</div>
+							</div>	
+							
+						</div>
+						<div class="col-xs-12">
+							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+							<div class="row">
+								<div class="col-xs-12">
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+								</div>
+
+							</div>
+						</div>
+					</div>
+			</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_Wish" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+			<div class="row" style="min-height: 45px">
+
+				<div class="col-xs-12">
+
+					<div class="row">
+						<div class="col-xs-11" style="font-size:13px;">
+							<div>
+							
+
+															
+
+							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_Wish</textarea>
+
+							
+
+							</div>
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">						
+													
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+							
+						</div> 		
+					</div>
+
+					<div class="row" style="margin-top:3px;">
+
+						<div class="col-xs-10">
+							<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
+						</div>
+						
+						<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+							
+																					
+									
+										<option value="1"> 1 </option>
+									
+																					
+									
+										<option value="2"> 2 </option>
+									
+																					
+									
+										<option selected="selected" value="3"> 3 </option>
+									
+								
+							
+							</select>	
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">
+							
+						</div>
+					</div>						
+				</div>
+			</div>
+
+			<div class="row hidden" id="ScoreDetail">
+				<div class="col-xs-12">
+					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+					<div class="row">
+						<div class="col-xs-2">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+							</div>
+						</div>	
+
+						<div class="col-xs-2" style="padding-left:8px;">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+							</div>			
+						</div>
+
+						<div class="col-xs-2" style="padding-left:3px;">
+							<div class="checkbox"> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+					 		</div>
+						</div>
+
+						<div class="col-xs-2">
+						</div>
+						
+						<div class="col-xs-4">
+
+						
+							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
+						
+
+						
+
+						
+
+							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
+								  	<span class="glyphicon glyphicon-pencil"></span></button>
+
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
+						</div>
+					
+					</div>					
+					<div class="row" id="KsuPlusOptions">
+						<div class="col-xs-12">
+						
+							<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+						
+							<div class="row">
+								<div class="col-xs-3" style="text-align:right;"><b>Excitement Level</b></div>
+								<div class="col-xs-3">
+								<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
+									
+																															
+											<option selected="selected" value="1"> 1 </option>
+										
+									
+										
+											<option value="2"> 2 </option>							
+										
+									
+										
+											<option value="3"> 3 </option>							
+										
+									
+										
+											<option value="5"> 5 </option>							
+										
+									
+										
+											<option value="8"> 8 </option>							
+										
+									
+								</select>
+								</div>
+								
+								<div class="col-xs-3" style="text-align:right;"><b>Money Cost ($) </b></div>
+								<div class="col-xs-3" style="padding-left:0px;">
+									<input type="number" min="0" class="form-control QuickAttributeUpdate" name="money_cost" placeholder="e.g. $500" value=>		
+								</div>
+							</div>
+							
+						</div>
+						<div class="col-xs-12">
+							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+							<div class="row">
+								<div class="col-xs-12">
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+								</div>
+
+							</div>
+						</div>
+					</div>
+			</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_Idea" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+			<div class="row" style="min-height: 45px">
+
+				<div class="col-xs-12">
+
+					<div class="row">
+						<div class="col-xs-11" style="font-size:13px;">
+							<div>
+							
+
+															
+
+							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_Idea</textarea>
+
+							
+
+							</div>
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">						
+													
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+							
+						</div> 		
+					</div>
+
+					<div class="row" style="margin-top:3px;">
+
+						<div class="col-xs-10">
+							<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
+						</div>
+						
+						<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+							
+																					
+									
+										<option value="1"> 1 </option>
+									
+																					
+									
+										<option value="2"> 2 </option>
+									
+																					
+									
+										<option selected="selected" value="3"> 3 </option>
+									
+								
+							
+							</select>	
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">
+							
+						</div>
+					</div>						
+				</div>
+			</div>
+
+			<div class="row hidden" id="ScoreDetail">
+				<div class="col-xs-12">
+					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+					<div class="row">
+						<div class="col-xs-2">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+							</div>
+						</div>	
+
+						<div class="col-xs-2" style="padding-left:8px;">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+							</div>			
+						</div>
+
+						<div class="col-xs-2" style="padding-left:3px;">
+							<div class="checkbox"> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+					 		</div>
+						</div>
+
+						<div class="col-xs-3">
+						</div>
+						
+						<div class="col-xs-3">
+
+						
+
+						
+
+						
+
+							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
+								  	<span class="glyphicon glyphicon-pencil"></span></button>
+
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
+						</div>
+					
+					</div>					
+					<div class="row" id="KsuPlusOptions">
+						<div class="col-xs-12">
+						
+							
+							<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+
+							<div class="row">
+								<div class="col-xs-2" style="text-align:right; padding-right:0;">
+									<b>Source</b>
+								</div>
+								<div class="col-xs-10">
+									<textarea type="text" class="form-control autoExpands QuickAttributeUpdate" rows="1" data-min-rows='1' id="secondary_description" name="secondary_description" placeholder="e.g. name of a person, book or a link to an article"></textarea>
+								</div>
+							</div>
+							
+						</div>
+						<div class="col-xs-12">
+							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+							<div class="row">
+								<div class="col-xs-12">
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+								</div>
+
+							</div>
+						</div>
+					</div>
+			</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_EVPo" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+			<div class="row" style="min-height: 45px">
+
+				<div class="col-xs-12">
+
+					<div class="row">
+						<div class="col-xs-11" style="font-size:13px;">
+							<div>
+							
+															
+							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_EVPo</textarea>
+
+							
+
+							</div>
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">						
+													
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+							
+						</div> 		
+					</div>
+
+					<div class="row" style="margin-top:3px;">
+
+						<div class="col-xs-10">
+							<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
+						</div>
+						
+						<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+							
+																					
+									
+										<option value="1"> 1 </option>
+									
+																					
+									
+										<option value="2"> 2 </option>
+									
+																					
+									
+										<option selected="selected" value="3"> 3 </option>
+									
+								
+							
+							</select>	
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">
+							
+						</div>
+					</div>						
+				</div>
+			</div>
+
+			<div class="row hidden" id="ScoreDetail">
+				<div class="col-xs-12">
+					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+					<div class="row">
+						<div class="col-xs-2">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+							</div>
+						</div>	
+
+						<div class="col-xs-2" style="padding-left:8px;">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+							</div>			
+						</div>
+
+						<div class="col-xs-2" style="padding-left:3px;">
+							<div class="checkbox"> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+					 		</div>
+						</div>
+
+						<div class="col-xs-0">
+						</div>
+						
+						<div class="col-xs-6">
+
+						
+							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
+						
+
+						
+							<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
+						
+
+						
+							<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
+						
+
+							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
+								  	<span class="glyphicon glyphicon-pencil"></span></button>
+
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
+						</div>
+					
+					</div>					
+					<div class="row" id="KsuPlusOptions">
+						<div class="col-xs-12">
+						
+							<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+							<div class="row">
+								<div class="col-xs-4"> 
+									<label> Charging Time (Days) </label>			
+									<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="Days. E.g. 7" value="1">
+								</div>
+
+								<div class="col-xs-4">
+									<label> Next Trigger Event </label>
+									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-10">
+								</div>
+
+								<div class="col-xs-4">
+									<label> Trigger Effort Reward</label>
+									<select class="form-control QuickAttributeUpdate" id="kpts_value" name="kpts_value">
+										
+											
 												<option selected="selected" value="0.25"> 0.25 </option>
 											
 										
 											
-												<option value="1"> 1 </option>							
+												<option value="1"> 1 </option>
 											
 										
 											
-												<option value="2"> 2 </option>							
+												<option value="2"> 2 </option>
 											
 										
 											
-												<option value="3"> 3 </option>							
+												<option value="3"> 3 </option>
 											
 										
 											
-												<option value="5"> 5 </option>							
+												<option value="5"> 5 </option>
 											
 										
 											
-												<option value="8"> 8 </option>							
+												<option value="8"> 8 </option>
 											
 										
 											
-												<option value="13"> 13 </option>							
-											
-										
-									</select>	
-								</div>
-
-								<div class="col-xs-4">
-									<label> Next Event </label>
-									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" name="next_event" id="next_event" value="2016-08-10">
-								</div>	
-
-								<div class="col-xs-4">
-									<label> Preferred Time </label>
-									<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" name="best_time" id="best_time" value="">	
-								</div>				
-							</div>
-							
-
-							<div class="row" style="margin-top:10px;">
-								<div class="col-xs-4">
-									<label> Repeats </label>
-									<select id="repeats" class="form-control KsuEditor_Repeats QuickAttributeUpdate" name="repeats">
-										
-											
-											<option value="R001" selected="selected"> Daily </option>
-																	
-										
-											
-											<option value="R007"> Weekly </option>	
-																	
-										
-											
-											<option value="R030"> Monthly </option>	
-																	
-										
-											
-											<option value="R365"> Yearly </option>	
-																	
-										
-									</select> 
-								</div>
-
-								<div class="col-xs-8 hidden" id="repeats_on">
-								<div class="row" style="margin-top:15px;">
-							 		<div style="display: table; float:left; margin-right:15px;">
-							 		<div class="col-xs-1" style="margin-right:10px;">
-							 			<label style="display:table-row;"><b>Mon
-							 			<input style="display:table-row; width:100%;" type="checkbox"   class="QuickAttributeUpdate" name="repeats_on_Mon" id="repeats_on_Mon"></b></label>		
-							 		</div><div class="col-xs-1" style="margin-right:10px;">
-							 			<label style="display:table-row;"><b>Tue 
-							 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Tue" id="repeats_on_Tue"></b></label>
-									</div><div class="col-xs-1" style="margin-right:10px;">
-							 			<label style="display:table-row;"><b>Wed
-							 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Wed" id="repeats_on_Wed"></b></label> 
-									</div><div class="col-xs-1" style="margin-right:10px;">			 			
-							 			<label style="display:table-row;"><b>Thu 
-							 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Thu" id="repeats_on_Thu"></b></label>
-									</div><div class="col-xs-1" style="margin-right:10px;">			 		
-							 			<label style="display:table-row;"><b>Fri
-							 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Fri" id="repeats_on_Fri"></b></label> 
-									</div><div class="col-xs-1" style="margin-right:10px;">			 		
-							 			<label style="display:table-row;"><b>Sat 
-							 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Sat" id="repeats_on_Sat"></b></label>
-							 		</div><div class="col-xs-1" style="margin-right:10px;">
-							 			<label style="display:table-row;"><b>Sun 
-							 			<input style="display:table-row; width:100%;" type="checkbox"  class="QuickAttributeUpdate" name="repeats_on_Sun" id="repeats_on_Sun"></b></label>
-							 		</div></div>
-								</div>
-								</div>
-
-								<div class="col-xs-8 " id="repeats_every">
-
-									<div class="row">
-										<div class="col-xs-4">
-											<label> Every </label>
-											<input type="number" min="1" class="form-control QuickAttributeUpdate" style="padding-right:3px;" name="frequency" id="frequency" placeholder="1" value="1"> 		
-										</div>
-										
-										<div id="repeats_every_footnote" class="col-xs-8" style="position: absolute; bottom: 0; right: 0; padding-left: 0; font-style: italic;">Days
-										</div>									
-									</div>		
-								</div>
-							</div>
-						
-					</div>
-					<div class="col-xs-12">
-						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
-						<div class="row">
-							<div class="col-xs-12">
-								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
-							</div>
-
-						</div>
-					</div>
-				</div>
-		</div>
-		</div>
-	</div>
-</div>
-
-<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_KAS3" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
-	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
-		<div class="row" style="min-height: 45px">
-
-			<div class="col-xs-12">
-
-				<div class="row">
-					<div class="col-xs-11" style="font-size:13px;">
-						<div>
-							
-							<span style="color:#32CD32; font-style:italic; font-weight:bold; font-size:12px;">Target Reaction: </span>
-							<textarea style="width:100%; font-weight:normal; font-style:italic; border:0;" class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description">None</textarea>
-						
-
-														
-
-						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_KAS2</textarea>
-
-						
-
-						</div>
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">						
-												
-							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
-								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
-						
-					</div> 		
-				</div>
-
-				<div class="row" style="margin-top:3px;">
-
-					<div class="col-xs-10">
-						<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
-					</div>
-					
-					<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
-						<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
-						
-																				
-								
-									<option value="1"> 1 </option>
-								
-																				
-								
-									<option value="2"> 2 </option>
-								
-																				
-								
-									<option selected="selected" value="3"> 3 </option>
-								
-							
-						
-						</select>	
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">
-						
-					</div>
-				</div>						
-			</div>
-		</div>
-
-		<div class="row hidden" id="ScoreDetail">
-			<div class="col-xs-12">
-				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
-				<div class="row">
-					<div class="col-xs-2">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
-						</div>
-					</div>	
-
-					<div class="col-xs-2" style="padding-left:8px;">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
-						</div>			
-					</div>
-
-					<div class="col-xs-2" style="padding-left:3px;">
-						<div class="checkbox"> 
-				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
-				 		</div>
-					</div>
-
-					<div class="col-xs-1">
-					</div>
-					
-					<div class="col-xs-5">
-
-					
-						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
-					
-
-					
-
-					
-						<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
-					
-
-						<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
-							  	<span class="glyphicon glyphicon-pencil"></span></button>
-
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
-					</div>
-				
-				</div>					
-				<div class="row" id="KsuPlusOptions">
-					<div class="col-xs-12">
-					
-						<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">		
-						<div class="row">
-							<div class="col-xs-4">		
-							<label> Reward</label>
-							<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
-								
-																														
-										<option selected="selected" value="0.25"> 0.25 </option>
-									
-								
-									
-										<option value="1"> 1 </option>							
-									
-								
-									
-										<option value="2"> 2 </option>							
-									
-								
-									
-										<option value="3"> 3 </option>							
-									
-								
-									
-										<option value="5"> 5 </option>							
-									
-								
-									
-										<option value="8"> 8 </option>							
-									
-								
-									
-										<option value="13"> 13 </option>							
-									
-								
-							</select>
-							</div>
-						</div>
-						
-					</div>
-					<div class="col-xs-12">
-						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
-						<div class="row">
-							<div class="col-xs-12">
-								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
-							</div>
-
-						</div>
-					</div>
-				</div>
-		</div>
-		</div>
-	</div>
-</div>
-
-<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_KAS4" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
-	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
-		<div class="row" style="min-height: 45px">
-
-			<div class="col-xs-12">
-
-				<div class="row">
-					<div class="col-xs-11" style="font-size:13px;">
-						<div>
-						
-
-							
-							<span style="color:red; font-style:italic; font-weight:bold; font-size:12px;"> Must avoid:</span> 
-														
-
-						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_KAS3</textarea>
-
-						
-
-						</div>
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">						
-												
-							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
-								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
-						
-					</div> 		
-				</div>
-
-				<div class="row" style="margin-top:3px;">
-
-					<div class="col-xs-10">
-						<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
-					</div>
-					
-					<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
-						<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
-						
-																				
-								
-									<option value="1"> 1 </option>
-								
-																				
-								
-									<option value="2"> 2 </option>
-								
-																				
-								
-									<option selected="selected" value="3"> 3 </option>
-								
-							
-						
-						</select>	
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">
-						
-					</div>
-				</div>						
-			</div>
-		</div>
-
-		<div class="row hidden" id="ScoreDetail">
-			<div class="col-xs-12">
-				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
-				<div class="row">
-					<div class="col-xs-2">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
-						</div>
-					</div>	
-
-					<div class="col-xs-2" style="padding-left:8px;">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
-						</div>			
-					</div>
-
-					<div class="col-xs-2" style="padding-left:3px;">
-						<div class="checkbox"> 
-				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
-				 		</div>
-					</div>
-
-					<div class="col-xs-1">
-					</div>
-					
-					<div class="col-xs-5">
-
-					
-						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
-					
-
-					
-
-					
-						<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
-					
-
-						<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
-							  	<span class="glyphicon glyphicon-pencil"></span></button>
-
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
-					</div>
-				
-				</div>					
-				<div class="row" id="KsuPlusOptions">
-					<div class="col-xs-12">
-					
-						<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">
-						<div class="row" style="margin-bottom:8px;">
-							<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-									<label> Punishment </label>
-									<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
-																																
-											
-											<option selected="selected" value="0.25"> 0.25 </option>
-											
-																																
-											
-											<option value="1"> 1 </option>								
-											
-																																
-											
-											<option value="2"> 2 </option>								
-											
-																																
-											
-											<option value="3"> 3 </option>								
-											
-																																
-											
-											<option value="5"> 5 </option>								
-											
-																																
-											
-											<option value="8"> 8 </option>								
-											
-																																
-											
-											<option value="13"> 13 </option>								
+												<option value="13"> 13 </option>
 											
 										
 									</select>	
-							</div>
-							<div class="col-xs-9">
-								<label>Valid Exceptions</label>
-								<textarea class="form-control QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description" placeholder="e.g. When I'am on vacation, When the food its free!">Exception</textarea>	
-							</div>		
-						</div>
-						
-					</div>
-					<div class="col-xs-12">
-						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
-						<div class="row">
-							<div class="col-xs-12">
-								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+								</div>
 							</div>
 
-						</div>
-					</div>
-				</div>
-		</div>
-		</div>
-	</div>
-</div>
-
-<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_BigO" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
-	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
-		<div class="row" style="min-height: 45px">
-
-			<div class="col-xs-12">
-
-				<div class="row">
-					<div class="col-xs-11" style="font-size:13px;">
-						<div>
-						
-
-														
-
-						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_BigO</textarea>
-
-						
-							<span style="color:grey; font-style:italic; font-size:13px;">
-							<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description">Success</textarea>	
-							</span> 
-						
-
-						</div>
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">						
-												
-							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
-								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
-						
-					</div> 		
-				</div>
-
-				<div class="row" style="margin-top:3px;">
-
-					<div class="col-xs-10">
-						<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
-					</div>
-					
-					<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
-						<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
-						
-																				
-								
-									<option value="1"> 1 </option>
-								
-																				
-								
-									<option value="2"> 2 </option>
-								
-																				
-								
-									<option selected="selected" value="3"> 3 </option>
-								
+							<div class="row" style="margin-top:3px;">
+								<div class="col-xs-12">
+									<label> Trigger Action Description </label>
+									<textarea class="form-control QuickAttributeUpdate autoExpand"  id="secondary_description" name="secondary_description" rows="1" data-min-rows='1' placeholder="e.g. Buy tickets to go watch a movie"></textarea> 
+								</div>
+							</div>
 							
-						
-						</select>	
-					</div>
+						</div>
+						<div class="col-xs-12">
+							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+							<div class="row">
+								<div class="col-xs-12">
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+								</div>
 
-					<div class="col-xs-1" style="padding-left:0px;">
-						
+							</div>
+						</div>
 					</div>
-				</div>						
+			</div>
 			</div>
 		</div>
+	</div>
 
-		<div class="row hidden" id="ScoreDetail">
-			<div class="col-xs-12">
-				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
-				<div class="row">
-					<div class="col-xs-2">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
-						</div>
-					</div>	
+	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_ImPe" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+			<div class="row" style="min-height: 45px">
 
-					<div class="col-xs-2" style="padding-left:8px;">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
-						</div>			
-					</div>
+				<div class="col-xs-12">
 
-					<div class="col-xs-2" style="padding-left:3px;">
-						<div class="checkbox"> 
-				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
-				 		</div>
-					</div>
+					<div class="row">
+						<div class="col-xs-11" style="font-size:13px;">
+							<div>
+							
 
-					<div class="col-xs-2">
-					</div>
-					
-					<div class="col-xs-4">
+															
 
-					
-						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
-					
+							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_ImPe</textarea>
 
-					
+							
 
-					
-
-						<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
-							  	<span class="glyphicon glyphicon-pencil"></span></button>
-
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
-					</div>
-				
-				</div>					
-				<div class="row" id="KsuPlusOptions">
-					<div class="col-xs-12">
-					
-						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-						<div class="row">								
-							<div class="col-xs-3" style="text-align:right;"><b>Achievement Value</b></div>
-							<div class="col-xs-3">
-							<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
-								
-																														
-										<option selected="selected" value="1"> 1 </option>
-									
-								
-									
-										<option value="2"> 2 </option>							
-									
-								
-									
-										<option value="3"> 3 </option>							
-									
-								
-									
-										<option value="5"> 5 </option>							
-									
-								
-									
-										<option value="8"> 8 </option>							
-									
-								
-							</select>
 							</div>
+						</div>
 
-							<div class="col-xs-2" style="text-align:right;"><b>Target Date </b></div>
-							<div class="col-xs-4" style="padding-left:0px;">
-								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="None">		
+						<div class="col-xs-1" style="padding-left:0px;">						
+													
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+							
+						</div> 		
+					</div>
+
+					<div class="row" style="margin-top:3px;">
+
+						<div class="col-xs-10">
+							<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
+						</div>
+						
+						<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+							
+																					
+									
+										<option value="1"> 1 </option>
+									
+																					
+									
+										<option value="2"> 2 </option>
+									
+																					
+									
+										<option selected="selected" value="3"> 3 </option>
+									
+								
+							
+							</select>	
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">
+							
+						</div>
+					</div>						
+				</div>
+			</div>
+
+			<div class="row hidden" id="ScoreDetail">
+				<div class="col-xs-12">
+					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+					<div class="row">
+						<div class="col-xs-2">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
 							</div>
 						</div>	
-						
-					</div>
-					<div class="col-xs-12">
-						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
-						<div class="row">
-							<div class="col-xs-12">
-								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
-							</div>
 
+						<div class="col-xs-2" style="padding-left:8px;">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+							</div>			
 						</div>
-					</div>
-				</div>
-		</div>
-		</div>
-	</div>
-</div>
 
-<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_Wish" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
-	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
-		<div class="row" style="min-height: 45px">
-
-			<div class="col-xs-12">
-
-				<div class="row">
-					<div class="col-xs-11" style="font-size:13px;">
-						<div>
-						
-
-														
-
-						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_Wish</textarea>
-
-						
-
+						<div class="col-xs-2" style="padding-left:3px;">
+							<div class="checkbox"> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+					 		</div>
 						</div>
-					</div>
 
-					<div class="col-xs-1" style="padding-left:0px;">						
-												
-							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
-								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+						<div class="col-xs-0">
+						</div>
 						
-					</div> 		
-				</div>
+						<div class="col-xs-6">
 
-				<div class="row" style="margin-top:3px;">
+						
+							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
+						
 
-					<div class="col-xs-10">
-						<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
-					</div>
+						
+							<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
+						
+
+						
+							<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
+						
+
+							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
+								  	<span class="glyphicon glyphicon-pencil"></span></button>
+
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
+						</div>
 					
-					<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
-						<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+					</div>					
+					<div class="row" id="KsuPlusOptions">
+						<div class="col-xs-12">
 						
-																				
-								
-									<option value="1"> 1 </option>
-								
-																				
-								
-									<option value="2"> 2 </option>
-								
-																				
-								
-									<option selected="selected" value="3"> 3 </option>
-								
-							
-						
-						</select>	
-					</div>
+							<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+							<div class="row">
+								<div class="col-xs-3">
+									<label> Birthday </label>
+									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;"  id="birthday" name="birthday" value="None">	
+								</div>
 
-					<div class="col-xs-1" style="padding-left:0px;">
-						
+								<div class="col-xs-3"> 
+									<label> Contact Freq. </label>			
+									<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="E.g. 7" value="1">
+								</div>
+
+								<div class="col-xs-3">
+									<label> Next Contact </label>
+									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-10">
+								</div>	
+
+								<div class="col-xs-3">
+									<label> C. Reward</label>
+									<select class="form-control QuickAttributeUpdate" id="kpts_value" name="kpts_value">
+										
+											
+												<option selected="selected" value="0.25"> 0.25 </option>
+											
+										
+											
+												<option value="1"> 1 </option>
+											
+										
+											
+												<option value="2"> 2 </option>
+											
+										
+											
+												<option value="3"> 3 </option>
+											
+										
+											
+												<option value="5"> 5 </option>
+											
+										
+											
+												<option value="8"> 8 </option>
+											
+										
+											
+												<option value="13"> 13 </option>
+											
+										
+									</select>	
+								</div>
+							</div>
+							
+						</div>
+						<div class="col-xs-12">
+							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+							<div class="row">
+								<div class="col-xs-12">
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+								</div>
+
+							</div>
+						</div>
 					</div>
-				</div>						
+			</div>
 			</div>
 		</div>
-
-		<div class="row hidden" id="ScoreDetail">
-			<div class="col-xs-12">
-				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
-				<div class="row">
-					<div class="col-xs-2">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
-						</div>
-					</div>	
-
-					<div class="col-xs-2" style="padding-left:8px;">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
-						</div>			
-					</div>
-
-					<div class="col-xs-2" style="padding-left:3px;">
-						<div class="checkbox"> 
-				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
-				 		</div>
-					</div>
-
-					<div class="col-xs-2">
-					</div>
-					
-					<div class="col-xs-4">
-
-					
-						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
-					
-
-					
-
-					
-
-						<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
-							  	<span class="glyphicon glyphicon-pencil"></span></button>
-
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
-					</div>
-				
-				</div>					
-				<div class="row" id="KsuPlusOptions">
-					<div class="col-xs-12">
-					
-						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-					
-						<div class="row">
-							<div class="col-xs-3" style="text-align:right;"><b>Excitement Level</b></div>
-							<div class="col-xs-3">
-							<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
-								
-																														
-										<option selected="selected" value="1"> 1 </option>
-									
-								
-									
-										<option value="2"> 2 </option>							
-									
-								
-									
-										<option value="3"> 3 </option>							
-									
-								
-									
-										<option value="5"> 5 </option>							
-									
-								
-									
-										<option value="8"> 8 </option>							
-									
-								
-							</select>
-							</div>
-							
-							<div class="col-xs-3" style="text-align:right;"><b>Money Cost ($) </b></div>
-							<div class="col-xs-3" style="padding-left:0px;">
-								<input type="number" min="0" class="form-control QuickAttributeUpdate" name="money_cost" placeholder="e.g. $500" value=>		
-							</div>
-						</div>
-						
-					</div>
-					<div class="col-xs-12">
-						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
-						<div class="row">
-							<div class="col-xs-12">
-								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
-							</div>
-
-						</div>
-					</div>
-				</div>
-		</div>
-		</div>
 	</div>
-</div>
 
-<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_Idea" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
-	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
-		<div class="row" style="min-height: 45px">
+	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_RTBG" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+			<div class="row" style="min-height: 45px">
 
-			<div class="col-xs-12">
+				<div class="col-xs-12">
 
-				<div class="row">
-					<div class="col-xs-11" style="font-size:13px;">
-						<div>
-						
+					<div class="row">
+						<div class="col-xs-11" style="font-size:13px;">
+							<div>								
 
-														
+							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_RTBG</textarea>
 
-						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_Idea</textarea>
+							
 
-						
-
+							</div>
 						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">						
+													
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+							
+						</div> 		
 					</div>
 
-					<div class="col-xs-1" style="padding-left:0px;">						
-												
-							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
-								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
-						
-					</div> 		
-				</div>
+					<div class="row" style="margin-top:3px;">
 
-				<div class="row" style="margin-top:3px;">
-
-					<div class="col-xs-10">
-						<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
-					</div>
-					
-					<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
-						<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+						<div class="col-xs-10">
+							<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
+						</div>
 						
-																				
-								
-									<option value="1"> 1 </option>
-								
-																				
-								
-									<option value="2"> 2 </option>
-								
-																				
-								
-									<option selected="selected" value="3"> 3 </option>
+						<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+							
+																					
+									
+										<option value="1"> 1 </option>
+									
+																					
+									
+										<option value="2"> 2 </option>
+									
+																					
+									
+										<option selected="selected" value="3"> 3 </option>
+									
 								
 							
-						
-						</select>	
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">
-						
-					</div>
-				</div>						
-			</div>
-		</div>
-
-		<div class="row hidden" id="ScoreDetail">
-			<div class="col-xs-12">
-				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
-				<div class="row">
-					<div class="col-xs-2">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+							</select>	
 						</div>
-					</div>	
 
-					<div class="col-xs-2" style="padding-left:8px;">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
-						</div>			
-					</div>
-
-					<div class="col-xs-2" style="padding-left:3px;">
-						<div class="checkbox"> 
-				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
-				 		</div>
-					</div>
-
-					<div class="col-xs-3">
-					</div>
-					
-					<div class="col-xs-3">
-
-					
-
-					
-
-					
-
-						<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
-							  	<span class="glyphicon glyphicon-pencil"></span></button>
-
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
-					</div>
-				
-				</div>					
-				<div class="row" id="KsuPlusOptions">
-					<div class="col-xs-12">
-					
-						
-						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-
-						<div class="row">
-							<div class="col-xs-2" style="text-align:right; padding-right:0;">
-								<b>Source</b>
-							</div>
-							<div class="col-xs-10">
-								<textarea type="text" class="form-control autoExpands QuickAttributeUpdate" rows="1" data-min-rows='1' id="secondary_description" name="secondary_description" placeholder="e.g. name of a person, book or a link to an article"></textarea>
-							</div>
-						</div>
-						
-					</div>
-					<div class="col-xs-12">
-						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
-						<div class="row">
-							<div class="col-xs-12">
-								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
-							</div>
-
-						</div>
-					</div>
-				</div>
-		</div>
-		</div>
-	</div>
-</div>
-
-<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_EVPo" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
-	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
-		<div class="row" style="min-height: 45px">
-
-			<div class="col-xs-12">
-
-				<div class="row">
-					<div class="col-xs-11" style="font-size:13px;">
-						<div>
-						
-														
-						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_EVPo</textarea>
-
-						
-
-						</div>
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">						
-												
-							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
-								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
-						
-					</div> 		
-				</div>
-
-				<div class="row" style="margin-top:3px;">
-
-					<div class="col-xs-10">
-						<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
-					</div>
-					
-					<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
-						<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
-						
-																				
-								
-									<option value="1"> 1 </option>
-								
-																				
-								
-									<option value="2"> 2 </option>
-								
-																				
-								
-									<option selected="selected" value="3"> 3 </option>
-								
+						<div class="col-xs-1" style="padding-left:0px;">
 							
-						
-						</select>	
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">
-						
-					</div>
-				</div>						
+						</div>
+					</div>						
+				</div>
 			</div>
-		</div>
 
-		<div class="row hidden" id="ScoreDetail">
-			<div class="col-xs-12">
-				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
-				<div class="row">
-					<div class="col-xs-2">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
-						</div>
-					</div>	
-
-					<div class="col-xs-2" style="padding-left:8px;">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
-						</div>			
-					</div>
-
-					<div class="col-xs-2" style="padding-left:3px;">
-						<div class="checkbox"> 
-				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
-				 		</div>
-					</div>
-
-					<div class="col-xs-0">
-					</div>
-					
-					<div class="col-xs-6">
-
-					
-						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
-					
-
-					
-						<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
-					
-
-					
-						<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
-					
-
-						<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
-							  	<span class="glyphicon glyphicon-pencil"></span></button>
-
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
-					</div>
-				
-				</div>					
-				<div class="row" id="KsuPlusOptions">
-					<div class="col-xs-12">
-					
-						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-						<div class="row">
-							<div class="col-xs-4"> 
-								<label> Charging Time (Days) </label>			
-								<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="Days. E.g. 7" value="1">
+			<div class="row hidden" id="ScoreDetail">
+				<div class="col-xs-12">
+					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+					<div class="row">
+						<div class="col-xs-2">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
 							</div>
+						</div>	
 
-							<div class="col-xs-4">
-								<label> Next Trigger Event </label>
-								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-10">
-							</div>
-
-							<div class="col-xs-4">
-								<label> Trigger Effort Reward</label>
-								<select class="form-control QuickAttributeUpdate" id="kpts_value" name="kpts_value">
-									
-										
-											<option selected="selected" value="0.25"> 0.25 </option>
-										
-									
-										
-											<option value="1"> 1 </option>
-										
-									
-										
-											<option value="2"> 2 </option>
-										
-									
-										
-											<option value="3"> 3 </option>
-										
-									
-										
-											<option value="5"> 5 </option>
-										
-									
-										
-											<option value="8"> 8 </option>
-										
-									
-										
-											<option value="13"> 13 </option>
-										
-									
-								</select>	
-							</div>
+						<div class="col-xs-2" style="padding-left:8px;">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+							</div>			
 						</div>
 
-						<div class="row" style="margin-top:3px;">
-							<div class="col-xs-12">
-								<label> Trigger Action Description </label>
-								<textarea class="form-control QuickAttributeUpdate autoExpand"  id="secondary_description" name="secondary_description" rows="1" data-min-rows='1' placeholder="e.g. Buy tickets to go watch a movie"></textarea> 
-							</div>
-						</div>
-						
-					</div>
-					<div class="col-xs-12">
-						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
-						<div class="row">
-							<div class="col-xs-12">
-								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
-							</div>
-
-						</div>
-					</div>
-				</div>
-		</div>
-		</div>
-	</div>
-</div>
-
-<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_ImPe" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
-	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
-		<div class="row" style="min-height: 45px">
-
-			<div class="col-xs-12">
-
-				<div class="row">
-					<div class="col-xs-11" style="font-size:13px;">
-						<div>
-						
-
-														
-
-						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_ImPe</textarea>
-
-						
-
-						</div>
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">						
-												
-							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
-								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
-						
-					</div> 		
-				</div>
-
-				<div class="row" style="margin-top:3px;">
-
-					<div class="col-xs-10">
-						<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
-					</div>
-					
-					<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
-						<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
-						
-																				
-								
-									<option value="1"> 1 </option>
-								
-																				
-								
-									<option value="2"> 2 </option>
-								
-																				
-								
-									<option selected="selected" value="3"> 3 </option>
-								
-							
-						
-						</select>	
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">
-						
-					</div>
-				</div>						
-			</div>
-		</div>
-
-		<div class="row hidden" id="ScoreDetail">
-			<div class="col-xs-12">
-				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
-				<div class="row">
-					<div class="col-xs-2">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
-						</div>
-					</div>	
-
-					<div class="col-xs-2" style="padding-left:8px;">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
-						</div>			
-					</div>
-
-					<div class="col-xs-2" style="padding-left:3px;">
-						<div class="checkbox"> 
-				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
-				 		</div>
-					</div>
-
-					<div class="col-xs-0">
-					</div>
-					
-					<div class="col-xs-6">
-
-					
-						<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
-					
-
-					
-						<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
-					
-
-					
-						<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
-					
-
-						<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
-							  	<span class="glyphicon glyphicon-pencil"></span></button>
-
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
-					</div>
-				
-				</div>					
-				<div class="row" id="KsuPlusOptions">
-					<div class="col-xs-12">
-					
-						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-						<div class="row">
-							<div class="col-xs-3">
-								<label> Birthday </label>
-								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;"  id="birthday" name="birthday" value="None">	
-							</div>
-
-							<div class="col-xs-3"> 
-								<label> Contact Freq. </label>			
-								<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="E.g. 7" value="1">
-							</div>
-
-							<div class="col-xs-3">
-								<label> Next Contact </label>
-								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-10">
-							</div>	
-
-							<div class="col-xs-3">
-								<label> C. Reward</label>
-								<select class="form-control QuickAttributeUpdate" id="kpts_value" name="kpts_value">
-									
-										
-											<option selected="selected" value="0.25"> 0.25 </option>
-										
-									
-										
-											<option value="1"> 1 </option>
-										
-									
-										
-											<option value="2"> 2 </option>
-										
-									
-										
-											<option value="3"> 3 </option>
-										
-									
-										
-											<option value="5"> 5 </option>
-										
-									
-										
-											<option value="8"> 8 </option>
-										
-									
-										
-											<option value="13"> 13 </option>
-										
-									
-								</select>	
-							</div>
-						</div>
-						
-					</div>
-					<div class="col-xs-12">
-						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
-						<div class="row">
-							<div class="col-xs-12">
-								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
-							</div>
-
-						</div>
-					</div>
-				</div>
-		</div>
-		</div>
-	</div>
-</div>
-
-<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_RTBG" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
-	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
-		<div class="row" style="min-height: 45px">
-
-			<div class="col-xs-12">
-
-				<div class="row">
-					<div class="col-xs-11" style="font-size:13px;">
-						<div>								
-
-						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_RTBG</textarea>
-
-						
-
-						</div>
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">						
-												
-							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
-								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
-						
-					</div> 		
-				</div>
-
-				<div class="row" style="margin-top:3px;">
-
-					<div class="col-xs-10">
-						<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
-					</div>
-					
-					<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
-						<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
-						
-																				
-								
-									<option value="1"> 1 </option>
-								
-																				
-								
-									<option value="2"> 2 </option>
-								
-																				
-								
-									<option selected="selected" value="3"> 3 </option>
-								
-							
-						
-						</select>	
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">
-						
-					</div>
-				</div>						
-			</div>
-		</div>
-
-		<div class="row hidden" id="ScoreDetail">
-			<div class="col-xs-12">
-				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
-				<div class="row">
-					<div class="col-xs-2">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
-						</div>
-					</div>	
-
-					<div class="col-xs-2" style="padding-left:8px;">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
-						</div>			
-					</div>
-
-					<div class="col-xs-2" style="padding-left:3px;">
-						<div class="checkbox"> 
-				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
-				 		</div>
-					</div>
-
-					<div class="col-xs-3">
-					</div>
-					
-					<div class="col-xs-3">
-
-					
-
-					
-
-					
-
-						<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
-							  	<span class="glyphicon glyphicon-pencil"></span></button>
-
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
-					</div>
-				
-				</div>					
-				<div class="row" id="KsuPlusOptions">
-					<div class="col-xs-12">
-						
-					</div>
-					<div class="col-xs-12">
-						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
-						<div class="row">
-							<div class="col-xs-12">
-								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
-							</div>
-
-						</div>
-					</div>
-				</div>
-		</div>
-		</div>
-	</div>
-</div>
-
-<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_Diary" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
-	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
-		<div class="row" style="min-height: 45px">
-
-			<div class="col-xs-12">
-
-				<div class="row">
-					<div class="col-xs-11" style="font-size:13px;">
-						<div>
-
-						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_Diary</textarea>
-
-						
-							<span style="color:grey; font-style:italic; font-size:13px;">
-							<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description">Question</textarea>	
-							</span> 
-						
-
-						</div>
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">						
-												
-							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
-								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
-						
-					</div> 		
-				</div>
-
-				<div class="row" style="margin-top:3px;">
-
-					<div class="col-xs-10">
-						<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
-					</div>
-					
-					<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
-						<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
-						
-																				
-								
-									<option value="1"> 1 </option>
-								
-																				
-								
-									<option value="2"> 2 </option>
-								
-																				
-								
-									<option selected="selected" value="3"> 3 </option>
-								
-							
-						
-						</select>	
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">
-						
-					</div>
-				</div>						
-			</div>
-		</div>
-
-		<div class="row hidden" id="ScoreDetail">
-			<div class="col-xs-12">
-				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
-				<div class="row">
-					<div class="col-xs-2">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
-						</div>
-					</div>	
-
-					<div class="col-xs-2" style="padding-left:8px;">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
-						</div>			
-					</div>
-
-					<div class="col-xs-2" style="padding-left:3px;">
-						<div class="checkbox"> 
-				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
-				 		</div>
-					</div>
-
-					<div class="col-xs-2">
-					</div>
-					
-					<div class="col-xs-4">
-
-					
-
-					
-
-					
-						<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
-					
-
-						<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
-							  	<span class="glyphicon glyphicon-pencil"></span></button>
-
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
-					</div>
-				
-				</div>					
-				<div class="row" id="KsuPlusOptions">
-					<div class="col-xs-12">
-					
-						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-						<div class="row">
-						<div class="col-xs-1">						
-							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
+						<div class="col-xs-2" style="padding-left:3px;">
+							<div class="checkbox"> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+					 		</div>
 						</div>
 
-						<div class="col-xs-11">
-							<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_comments" id="event_comments" placeholder="Anything new you would like to record?"></textarea>
-						</div>
-						</div>
-
-						<hr class="hr-1px-gray" style="margin-top:8px; margin-bottom:8px;">
-						<div class="row">
-							<div class="col-xs-4">
-								<label> Question Frequency </label>			
-								<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="Days. E.g. 7" value="1">
-							</div>
-
-							<div class="col-xs-4">
-								<label> Next Question </label>
-								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-10">
-							</div>
-
-							<div class="col-xs-4">
-								<label> Question time </label>
-								<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" id="best_time" name="best_time" value=None>	
-							</div>
-						</div>
-						
-					</div>
-					<div class="col-xs-12">
-						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
-						<div class="row">
-							<div class="col-xs-12">
-								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
-							</div>
-
-						</div>
-					</div>
-				</div>
-		</div>
-		</div>
-	</div>
-</div>
-
-<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_RealitySnapshot" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
-	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
-		<div class="row" style="min-height: 45px">
-
-			<div class="col-xs-12">
-
-				<div class="row">
-					<div class="col-xs-11" style="font-size:13px;">
-						<div>
-						
-
-														
-
-						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_RealitySnapshot</textarea>
-
-						
-							<span style="color:grey; font-style:italic; font-size:13px;">
-							<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description">Question</textarea>	
-							</span> 
-						
-
-						</div>
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">						
-												
-							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
-								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
-						
-					</div> 		
-				</div>
-
-				<div class="row" style="margin-top:3px;">
-
-					<div class="col-xs-10">
-						<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
-					</div>
-					
-					<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
-						<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
-						
-																				
-								
-									<option value="1"> 1 </option>
-								
-																				
-								
-									<option value="2"> 2 </option>
-								
-																				
-								
-									<option selected="selected" value="3"> 3 </option>
-								
-							
-						
-						</select>	
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">
-						
-					</div>
-				</div>						
-			</div>
-		</div>
-
-		<div class="row hidden" id="ScoreDetail">
-			<div class="col-xs-12">
-				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
-				<div class="row">
-					<div class="col-xs-2">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
-						</div>
-					</div>	
-
-					<div class="col-xs-2" style="padding-left:8px;">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
-						</div>			
-					</div>
-
-					<div class="col-xs-2" style="padding-left:3px;">
-						<div class="checkbox"> 
-				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
-				 		</div>
-					</div>
-
-					<div class="col-xs-2">
-					</div>
-					
-					<div class="col-xs-4">
-
-					
-
-					
-
-					
-						<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
-					
-
-						<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
-							  	<span class="glyphicon glyphicon-pencil"></span></button>
-
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
-					</div>
-				
-				</div>					
-				<div class="row" id="KsuPlusOptions">
-					<div class="col-xs-12">
-					
-						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-						<div class="row">
-						<div class="col-xs-1">						
-							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
-						</div>
 						<div class="col-xs-3">
-							
-								<input type="number" min="0" class="form-control" style="padding-right:3px;" name="indicator_value" id="open_indicator_value" placeholder="0">
-							
-						</div>
-						<div class="col-xs-8">
-							<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_comments" id="event_comments" placeholder="Comment on this result"></textarea>
-						</div>
-						</div>
-
-						<hr class="hr-1px-gray" style="margin-top:8px; margin-bottom:8px;">
-						<div class="row">
-							<div class="col-xs-4">
-								<label> Question Frequency </label>			
-								<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="Days. E.g. 7" value="1">
-							</div>
-
-							<div class="col-xs-4">
-								<label> Next Question </label>
-								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-10">
-							</div>
-
-							<div class="col-xs-4">
-								<label> Question time </label>
-								<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" id="best_time" name="best_time" value=None>	
-							</div>
 						</div>
 						
-					</div>
-					<div class="col-xs-12">
-						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
-						<div class="row">
-							<div class="col-xs-12">
-								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
-							</div>
+						<div class="col-xs-3">
 
+						
+
+						
+
+						
+
+							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
+								  	<span class="glyphicon glyphicon-pencil"></span></button>
+
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
 						</div>
-					</div>
-				</div>
-		</div>
-		</div>
-	</div>
-</div>
-
-<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_BinaryPerception" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
-	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
-		<div class="row" style="min-height: 45px">
-
-			<div class="col-xs-12">
-
-				<div class="row">
-					<div class="col-xs-11" style="font-size:13px;">
-						<div>
-						
-
-														
-
-						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_BinaryPerception</textarea>
-
-						
-							<span style="color:grey; font-style:italic; font-size:13px;">
-							<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description">Question</textarea>	
-							</span> 
-						
-
-						</div>
-					</div>
-
-					<div class="col-xs-1" style="padding-left:0px;">						
-												
-							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
-								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
-						
-					</div> 		
-				</div>
-
-				<div class="row" style="margin-top:3px;">
-
-					<div class="col-xs-10">
-						<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
-					</div>
 					
-					<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
-						<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
-						
-																				
-								
-									<option value="1"> 1 </option>
-								
-																				
-								
-									<option value="2"> 2 </option>
-								
-																				
-								
-									<option selected="selected" value="3"> 3 </option>
-								
+					</div>					
+					<div class="row" id="KsuPlusOptions">
+						<div class="col-xs-12">
 							
-						
-						</select>	
-					</div>
+						</div>
+						<div class="col-xs-12">
+							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+							<div class="row">
+								<div class="col-xs-12">
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+								</div>
 
-					<div class="col-xs-1" style="padding-left:0px;">
-						
+							</div>
+						</div>
 					</div>
-				</div>						
+			</div>
 			</div>
 		</div>
-
-		<div class="row hidden" id="ScoreDetail">
-			<div class="col-xs-12">
-				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
-				<div class="row">
-					<div class="col-xs-2">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
-						</div>
-					</div>	
-
-					<div class="col-xs-2" style="padding-left:8px;">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
-						</div>			
-					</div>
-
-					<div class="col-xs-2" style="padding-left:3px;">
-						<div class="checkbox"> 
-				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
-				 		</div>
-					</div>
-
-					<div class="col-xs-2">
-					</div>
-					
-					<div class="col-xs-4">
-
-					
-
-					
-
-					
-						<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
-					
-
-						<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
-							  	<span class="glyphicon glyphicon-pencil"></span></button>
-
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
-					</div>
-				
-				</div>					
-				<div class="row" id="KsuPlusOptions">
-					<div class="col-xs-12">
-					
-						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-						<div class="row">
-						<div class="col-xs-1">						
-							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
-						</div>
-						<div class="col-xs-3">
-							
-								<select class="form-control" name="indicator_value" id="select_indicator_value">
-									
-										<option value="1"> Yes </option>
-										<option value="0"> No </option>
-									
-								</select>
-							
-						</div>
-						<div class="col-xs-8">
-							<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_comments" id="event_comments" placeholder="Comment on this result"></textarea>
-						</div>
-						</div>
-
-						<hr class="hr-1px-gray" style="margin-top:8px; margin-bottom:8px;">
-						<div class="row">
-							<div class="col-xs-4">
-								<label> Question Frequency </label>			
-								<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="Days. E.g. 7" value="1">
-							</div>
-
-							<div class="col-xs-4">
-								<label> Next Question </label>
-								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-10">
-							</div>
-
-							<div class="col-xs-4">
-								<label> Question time </label>
-								<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" id="best_time" name="best_time" value=None>	
-							</div>
-						</div>
-						
-					</div>
-					<div class="col-xs-12">
-						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
-						<div class="row">
-							<div class="col-xs-12">
-								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
-							</div>
-
-						</div>
-					</div>
-				</div>
-		</div>
-		</div>
 	</div>
-</div>
 
-<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_FibonacciPerception" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
-	<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
-		<div class="row" style="min-height: 45px">
+	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_Diary" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+			<div class="row" style="min-height: 45px">
 
-			<div class="col-xs-12">
+				<div class="col-xs-12">
 
-				<div class="row">
-					<div class="col-xs-11" style="font-size:13px;">
-						<div>
+					<div class="row">
+						<div class="col-xs-11" style="font-size:13px;">
+							<div>
 
-						<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_FibonacciPerception</textarea>
+							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_Diary</textarea>
 
-						
-							<span style="color:grey; font-style:italic; font-size:13px;">
-							<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description">FibonacciPerception</textarea>	
-							</span> 
-						
+							
+								<span style="color:grey; font-style:italic; font-size:13px;">
+								<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description">Question</textarea>	
+								</span> 
+							
 
+							</div>
 						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">						
+													
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+							
+						</div> 		
 					</div>
 
-					<div class="col-xs-1" style="padding-left:0px;">						
-												
-							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
-								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
-						
-					</div> 		
-				</div>
+					<div class="row" style="margin-top:3px;">
 
-				<div class="row" style="margin-top:3px;">
-
-					<div class="col-xs-10">
-						<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
-					</div>
-					
-					<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
-						<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+						<div class="col-xs-10">
+							<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
+						</div>
 						
-																				
-								
-									<option value="1"> 1 </option>
-								
-																				
-								
-									<option value="2"> 2 </option>
-								
-																				
-								
-									<option selected="selected" value="3"> 3 </option>
+						<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+							
+																					
+									
+										<option value="1"> 1 </option>
+									
+																					
+									
+										<option value="2"> 2 </option>
+									
+																					
+									
+										<option selected="selected" value="3"> 3 </option>
+									
 								
 							
-						
-						</select>	
-					</div>
+							</select>	
+						</div>
 
-					<div class="col-xs-1" style="padding-left:0px;">
+						<div class="col-xs-1" style="padding-left:0px;">
+							
+						</div>
+					</div>						
+				</div>
+			</div>
+
+			<div class="row hidden" id="ScoreDetail">
+				<div class="col-xs-12">
+					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+					<div class="row">
+						<div class="col-xs-2">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+							</div>
+						</div>	
+
+						<div class="col-xs-2" style="padding-left:8px;">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+							</div>			
+						</div>
+
+						<div class="col-xs-2" style="padding-left:3px;">
+							<div class="checkbox"> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+					 		</div>
+						</div>
+
+						<div class="col-xs-2">
+						</div>
 						
+						<div class="col-xs-4">
+
+						
+
+						
+
+						
+							<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
+						
+
+							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
+								  	<span class="glyphicon glyphicon-pencil"></span></button>
+
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
+						</div>
+					
+					</div>					
+					<div class="row" id="KsuPlusOptions">
+						<div class="col-xs-12">
+						
+							<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+							<div class="row">
+							<div class="col-xs-1">						
+								<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
+							</div>
+
+							<div class="col-xs-11">
+								<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_comments" id="event_comments" placeholder="Anything new you would like to record?"></textarea>
+							</div>
+							</div>
+
+							<hr class="hr-1px-gray" style="margin-top:8px; margin-bottom:8px;">
+							<div class="row">
+								<div class="col-xs-4">
+									<label> Question Frequency </label>			
+									<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="Days. E.g. 7" value="1">
+								</div>
+
+								<div class="col-xs-4">
+									<label> Next Question </label>
+									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-10">
+								</div>
+
+								<div class="col-xs-4">
+									<label> Question time </label>
+									<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" id="best_time" name="best_time" value=None>	
+								</div>
+							</div>
+							
+						</div>
+						<div class="col-xs-12">
+							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+							<div class="row">
+								<div class="col-xs-12">
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+								</div>
+
+							</div>
+						</div>
 					</div>
-				</div>						
+			</div>
 			</div>
 		</div>
+	</div>
 
-		<div class="row hidden" id="ScoreDetail">
-			<div class="col-xs-12">
-				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
-				<div class="row">
-					<div class="col-xs-2">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
-						</div>
-					</div>	
+	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_RealitySnapshot" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+			<div class="row" style="min-height: 45px">
 
-					<div class="col-xs-2" style="padding-left:8px;">
-						<div class="checkbox"> 
-							<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
-						</div>			
-					</div>
+				<div class="col-xs-12">
 
-					<div class="col-xs-2" style="padding-left:3px;">
-						<div class="checkbox"> 
-				 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
-				 		</div>
-					</div>
-
-					<div class="col-xs-2">
-					</div>
-					
-					<div class="col-xs-4">
-
-					
-
-					
-
-					
-						<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
-					
-
-						<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
-							  	<span class="glyphicon glyphicon-pencil"></span></button>
-
-						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
-					</div>
-				
-				</div>					
-				<div class="row" id="KsuPlusOptions">
-					<div class="col-xs-12">
-					
-						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-						<div class="row">
-						<div class="col-xs-1">						
-							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
-						</div>
-						<div class="col-xs-3">
+					<div class="row">
+						<div class="col-xs-11" style="font-size:13px;">
+							<div>
 							
-								<select class="form-control" name="indicator_value" id="select_indicator_value">
-									
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option selected="selected" value="3">3</option>
-										<option value="5">5</option>
-										<option value="8">8</option>
-									
-								</select>
+
+															
+
+							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_RealitySnapshot</textarea>
+
 							
-						</div>
-						<div class="col-xs-8">
-							<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_comments" id="event_comments" placeholder="Comment on this result"></textarea>
-						</div>
+								<span style="color:grey; font-style:italic; font-size:13px;">
+								<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description">Question</textarea>	
+								</span> 
+							
+
+							</div>
 						</div>
 
-						<hr class="hr-1px-gray" style="margin-top:8px; margin-bottom:8px;">
-						<div class="row">
-							<div class="col-xs-4">
-								<label> Question Frequency </label>			
-								<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="Days. E.g. 7" value="1">
-							</div>
+						<div class="col-xs-1" style="padding-left:0px;">						
+													
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+							
+						</div> 		
+					</div>
 
-							<div class="col-xs-4">
-								<label> Next Question </label>
-								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-10">
-							</div>
+					<div class="row" style="margin-top:3px;">
 
-							<div class="col-xs-4">
-								<label> Question time </label>
-								<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" id="best_time" name="best_time" value=None>	
-							</div>
+						<div class="col-xs-10">
+							<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
 						</div>
 						
-					</div>
-					<div class="col-xs-12">
-						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
-						<div class="row">
-							<div class="col-xs-12">
-								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+						<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+							
+																					
+									
+										<option value="1"> 1 </option>
+									
+																					
+									
+										<option value="2"> 2 </option>
+									
+																					
+									
+										<option selected="selected" value="3"> 3 </option>
+									
+								
+							
+							</select>	
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">
+							
+						</div>
+					</div>						
+				</div>
+			</div>
+
+			<div class="row hidden" id="ScoreDetail">
+				<div class="col-xs-12">
+					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+					<div class="row">
+						<div class="col-xs-2">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+							</div>
+						</div>	
+
+						<div class="col-xs-2" style="padding-left:8px;">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+							</div>			
+						</div>
+
+						<div class="col-xs-2" style="padding-left:3px;">
+							<div class="checkbox"> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+					 		</div>
+						</div>
+
+						<div class="col-xs-2">
+						</div>
+						
+						<div class="col-xs-4">
+
+						
+
+						
+
+						
+							<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
+						
+
+							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
+								  	<span class="glyphicon glyphicon-pencil"></span></button>
+
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
+						</div>
+					
+					</div>					
+					<div class="row" id="KsuPlusOptions">
+						<div class="col-xs-12">
+						
+							<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+							<div class="row">
+							<div class="col-xs-1">						
+								<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
+							</div>
+							<div class="col-xs-3">
+								
+									<input type="number" min="0" class="form-control" style="padding-right:3px;" name="indicator_value" id="open_indicator_value" placeholder="0">
+								
+							</div>
+							<div class="col-xs-8">
+								<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_comments" id="event_comments" placeholder="Comment on this result"></textarea>
+							</div>
 							</div>
 
+							<hr class="hr-1px-gray" style="margin-top:8px; margin-bottom:8px;">
+							<div class="row">
+								<div class="col-xs-4">
+									<label> Question Frequency </label>			
+									<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="Days. E.g. 7" value="1">
+								</div>
+
+								<div class="col-xs-4">
+									<label> Next Question </label>
+									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-10">
+								</div>
+
+								<div class="col-xs-4">
+									<label> Question time </label>
+									<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" id="best_time" name="best_time" value=None>	
+								</div>
+							</div>
+							
+						</div>
+						<div class="col-xs-12">
+							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+							<div class="row">
+								<div class="col-xs-12">
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+								</div>
+
+							</div>
 						</div>
 					</div>
-				</div>
+			</div>
+			</div>
 		</div>
+	</div>
+
+	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_BinaryPerception" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+			<div class="row" style="min-height: 45px">
+
+				<div class="col-xs-12">
+
+					<div class="row">
+						<div class="col-xs-11" style="font-size:13px;">
+							<div>
+							
+
+															
+
+							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_BinaryPerception</textarea>
+
+							
+								<span style="color:grey; font-style:italic; font-size:13px;">
+								<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description">Question</textarea>	
+								</span> 
+							
+
+							</div>
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">						
+													
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+							
+						</div> 		
+					</div>
+
+					<div class="row" style="margin-top:3px;">
+
+						<div class="col-xs-10">
+							<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
+						</div>
+						
+						<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+							
+																					
+									
+										<option value="1"> 1 </option>
+									
+																					
+									
+										<option value="2"> 2 </option>
+									
+																					
+									
+										<option selected="selected" value="3"> 3 </option>
+									
+								
+							
+							</select>	
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">
+							
+						</div>
+					</div>						
+				</div>
+			</div>
+
+			<div class="row hidden" id="ScoreDetail">
+				<div class="col-xs-12">
+					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+					<div class="row">
+						<div class="col-xs-2">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+							</div>
+						</div>	
+
+						<div class="col-xs-2" style="padding-left:8px;">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+							</div>			
+						</div>
+
+						<div class="col-xs-2" style="padding-left:3px;">
+							<div class="checkbox"> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+					 		</div>
+						</div>
+
+						<div class="col-xs-2">
+						</div>
+						
+						<div class="col-xs-4">
+
+						
+
+						
+
+						
+							<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
+						
+
+							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
+								  	<span class="glyphicon glyphicon-pencil"></span></button>
+
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
+						</div>
+					
+					</div>					
+					<div class="row" id="KsuPlusOptions">
+						<div class="col-xs-12">
+						
+							<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+							<div class="row">
+							<div class="col-xs-1">						
+								<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
+							</div>
+							<div class="col-xs-3">
+								
+									<select class="form-control" name="indicator_value" id="select_indicator_value">
+										
+											<option value="1"> Yes </option>
+											<option value="0"> No </option>
+										
+									</select>
+								
+							</div>
+							<div class="col-xs-8">
+								<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_comments" id="event_comments" placeholder="Comment on this result"></textarea>
+							</div>
+							</div>
+
+							<hr class="hr-1px-gray" style="margin-top:8px; margin-bottom:8px;">
+							<div class="row">
+								<div class="col-xs-4">
+									<label> Question Frequency </label>			
+									<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="Days. E.g. 7" value="1">
+								</div>
+
+								<div class="col-xs-4">
+									<label> Next Question </label>
+									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-10">
+								</div>
+
+								<div class="col-xs-4">
+									<label> Question time </label>
+									<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" id="best_time" name="best_time" value=None>	
+								</div>
+							</div>
+							
+						</div>
+						<div class="col-xs-12">
+							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+							<div class="row">
+								<div class="col-xs-12">
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+								</div>
+
+							</div>
+						</div>
+					</div>
+			</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_FibonacciPerception" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+			<div class="row" style="min-height: 45px">
+
+				<div class="col-xs-12">
+
+					<div class="row">
+						<div class="col-xs-11" style="font-size:13px;">
+							<div>
+
+							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_FibonacciPerception</textarea>
+
+							
+								<span style="color:grey; font-style:italic; font-size:13px;">
+								<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description">FibonacciPerception</textarea>	
+								</span> 
+							
+
+							</div>
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">						
+													
+								<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+							
+						</div> 		
+					</div>
+
+					<div class="row" style="margin-top:3px;">
+
+						<div class="col-xs-10">
+							<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value=""> 
+						</div>
+						
+						<div class="col-xs-1" style=" font-weight:bold; text-align:left;">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+							
+																					
+									
+										<option value="1"> 1 </option>
+									
+																					
+									
+										<option value="2"> 2 </option>
+									
+																					
+									
+										<option selected="selected" value="3"> 3 </option>
+									
+								
+							
+							</select>	
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">
+							
+						</div>
+					</div>						
+				</div>
+			</div>
+
+			<div class="row hidden" id="ScoreDetail">
+				<div class="col-xs-12">
+					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+					<div class="row">
+						<div class="col-xs-2">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+							</div>
+						</div>	
+
+						<div class="col-xs-2" style="padding-left:8px;">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+							</div>			
+						</div>
+
+						<div class="col-xs-2" style="padding-left:3px;">
+							<div class="checkbox"> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+					 		</div>
+						</div>
+
+						<div class="col-xs-2">
+						</div>
+						
+						<div class="col-xs-4">
+
+						
+
+						
+
+						
+							<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
+						
+
+							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
+								  	<span class="glyphicon glyphicon-pencil"></span></button>
+
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
+						</div>
+					
+					</div>					
+					<div class="row" id="KsuPlusOptions">
+						<div class="col-xs-12">
+						
+							<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+							<div class="row">
+							<div class="col-xs-1">						
+								<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
+							</div>
+							<div class="col-xs-3">
+								
+									<select class="form-control" name="indicator_value" id="select_indicator_value">
+										
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option selected="selected" value="3">3</option>
+											<option value="5">5</option>
+											<option value="8">8</option>
+										
+									</select>
+								
+							</div>
+							<div class="col-xs-8">
+								<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_comments" id="event_comments" placeholder="Comment on this result"></textarea>
+							</div>
+							</div>
+
+							<hr class="hr-1px-gray" style="margin-top:8px; margin-bottom:8px;">
+							<div class="row">
+								<div class="col-xs-4">
+									<label> Question Frequency </label>			
+									<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="Days. E.g. 7" value="1">
+								</div>
+
+								<div class="col-xs-4">
+									<label> Next Question </label>
+									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-10">
+								</div>
+
+								<div class="col-xs-4">
+									<label> Question time </label>
+									<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" id="best_time" name="best_time" value=None>	
+								</div>
+							</div>
+							
+						</div>
+						<div class="col-xs-12">
+							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+							<div class="row">
+								<div class="col-xs-12">
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+								</div>
+
+							</div>
+						</div>
+					</div>
+			</div>
+			</div>
 		</div>
 	</div>
 </div>
-
 
 <div id="NewKSUsHolder"></div>
 {% endif %}

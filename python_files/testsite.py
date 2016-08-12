@@ -1,3 +1,4 @@
-una_lista = ['b', 'a', 'c']
+from datetime import datetime, timedelta
 
-print sorted(una_lista)
+today = (datetime.today()+timedelta(hours=-4))
+print today.time()

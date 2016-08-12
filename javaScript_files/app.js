@@ -1,6 +1,7 @@
 $('#ShowHideReactiveMission').on('click', function(){
 	
 	$('#reactive_mission').toggleClass('hidden');
+	$('#todays_questions_latter').toggleClass('hidden');
 
 	var GlaphiconDiv = $('#MissionPlusMinusGlyphicon');
 	GlaphiconDiv.toggleClass('glyphicon-minus');

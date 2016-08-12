@@ -541,13 +541,14 @@ class MissionViewer(Handler):
 
 		tags = self.theory.categories['tags']
 
-		ksu_set, mission_value, todays_questions, reactive_mission, today, someday_maybe = self.generate_todays_mission(time_frame)
+		ksu_set, mission_value, todays_questions_now, todays_questions_latter, reactive_mission, today, someday_maybe = self.generate_todays_mission(time_frame)
 
 		self.print_html('MissionViewer.html', 
 						ksu_set=ksu_set, 
 						time_frame=time_frame, 
 						mission_value=mission_value, 
-						todays_questions=todays_questions,
+						todays_questions_now=todays_questions_now,
+						todays_questions_latter=todays_questions_latter,
 						reactive_mission=reactive_mission, 
 						constants=constants,
 						today=today,
@@ -578,10 +579,13 @@ class MissionViewer(Handler):
 		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date()
-		
+	
+		current_time = (datetime.today()+timedelta(hours=theory.timezone)).time()
+
 		todays_mission = []
 		todays_timeless_mission = []
-		todays_questions = []
+		todays_questions_now = []
+		todays_questions_latter = []
 		
 		KAS3_mission = []
 		KAS4_mission = []
@@ -629,10 +633,15 @@ class MissionViewer(Handler):
 						todays_timeless_mission.append(ksu)
 					mission_value += ksu.kpts_value
 
-			elif ksu_subtype in questions_sets:
+			elif ksu_subtype in questions_sets: #xx
 				if today >= next_event:
-					todays_questions.append(ksu)
-
+					if ksu.best_time:					
+						if current_time >= ksu.best_time:
+							todays_questions_now.append(ksu)
+						else:
+							todays_questions_latter.append(ksu)
+					else:
+						todays_questions_latter.append(ksu)
 
 			elif ksu_subtype in ['KAS3','KAS4'] and today >= next_event:
 				reactive_mission.append(ksu)
@@ -655,7 +664,7 @@ class MissionViewer(Handler):
 		else:
 			mission = someday_maybe
 		
-		return mission, mission_value, todays_questions, reactive_mission, today, someday_maybe
+		return mission, mission_value, todays_questions_now, todays_questions_latter, reactive_mission, today, someday_maybe
 
 
 class EventHandler(Handler):
