@@ -80,6 +80,15 @@ indexes:
   - name: theory
   - name: importance
   - name: best_time
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: is_active
+  - name: is_deleted
+  - name: theory
+  - name: importance
+  - name: best_time
   - name: next_event
 
 - kind: KSU
@@ -108,6 +117,16 @@ indexes:
   - name: next_event
   - name: best_time
   - name: importance
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: is_active
+  - name: is_deleted
+  - name: theory
+  - name: next_event
+  - name: importance
+  - name: best_time
 
 - kind: KSU
   properties:

@@ -565,9 +565,15 @@ class MissionViewer(Handler):
 		user_key = theory.key
 		
 		if theory.hide_private_ksus:
-			ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True, KSU.is_private == False).order(KSU.next_event).order(KSU.best_time).order(KSU.importance).fetch()
+			ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True, KSU.is_private == False)
 		else:
-			ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True).order(KSU.next_event).order(KSU.best_time).order(KSU.importance).fetch()
+			ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True)
+
+		if time_frame == 'Today':
+			ksu_set = ksu_set.order(KSU.importance).order(KSU.best_time).fetch()
+		else:
+			ksu_set = ksu_set.order(KSU.next_event).order(KSU.importance).order(KSU.best_time).fetch()
+
 
 		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
