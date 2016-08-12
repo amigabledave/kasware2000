@@ -510,9 +510,11 @@ class SetViewer(Handler):
 
 	def search_theory(self, user_theory, lookup_string):
 		# -*- coding: utf-8 -*-
+		lookup_string = lookup_string.lower()
 		lookup_words =	lookup_string.split(' ')
 		main_result = []
 		secondary_result = []
+
 		for ksu in user_theory:
 			if not ksu.description:
 				ksu.description=''
@@ -521,8 +523,8 @@ class SetViewer(Handler):
 			if not ksu.tags:
 				ksu.tags =''
 			
-			# ksu_description = ksu.description.lower() + ' ' + ksu.secondary_description.lower()
 			ksu_description = remplaza_acentos(ksu.description).lower() + ' ' + remplaza_acentos(ksu.secondary_description).lower() + ' ' + remplaza_acentos(ksu.tags).lower()
+
 			if ksu_description.find(lookup_string) != -1:
 				main_result.append(ksu)
 			else:
