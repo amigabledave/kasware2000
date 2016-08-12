@@ -13,6 +13,13 @@
 
 </div>
 
+<datalist id="tags">
+	{% for tag in tags %}
+		<option value="{{tag}}">
+	{% endfor %}
+</datalist>
+
+
 <div class="" id="reactive_mission">
 	{% if time_frame == 'Today' and reactive_mission %}
 		<div class="row">
@@ -222,7 +229,8 @@
 				{% endif %}
 				
 				<div class="col-xs-6">
-					<input style="color:purple; font-weight:bold; text-align:center; border:0; color:purple;" type="text" list="tags" name="tags" id="tags_value" placeholder="Tag"> 
+				<!-- xx -->
+					<input style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" placeholder="Tag" type="text" list="tags" name="tags" id="tags_value">
 					<datalist id="tags">
 						{% for tag in tags %}
 							<option value="{{tag}}">
