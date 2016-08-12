@@ -798,7 +798,7 @@ class EventHandler(Handler):
 			event.kpts_type = 'IndicatorValue'
 			event.score = float(event_details['kpts_value'])
 			update_next_event(self, user_action, {}, ksu)
-			ksu.put()
+			
 
 		if user_action in ['MissionDone', 'ViewerDone']:
 
@@ -806,12 +806,11 @@ class EventHandler(Handler):
 				event.kpts_type = 'SmartEffort'
 				event.score = float(event_details['kpts_value'])
 				
-				update_next_event(self, user_action, {}, ksu)
-				
 				if ksu_subtype == 'KAS2':
 					ksu.is_deleted = True
 
-				ksu.put()
+				update_next_event(self, user_action, {}, ksu)
+				
 
 			if ksu_subtype == 'KAS4':
 				event.kpts_type = 'Stupidity'
@@ -819,37 +818,37 @@ class EventHandler(Handler):
 
 			if ksu_subtype in ['BigO','Wish']:
 				ksu.in_graveyard = True
-				ksu.put()
+				
 
 
 		if user_action in ['MissionPush', 'MissionSkip', 'SendToMission']:
 			update_next_event(self, user_action, {}, ksu)
-			ksu.put()
+			
 
 		if user_action == 'ViewerOnOff':
 			if ksu.is_active:
 				ksu.is_active = False
 			else:
 				ksu.is_active = True
-			ksu.put()
+			
 
 
 		if user_action in ['MissionDelete', 'ViewerDelete']:
 			ksu.in_graveyard = True
 			if ksu_subtype in ['Gene','KAS2']:
 				ksu.is_deleted = True
-			ksu.put()
+			
 
 		if user_action == 'GraveyardReanimate':
 			ksu.in_graveyard = False
-			ksu.put()
+			
 
 		if user_action == 'GraveyardDelete':
 			ksu.is_deleted = True
-			ksu.put()
-
+			
 
 		self.update_active_log(event)
+		ksu.put()
 		event.put()		
 
 		active_log = self.active_log
