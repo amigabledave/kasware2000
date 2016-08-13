@@ -988,6 +988,8 @@ class HistoryViewer(Handler):
 		history_start = self.request.get('history_start') #xx
 		if history_start:
 			history_start = int(history_start)
+		elif ksu_id:
+			history_start = (self.theory.created).toordinal()
 		else:
 			history_start = today
 
@@ -1027,6 +1029,9 @@ class HistoryViewer(Handler):
 		if 'post_history_end' in post_details:
 			history_end = (datetime.strptime(post_details['post_history_end'], '%Y-%m-%d')).date().toordinal()
 			redirect_to += '&history_end='+str(history_end)
+
+		if 'ksu_id' in post_details:
+			redirect_to += '&ksu_id='+ post_details['ksu_id']			
 		
 		self.redirect(redirect_to)
 		return
