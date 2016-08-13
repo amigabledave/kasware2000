@@ -1483,7 +1483,7 @@ def prepareInputForSaving(theory, ksu, post_details):
 	
 	ksu.ksu_subtype = determine_ksu_subtype(ksu, post_details)
 
-	if ksu.ksu_subtype == 'ImPe':
+	if ksu.ksu_subtype == 'ImPe' and not ksu.secondary_description:
 		ksu.secondary_description = 'Contact ' + ksu.description
 
 	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe','EVPo', 'RealitySnapshot', 'Diary', 'FibonacciPerception', 'BinaryPerception'] and not ksu.next_event:

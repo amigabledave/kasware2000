@@ -182,7 +182,6 @@ $('#repeats').on('change',function(){
 });
 
 
-
 $(document).on('change', '.KsuEditor_Repeats', function(){
 
 	var ksu = $(this).closest('#MissionKSU');
@@ -316,7 +315,6 @@ $(document).on('click', '.UserActionButton', function(){
 });
 
 
-
 function getURLParameter(url, name) {
     return (RegExp(name + '=' + '(.+?)(&|$)').exec(url)||[,null])[1];
 }
@@ -345,9 +343,7 @@ $(document).on('click', '.RedirectUserButton', function(){
 
 	} else if ( user_action == 'ViewKSUHistory') {
 		window.location.href = '/HistoryViewer?ksu_id='+ksu_id;
-	}
-
-	
+	}	
 });
 
 
@@ -447,6 +443,7 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#KAS3_secondary_description').val('');
 		ksu.find('#KAS4_secondary_description').val('');
 		ksu.find('#EVPo_secondary_description').val('');
+		ksu.find('#ImPe_secondary_description').val('');
 		ksu.find('#Idea_SecondaryDescription').val('');
 
 		ksu.find('#best_time').val('');

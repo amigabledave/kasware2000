@@ -268,36 +268,45 @@
 	</div>
 
 	<div class="{% if set_name != 'ImPe' %}hidden{% endif %}" id="ImPe">
-		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-		<div class="row">
-			<div class="col-xs-3">
-				<label> Birthday </label>
-				<input type="date" class="form-control" style="padding-right:3px;"  id="birthday" name="birthday" value="{% if ksu %}{{ksu.birthday}}{% endif %}">	
+		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">		
+			<div class="row" style="margin-bottom:8px;">
+				<div class="col-xs-9">
+					<label>Minimum relationship effort description</label>
+					<textarea type="text" class="form-control autoExpands DummyInput" rows="1" data-min-rows='1' ksuattr="secondary_description" id="ImPe_secondary_description" name="secondary_description" placeholder="e.g. Text Jimmy, call mom, hangout with dad, etc.">{% if ksu and ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
+				</div>
+
+				<div class="col-xs-3">
+					<label> Reward </label>
+					<select class="form-control DummyInput" ksuattr="kpts_value" id="ImPe_kpts_value">
+						{% for value in constants['l_Fibonacci'] %}
+							{% if value == ksu.kpts_value %}
+								<option selected="selected" value="{{value}}"> {{value}} </option>
+							{% else %}
+								<option value="{{value}}"> {{value}} </option>
+							{% endif %}
+						{% endfor %}
+					</select>	
+				</div>
 			</div>
 
-			<div class="col-xs-3"> 
-				<label> Contact Freq. </label>			
-				<input type="number" min="1" class="form-control DummyInput" ksuattr="frequency" id="ImPe_frequency" placeholder="E.g. 7" value="{% if ksu %}{{ksu.frequency}}{% endif %}">
+			<div class="row">
+	
+				<div class="col-xs-4"> 
+					<label> Frequency </label>			
+					<input type="number" min="1" class="form-control DummyInput" ksuattr="frequency" id="ImPe_frequency" placeholder="E.g. 7" value="{% if ksu %}{{ksu.frequency}}{% endif %}">
+				</div>
+
+				<div class="col-xs-4">
+					<label> Next event </label>
+					<input type="date" class="form-control DummyInput" style="padding-right:3px;" ksuattr="next_event" id="ImPe_next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+				</div>	
+
+				<div class="col-xs-4">
+					<label> Birthday </label>
+					<input type="date" class="form-control" style="padding-right:3px;"  id="birthday" name="birthday" value="{% if ksu %}{{ksu.birthday}}{% endif %}">		
+				</div>
 			</div>
 
-			<div class="col-xs-3">
-				<label> Next Contact </label>
-				<input type="date" class="form-control DummyInput" style="padding-right:3px;" ksuattr="next_event" id="ImPe_next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
-			</div>	
-
-			<div class="col-xs-3">
-				<label> C. Reward</label>
-				<select class="form-control DummyInput" ksuattr="kpts_value" id="ImPe_kpts_value">
-					{% for value in constants['l_Fibonacci'] %}
-						{% if value == ksu.kpts_value %}
-							<option selected="selected" value="{{value}}"> {{value}} </option>
-						{% else %}
-							<option value="{{value}}"> {{value}} </option>
-						{% endif %}
-					{% endfor %}
-				</select>	
-			</div>
-		</div>
 	</div>
 
 	<div class="{% if set_name != 'Idea' %}hidden{% endif %}" id="Idea">
@@ -1615,6 +1624,16 @@
 
 				<div class="col-xs-12">
 
+					<div class="row  hidden ">
+						<div class="col-xs-12 displaySectionBulletContent" style="color:purple;">				
+							
+								
+									Important Person
+								
+							
+						</div>		
+					</div>
+
 					<div class="row">
 						<div class="col-xs-11" style="font-size:13px;">
 							<div>
@@ -1622,7 +1641,7 @@
 
 															
 
-							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_ImPe</textarea>
+							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows="1" name="description" id="description">Template_ImPe</textarea>
 
 							
 
@@ -1676,19 +1695,19 @@
 					<div class="row">
 						<div class="col-xs-2">
 							<div class="checkbox"> 
-								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked=""> <b> Active </b> </label> 
 							</div>
 						</div>	
 
 						<div class="col-xs-2" style="padding-left:8px;">
 							<div class="checkbox"> 
-								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical"> <b> Critical </b> </label> 
 							</div>			
 						</div>
 
 						<div class="col-xs-2" style="padding-left:3px;">
 							<div class="checkbox"> 
-					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate"> <b> Private </b> </label> 
 					 		</div>
 						</div>
 
@@ -1698,21 +1717,21 @@
 						<div class="col-xs-6">
 
 						
-							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
+							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value="ViewerDone" style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
 						
 
 						
-							<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
+							<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value="SendToMission" style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
 						
 
 						
-							<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
+							<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name="action_description" value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
 						
 
-							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
+							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name="action_description" style="margin-right: 10px;" value="EditKSU">
 								  	<span class="glyphicon glyphicon-pencil"></span></button>
 
-							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value="ViewerDelete"><span class="glyphicon glyphicon-trash"></span></button>
 						</div>
 					
 					</div>					
@@ -1720,24 +1739,15 @@
 						<div class="col-xs-12">
 						
 							<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-							<div class="row">
-								<div class="col-xs-3">
-									<label> Birthday </label>
-									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;"  id="birthday" name="birthday" value="None">	
-								</div>
+							<div class="row" style="margin-bottom:8px;">
 
-								<div class="col-xs-3"> 
-									<label> Contact Freq. </label>			
-									<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="E.g. 7" value="1">
+								<div class="col-xs-9">
+									<label>Minimum relationship effort description</label>
+									<textarea type="text" class="form-control autoExpands QuickAttributeUpdate" rows="1" data-min-rows="1" id="secondary_description" name="secondary_description" placeholder="e.g. Text Jimmy, call mom, hangout with dad, etc.">Effort</textarea>
 								</div>
 
 								<div class="col-xs-3">
-									<label> Next Contact </label>
-									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-10">
-								</div>	
-
-								<div class="col-xs-3">
-									<label> C. Reward</label>
+									<label> Reward </label>
 									<select class="form-control QuickAttributeUpdate" id="kpts_value" name="kpts_value">
 										
 											
@@ -1771,13 +1781,31 @@
 									</select>	
 								</div>
 							</div>
+
+							<div class="row">
+					
+								<div class="col-xs-4"> 
+									<label> Frequency </label>			
+									<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="E.g. 7" value="1">
+								</div>
+
+								<div class="col-xs-4">
+									<label> Next event </label>
+									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-12">
+								</div>	
+
+								<div class="col-xs-4">
+									<label> Birthday </label>
+									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="birthday" name="birthday" value="None">	
+								</div>
+							</div>
 							
 						</div>
 						<div class="col-xs-12">
 							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
 							<div class="row">
 								<div class="col-xs-12">
-									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows="3" name="comments" id="comments" placeholder="Comments"></textarea>	
 								</div>
 
 							</div>
@@ -1787,6 +1815,7 @@
 			</div>
 		</div>
 	</div>
+
 
 	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_RTBG" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
 		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
@@ -2880,26 +2909,18 @@
 								<textarea class="form-control QuickAttributeUpdate autoExpand"  id="secondary_description" name="secondary_description" rows="1" data-min-rows='1' placeholder="e.g. Buy tickets to go watch a movie">{% if ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea> 
 							</div>
 						</div>
+						<!-- xx -->
 					{% elif ksu.ksu_type == 'ImPe' %}
 						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-						<div class="row">
-							<div class="col-xs-3">
-								<label> Birthday </label>
-								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;"  id="birthday" name="birthday" value="{% if ksu %}{{ksu.birthday}}{% endif %}">	
-							</div>
+						<div class="row" style="margin-bottom:8px;">
 
-							<div class="col-xs-3"> 
-								<label> Contact Freq. </label>			
-								<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="E.g. 7" value="{% if ksu %}{{ksu.frequency}}{% endif %}">
+							<div class="col-xs-9">
+								<label>Minimum relationship effort description</label>
+								<textarea type="text" class="form-control autoExpands QuickAttributeUpdate" rows="1" data-min-rows='1' id="secondary_description" name="secondary_description" placeholder="e.g. Text Jimmy, call mom, hangout with dad, etc.">{% if ksu and ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
 							</div>
 
 							<div class="col-xs-3">
-								<label> Next Contact </label>
-								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
-							</div>	
-
-							<div class="col-xs-3">
-								<label> C. Reward</label>
+								<label> Reward </label>
 								<select class="form-control QuickAttributeUpdate" id="kpts_value" name="kpts_value">
 									{% for value in constants['l_Fibonacci'] %}
 										{% if value == ksu.kpts_value %}
@@ -2909,6 +2930,24 @@
 										{% endif %}
 									{% endfor %}
 								</select>	
+							</div>
+						</div>
+
+						<div class="row">
+				
+							<div class="col-xs-4"> 
+								<label> Frequency </label>			
+								<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="E.g. 7" value="{% if ksu %}{{ksu.frequency}}{% endif %}">
+							</div>
+
+							<div class="col-xs-4">
+								<label> Next event </label>
+								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+							</div>	
+
+							<div class="col-xs-4">
+								<label> Birthday </label>
+								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;"  id="birthday" name="birthday" value="{% if ksu %}{{ksu.birthday}}{% endif %}">	
 							</div>
 						</div>
 					{% elif ksu.ksu_type == 'Idea' %}
