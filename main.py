@@ -831,7 +831,7 @@ class EventHandler(Handler):
 			event.kpts_type = 'IndicatorValue'
 			event.score = float(event_details['kpts_value'])
 			update_next_event(self, user_action, {}, ksu)
-			
+			event.put()	
 
 		if user_action in ['MissionDone', 'ViewerDone']:
 
@@ -844,7 +844,6 @@ class EventHandler(Handler):
 
 				update_next_event(self, user_action, {}, ksu)
 				
-
 			if ksu_subtype == 'KAS4':
 				event.kpts_type = 'Stupidity'
 				event.score = float(event_details['kpts_value'])				
@@ -852,7 +851,8 @@ class EventHandler(Handler):
 			if ksu_subtype in ['BigO','Wish']:
 				ksu.in_graveyard = True
 				
-
+			self.update_active_log(event)
+			event.put()
 
 		if user_action in ['MissionPush', 'MissionSkip', 'SendToMission']:
 			update_next_event(self, user_action, {}, ksu)
@@ -878,12 +878,9 @@ class EventHandler(Handler):
 
 		if user_action == 'GraveyardDelete':
 			ksu.is_deleted = True
-			
-
-		self.update_active_log(event)
+					
 		ksu.put()
-		event.put()		
-
+		
 		active_log = self.active_log
 		PointsToGoal = active_log.PointsToGoal
 		EffortReserve = active_log.EffortReserve
