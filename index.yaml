@@ -30,6 +30,27 @@ indexes:
 - kind: Event
   properties:
   - name: is_deleted
+  - name: is_private
+  - name: ksu_id
+  - name: importance
+  - name: user_date
+    direction: desc
+  - name: created
+    direction: desc
+
+- kind: Event
+  properties:
+  - name: is_deleted
+  - name: ksu_id
+  - name: importance
+  - name: user_date
+    direction: desc
+  - name: created
+    direction: desc
+
+- kind: Event
+  properties:
+  - name: is_deleted
   - name: theory
   - name: user_date
   - name: created
@@ -171,6 +192,15 @@ indexes:
   - name: is_private
   - name: ksu_type
   - name: theory
+  - name: created
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: is_private
+  - name: ksu_type
+  - name: theory
+  - name: importance
   - name: created
 
 - kind: KSU

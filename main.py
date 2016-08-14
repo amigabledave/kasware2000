@@ -704,17 +704,18 @@ class EventHandler(Handler):
 	
 	@super_user_bouncer
 	def post(self):
-
+			
 		event_details = json.loads(self.request.body)
 		day_start_time = self.theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 		user_action = event_details['user_action']
 
-		if user_action == 'SaveNewKSU':
-			print
-			print 'Si llego el AJAX Request. User action: ' + user_action + '. Event details: ' +  str(event_details)
-			print
-			
+		print
+		print 'Si llego el AJAX Request. User action: ' + user_action + '. Event details: ' +  str(event_details)
+		print
+
+
+		if user_action == 'SaveNewKSU':			
 			ksu = KSU(theory=self.theory.key)
 			event_details['is_active'] = True
 
@@ -806,19 +807,24 @@ class EventHandler(Handler):
 				'Streak':active_log.Streak})) 
 			return
 
-		ksu = KSU.get_by_id(int(event_details['ksu_id']))
-		ksu_subtype = ksu.ksu_subtype
-
 		print
 		print 'Si llego el AJAX Request. User action: ' + user_action + '. Event details: ' +  str(event_details)
 		print
 
 		if user_action == 'UpdateKsuAttribute':
+			if event_details['content_type'] == 'Event':
+				ksu = Event.get_by_id(int(event_details['ksu_id']))	
+			else:
+				ksu = KSU.get_by_id(int(event_details['ksu_id']))
+
 			attr_key = event_details['attr_key']
-			attr_value = event_details['attr_value']
+			attr_value = event_details['attr_value']			
 			updated_value = self.update_single_attribute(ksu, attr_key, attr_value)
 			self.response.out.write(json.dumps({'updated_value':updated_value}))
 			return
+
+		ksu = KSU.get_by_id(int(event_details['ksu_id']))
+		ksu_subtype = ksu.ksu_subtype
 
 		event = Event(
 			theory=self.theory.key,
@@ -950,7 +956,7 @@ class EventHandler(Handler):
 		print 'Con el valor de'
 		print attr_value
 		
-		if attr_key in ['description', 'secondary_description', 'comments', 'repeats']:
+		if attr_key in ['description', 'secondary_description', 'comments', 'repeats', 'secondary_comments']:
 			setattr(ksu, attr_key, attr_value.encode('utf-8'))		
 			updated_value = attr_value.encode('utf-8')
 
@@ -1018,15 +1024,22 @@ class HistoryViewer(Handler):
 		history_title = 'History'
 		ksu_id = self.request.get('ksu_id')
 		
+		diary_view = False
+
 		if ksu_id:
-			history_title = 'KSU history'
+			ksu = KSU.get_by_id(int(ksu_id))
+			if ksu.ksu_subtype == 'Diary':
+				history_title = ksu.description
+				diary_view = True
+			else:
+				history_title = 'KSU history'
 
 		day_start_time = self.theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 		today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
 
 
-		history_start = self.request.get('history_start') #xx
+		history_start = self.request.get('history_start')
 		if history_start:
 			history_start = int(history_start)
 		elif ksu_id:
@@ -1044,17 +1057,17 @@ class HistoryViewer(Handler):
 		history_start = datetime.fromordinal(history_start)
 		history_end = datetime.fromordinal(history_end)
 
-		self.print_html('HistoryViewer.html', history_title=history_title, history=history, history_start=history_start, history_end=history_end, history_value=history_value, constants=constants)
+		self.print_html('HistoryViewer.html', diary_view=diary_view, history_title=history_title, history=history, history_start=history_start, history_end=history_end, history_value=history_value, constants=constants)
 
 
-	@super_user_bouncer #xx 
+	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
 	def post(self, user_action, post_details):
 
 		redirect_to = '/HistoryViewer'
 
 		day_start_time = self.theory.day_start_time
-		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 #xx
+		user_start_hour = day_start_time.hour + day_start_time.minute/60.0
 		today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
 
 		print
@@ -1077,13 +1090,20 @@ class HistoryViewer(Handler):
 		self.redirect(redirect_to)
 		return
 
-	def retrieve_history(self, ksu_id, history_start, history_end):
+	def retrieve_history(self, ksu_id, history_start, history_end): #xx
 		user_key = self.theory.key
 		
 		if ksu_id:
 			ksu = KSU.get_by_id(int(ksu_id))
 			ksu_key = ksu.key
-			event_set = Event.query(Event.ksu_id == ksu_key).filter(Event.is_deleted == False, Event.user_date >= history_start, Event.user_date <= history_end).order(-Event.user_date,-Event.created).fetch()
+			if ksu.ksu_subtype == 'Diary':
+				event_set =	Event.query(Event.ksu_id == ksu_key).filter(Event.is_deleted == False).order(Event.importance).order(-Event.user_date,-Event.created)
+				if self.theory.hide_private_ksus:
+					event_set = event_set.filter(Event.is_private == False)
+				event_set = event_set.fetch()
+				
+			else:
+				event_set = Event.query(Event.ksu_id == ksu_key).filter(Event.is_deleted == False, Event.user_date >= history_start, Event.user_date <= history_end).order(-Event.user_date,-Event.created).fetch()
 		else:
 			event_set = Event.query(Event.theory == user_key).filter(Event.is_deleted == False, Event.user_date >= history_start, Event.user_date <= history_end).order(-Event.user_date,-Event.created).fetch()
 		
@@ -1093,13 +1113,23 @@ class HistoryViewer(Handler):
 		history = []
 		history_value = 0
 
-		for event in event_set:
+		for event in event_set: #xx
 			ksu = KSU.get_by_id(event.ksu_id.id())
-			event.ksu_description = ksu.description
-			event.ksu_secondary_description = ksu.secondary_description
-			event.ksu_subtype = ksu.ksu_subtype
-			event.pretty_ksu_subtype = constants['d_KsuSubtypes'][ksu.ksu_subtype] #xx
+			## Apendix - TBD once my theory is updated
+			ksu_subtype = ksu.ksu_subtype
+			if ksu_subtype in ['EVPo', 'ImPe']:
+				event.ksu_description = ksu.secondary_description
+			else:
+				event.ksu_description = ksu.description
+			event.ksu_subtype = ksu_subtype
+			event.ksu_tags = ksu.tags
+			if not event.importance:
+				event.importance = 3
+			event.put()
+			##
 			event.pretty_date = (event.user_date_date+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).date().strftime('%a, %b %d, %Y')
+			event.comments_rows = determine_rows(event.comments)
+
 			history.append(event)
 			if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'EVPo', 'ImPe']:
 				history_value += event.score

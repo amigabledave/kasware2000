@@ -567,7 +567,7 @@ $('.SaveNewKSUButton').on('click', function(){
 
 
 $('.DeleteEventButton').on('click', function(){
-	var event = $(this).closest('#ViewerEvent');
+	var event = $(this).closest('#MissionKSU');
 	var event_id = event.attr("value");
 		
 	event.fadeOut("slow")
@@ -623,7 +623,14 @@ $(document).on('focusout', '.QuickAttributeUpdate', function(){
 
 	var ksu = $(this).closest('#MissionKSU');
 	var ksu_id = ksu.attr("value");
-
+	var content_type = 'KSU';
+	console.log(ksu.attr("KSUorEvent") == 'Event');
+	//xx 
+	if (ksu.attr("KSUorEvent") == 'Event'){ 
+		content_type = 'Event'
+	};
+	console.log(content_type);
+	
 	console.log(attr_key);
 	console.log(attr_value);
 
@@ -633,6 +640,7 @@ $(document).on('focusout', '.QuickAttributeUpdate', function(){
 		dataType: 'json',
 		data: JSON.stringify({
 			'ksu_id': ksu_id,
+			'content_type':content_type,
 			'user_action': 'UpdateKsuAttribute',
 			'attr_key':attr_key,
 			'attr_value':attr_value,

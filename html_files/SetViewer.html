@@ -2646,6 +2646,11 @@
 
 					<div class="col-xs-1" style="padding-left:0px;">						
 						{% if not ksu.in_graveyard %}						
+							{% if ksu.ksu_type in ['ImIn', 'Diary'] %}
+								<button style="margin-right:10px; margin-bottom:5px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
+							{% endif %}
+
+
 							<button type="button" class="btn btn-default btn-circle displaySectionVerticalButton ShowDetailViewerButton" id="ShowDetailViewerButton">
 								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
 						{% else %}
@@ -2724,7 +2729,7 @@
 						<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
 					{% endif %}
 
-					{% if ksu.ksu_subtype not in ['RTBG', 'Idea', 'BigO', 'Wish', 'Gene'] %}
+					{% if ksu.ksu_subtype not in ['RTBG', 'Idea', 'BigO', 'Wish', 'Gene', 'Diary', 'RealitySnapshot', 'BinaryIndicator', 'FibonacciPerception'] %}
 						<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
 					{% endif %}
 
@@ -2932,7 +2937,7 @@
 								<textarea class="form-control QuickAttributeUpdate autoExpand"  id="secondary_description" name="secondary_description" rows="1" data-min-rows='1' placeholder="e.g. Buy tickets to go watch a movie">{% if ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea> 
 							</div>
 						</div>
-						<!-- xx -->
+
 					{% elif ksu.ksu_type == 'ImPe' %}
 						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 						<div class="row" style="margin-bottom:8px;">

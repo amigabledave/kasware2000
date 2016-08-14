@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
+
 <div class="row">
 	<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10"> 
 		<div class="SectionTitle">{{history_title}}</div>
@@ -30,50 +31,89 @@
 
 {% for event in history %}
 
-<div class="row KSUdisplaySection" id="ViewerEvent" value="{{event.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
-<form method="post">
-<input type="text" class="form-control hidden" name="event_id" id="event_id" value="{{event.key.id()}}">
+<div class="row KSUdisplaySection" id="MissionKSU" value="{{event.key.id()}}" KSUorEvent="Event" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+	{% if not diary_view %}
 	<div class="col-xs-11">
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="row">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="row">
 
-					<div class="col-xs-6">
-						<span style="color:blue;" id="event_ksu_subtype">{{event.pretty_ksu_subtype}}</span>
-					</div>
-
-					<div class="col-xs-4">
-						<span style="color:blue;" id="event_pretty_date">{{event.pretty_date}}</span>
-					</div>
-
-
-					<div class="col-xs-2" style="padding-left:0; padding-right:5px;">
-					{% if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'EVPo', 'ImPe', 'BinaryPerception', 'RealitySnapshot', 'FibonacciPerception'] %}
-						<span style="color:{% if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'ImPe', 'EVPo'] %}green{% elif event.ksu_subtype == 'KAS4' %}red{% else %}black{% endif %};" id="event_score">{{event.score}}{% if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'ImPe', 'EVPo'] %} Kpts.{% endif %}</span>
-					{% endif %}
-					</div>
+				<div class="col-xs-6">
+				{% if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'EVPo', 'ImPe', 'Diary', 'BinaryPerception', 'RealitySnapshot', 'FibonacciPerception'] %}
+					<span style="color:blue;" id="event_ksu_subtype">{{constants['d_HistoryViewer'][event.ksu_subtype]}}</span>
+				{% endif %}
 				</div>
 
-				<div class="row">
-					<div class="col-xs-12">
-						<b>{% if event.ksu_subtype in ['ImPe', 'EVPo'] %}{{event.ksu_secondary_description}}{% else %}{{event.ksu_description}}{% endif %}</b>
-						{% if event.comments %}
-						<br>{{ event.comments }}
-						{% endif %}
-						{% if event.secondary_comments %}
-						-- <em>{{ event.secondary_comments }}</em>
-						{% endif %}
-					</div>
+				<div class="col-xs-4">
+					<span style="color:blue;" id="event_pretty_date">{{event.pretty_date}}</span>
 				</div>
 
+				<div class="col-xs-2" style="padding-left:0; padding-right:5px;">
+				{% if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'EVPo', 'ImPe', 'BinaryPerception', 'RealitySnapshot', 'FibonacciPerception'] %}
+					<span style="color:{% if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'ImPe', 'EVPo'] %}green{% elif event.ksu_subtype == 'KAS4' %}red{% else %}black{% endif %};" id="event_score">{{event.score}}{% if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'ImPe', 'EVPo'] %} Kpts.{% endif %}</span>
+				{% endif %}
+				</div>
 			</div>
 
+			<div class="row">
+				<div class="col-xs-12">
+					<b>{{event.ksu_description}}</b>
+					{% if event.comments %}
+					<br>{{ event.comments }}
+					{% endif %}
+					{% if event.secondary_comments %}
+					-- <em>{{ event.secondary_comments }}</em>
+					{% endif %}
+				</div>
+			</div>
 		</div>
 	</div>
+	{% else %}
+	<div class="col-xs-12">						 			
+	<div class="row">
+		<div class="col-xs-12">																						
+			<textarea style="width:100%; border:0; margin-bottom:3px;" class="QuickAttributeUpdate autoExpand" rows="{{event.comments_rows}}" data-min-rows='{{event.comments_rows}}' name="comments" id="comments">{{event.comments}}</textarea>
+			<textarea style="width:100%; height:20px; border:0; font-style:italic;" class="QuickAttributeUpdate" rows="1" data-min-rows='1' name="secondary_comments" id="secondary_comments">{% if event.secondary_comments %}{{event.secondary_comments}}{% endif %}</textarea>
+		</div>
+	</div>
+
+	<div class="row" style="margin-top:5px;">
+
+		<div class="col-xs-4">	
+			<span style="color:blue;" id="event_pretty_date">{{event.pretty_date}}</span>
+		</div>
+		
+		<div class="col-xs-3">							
+			<div class="checkbox" style="margin:0px;"> 
+	 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" {% if event.is_private %}checked{% endif %}> <b> Private </b> </label> 
+	 		</div>
+		</div>
+		<div class="col-xs-1"></div>	
+		<div class="col-xs-1" style="padding-left:0px;">
+				<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold;" name="importance" id="importance">
+					{% for value in range(1,6) %}													
+						{% if value == event.importance %}
+							<option selected="selected" value="{{value}}"> {{value}} </option>
+						{% else %}
+							<option value="{{value}}"> {{value}} </option>
+						{% endif %}
+					{% endfor %}
+				</select>
+		</div>
+		<div class="col-xs-1"></div>	
+
+		<div class="col-xs-2">
+			<button type="button" class="btn btn-danger btn-sm DeleteEventButton" style="padding-top:2px; height:20px;" name="action_description" value='DeleteEvent'"><span class="glyphicon glyphicon-trash"></span></button>
+		</div>
+	</div>	
+	{% endif %}
+
+	</div>
+	{% if not diary_view %}
 	<div class="col-xs-1" style="padding:1px;">
 		<button type="button" class="btn btn-danger btn-circle btn-lg DeleteEventButton" name="action_description" value='DeleteEvent'"><span class="glyphicon glyphicon-trash"></span></button>
 	</div>
-</form>		
+	{% endif %}		
 </div>
 
 {% endfor %}
