@@ -77,6 +77,27 @@ indexes:
   - name: in_graveyard
   - name: is_active
   - name: is_deleted
+  - name: is_private
+  - name: theory
+  - name: importance
+  - name: best_time
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: is_active
+  - name: is_deleted
+  - name: is_private
+  - name: theory
+  - name: next_event
+  - name: importance
+  - name: best_time
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: is_active
+  - name: is_deleted
   - name: theory
   - name: best_time
   - name: next_event

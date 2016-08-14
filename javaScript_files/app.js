@@ -1,3 +1,15 @@
+
+$('.ExpandColapseSection').on('click', function(){
+	var target_section = $(this).attr("targetsection")
+	$(target_section).toggleClass('hidden');
+
+	var GlaphiconDiv = $(this).find('#PlusMinusGlyphicon');
+	GlaphiconDiv.toggleClass('glyphicon-minus');
+	GlaphiconDiv.toggleClass('glyphicon-plus');	
+});
+
+
+
 $('#ShowHideReactiveMission').on('click', function(){
 	
 	$('#reactive_mission').toggleClass('hidden');
@@ -7,8 +19,6 @@ $('#ShowHideReactiveMission').on('click', function(){
 	GlaphiconDiv.toggleClass('glyphicon-minus');
 	GlaphiconDiv.toggleClass('glyphicon-plus');	
 });
-
-
 
 
 $('.DummyInput').on('change',function(){

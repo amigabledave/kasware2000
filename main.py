@@ -543,18 +543,26 @@ class MissionViewer(Handler):
 
 		tags = self.theory.categories['tags']
 
-		ksu_set, mission_value, todays_questions_now, todays_questions_latter, reactive_mission, today, someday_maybe = self.generate_todays_mission(time_frame)
+		todays_questions_now, todays_questions_latter, reactive_mission, today, full_mission = self.generate_todays_mission(time_frame)
 
-		self.print_html('MissionViewer.html', 
-						ksu_set=ksu_set, 
-						time_frame=time_frame, 
-						mission_value=mission_value, 
+		ksu_sets = []
+		horizons_values = {}
+		horizons_titles = {}
+
+		if time_frame == 'Today':
+			time_frame_sets = ['today']
+		else:
+			time_frame_sets = ['tomorrow', 'this_week', 'this_month', 'later', 'someday_maybe']
+
+		self.print_html('MissionViewer.html',
+						full_mission=full_mission,
+						time_frame_sets=time_frame_sets,
+						time_frame=time_frame,
 						todays_questions_now=todays_questions_now,
 						todays_questions_latter=todays_questions_latter,
 						reactive_mission=reactive_mission, 
 						constants=constants,
 						today=today,
-						someday_maybe=someday_maybe,
 						tags=tags)
 
 	@super_user_bouncer
@@ -567,75 +575,111 @@ class MissionViewer(Handler):
 		theory = self.theory
 		user_key = theory.key
 		
-		if theory.hide_private_ksus:
-			ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True, KSU.is_private == False)
-		else:
-			ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True)
+		day_start_time = theory.day_start_time
+		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
+		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date()
+		today_ordinal =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
+	
+		current_time = (datetime.today()+timedelta(hours=theory.timezone)).time()
 
+		ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True)
+
+		if theory.hide_private_ksus:
+			ksu_set = ksu_set.filter(KSU.is_private == False)
+		
 		if time_frame == 'Today':
 			ksu_set = ksu_set.order(KSU.importance).order(KSU.best_time).fetch()
 		else:
 			ksu_set = ksu_set.order(KSU.next_event).order(KSU.importance).order(KSU.best_time).fetch()
 
+		full_mission = {
+			'today':{
+				'horizon_title':'Today',
+				'horizon_set':[],
+				'horizon_value':0},
 
-		day_start_time = theory.day_start_time
-		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date()
-	
-		current_time = (datetime.today()+timedelta(hours=theory.timezone)).time()
+			'timeless_today':{
+				'horizon_title':'Timeless Today',
+				'horizon_set':[],
+				'horizon_value':0},
+		 	
+		 	'tomorrow':{
+		 		'horizon_title':'Tomorrow',
+				'horizon_set':[],
+				'horizon_value':0},
+			
+			'this_week':{
+				'horizon_title':'This Week',
+				'horizon_set':[],
+				'horizon_value':0},
+			
+			'this_month':{
+				'horizon_title':'This Month',
+				'horizon_set':[],
+				'horizon_value':0},
+			
+			'later':{
+				'horizon_title':'Later',
+				'horizon_set':[],
+				'horizon_value':0},
+		 	
+		 	'someday_maybe':{
+		 		'horizon_title':'Someday ... maybe',
+				'horizon_set':[],
+				'horizon_value':0}}
 
-		todays_mission = []
-		todays_timeless_mission = []
+
+		def define_horizon(ksu, today_ordinal):
+			next_event = ksu.next_event
+
+			if not next_event:
+				return 'someday_maybe'
+
+			next_event = next_event.toordinal()
+
+			if next_event <= today_ordinal:
+				if ksu.best_time:
+					return 'today'
+				else:
+					return 'timeless_today'
+
+			if next_event - 1 <= today_ordinal:
+				return 'tomorrow'
+
+			if next_event - 7 <= today_ordinal:
+				return 'this_week'
+
+			if next_event - 30 <= today_ordinal:
+				return 'this_month'
+
+			else:
+				return 'later'
+
+
 		todays_questions_now = []
-		todays_questions_latter = []
-		
-		KAS3_mission = []
-		KAS4_mission = []
+		todays_questions_latter = []		
 		reactive_mission = []
-		mission_value = 0
-		upcoming = []
-		someday_maybe = []
 
 		mission_sets = ['KAS1', 'KAS2', 'EVPo', 'ImPe']
 		questions_sets = ['RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'Diary']
 
-
 		for ksu in ksu_set:
 			ksu_subtype = ksu.ksu_subtype
-									
-			# Apendice - TBD despues de que se actualice mi cuenta.
-			if ksu_subtype in ['OpenPerception', 'Diary']:
-				ksu.ksu_type = 'Diary'
-				ksu.ksu_subtype = 'Diary'
-			
-			if ksu_subtype in ['Obje', 'BigO']:
-				ksu.ksu_type = 'Obje'
-				ksu.ksu_subtype = 'BigO'				
-
-			if ksu_subtype in ['Principle', 'Dream']:
-				ksu.ksu_subtype = ksu.ksu_type
-
-			ksu.put()
-			###
 	
 			next_event = ksu.next_event
 			ksu.description_rows = determine_rows(ksu.description)
 			ksu.secondary_description_rows = determine_rows(ksu.secondary_description)
 
 			if ksu_subtype in mission_sets:
+				time_horizon = define_horizon(ksu, today_ordinal)
+				full_mission[time_horizon]['horizon_set'].append(ksu)
+				## Apendix - TBD
+				if not ksu.kpts_value:
+					ksu.kpts_value = 0
+				#
+				full_mission[time_horizon]['horizon_value'] += ksu.kpts_value
 
-				if not next_event:
-					someday_maybe.append(ksu)
-				elif today < next_event:
-					upcoming.append(ksu)
-				else:# if next_event and today >= next_event:
-					if ksu.best_time:
-						todays_mission.append(ksu)
-					else:
-						todays_timeless_mission.append(ksu)
-					mission_value += ksu.kpts_value
-
-			elif ksu_subtype in questions_sets: #xx
+			elif ksu_subtype in questions_sets:
 				if today >= next_event:
 					if ksu.best_time:					
 						if current_time >= ksu.best_time:
@@ -647,26 +691,13 @@ class MissionViewer(Handler):
 
 			elif ksu_subtype in ['KAS3','KAS4'] and today >= next_event:
 				reactive_mission.append(ksu)
-
-			# elif ksu_subtype == 'KAS3' and today >= next_event:
-			# 	KAS3_mission.append(ksu)
-
-			# elif ksu_subtype == 'KAS4' and today >= next_event:
-			# 	KAS4_mission.append(ksu)
-
-
-		if time_frame == 'Today':
-			mission = todays_mission + todays_timeless_mission
-			# reactive_mission = KAS3_mission + KAS4_mission
-
-			
-		elif time_frame == 'Upcoming':
-			mission = upcoming
 		
-		else:
-			mission = someday_maybe
-		
-		return mission, mission_value, todays_questions_now, todays_questions_latter, reactive_mission, today, someday_maybe
+		full_mission['today'] = {
+			'horizon_title':'Today',
+			'horizon_set':full_mission['today']['horizon_set'] + full_mission['timeless_today']['horizon_set'],
+			'horizon_value':full_mission['today']['horizon_value'] + full_mission['timeless_today']['horizon_value']}
+
+		return todays_questions_now, todays_questions_latter, reactive_mission, today, full_mission
 
 
 class EventHandler(Handler):
