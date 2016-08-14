@@ -1816,7 +1816,6 @@
 		</div>
 	</div>
 
-
 	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_RTBG" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
 		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
 			<div class="row" style="min-height: 45px">
@@ -1940,15 +1939,28 @@
 
 				<div class="col-xs-12">
 
+					<div class="row  hidden ">
+						<div class="col-xs-12 displaySectionBulletContent" style="color:purple;">				
+							
+								
+									Diary Entry
+								
+							
+						</div>		
+					</div>
+
 					<div class="row">
 						<div class="col-xs-11" style="font-size:13px;">
 							<div>
+							
 
-							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description">Template_Diary</textarea>
+															
+
+							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows="1" name="description" id="description">Template_Diary</textarea>
 
 							
 								<span style="color:grey; font-style:italic; font-size:13px;">
-								<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description">Question</textarea>	
+								<textarea style="width:100%; border:0;" class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows="1" name="secondary_description" id="secondary_description">Question</textarea>	
 								</span> 
 							
 
@@ -2002,19 +2014,19 @@
 					<div class="row">
 						<div class="col-xs-2">
 							<div class="checkbox"> 
-								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked> <b> Active </b> </label> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked=""> <b> Active </b> </label> 
 							</div>
 						</div>	
 
 						<div class="col-xs-2" style="padding-left:8px;">
 							<div class="checkbox"> 
-								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" > <b> Critical </b> </label> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical"> <b> Critical </b> </label> 
 							</div>			
 						</div>
 
 						<div class="col-xs-2" style="padding-left:3px;">
 							<div class="checkbox"> 
-					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" > <b> Private </b> </label> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate"> <b> Private </b> </label> 
 					 		</div>
 						</div>
 
@@ -2028,13 +2040,13 @@
 						
 
 						
-							<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
+							<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name="action_description" value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
 						
 
-							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name='action_description' style="margin-right: 10px;" value="EditKSU">
+							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name="action_description" style="margin-right: 10px;" value="EditKSU">
 								  	<span class="glyphicon glyphicon-pencil"></span></button>
 
-							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value="ViewerDelete"><span class="glyphicon glyphicon-trash"></span></button>
 						</div>
 					
 					</div>					
@@ -2042,14 +2054,25 @@
 						<div class="col-xs-12">
 						
 							<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-							<div class="row">
-							<div class="col-xs-1">						
-								<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
+							
+							<div class="row" style="margin-bottom:8px;">				
+								<div class="col-xs-11">
+									<textarea style="width:100%;" class="form-control autoExpand" rows="2" data-min-rows="2" name="event_comments" id="event_comments" placeholder="Anything new you would like to record?"></textarea>
+								</div>
+
+								<div class="col-xs-1" style="padding-left:0px;">						
+									<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value="ViewerRecordValue" style="margin-left:-6px;"><span class="glyphicon glyphicon-record"></span></button>
+								</div>
 							</div>
 
-							<div class="col-xs-11">
-								<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_comments" id="event_comments" placeholder="Anything new you would like to record?"></textarea>
-							</div>
+							<div class="row">
+								
+								<div class="col-xs-11">
+									<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows="1" name="event_secondary_comments" id="event_secondary_comments" placeholder="Source/Author"></textarea>
+								</div>
+
+								<div class="col-xs-1"></div>
+
 							</div>
 
 							<hr class="hr-1px-gray" style="margin-top:8px; margin-bottom:8px;">
@@ -2061,12 +2084,12 @@
 
 								<div class="col-xs-4">
 									<label> Next Question </label>
-									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-10">
+									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-15">
 								</div>
 
 								<div class="col-xs-4">
 									<label> Question time </label>
-									<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" id="best_time" name="best_time" value=None>	
+									<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" id="best_time" name="best_time" value="None">	
 								</div>
 							</div>
 							
@@ -2075,7 +2098,7 @@
 							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
 							<div class="row">
 								<div class="col-xs-12">
-									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments"></textarea>	
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows="3" name="comments" id="comments" placeholder="Comments"></textarea>	
 								</div>
 
 							</div>
@@ -3010,14 +3033,25 @@
 						</div>
 					{% elif ksu.ksu_type == 'Diary'%}
 						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-						<div class="row">
-						<div class="col-xs-1">						
-							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
+						
+						<div class="row" style="margin-bottom:8px;">				
+							<div class="col-xs-11">
+								<textarea style="width:100%;" class="form-control autoExpand" rows="2" data-min-rows='2' name="event_comments" id="event_comments" placeholder="Anything new you would like to record?"></textarea>
+							</div>
+
+							<div class="col-xs-1" style="padding-left:0px;">						
+								<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-left:-6px;"><span class="glyphicon glyphicon-record"></span></button>
+							</div>
 						</div>
 
-						<div class="col-xs-11">
-							<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_comments" id="event_comments" placeholder="Anything new you would like to record?"></textarea>
-						</div>
+						<div class="row">
+							
+							<div class="col-xs-11">
+								<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_secondary_comments" id="event_secondary_comments" placeholder="Source/Author"></textarea>
+							</div>
+
+							<div class="col-xs-1"></div>
+
 						</div>
 
 						<hr class="hr-1px-gray" style="margin-top:8px; margin-bottom:8px;">

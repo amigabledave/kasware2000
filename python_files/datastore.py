@@ -96,11 +96,20 @@ class Event(ndb.Model):
 	user_date_date = ndb.DateTimeProperty(auto_now_add=True)	
 	user_date = ndb.IntegerProperty(required=True)
 	event_type = ndb.StringProperty(required=True)
+	
 	comments = ndb.TextProperty()
+	secondary_comments = ndb.StringProperty()
+	is_private = ndb.BooleanProperty(default=False)
+	importance = ndb.IntegerProperty(default=3)
 
 	#Score properties
 	kpts_type = ndb.StringProperty()
 	score = ndb.FloatProperty(default=0)
+
+	#KSU properties
+	ksu_description = ndb.StringProperty()	
+	ksu_subtype = ndb.StringProperty()
+	ksu_tags = ndb.StringProperty()
 
 
 class DailyLog(ndb.Model):

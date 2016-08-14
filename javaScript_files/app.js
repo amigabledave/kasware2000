@@ -226,6 +226,7 @@ $(document).on('click', '.UserActionButton', function(){
 	var user_action = $(this).attr("value");
 	var kpts_value = ksu.find('#kpts_value option:selected').val();
 	var event_comments = ksu.find('#event_comments').val()
+	var event_secondary_comments = ksu.find('#event_secondary_comments').val()
 
 	var dissapear_before_done = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete', 'ViewerDelete','GraveyardDelete', 'GraveyardReanimate', 'MissionRecordValue']
 
@@ -258,6 +259,9 @@ $(document).on('click', '.UserActionButton', function(){
 	if(event_comments == undefined){
 		event_comments = ''};
 
+	if(event_secondary_comments == undefined){
+		event_secondary_comments = ''};		
+
 	$.ajax({
 		type: "POST",
 		url: "/EventHandler",
@@ -266,7 +270,8 @@ $(document).on('click', '.UserActionButton', function(){
 			'ksu_id': ksu_id,
 			'user_action': user_action,
 			'kpts_value':kpts_value,
-			'event_comments':event_comments
+			'event_comments':event_comments,
+			'event_secondary_comments':event_secondary_comments
 		})
 	})
 	.done(function(data){

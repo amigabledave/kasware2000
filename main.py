@@ -825,7 +825,12 @@ class EventHandler(Handler):
 			ksu_id =  ksu.key,
 			event_type = user_action,
 			user_date=(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).toordinal(),
-			comments = event_details['event_comments'].encode('utf-8'))
+			comments = event_details['event_comments'].encode('utf-8'),
+			secondary_comments = event_details['event_secondary_comments'].encode('utf-8'),
+			ksu_description = ksu.description,
+			ksu_subtype = ksu.ksu_subtype, 
+			ksu_tags = ksu.tags)
+			
 
 		if user_action == 'RecordValue':
 			event.kpts_type = 'IndicatorValue'
@@ -843,12 +848,20 @@ class EventHandler(Handler):
 					ksu.is_deleted = True
 
 				update_next_event(self, user_action, {}, ksu)
-				
+			
+				if ksu_subtype in ['EVPo', 'ImPe']:
+					event.ksu_description = ksu.secondary_description
+
 			if ksu_subtype == 'KAS4':
 				event.kpts_type = 'Stupidity'
 				event.score = float(event_details['kpts_value'])				
 
-			if ksu_subtype in ['BigO','Wish']:
+			if ksu_subtype == 'BigO':
+				event.kpts_type = 'Achievement'				
+				ksu.in_graveyard = True
+
+			if ksu_subtype == 'Wish':				
+				event.kpts_type = 'Excitement'
 				ksu.in_graveyard = True
 				
 			self.update_active_log(event)
