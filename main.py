@@ -49,7 +49,7 @@ def CreateOrEditKSU_request_handler(funcion):
 			return
 
 		elif user_action == 'SearchTheory': 
-			lookup_string = remplaza_acentos(self.request.get('lookup_string'))
+			lookup_string = remplaza_acentos(self.request.get('new_lookup_string'))
 			# lookup_string = self.request.get('lookup_string').encode('utf-8')
 			self.redirect('/SetViewer?set_name=TheoryQuery&lookup_string='+lookup_string)
 
@@ -626,14 +626,22 @@ class MissionViewer(Handler):
 		 	'someday_maybe':{
 		 		'horizon_title':'Someday ... maybe',
 				'horizon_set':[],
+				'horizon_value':0},
+
+			'EVPo_someday_maybe':{
+		 		'horizon_title':'Joy Generators Someday ... maybe',
+				'horizon_set':[],
 				'horizon_value':0}}
 
 
-		def define_horizon(ksu, today_ordinal):
+		def define_horizon(ksu, today_ordinal): #xx
 			next_event = ksu.next_event
 
 			if not next_event:
-				return 'someday_maybe'
+				if ksu.ksu_subtype == 'EVPo':
+					return 'EVPo_someday_maybe'
+				else:
+					return 'someday_maybe'
 
 			next_event = next_event.toordinal()
 
@@ -853,9 +861,9 @@ class EventHandler(Handler):
 				if ksu_subtype == 'KAS2':
 					ksu.is_deleted = True
 
-				update_next_event(self, user_action, {}, ksu)
+				update_next_event(self, user_action, {}, ksu) #xx
 			
-				if ksu_subtype in ['EVPo', 'ImPe']:
+				if ksu_subtype in ['ImPe']:
 					event.ksu_description = ksu.secondary_description
 
 			if ksu_subtype == 'KAS4':
@@ -1117,7 +1125,7 @@ class HistoryViewer(Handler):
 			ksu = KSU.get_by_id(event.ksu_id.id())
 			## Apendix - TBD once my theory is updated
 			ksu_subtype = ksu.ksu_subtype
-			if ksu_subtype in ['EVPo', 'ImPe']:
+			if ksu_subtype in ['ImPe']:
 				event.ksu_description = ksu.secondary_description
 			else:
 				event.ksu_description = ksu.description
@@ -1268,7 +1276,7 @@ class PopulateRandomTheory(Handler):
 				next_event = new_ksu.next_event
 				ksu_subtype = new_ksu.ksu_subtype
 
-				if ksu_subtype in ['KAS1','KAS3','KAS4','ImPe','EVPo'] and not next_event:
+				if ksu_subtype in ['KAS1','KAS3','KAS4','ImPe'] and not next_event:
 					new_ksu.next_event = today
 
 				new_ksu.put()		
@@ -1423,8 +1431,7 @@ def update_next_event(self, user_action, post_details, ksu):
 			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
 			print ksu.pretty_next_event
 
-	elif ksu_subtype == 'KAS2':
-		next_event = ksu.next_event
+	elif ksu_subtype in ['KAS2', 'EVPo']:
 
 		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone']:
 			ksu.next_event = None
@@ -1456,7 +1463,7 @@ def update_next_event(self, user_action, post_details, ksu):
 			ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
 
 
-	elif ksu_subtype in ['EVPo', 'ImPe', 'RealitySnapshot', 'FibonacciPerception', 'BinaryPerception', 'Diary']:
+	elif ksu_subtype in ['ImPe', 'RealitySnapshot', 'FibonacciPerception', 'BinaryPerception', 'Diary']:
 		
 		next_event = ksu.next_event
 
@@ -1562,12 +1569,12 @@ def prepareInputForSaving(theory, ksu, post_details):
 	if ksu.ksu_subtype == 'ImPe' and not ksu.secondary_description:
 		ksu.secondary_description = 'Contact ' + ksu.description
 
-	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe','EVPo', 'RealitySnapshot', 'Diary', 'FibonacciPerception', 'BinaryPerception'] and not ksu.next_event:
+	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe', 'RealitySnapshot', 'Diary', 'FibonacciPerception', 'BinaryPerception'] and not ksu.next_event:
 		ksu.next_event = datetime.today() - timedelta(days=1)
 	print ksu.ksu_type
 	print ksu.next_event
 
-	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe','EVPo', 'RealitySnapshot', 'Diary', 'FibonacciPerception', 'BinaryPerception'] and not ksu.frequency:
+	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe', 'RealitySnapshot', 'Diary', 'FibonacciPerception', 'BinaryPerception'] and not ksu.frequency:
 		ksu.frequency = 1
 
 	return ksu

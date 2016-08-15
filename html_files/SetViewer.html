@@ -235,14 +235,15 @@
 	<div class="{% if set_name != 'EVPo' %}hidden{% endif %}" id="EVPo">
 		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 		<div class="row">
+
+			<div class="col-xs-4">
+				<label> Next Event </label>
+				<input type="date" class="form-control DummyInput" style="padding-right:3px;" ksuattr="next_event" id="EVPo_next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+			</div>			
+
 			<div class="col-xs-4"> 
 				<label> Charging Time (Days) </label>			
 				<input type="number" min="1" class="form-control DummyInput" ksuattr="frequency" id="EVPo_frequency" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.frequency}}{% endif %}">
-			</div>
-
-			<div class="col-xs-4">
-				<label> Next Trigger Event </label>
-				<input type="date" class="form-control DummyInput" style="padding-right:3px;" ksuattr="next_event" id="EVPo_next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
 			</div>
 
 			<div class="col-xs-4">
@@ -256,13 +257,6 @@
 						{% endif %}
 					{% endfor %}
 				</select>	
-			</div>
-		</div>
-
-		<div class="row" style="margin-top:3px;">
-			<div class="col-xs-12">
-				<label> Trigger Action Description </label>
-				<textarea class="form-control DummyInput autoExpand" ksuattr="secondary_description" id="EVPo_secondary_description" rows="1" data-min-rows='1' placeholder="e.g. Buy tickets to go watch a movie"></textarea> 
 			</div>
 		</div>
 	</div>
@@ -1549,14 +1543,14 @@
 						
 							<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 							<div class="row">
+								<div class="col-xs-4">
+									<label> Next Event </label>
+									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="">
+								</div>
+
 								<div class="col-xs-4"> 
 									<label> Charging Time (Days) </label>			
 									<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="Days. E.g. 7" value="1">
-								</div>
-
-								<div class="col-xs-4">
-									<label> Next Trigger Event </label>
-									<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="2016-08-10">
 								</div>
 
 								<div class="col-xs-4">
@@ -1593,15 +1587,7 @@
 										
 									</select>	
 								</div>
-							</div>
-
-							<div class="row" style="margin-top:3px;">
-								<div class="col-xs-12">
-									<label> Trigger Action Description </label>
-									<textarea class="form-control QuickAttributeUpdate autoExpand"  id="secondary_description" name="secondary_description" rows="1" data-min-rows='1' placeholder="e.g. Buy tickets to go watch a movie"></textarea> 
-								</div>
-							</div>
-							
+							</div>							
 						</div>
 						<div class="col-xs-12">
 							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
@@ -2907,14 +2893,14 @@
 					{% elif ksu.ksu_type == 'EVPo' %}
 						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 						<div class="row">
+							<div class="col-xs-4">
+								<label> Next Event </label>
+								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+							</div>
+
 							<div class="col-xs-4"> 
 								<label> Charging Time (Days) </label>			
 								<input type="number" min="1" class="form-control QuickAttributeUpdate" id="frequency" name="frequency" placeholder="Days. E.g. 7" value="{% if ksu %}{{ksu.frequency}}{% endif %}">
-							</div>
-
-							<div class="col-xs-4">
-								<label> Next Trigger Event </label>
-								<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
 							</div>
 
 							<div class="col-xs-4">
@@ -2928,13 +2914,6 @@
 										{% endif %}
 									{% endfor %}
 								</select>	
-							</div>
-						</div>
-
-						<div class="row" style="margin-top:3px;">
-							<div class="col-xs-12">
-								<label> Trigger Action Description </label>
-								<textarea class="form-control QuickAttributeUpdate autoExpand"  id="secondary_description" name="secondary_description" rows="1" data-min-rows='1' placeholder="e.g. Buy tickets to go watch a movie">{% if ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea> 
 							</div>
 						</div>
 
