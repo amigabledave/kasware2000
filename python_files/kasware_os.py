@@ -1,5 +1,15 @@
 os_ksus = [
 	
+	{'description':'Define/review your mission for today -- What would you have to do today to consider the day a success?',
+	 'ksu_type':'KeyA', 
+	 'ksu_subtype':'KAS1',
+	 'kpts_value':1, 
+	 'frequency':1, 
+	 'best_time':'07:30:00',
+	 'is_active':True,
+	 'repeats':'R001',
+	 'comments':'Suggestion: Add at least one Joy Generator! :)'},
+
 	{'description':'Life excitement',
 	 'secondary_description':"How excited do I feel about the day that I'm about to live?",
 	 'ksu_type':'ImIn', 
@@ -7,15 +17,6 @@ os_ksus = [
 	 'best_time':'07:30:00',
 	 'is_active':True,
 	 'frequency':1},
-
-	{'description':'Define what would you have to do today to consider the day a success',
-	 'ksu_type':'KeyA', 
-	 'ksu_subtype':'KAS1',
-	 'kpts_value':1, 
-	 'frequency':1, 
-	 'best_time':'07:31:00',
-	 'is_active':True,
-	 'repeats':'R001'},
 
 	{'description':'Life enjoyment',
 	 'secondary_description':"How much did I enjoyed this day?",
@@ -26,7 +27,7 @@ os_ksus = [
 	 'frequency':1},
 
 	{'description':'Oportunities for improvement',
-	 'secondary_description':"Is there anything I could have done differently to have a more fun/productive day?",
+	 'secondary_description':"Is there anything I would like to have done differently today?",
 	 'ksu_type':'Diary',
 	 'ksu_subtype':'Diary',
 	 'best_time':'20:31:00',
