@@ -7,6 +7,7 @@ os_ksus = [
 	 'frequency':1, 
 	 'best_time':'07:30:00',
 	 'is_active':True,
+	 'is_critical':True,
 	 'repeats':'R001',
 	 'comments':'Suggestion: Add at least one Joy Generator! :)'},
 
