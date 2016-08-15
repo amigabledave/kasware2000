@@ -958,11 +958,6 @@ class EventHandler(Handler):
 
 	def update_single_attribute(self, ksu, attr_key, attr_value):
 		updated_value = None
-		print
-		print 'Va a intentar actualizar de forma individual'
-		print attr_key
-		print 'Con el valor de'
-		print attr_value
 		
 		if attr_key in ['description', 'secondary_description', 'comments', 'repeats', 'secondary_comments']:
 			setattr(ksu, attr_key, attr_value.encode('utf-8'))		
