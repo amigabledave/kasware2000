@@ -4,13 +4,12 @@
 
 <div class="row">
 	<div class="col-xs-10"> 
-		<div class="SectionTitle"> {{constants['d_SetTitles'][time_frame]}}{% if time_frame == 'Today' %} (<span id="MissionValue">{{full_mission['today']['horizon_value']}} </span> Kpts.){% endif %}</div>
+		<div class="SectionTitle" id="MissionTitle"> {{constants['d_SetTitles'][time_frame]}}{% if time_frame == 'Today' %} (<span id="MissionValue">{{full_mission['today']['horizon_value']}} </span> Kpts.){% endif %}</div>
+		<div class="SectionTitle hidden" id="SomedayMaybeTitle"> Someday... maybe </div>
 	</div>
 
 	<div class="col-xs-2" style="padding:0;">
-		{% if time_frame == 'Today' %}
-			<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;" id="ShowHideReactiveMission"><span id="MissionPlusMinusGlyphicon" class="glyphicon glyphicon-minus" style="font-size:25px;"></span></button>
-		{% endif %}
+		<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle" timeframe="{{time_frame}}" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;" id="ShowHideReactiveMission"><span id="MissionPlusMinusGlyphicon" class="glyphicon glyphicon-minus" style="font-size:25px;"></span></button>
 	</div>
 
 </div>
@@ -497,7 +496,9 @@
 
 <div id="NewKSUsHolder"></div>
 
-
+{% if time_frame == 'Upcoming' %}
+	<div id="Upcoming" class="">
+{% endif %}
 {% for time_horizon in time_frame_sets %}
 
 	{% if full_mission[time_horizon]['horizon_title'] != 'Today' %}
@@ -511,6 +512,7 @@
 		</div>
 	</div>
 	{% endif %}
+	{% if time_horizon == 'someday_maybe' %}</div>{% endif %}
 	<div id="{{time_horizon}}">
 		{% for ksu in full_mission[time_horizon]['horizon_set'] %}
 		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
@@ -579,7 +581,6 @@
 								<button type="button" class="btn btn-default displaySectionVerticalButton ShowDetailViewerButton ViewerOptionsButton" id="ShowDetailViewerButton">
 									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
 							</div>
-			
 						</div>
 					</div>
 			

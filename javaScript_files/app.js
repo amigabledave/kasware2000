@@ -6,18 +6,26 @@ $('.ExpandColapseSection').on('click', function(){
 	var GlaphiconDiv = $(this).find('#PlusMinusGlyphicon');
 	GlaphiconDiv.toggleClass('glyphicon-minus');
 	GlaphiconDiv.toggleClass('glyphicon-plus');	
+
 });
 
 
-
 $('#ShowHideReactiveMission').on('click', function(){
-	
+		
 	$('#reactive_mission').toggleClass('hidden');
 	$('#todays_questions_latter').toggleClass('hidden');
+	$('#Upcoming').toggleClass('hidden');
 
 	var GlaphiconDiv = $('#MissionPlusMinusGlyphicon');
 	GlaphiconDiv.toggleClass('glyphicon-minus');
 	GlaphiconDiv.toggleClass('glyphicon-plus');	
+
+	var time_frame = $(this).attr("timeframe");
+	if( time_frame == 'Upcoming'){
+		$('#SomedayMaybeTitle').toggleClass('hidden');
+		$('#MissionTitle').toggleClass('hidden');
+	};
+
 });
 
 

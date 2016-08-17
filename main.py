@@ -637,7 +637,7 @@ class MissionViewer(Handler):
 				'horizon_value':0},
 		 	
 		 	'someday_maybe':{
-		 		'horizon_title':'Someday ... maybe',
+		 		'horizon_title':'Someday... maybe',
 				'horizon_set':[],
 				'horizon_value':0},
 
