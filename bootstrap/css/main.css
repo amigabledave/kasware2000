@@ -200,17 +200,16 @@ textarea{
 
 /*--- Base Formats----------------------------*/
 
-/*.container{
-    margin-left: 27px;
-    margin-right: 0px;
-    
+.ViewerOptionsButton{
+    height: 20px;
+    margin-bottom: 0px;
+    width: 30px;
+    padding-top: 2px;
+    padding-left: 7px;
+    font-size: 12px;
+    margin-left:-5px;
 }
-*/
 
-/*
-*{
-    font-size: 13px;
-}*/
 
 .respect-space{
     white-space:pre;

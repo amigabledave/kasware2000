@@ -479,7 +479,7 @@ class SetViewer(Handler):
 		
 		elif set_name == 'TheoryQuery':
 			lookup_string = self.request.get('lookup_string')
-			user_theory = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(KSU.importance).order(KSU.created).fetch()
+			user_theory = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch()
 			ksu_set = self.search_theory(user_theory, lookup_string)
 			lookup_string = 'You searched for: ' + lookup_string
 		
@@ -487,10 +487,12 @@ class SetViewer(Handler):
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == True, KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch()
 		
 		else:
+			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(-KSU.is_active).order(KSU.importance).order(KSU.created)
+
 			if self.theory.hide_private_ksus:
-				ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name,  KSU.is_private == False).order(KSU.importance).order(KSU.created).fetch()
-			else:
-				ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(KSU.importance).order(KSU.created).fetch()
+				ksu_set = ksu_set.filter(KSU.is_private == False)
+			
+			ksu_set = ksu_set.fetch()
 		
 
 		for ksu in ksu_set:
@@ -588,7 +590,7 @@ class MissionViewer(Handler):
 			ksu_set = ksu_set.filter(KSU.is_private == False)
 		
 		if time_frame == 'Today':
-			ksu_set = ksu_set.order(KSU.importance).order(KSU.best_time).fetch()
+			ksu_set = ksu_set.order(KSU.best_time).order(KSU.importance).fetch()
 		else:
 			ksu_set = ksu_set.order(KSU.next_event).order(KSU.importance).order(KSU.best_time).fetch()
 
@@ -634,7 +636,7 @@ class MissionViewer(Handler):
 				'horizon_value':0}}
 
 
-		def define_horizon(ksu, today_ordinal): #xx
+		def define_horizon(ksu, today_ordinal):
 			next_event = ksu.next_event
 
 			if not next_event:
@@ -725,7 +727,9 @@ class EventHandler(Handler):
 
 		if user_action == 'SaveNewKSU':			
 			ksu = KSU(theory=self.theory.key)
-			event_details['is_active'] = True
+			
+			if not 'is_active' in event_details:
+				event_details['is_active'] = True
 
 			new_event_details = event_details.copy()
 			for a_key in event_details:
@@ -733,7 +737,7 @@ class EventHandler(Handler):
 				if a_val == '':
 					del new_event_details[a_key]
 
-			ksu = prepareInputForSaving(self.theory, ksu, new_event_details) 
+			ksu = prepareInputForSaving(self.theory, ksu, new_event_details) #xx
 			ksu.put()
 
 			self.response.out.write(json.dumps({
@@ -1366,11 +1370,7 @@ def update_next_event(self, user_action, post_details, ksu):
 			user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 			today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour))
 
-			active_position = today.weekday() #Creo que esto ya va corregir el problema de que no detectaba bien en que dia de la semana estabamos parados
-			# if active_position == 0: #Creo que el tema era la cuestion de la zona horaria! --- Apendice?
-			# 	active_position = 6
-			# else:
-			# 	active_position -= 1
+			active_position = today.weekday()
 
 			repeats_on_list = reorginize_list(l_repeats_on, active_position)
 
