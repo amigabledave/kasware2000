@@ -23,10 +23,11 @@ d_attributeType = {
 	'comments':'string',
 	'ksu_type':'string',
 	'ksu_subtype':'string',
+	'parent_id':'ndb_key',
 
 	'importance':'integer',
 	'tags':'user_tags',
-	'parent_id':'ndb_key', 		
+	'parent_id':'parent_id', 	
 
 	'kpts_value':'float',
 	'is_special':'checkbox',
@@ -58,6 +59,7 @@ d_SetTitles = {
 	'Today':"Today's Mission",
 	'Upcoming':'Upcoming',
 	'Graveyard':'Graveyard',
+	'BigOPlan': 'BigO Plan',
 
 	'SomedayMaybe': 'Someday Maybe', 
 	'Gene': 'In-Basket',
@@ -153,7 +155,16 @@ d_SetViewerDetails = {
 		'fields': {'pretty_next_event':'Scheduled for'},
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'Effort Reward',
-		'buttons_col':3,
+		'buttons_col':2,
+		'buttons':['Done', 'SendToMission']},
+	
+	'BOKA':{
+		'QuickAdd':{'description':'What do you need to do to achieve your Objective?'},		
+		'attributes': ['pretty_next_event'],
+		'fields': {'pretty_next_event':'Scheduled for'},
+		'columns':{'pretty_next_event':6},
+		'detailsLabel':'Effort Reward',
+		'buttons_col':2,
 		'buttons':['Done', 'SendToMission']},
 
 	'KAS3':{

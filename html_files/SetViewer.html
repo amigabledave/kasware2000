@@ -6,8 +6,8 @@
 <div class="row">
 	<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10"> 
 		<div class="SectionTitle"> 
-		{% if set_name == 'TheoryQuery' %}
-			{{lookup_string}}
+		{% if set_name in ['TheoryQuery', 'BOKA'] %}
+			{{set_title}}
 		{% else %}
 			{{constants['d_SetTitles'][set_name]}}
 		{% endif %}
@@ -16,7 +16,7 @@
 </div>
 
 {% if set_name not in ['Graveyard', 'TheoryQuery', 'Gene'] %}
-<div class="row KSUdisplaySection" id="NewKSU" value="NewKSU" ksutype="{{set_name}}" ksusubtype="{% if set_name == 'KeyA' %}KAS1{% elif set_name == 'ImIn' %}RealitySnapshot{% endif %}" style="margin-top: 0px; padding-bottom:8px;">
+<div class="row KSUdisplaySection" id="NewKSU" value="NewKSU" ksutype="{{set_name}}" ksusubtype="{% if set_name == 'KeyA' %}KAS1{% elif set_name == 'ImIn' %}RealitySnapshot{% elif set_name == 'BOKA' %}KAS2{% endif %}" parentid="{% if set_name == 'BOKA' %}{{parent_id}}{% endif %}" style="margin-top: 0px; padding-bottom:8px;">
 	<form method="post">
 		<div class="col-xs-12" style="">
 
@@ -39,6 +39,7 @@
 	</div>
 
 	<div class="row" style="margin-top:3px;">
+		{% if set_name != 'BOKA' %}
 		<div class="col-xs-10">
 			<input style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" placeholder="Tag" type="text" list="tags" name="tags" id="tags_value">
 			<datalist id="tags">
@@ -48,7 +49,7 @@
 			</datalist>
 		</div>
 		<div class="col-xs-1" style=" font-weight:bold; text-align:left; padding-left:25px;">
-			<select class="QuickAttributeUpdate" style="border:0; color:purple;" name="importance" id="importance">
+			<select style="border:0; color:purple;" name="importance" id="importance">
 				<option value="1"> 1 </option>
 				<option value="2"> 2 </option>
 				<option selected="selected" value="3"> 3 </option>
@@ -57,6 +58,39 @@
 			</select>	
 		</div>
 		<div class="col-xs-1"></div>
+		{% else %}
+						
+		<div class="col-xs-4">	
+				<input type="date" style="padding-right:2px; padding-left:4px; border:0; color:purple;" name="next_event" id="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+		</div>
+
+		<div class="col-xs-1" style="padding-left:5px; font-weight:bold; padding-right:5px; text-align:right;">
+			<select class="kpts_value MissionKsuKpts" style="border:0" name="kpts_value" id="kpts_value">
+				{% for value in constants['l_Fibonacci'] %}
+					<option value="{{value}}"> {{value}} </option>
+				{% endfor %}
+			</select>	
+		</div>	
+
+		<div class="col-xs-6">
+			<input style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" placeholder="Tag" type="text" list="tags" name="tags" id="tags_value" value="{{parent_tags}}">
+			<datalist id="tags">
+				{% for tag in tags %}
+					<option value="{{tag}}">
+				{% endfor %}
+			</datalist>
+		</div>
+
+		<div class="col-xs-1" style="padding-left:0px;">
+			<select style="border:0; color:purple; font-weight:bold; margin-left:-10px;" name="importance" id="importance">
+				<option value="1"> 1 </option>
+				<option value="2"> 2 </option>
+				<option selected="selected" value="3"> 3 </option>
+				<option value="4"> 4 </option>
+				<option value="5"> 5 </option>
+			</select>
+		</div>
+		{% endif %}							
 	</div>	
 
 
@@ -640,6 +674,186 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_KAS2" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
+		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
+			<div class="row" style="min-height: 45px">
+
+				<div class="col-xs-12">
+
+					<div class="row  hidden ">
+						<div class="col-xs-12 displaySectionBulletContent" style="color:purple;">				
+							
+								
+									One Time Only Action
+								
+							
+						</div>		
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12" style="font-size:13px;">
+							<div>
+							
+
+															
+
+							<textarea style="width:100%; border:0; font-weight:bold; " class="QuickAttributeUpdate autoExpand" rows="1" data-min-rows="1" name="description" id="description">Template_BOKA_KAS2</textarea>
+
+							
+
+							</div>
+						</div>		
+					</div>
+
+					
+					<!-- xx -->
+					<div class="row" style="margin-top:3px;">
+						<div class="col-xs-4">	
+								<input type="date" class="QuickAttributeUpdate" style="padding-right:2px; padding-left:4px; border:0; color:purple;" name="next_event" id="next_event" value="None">
+						</div>
+						
+						<div class="col-xs-1" style="padding-left:0px; font-weight:bold; padding-right:5px; text-align:right;">
+							<select class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0" name="kpts_value" id="kpts_value">
+								
+									
+									<option selected="selected" value="0.25"> 0.25 </option>
+									
+								
+									
+									<option value="1"> 1 </option>
+									
+								
+									
+									<option value="2"> 2 </option>
+									
+								
+									
+									<option value="3"> 3 </option>
+									
+								
+									
+									<option value="5"> 5 </option>
+									
+								
+									
+									<option value="8"> 8 </option>
+									
+								
+									
+									<option value="13"> 13 </option>
+									
+								
+							</select>	
+						</div>	
+
+						<div class="col-xs-5">		
+							<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; width:180px; text-align:center; margin-left:-5px;" type="text" list="tags" name="tags" id="tags" value=""> 
+						</div>
+
+						<div class="col-xs-1" style="padding-left:0px;">
+								<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold; margin-left:-10px;" name="importance" id="importance">
+																						
+										
+											<option value="1"> 1 </option>
+										
+																						
+										
+											<option value="2"> 2 </option>
+										
+																						
+										
+											<option selected="selected" value="3"> 3 </option>
+										
+																						
+										
+											<option value="4"> 4 </option>
+										
+																						
+										
+											<option value="5"> 5 </option>
+										
+									
+								</select>
+						</div>
+					
+						<div class="col-xs-1" style="padding-left:0px">
+							<button type="button" class="btn btn-default displaySectionVerticalButton ShowDetailViewerButton ViewerOptionsButton" id="ShowDetailViewerButton">
+								<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+						</div>
+					</div>
+					
+
+				</div>
+			</div>
+
+			<div class="row hidden" id="ScoreDetail">
+				<div class="col-xs-12">
+					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+					<div class="row">
+						<div class="col-xs-2">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" checked=""> <b> Active </b> </label> 
+							</div>
+						</div>	
+
+						<div class="col-xs-2" style="padding-left:8px;">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical"> <b> Critical </b> </label> 
+							</div>			
+						</div>
+
+						<div class="col-xs-2" style="padding-left:3px;">
+							<div class="checkbox"> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate"> <b> Private </b> </label> 
+					 		</div>
+						</div>
+
+						<div class="col-xs-1">
+						</div>
+						
+						<div class="col-xs-5">
+
+						
+							<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value="ViewerDone" style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
+						
+
+						
+							<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value="SendToMission" style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
+						
+
+						
+
+							<button type="button" class="btn btn-primary btn-circle RedirectUserButton displaySectionVerticalButton" name="action_description" style="margin-right: 10px;" value="EditKSU">
+								  	<span class="glyphicon glyphicon-pencil"></span></button>
+
+							<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value="ViewerDelete"><span class="glyphicon glyphicon-trash"></span></button>
+						</div>
+					
+					</div>					
+					<div class="row" id="KsuPlusOptions">
+						<div class="col-xs-12">
+							
+						</div>
+						<div class="col-xs-12">
+							<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
+							<div class="row">
+								<div class="col-xs-12">
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="2" data-min-rows="2" name="comments" id="comments" placeholder="Comments"></textarea>	
+								</div>
+
+							</div>
+						</div>
+					</div>
+			</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
 
 	<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_KAS3" value="NewKSUid" style="margin-top: 0px; padding-bottom:8px;">
 		<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
@@ -2501,6 +2715,7 @@
 					</div>		
 				</div>
 
+				{% if set_name != 'BOKA' %}
 				<div class="row" style="margin-top:3px;">
 
 					<div class="col-xs-8">
@@ -2551,7 +2766,49 @@
 							<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
 			  		{% endif %}	
 					</div>
-				</div>						
+				</div>
+				{% else %}
+				<!-- xx -->
+				<div class="row" style="margin-top:3px;">
+					<div class="col-xs-4">	
+							<input type="date" class="QuickAttributeUpdate" style="padding-right:2px; padding-left:4px; border:0; color:purple;" name="next_event" id="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+					</div>
+					
+					<div class="col-xs-1" style="padding-left:0px; font-weight:bold; padding-right:5px; text-align:right;">
+						<select class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0" name="kpts_value" id="kpts_value">
+							{% for value in constants['l_Fibonacci'] %}
+								{% if ksu.kpts_value == value %}
+								<option selected="selected" value="{{value}}"> {{value}} </option>
+								{% else %}
+								<option value="{{value}}"> {{value}} </option>
+								{% endif %}
+							{% endfor %}
+						</select>	
+					</div>	
+
+					<div class="col-xs-5">		
+						<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; width:180px; text-align:center; margin-left:-5px;" type="text" list="tags" name="tags" id="tags" value="{% if ksu.tags %}{{ksu.tags}}{% endif %}"> 
+					</div>
+
+					<div class="col-xs-1" style="padding-left:0px;">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold; margin-left:-10px;" name="importance" id="importance">
+								{% for value in range(1,6) %}													
+									{% if value == ksu.importance %}
+										<option selected="selected" value="{{value}}"> {{value}} </option>
+									{% else %}
+										<option value="{{value}}"> {{value}} </option>
+									{% endif %}
+								{% endfor %}
+							</select>
+					</div>
+				
+					<div class="col-xs-1" style="padding-left:0px">
+						<button type="button" class="btn btn-default displaySectionVerticalButton ShowDetailViewerButton ViewerOptionsButton" id="ShowDetailViewerButton">
+							<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+					</div>
+				</div>
+				{% endif %}
+
 			</div>
 		</div>
 
@@ -2590,7 +2847,7 @@
 						<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
 					{% endif %}
 
-					{% if ksu.ksu_subtype not in ['RTBG', 'Idea', 'BigO', 'Wish', 'Gene', 'Diary', 'RealitySnapshot', 'BinaryIndicator', 'FibonacciPerception'] %}
+					{% if ksu.ksu_subtype not in ['KAS2', 'RTBG', 'Idea', 'BigO', 'Wish', 'Gene', 'Diary', 'RealitySnapshot', 'BinaryIndicator', 'FibonacciPerception'] %}
 						<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
 					{% endif %}
 
@@ -2936,7 +3193,7 @@
 						<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:0px;">
 						<div class="row">
 							<div class="col-xs-12">
-								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments">{% if ksu.comments %}{{ ksu.comments }}{% endif %}</textarea>	
+								<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="2" data-min-rows='2' name="comments" id="comments" placeholder="Comments">{% if ksu.comments %}{{ ksu.comments }}{% endif %}</textarea>	
 							</div>
 
 						</div>

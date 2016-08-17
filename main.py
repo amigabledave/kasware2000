@@ -472,7 +472,9 @@ class SetViewer(Handler):
 	def get(self):
 		set_name = self.request.get('set_name')
 		user_key = self.theory.key
-		lookup_string =''
+		set_title =''
+		parent_id = ''
+		parent_tags = ''
 
 		if not set_name:
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(KSU.importance).order(KSU.created).fetch()
@@ -481,10 +483,19 @@ class SetViewer(Handler):
 			lookup_string = self.request.get('lookup_string')
 			user_theory = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch()
 			ksu_set = self.search_theory(user_theory, lookup_string)
-			lookup_string = 'You searched for: ' + lookup_string
+			set_title = 'You searched for: ' + lookup_string
 		
 		elif set_name == 'Graveyard':
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == True, KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch()
+
+		elif set_name == 'BOKA':#xx	
+			ksu_id = self.request.get('ksu_id')
+			ksu = KSU.get_by_id(int(ksu_id))
+			ksu_key = ksu.key			
+			ksu_set = KSU.query(KSU.parent_id == ksu_key).filter(KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch()
+			set_title = ksu.description
+			parent_id = ksu_id
+			parent_tags = ksu.tags
 		
 		else:
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(-KSU.is_active).order(KSU.importance).order(KSU.created)
@@ -502,7 +513,7 @@ class SetViewer(Handler):
 
 		
 		tags = categories = self.theory.categories['tags'] # por el quick adder
-		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, lookup_string=lookup_string) #
+		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, parent_tags=parent_tags) #
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -630,7 +641,7 @@ class MissionViewer(Handler):
 				'horizon_set':[],
 				'horizon_value':0},
 
-			'EVPo_someday_maybe':{
+			'hidden_someday_maybe':{
 		 		'horizon_title':'Joy Generators Someday ... maybe',
 				'horizon_set':[],
 				'horizon_value':0}}
@@ -640,8 +651,8 @@ class MissionViewer(Handler):
 			next_event = ksu.next_event
 
 			if not next_event:
-				if ksu.ksu_subtype == 'EVPo':
-					return 'EVPo_someday_maybe'
+				if ksu.ksu_type in ['EVPo', 'BOKA']:
+					return 'hidden_someday_maybe'
 				else:
 					return 'someday_maybe'
 
@@ -737,7 +748,7 @@ class EventHandler(Handler):
 				if a_val == '':
 					del new_event_details[a_key]
 
-			ksu = prepareInputForSaving(self.theory, ksu, new_event_details) #xx
+			ksu = prepareInputForSaving(self.theory, ksu, new_event_details)
 			ksu.put()
 
 			self.response.out.write(json.dumps({
@@ -865,7 +876,7 @@ class EventHandler(Handler):
 				if ksu_subtype == 'KAS2':
 					ksu.is_deleted = True
 
-				update_next_event(self, user_action, {}, ksu) #xx
+				update_next_event(self, user_action, {}, ksu)
 			
 				if ksu_subtype in ['ImPe']:
 					event.ksu_description = ksu.secondary_description
@@ -1097,7 +1108,7 @@ class HistoryViewer(Handler):
 		self.redirect(redirect_to)
 		return
 
-	def retrieve_history(self, ksu_id, history_start, history_end): #xx
+	def retrieve_history(self, ksu_id, history_start, history_end):
 		user_key = self.theory.key
 		
 		if ksu_id:
@@ -1120,7 +1131,7 @@ class HistoryViewer(Handler):
 		history = []
 		history_value = 0
 
-		for event in event_set: #xx
+		for event in event_set:
 			ksu = KSU.get_by_id(event.ksu_id.id())
 			## Apendix - TBD once my theory is updated
 			ksu_subtype = ksu.ksu_subtype
@@ -1556,6 +1567,11 @@ def prepareInputForSaving(theory, ksu, post_details):
 			update_user_tags(theory, tags)
 			theory.categories['tags'] = update_user_tags(theory, tags)
 			theory.put()
+
+		if a_type == 'parent_id':
+			parent_ksu = KSU.get_by_id(int(a_val))
+			parent_key = parent_ksu.key
+			ksu.parent_id = parent_key
 
 	setattr(ksu, 'repeats_on', d_repeats_on)
 	

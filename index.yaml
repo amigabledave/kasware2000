@@ -278,6 +278,13 @@ indexes:
 - kind: KSU
   properties:
   - name: is_deleted
+  - name: parent_id
+  - name: importance
+  - name: created
+
+- kind: KSU
+  properties:
+  - name: is_deleted
   - name: theory
   - name: created
 

@@ -358,7 +358,12 @@ $(document).on('click', '.RedirectUserButton', function(){
 
 	} else if ( user_action == 'ViewKSUHistory') {
 		window.location.href = '/HistoryViewer?ksu_id='+ksu_id;
-	}	
+	
+	} else if ( user_action == 'ViewBigOPlan') {
+		window.location.href = '/SetViewer?set_name=BOKA&ksu_id='+ksu_id;
+	}
+
+
 });
 
 
@@ -367,6 +372,7 @@ $('.SaveNewKSUButton').on('click', function(){
 	var ksu = $(this).closest('#NewKSU');
 	var ksu_type = ksu.attr("ksutype");
 	var ksu_subtype = ksu.attr("ksusubtype");
+	var parent_id = ksu.attr("parentid");
 
 	var description = ksu.find('#description').val();
 	var secondary_description = ksu.find('#secondary_description').val();
@@ -416,6 +422,7 @@ $('.SaveNewKSUButton').on('click', function(){
 			'user_action': 'SaveNewKSU',
 			'ksu_type': ksu_type,
 			'ksu_subtype': ksu_subtype,
+			'parent_id': parent_id,
 			
 			'description':description,
 			'secondary_description':secondary_description,
@@ -472,7 +479,10 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#ImIn_next_event').val('')
 		ksu.find('#Diary_next_event').val('')
 
-		ksu.find('#tags_value').val('');
+		if (ksu_type != 'BOKA'){
+			ksu.find('#tags_value').val('');
+		};
+		
 		ksu.find('#importance').val(3);
 
 		ksu.find('#kpts_value').val(0.25);
