@@ -706,6 +706,24 @@
 										</div>		
 									</div>
 								</div>
+							<!-- xx -->
+							{% elif ksu.ksu_subtype == 'KAS2' %}
+								<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">
+								<div class="row" style="margin-bottom:8px;">
+									<div class="col-xs-12">
+										<label> Targeted Objective </label>
+										<select class="form-control QuickAttributeUpdate" name="parent_id" id="parent_id">
+											{% for (ksu_id, description) in objectives %}																				
+												{% if ksu.parent_id_id == ksu_id %}
+												<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
+												{% else %}
+												<option value="{{ksu_id}}"> {{description}} </option>								
+												{% endif %}
+											{% endfor %}
+										</select>	
+									</div>		
+								</div>
+
 							{% elif ksu.ksu_subtype == 'KAS3' %}
 								<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">		
 								<div class="row">

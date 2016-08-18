@@ -488,7 +488,7 @@ class SetViewer(Handler):
 		elif set_name == 'Graveyard':
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == True, KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch()
 
-		elif set_name == 'BOKA':#xx	
+		elif set_name == 'BOKA':
 			ksu_id = self.request.get('ksu_id')
 			ksu = KSU.get_by_id(int(ksu_id))
 			ksu_key = ksu.key			
@@ -556,7 +556,12 @@ class MissionViewer(Handler):
 
 		tags = self.theory.categories['tags']
 
-		todays_questions_now, todays_questions_latter, reactive_mission, today, full_mission = self.generate_todays_mission(time_frame)
+		todays_questions_now, todays_questions_latter, reactive_mission, today, full_mission, objectives = self.generate_todays_mission(time_frame)
+
+		print 
+		print 'Today Horizon Value:'
+		print full_mission['today']['horizon_value']
+		print
 
 		ksu_sets = []
 		horizons_values = {}
@@ -569,6 +574,7 @@ class MissionViewer(Handler):
 
 		self.print_html('MissionViewer.html',
 						full_mission=full_mission,
+						objectives=objectives,
 						time_frame_sets=time_frame_sets,
 						time_frame=time_frame,
 						todays_questions_now=todays_questions_now,
@@ -582,6 +588,7 @@ class MissionViewer(Handler):
 	@CreateOrEditKSU_request_handler	
 	def post(self, user_action, post_details):
 		return
+
 
 	def generate_todays_mission(self, time_frame):
 
@@ -680,16 +687,26 @@ class MissionViewer(Handler):
 		todays_questions_now = []
 		todays_questions_latter = []		
 		reactive_mission = []
+		objectives = [(None,'-- None --')]
 
 		mission_sets = ['KAS1', 'KAS2', 'EVPo', 'ImPe']
 		questions_sets = ['RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'Diary']
 
 		for ksu in ksu_set:
+			## Debug - TBD
+			print 
+			print 'Today Horizon Value:'
+			print full_mission['today']['horizon_value']
+			print
+			#
 			ksu_subtype = ksu.ksu_subtype
 	
 			next_event = ksu.next_event
 			ksu.description_rows = determine_rows(ksu.description)
 			ksu.secondary_description_rows = determine_rows(ksu.secondary_description)
+
+			if ksu.parent_id:
+				ksu.parent_id_id = ksu.parent_id.id()
 
 			if ksu_subtype in mission_sets:
 				time_horizon = define_horizon(ksu, today_ordinal)
@@ -712,13 +729,18 @@ class MissionViewer(Handler):
 
 			elif ksu_subtype in ['KAS3','KAS4'] and today >= next_event:
 				reactive_mission.append(ksu)
-		
+
+			elif ksu_subtype == 'BigO': #xx
+				objectives.append((ksu.key.id(), ksu.description))
+
+
+						
 		full_mission['today'] = {
 			'horizon_title':'Today',
 			'horizon_set':full_mission['today']['horizon_set'] + full_mission['timeless_today']['horizon_set'],
 			'horizon_value':full_mission['today']['horizon_value'] + full_mission['timeless_today']['horizon_value']}
 
-		return todays_questions_now, todays_questions_latter, reactive_mission, today, full_mission
+		return todays_questions_now, todays_questions_latter, reactive_mission, today, full_mission, objectives
 
 
 class EventHandler(Handler):
@@ -1026,6 +1048,18 @@ class EventHandler(Handler):
 
 		elif attr_key in ['repeats_on_Mon', 'repeats_on_Tue', 'repeats_on_Wed', 'repeats_on_Thu', 'repeats_on_Fri', 'repeats_on_Sat', 'repeats_on_Sun']:
 			ksu.repeats_on[attr_key] = attr_value 
+
+		elif attr_key == 'parent_id': #xx
+			print
+			print 'Este es el valor del ID del padre'
+			print attr_value
+			print
+			if attr_value == 'None':
+				ksu.parent_id = None
+			else:	
+				parent_ksu = KSU.get_by_id(int(attr_value))
+				ksu.parent_id = parent_ksu.key
+				ksu.ksu_type = 'BOKA'
 
 		ksu.put()	
 		return updated_value
@@ -1500,7 +1534,7 @@ def prepareInputForSaving(theory, ksu, post_details):
 		else:
 			ksu_subtype = ksu_type
 
-		if ksu_type == 'OTOA':
+		if ksu_type in ['OTOA', 'BOKA']:
 			ksu_subtype = 'KAS2'
 
 		return ksu_subtype
@@ -1572,6 +1606,7 @@ def prepareInputForSaving(theory, ksu, post_details):
 			parent_ksu = KSU.get_by_id(int(a_val))
 			parent_key = parent_ksu.key
 			ksu.parent_id = parent_key
+			ksu.ksu_type = 'BOKA'
 
 	setattr(ksu, 'repeats_on', d_repeats_on)
 	
