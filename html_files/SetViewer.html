@@ -29,16 +29,18 @@
 			<textarea style="width:100%; border:0; font-size:14px; font-weight:bold;" class="autoExpand QuickKsuDescription" rows="1" data-min-rows='1' name="description" id="description" placeholder="{{constants['d_SetViewerDetails'][set_name]['QuickAdd']['description']}}"></textarea>
 		</div>
 
-		<div class="{% if set_name not in ['BigO', 'ImIn', 'Diary'] %}hidden{% endif %}">
-		<div class="col-xs-1"></div>
-		<div class="col-xs-11" style="margin-top:2px;">
-			<textarea class="autoExpand" style="width:100%; border:0; color:grey; font-style:italic; font-size:13px;" name="secondary_description" id="secondary_description" rows="1" data-min-rows='1' placeholder="{{constants['d_SetViewerDetails'][set_name]['QuickAdd']['secondary_description']}}"></textarea>
+		{% if set_name in ['BigO', 'ImIn', 'Diary'] %}
+		<div class="hidden" id="QuickKsuSecondaryDescription">
+			<div class="col-xs-1"></div>
+			<div class="col-xs-11" style="margin-top:2px;">
+				<textarea class="autoExpand" style="width:100%; border:0; color:grey; font-style:italic; font-size:13px;" name="secondary_description" id="secondary_description" rows="1" data-min-rows='1' placeholder="{{constants['d_SetViewerDetails'][set_name]['QuickAdd']['secondary_description']}}"></textarea>
+			</div>
 		</div>
-		</div>
+		{% endif %}
 
 	</div>
 
-	<div class="row" style="margin-top:3px;">
+	<div class="row hidden" id="TagsAndImportanceRow" style="margin-top:2px;">
 		{% if set_name != 'BOKA' %}
 		<div class="col-xs-10">
 			<input style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" placeholder="Tag" type="text" list="tags" name="tags" id="tags_value">

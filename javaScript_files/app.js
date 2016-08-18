@@ -6,7 +6,6 @@ $('.ExpandColapseSection').on('click', function(){
 	var GlaphiconDiv = $(this).find('#PlusMinusGlyphicon');
 	GlaphiconDiv.toggleClass('glyphicon-minus');
 	GlaphiconDiv.toggleClass('glyphicon-plus');	
-
 });
 
 
@@ -25,7 +24,6 @@ $('#ShowHideReactiveMission').on('click', function(){
 		$('#SomedayMaybeTitle').toggleClass('hidden');
 		$('#MissionTitle').toggleClass('hidden');
 	};
-
 });
 
 
@@ -61,6 +59,8 @@ $('.DummyInput').on('change',function(){
 
 $('.QuickKsuDescription').on('focusin', function(){
 	$('#QuickKsuSubtypeDetails').removeClass('hidden');
+	$('#TagsAndImportanceRow').removeClass('hidden');	
+	$('#QuickKsuSecondaryDescription').removeClass('hidden');
 });
 
 
@@ -381,6 +381,11 @@ $('.SaveNewKSUButton').on('click', function(){
 	var ksu_type = ksu.attr("ksutype");
 	var ksu_subtype = ksu.attr("ksusubtype");
 	var parent_id = ksu.attr("parentid");
+	if (parent_id == undefined){
+		parent_id = ksu.find('#parent_id option:selected').val();
+	};
+	console.log('This is the parentid')
+	console.log(parent_id)
 
 	var description = ksu.find('#description').val();
 	var secondary_description = ksu.find('#secondary_description').val();

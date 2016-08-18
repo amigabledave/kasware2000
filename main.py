@@ -693,12 +693,7 @@ class MissionViewer(Handler):
 		questions_sets = ['RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'Diary']
 
 		for ksu in ksu_set:
-			## Debug - TBD
-			print 
-			print 'Today Horizon Value:'
-			print full_mission['today']['horizon_value']
-			print
-			#
+
 			ksu_subtype = ksu.ksu_subtype
 	
 			next_event = ksu.next_event
@@ -1603,10 +1598,13 @@ def prepareInputForSaving(theory, ksu, post_details):
 			theory.put()
 
 		if a_type == 'parent_id':
-			parent_ksu = KSU.get_by_id(int(a_val))
-			parent_key = parent_ksu.key
-			ksu.parent_id = parent_key
-			ksu.ksu_type = 'BOKA'
+			if a_val == 'None':
+				ksu.parent_id = None
+			else:			
+				parent_ksu = KSU.get_by_id(int(a_val))
+				parent_key = parent_ksu.key
+				ksu.parent_id = parent_key
+				ksu.ksu_type = 'BOKA'
 
 	setattr(ksu, 'repeats_on', d_repeats_on)
 	
