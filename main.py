@@ -498,7 +498,7 @@ class SetViewer(Handler):
 			parent_tags = ksu.tags
 		
 		else:
-			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(-KSU.is_active).order(KSU.importance).order(KSU.created)
+			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(KSU.ksu_subtype).order(-KSU.is_active).order(KSU.importance).order(KSU.created)
 
 			if self.theory.hide_private_ksus:
 				ksu_set = ksu_set.filter(KSU.is_private == False)

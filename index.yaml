@@ -265,6 +265,29 @@ indexes:
 - kind: KSU
   properties:
   - name: in_graveyard
+  - name: ksu_type
+  - name: theory
+  - name: ksu_subtype
+  - name: is_active
+    direction: desc
+  - name: importance
+  - name: created
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: ksu_type
+  - name: theory
+  - name: ksu_subtype
+    direction: desc
+  - name: is_active
+    direction: desc
+  - name: importance
+  - name: created
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
   - name: theory
   - name: created
 
