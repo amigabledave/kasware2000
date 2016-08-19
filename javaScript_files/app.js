@@ -12,7 +12,6 @@ $('.ExpandColapseSection').on('click', function(){
 $('#ShowHideReactiveMission').on('click', function(){
 		
 	$('#reactive_mission').toggleClass('hidden');
-	$('#todays_questions_latter').toggleClass('hidden');
 	$('#Upcoming').toggleClass('hidden');
 
 	var GlaphiconDiv = $('#MissionPlusMinusGlyphicon');
@@ -28,7 +27,7 @@ $('#ShowHideReactiveMission').on('click', function(){
 
 
 $('.DummyInput').on('change',function(){
-	
+	console.log(this.value)
 	var ksu_attr = $(this).attr("ksuattr");
  
 	if (ksu_attr == 'kpts_value'){
@@ -314,7 +313,7 @@ $(document).on('click', '.UserActionButton', function(){
 				ksu.find('#ViewerOnOffButton').removeClass('btn-success');
 				ksu.find('#ViewerOnOffButton').addClass('btn-warning');
 			} else {
-				ksu.find('#is_active').css({'color': '#D3D3D3'});
+				ksu.find('#is_active').css({'color': '#b1adad'});
 				ksu.find('#ViewerOnOffButton').removeClass('btn-warning');
 				ksu.find('#ViewerOnOffButton').addClass('btn-success');				
 			}
@@ -475,6 +474,7 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#is_active').prop('checked', true);
 		
 		ksu.find('#secondary_description').val('');
+		ksu.find('#BigO_secondary_description').val('');
 		ksu.find('#KAS3_secondary_description').val('');
 		ksu.find('#KAS4_secondary_description').val('');
 		ksu.find('#EVPo_secondary_description').val('');
@@ -580,11 +580,18 @@ $('.SaveNewKSUButton').on('click', function(){
 		} else if (is_active){
 			new_ksu.find('#description').css('color', 'black');				
 		} else {
-			new_ksu.find('#description').css('color', '#D3D3D3');
+			new_ksu.find('#description').css('color', '#b1adad');
 		};
 
+		$('#TagsAndImportanceRow').addClass('hidden');	
+		$('#QuickKsuSecondaryDescription').addClass('hidden');
 		$('#QuickKsuSubtypeDetails').addClass('hidden');
-		ksu.fadeIn("slow");		
+		ksu.fadeIn("slow");
+
+	
+	
+
+
 	});
 });
 
@@ -684,7 +691,7 @@ $(document).on('focusout', '.QuickAttributeUpdate', function(){
 			} else if (is_active){
 				description.css('color', 'black');				
 			} else {
-				description.css('color', '#D3D3D3');
+				description.css('color', '#b1adad');
 			};
 		};
 

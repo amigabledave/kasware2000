@@ -556,7 +556,7 @@ class MissionViewer(Handler):
 
 		tags = self.theory.categories['tags']
 
-		todays_questions_now, todays_questions_latter, reactive_mission, today, full_mission, objectives = self.generate_todays_mission(time_frame)
+		todays_questions_now, todays_questions_latter, KAS3_mission, KAS4_mission, today, full_mission, objectives = self.generate_todays_mission(time_frame)
 
 		print 
 		print 'Today Horizon Value:'
@@ -579,7 +579,8 @@ class MissionViewer(Handler):
 						time_frame=time_frame,
 						todays_questions_now=todays_questions_now,
 						todays_questions_latter=todays_questions_latter,
-						reactive_mission=reactive_mission, 
+						KAS3_mission=KAS3_mission, 
+						KAS4_mission=KAS4_mission, 
 						constants=constants,
 						today=today,
 						tags=tags)
@@ -686,7 +687,9 @@ class MissionViewer(Handler):
 
 		todays_questions_now = []
 		todays_questions_latter = []		
-		reactive_mission = []
+		# reactive_mission = []
+		KAS3_mission = []
+		KAS4_mission = []
 		objectives = [(None,'-- None --')]
 
 		mission_sets = ['KAS1', 'KAS2', 'EVPo', 'ImPe']
@@ -722,10 +725,15 @@ class MissionViewer(Handler):
 					else:
 						todays_questions_latter.append(ksu)
 
-			elif ksu_subtype in ['KAS3','KAS4'] and today >= next_event:
-				reactive_mission.append(ksu)
+			# elif ksu_subtype in ['KAS3','KAS4'] and today >= next_event:
+			# 	reactive_mission.append(ksu)
+			elif ksu_subtype == 'KAS3' and today >= next_event:
+				KAS3_mission.append(ksu)
 
-			elif ksu_subtype == 'BigO': #xx
+			elif ksu_subtype == 'KAS4' and today >= next_event:
+				KAS4_mission.append(ksu)
+
+			elif ksu_subtype == 'BigO':
 				objectives.append((ksu.key.id(), ksu.description))
 
 
@@ -735,7 +743,7 @@ class MissionViewer(Handler):
 			'horizon_set':full_mission['today']['horizon_set'] + full_mission['timeless_today']['horizon_set'],
 			'horizon_value':full_mission['today']['horizon_value'] + full_mission['timeless_today']['horizon_value']}
 
-		return todays_questions_now, todays_questions_latter, reactive_mission, today, full_mission, objectives
+		return todays_questions_now, todays_questions_latter, KAS3_mission, KAS4_mission, today, full_mission, objectives
 
 
 class EventHandler(Handler):
@@ -1044,7 +1052,7 @@ class EventHandler(Handler):
 		elif attr_key in ['repeats_on_Mon', 'repeats_on_Tue', 'repeats_on_Wed', 'repeats_on_Thu', 'repeats_on_Fri', 'repeats_on_Sat', 'repeats_on_Sun']:
 			ksu.repeats_on[attr_key] = attr_value 
 
-		elif attr_key == 'parent_id': #xx
+		elif attr_key == 'parent_id':
 			print
 			print 'Este es el valor del ID del padre'
 			print attr_value
