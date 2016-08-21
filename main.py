@@ -6,7 +6,6 @@ from datetime import datetime, timedelta, time
 from google.appengine.ext import ndb
 from python_files import datastore, randomUser, constants, kasware_os
 
-quotes = constants.quotes
 constants = constants.constants
 
 Theory = datastore.Theory
@@ -76,11 +75,9 @@ class Handler(webapp2.RequestHandler):
 	def print_html(self, template, **kw):#xx
 		ksu_to_remember = {}
 		if self.theory:
-			ksu_to_remember = get_ksu_to_remember(self)
-		
-		quote =  quotes[random.randrange(0,500)]
-		quote['quote'] = quote['quote'].replace("&#39;","'")
-		self.write(self.render_html(template, quote=quote, ksu_to_remember=ksu_to_remember, **kw))
+			ksu_to_remember, current_objectives = get_ksu_to_remember(self)		
+
+		self.write(self.render_html(template, ksu_to_remember=ksu_to_remember, current_objectives=current_objectives, **kw))
 
 	def set_secure_cookie(self, cookie_name, cookie_value):
 		cookie_secure_value = make_secure_val(cookie_value)
@@ -1692,7 +1689,15 @@ def determine_rows(ksu_description):
 	return int(math.ceil((len(ksu_description)/64.0)))
 
 def get_ksu_to_remember(self): #xx
-	user_key = self.theory.key
+	
+	theory = self.theory
+	user_key = theory.key
+
+	day_start_time = theory.day_start_time
+	user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
+	today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date()
+	today_ordinal =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
+
 
 	sets_to_remember = ['Idea', 'Wish', 'RTBG']
 	ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.is_active == True).order(KSU.times_reviewed).order(KSU.importance).order(KSU.created)
@@ -1702,16 +1707,25 @@ def get_ksu_to_remember(self): #xx
 
 	ksu_set = ksu_set.fetch()
 	filtered_ksu_set = []
+	current_objectives = []
 
 	for ksu in ksu_set:
-		if ksu.ksu_type in sets_to_remember:
+		ksu_type = ksu.ksu_type
+		if ksu_type in sets_to_remember:
 			filtered_ksu_set.append(ksu)
+		elif ksu_type == 'BigO':
+			if ksu.next_event:
+				ksu.days_left = '-- ' + str((ksu.next_event).toordinal() - today_ordinal) + ' days left --'
+			else:
+				ksu.days_left = '-- ??? days left --'
+			
+			current_objectives.append(ksu)
 
 	ksu_less_reviewed = filtered_ksu_set[0]
 	ksu_less_reviewed.times_reviewed += 1
 	ksu_less_reviewed.put()
 
-	return ksu_less_reviewed
+	return ksu_less_reviewed, current_objectives
 	
 
 
