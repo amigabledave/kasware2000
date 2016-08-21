@@ -214,9 +214,9 @@
 							</div>
 
 							<div class="col-xs-1">
-									<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold;" name="importance" id="importance">
+									<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold;" name="mission_importance" id="mission_importance">
 										{% for value in range(1,6) %}													
-											{% if value == ksu.importance %}
+											{% if value == ksu.mission_importance %}
 												<option selected="selected" value="{{value}}"> {{value}} </option>
 											{% else %}
 												<option value="{{value}}"> {{value}} </option>
@@ -337,9 +337,9 @@
 							</div>
 
 							<div class="col-xs-1">
-									<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold;" name="importance" id="importance">
+									<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold;" name="mission_importance" id="mission_importance">
 										{% for value in range(1,6) %}													
-											{% if value == ksu.importance %}
+											{% if value == ksu.mission_importance %}
 												<option selected="selected" value="{{value}}"> {{value}} </option>
 											{% else %}
 												<option value="{{value}}"> {{value}} </option>
@@ -626,7 +626,7 @@
 					</div>
 
 					<div class="col-xs-1" style="padding-left:0px;">
-						<select style="border:0; color:purple; font-weight:bold;" name="importance" id="importance">
+						<select style="border:0; color:purple; font-weight:bold;" name="mission_importance" id="mission_importance">
 							{% for value in range(1,6) %}													
 								<option value="{{value}}"> {{value}} </option>							
 							{% endfor %}
@@ -741,7 +741,7 @@
 					</div>
 
 					<div class="col-xs-1" style="padding-left:0px;">
-							<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold;" name="importance" id="importance">
+							<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold;" name="mission_importance" id="mission_importance">
 										<option value="1"> 1 </option>
 										<option value="2"> 2 </option>
 										<option value="3"> 3 </option>
@@ -879,9 +879,9 @@
 							</div>
 
 							<div class="col-xs-1" style="padding-left:0px;">
-									<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold; margin-left:-10px;" name="importance" id="importance">
+									<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold; margin-left:-10px;" name="mission_importance" id="mission_importance">
 										{% for value in range(1,6) %}													
-											{% if value == ksu.importance %}
+											{% if value == ksu.mission_importance %}
 												<option selected="selected" value="{{value}}"> {{value}} </option>
 											{% else %}
 												<option value="{{value}}"> {{value}} </option>

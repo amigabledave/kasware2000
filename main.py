@@ -74,6 +74,7 @@ class Handler(webapp2.RequestHandler):
 
 	def print_html(self, template, **kw):#xx
 		ksu_to_remember = {}
+		current_objectives = []
 		if self.theory:
 			ksu_to_remember, current_objectives = get_ksu_to_remember(self)		
 
@@ -610,9 +611,9 @@ class MissionViewer(Handler):
 			ksu_set = ksu_set.filter(KSU.is_private == False)
 		
 		if time_frame == 'Today':
-			ksu_set = ksu_set.order(KSU.best_time).order(KSU.importance).fetch()
+			ksu_set = ksu_set.order(KSU.best_time).order(KSU.mission_importance).fetch()
 		else:
-			ksu_set = ksu_set.order(KSU.next_event).order(KSU.importance).order(KSU.best_time).fetch()
+			ksu_set = ksu_set.order(KSU.next_event).order(KSU.mission_importance).order(KSU.best_time).fetch()
 
 		full_mission = {
 			'today':{
@@ -1041,7 +1042,7 @@ class EventHandler(Handler):
 			theory.categories['tags'] = update_user_tags(theory, tags)
 			theory.put()
 
-		elif attr_key in ['importance', 'frequency', 'money_cost']:
+		elif attr_key in ['importance', 'mission_importance','frequency', 'money_cost']:
 			setattr(ksu, attr_key, int(attr_value))	
 			updated_value = int(attr_value)
 

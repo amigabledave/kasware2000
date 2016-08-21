@@ -26,6 +26,7 @@ d_attributeType = {
 	'parent_id':'ndb_key',
 
 	'importance':'integer',
+	'mission_importance':'integer',
 	'tags':'user_tags',
 	'parent_id':'parent_id', 	
 

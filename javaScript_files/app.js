@@ -393,6 +393,7 @@ $('.SaveNewKSUButton').on('click', function(){
 	var kpts_value = ksu.find('#kpts_value option:selected').val();
 
 	var importance = ksu.find('#importance').val();
+	var mission_importance = ksu.find('#mission_importance').val();
 	var tags = ksu.find('#tags_value').val();
 	var comments = ksu.find('#comments').val();
 
@@ -441,8 +442,9 @@ $('.SaveNewKSUButton').on('click', function(){
 			'next_event':next_event,
 			'best_time':best_time,
 			'kpts_value': kpts_value,
-
+			
 			'importance':importance,
+			'mission_importance':mission_importance,
 			'tags':tags,
 			'comments':comments, 
 		
@@ -497,6 +499,7 @@ $('.SaveNewKSUButton').on('click', function(){
 		};
 		
 		ksu.find('#importance').val(3);
+		ksu.find('#mission_importance').val(3);
 
 		ksu.find('#kpts_value').val(0.25);
 		ksu.find('#KAS3_kpts_value').val(0.25);
@@ -558,6 +561,8 @@ $('.SaveNewKSUButton').on('click', function(){
 		new_ksu.find('#next_event').val(next_event);
 
 		new_ksu.find('#importance').val(importance);
+		new_ksu.find('#mission_importance').val(mission_importance);
+		
 		new_ksu.find('#tags').val(tags);
 		new_ksu.find('#ksu_subtype').text(ksu_subtype);
 
