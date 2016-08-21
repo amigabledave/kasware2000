@@ -26,7 +26,7 @@
 		</div>
 
 		<div class="col-xs-11">
-			<textarea style="width:100%; border:0; font-size:14px; font-weight:bold;" class="autoExpand QuickKsuDescription" rows="1" data-min-rows='1' name="description" id="description" placeholder="{{constants['d_SetViewerDetails'][set_name]['QuickAdd']['description']}}"></textarea>
+			<textarea style="width:100%; border:0; font-size:14px;{% if set_name in ['BigO', 'ImIn', 'Diary'] %}font-weight:bold;{% endif %}" class="autoExpand QuickKsuDescription" rows="1" data-min-rows='1' name="description" id="description" placeholder="{{constants['d_SetViewerDetails'][set_name]['QuickAdd']['description']}}"></textarea>
 			<textarea class="hidden" name="secondary_description" id="secondary_description"></textarea>
 		</div>
 
@@ -240,7 +240,7 @@
 			<div class="col-xs-3" style="text-align:right;"><b>Achievement Value</b></div>
 			<div class="col-xs-3">
 				<select class="form-control DummyInput" ksuattr="kpts_value" id="BigO_kpts_value">
-					{% for value in constants['l_Fibonacci_1_8'] %}														
+					{% for value in constants['l_Fibonacci'] %}														
 						<option value="{{value}}"> {{value}} </option>							
 					{% endfor %}
 				</select>
@@ -256,10 +256,10 @@
 
 		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 		<div class="row">
-			<div class="col-xs-3" style="text-align:right;"><b>Excitement Level</b></div>
+			<div class="col-xs-3" style="text-align:right;"><b>Achievement Level</b></div>
 			<div class="col-xs-3">
 				<select class="form-control DummyInput" ksuattr="kpts_value" id="Wish_kpts_value">
-					{% for value in constants['l_Fibonacci_1_8'] %}														
+					{% for value in constants['l_Fibonacci'] %}														
 						<option value="{{value}}"> {{value}} </option>							
 					{% endfor %}
 				</select>
@@ -2706,7 +2706,7 @@
 							<span style="color:red; font-style:italic; font-weight:bold; font-size:12px;"> Must avoid:</span> 
 						{% endif %}								
 
-						<textarea style="width:100%; border:0; font-weight:bold; {% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#b1adad;{% endif %}" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
+						<textarea style="width:100%; border:0; {% if ksu.ksu_type in ['ImIn', 'BigO', 'Diary'] %}font-weight:bold;{% endif %}{% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#b1adad;{% endif %}" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
 
 						{% if ksu.ksu_type in ['ImIn', 'BigO', 'Diary'] %}
 							<span style="color:grey; font-style:italic; font-size:13px;">
@@ -2988,7 +2988,7 @@
 							<div class="col-xs-3" style="text-align:right;"><b>Achievement Value</b></div>
 							<div class="col-xs-3">
 							<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
-								{% for value in constants['l_Fibonacci_1_8'] %}
+								{% for value in constants['l_Fibonacci'] %}
 									{% if ksu.kpts_value == value %}																					
 										<option selected="selected" value="{{value}}"> {{value}} </option>
 									{% else %}
@@ -3007,10 +3007,10 @@
 						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 					
 						<div class="row">
-							<div class="col-xs-3" style="text-align:right;"><b>Excitement Level</b></div>
+							<div class="col-xs-3" style="text-align:right;"><b>Achievement Value</b></div>
 							<div class="col-xs-3">
 							<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
-								{% for value in constants['l_Fibonacci_1_8'] %}
+								{% for value in constants['l_Fibonacci'] %}
 									{% if ksu.kpts_value == value %}																					
 										<option selected="selected" value="{{value}}"> {{value}} </option>
 									{% else %}

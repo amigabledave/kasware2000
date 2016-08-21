@@ -73,10 +73,14 @@ class Handler(webapp2.RequestHandler):
 		else:
 			return t.render(**kw)
 
-	def print_html(self, template, **kw):##
+	def print_html(self, template, **kw):#xx
+		ksu_to_remember = {}
+		if self.theory:
+			ksu_to_remember = get_ksu_to_remember(self)
+		
 		quote =  quotes[random.randrange(0,500)]
 		quote['quote'] = quote['quote'].replace("&#39;","'")
-		self.write(self.render_html(template, quote=quote, **kw))
+		self.write(self.render_html(template, quote=quote, ksu_to_remember=ksu_to_remember, **kw))
 
 	def set_secure_cookie(self, cookie_name, cookie_value):
 		cookie_secure_value = make_secure_val(cookie_value)
@@ -1283,21 +1287,21 @@ class PopulateRandomTheory(Handler):
 		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour))
 
 		theory_parameters = [
-			[0	,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
-			[0, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
-			[0, {'ksu_type':'OTOA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
-			[0, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_value':0.25}],
-			[0, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4', 'kpts_value':5}],
-			[0, {'ksu_type':'BigO', 'ksu_subtype':'BigO'}],
-			[0, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
-			[0, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_event':today, 'kpts_value':1, 'frequency':7}],
-			[0, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_event':today, 'kpts_value':0.25, 'frequency':30}],
-			[0, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
-			[0, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
-			[0, {'ksu_type':'Diary', 'ksu_subtype':'Diary', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
-			[0, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
-			[0, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
-			[0, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}]
+			[3	,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
+			[3, {'ksu_type':'OTOA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_value':0.25}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4', 'kpts_value':5}],
+			[3, {'ksu_type':'BigO', 'ksu_subtype':'BigO'}],
+			[3, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
+			[3, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_event':today, 'kpts_value':1, 'frequency':7}],
+			[3, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_event':today, 'kpts_value':0.25, 'frequency':30}],
+			[3, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
+			[3, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
+			[3, {'ksu_type':'Diary', 'ksu_subtype':'Diary', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[3, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[3, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[3, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}]
 		]
 
 		for e in theory_parameters:
@@ -1686,6 +1690,33 @@ def determine_rows(ksu_description):
 	if not ksu_description:
 		return 0
 	return int(math.ceil((len(ksu_description)/64.0)))
+
+def get_ksu_to_remember(self): #xx
+	user_key = self.theory.key
+
+	sets_to_remember = ['Idea', 'Wish', 'RTBG']
+	ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.is_active == True).order(KSU.times_reviewed).order(KSU.importance).order(KSU.created)
+
+	if self.theory.hide_private_ksus:
+		ksu_set = ksu_set.filter(KSU.is_private == False)
+
+	ksu_set = ksu_set.fetch()
+	filtered_ksu_set = []
+
+	for ksu in ksu_set:
+		if ksu.ksu_type in sets_to_remember:
+			filtered_ksu_set.append(ksu)
+
+	ksu_less_reviewed = filtered_ksu_set[0]
+	ksu_less_reviewed.times_reviewed += 1
+	ksu_less_reviewed.put()
+
+	return ksu_less_reviewed
+	
+
+
+
+
 
 
 #--- Validation and security functions ----------

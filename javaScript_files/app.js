@@ -501,8 +501,8 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#kpts_value').val(0.25);
 		ksu.find('#KAS3_kpts_value').val(0.25);
 		ksu.find('#KAS4_kpts_value').val(0.25);
-		ksu.find('#BigO_kpts_value').val(1);
-		ksu.find('#Wish_kpts_value').val(1);
+		ksu.find('#BigO_kpts_value').val(0.25);
+		ksu.find('#Wish_kpts_value').val(0.25);
 		ksu.find('#EVPo_kpts_value').val(0.25);
 		ksu.find('#ImPe_kpts_value').val(0.25);
 

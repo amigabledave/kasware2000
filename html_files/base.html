@@ -143,18 +143,33 @@
 
 		{% if theory %}
 			<div class="col-xs-4" style="margin-left:0; margin-right:0; padding:0; width:38%">				
-				<div class="row KSUdisplaySection" style="margin-top: 30px; padding-bottom:8px; height:200px;">
+				<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu_to_remember.key.id()}}" style="margin-top: 30px; padding-bottom:8px; min-height:100px;">
 					<div class="col-xs-12 displaySectionDescription">
-						<span style="color:grey;"> Remember remember: (Ideas) </span>
-						<br>
-						<br>
-						<span style="color:grey;"> Do you want to to something about this? (Wishes)</span>
-						<br>
-						<br>
-						<span style="color:grey;"> Define the next action required to reach your objective! (Objective)</span>
+						<div class="row" style="margin-bottom:5px;">
+							<div class="col-xs-11"><span style="font-weight: bold; font-style: italic;"> Remember your {{constants['d_KsuSubtypes'][ksu_to_remember.ksu_subtype]}}</span></div>
+
+							<div class="col-xs-1" style="padding-left:0px">
+								<button type="button" class="btn btn-default displaySectionVerticalButton ViewerOptionsButton RedirectUserButton" name="action_description" value='EditKSU'>
+									<span class="glyphicon glyphicon-pencil" style="margin-left:2px;"></span></button>
+							</div>
+
+
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								{{ksu_to_remember.description}}
+							</div>
+						</div>
 					</div>
 				</div>
-				<div class="row KSUdisplaySection" id="NewKSU" ksutype="Idea" ksusubtype="Idea" value="NewKSU" style="margin-top: 30px; padding-bottom:8px; min-height:100px;">
+
+				<div class="row">
+					<div class="col-xs-12"> 
+						<div class="SectionTitle" style="font-size:26px;"> Current Objectives</div>
+					</div>
+				</div>
+
+				<div class="row KSUdisplaySection" id="NewKSU" ksutype="Idea" ksusubtype="Idea" value="NewKSU" style="padding-bottom:8px; min-height:40px;">
 					<div class="col-xs-12 displaySectionDescription">
 						<div class="row">
 							<div class="col-xs-10"><span style="color:grey;"> Featured KSU (Principle):</span></div>
