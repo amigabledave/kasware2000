@@ -346,7 +346,7 @@ class Settings(Handler):
 
 		active_date = user_today.toordinal()
 		
-		self.print_html('Settings.html', today=today, local_today=local_today, user_today=user_today)
+		self.print_html('Settings.html', today=today, local_today=local_today, user_today=user_today, constants=constants)
 
 
 	@super_user_bouncer
@@ -474,9 +474,12 @@ class SetViewer(Handler):
 	def get(self):
 		set_name = self.request.get('set_name')
 		user_key = self.theory.key
-		set_title =''
+		ksu_id = self.request.get('ksu_id')
+		set_title = constants['d_SetTitles'][set_name]
 		parent_id = ''
 		parent_tags = ''
+		dreams = []
+		view_type = ''
 
 		if not set_name:
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(KSU.importance).order(KSU.created).fetch()
@@ -490,23 +493,28 @@ class SetViewer(Handler):
 		elif set_name == 'Graveyard':
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == True, KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch()
 
-		elif set_name == 'BOKA':
-			ksu_id = self.request.get('ksu_id')
+		elif ksu_id:			
 			ksu = KSU.get_by_id(int(ksu_id))
 			ksu_key = ksu.key			
 			ksu_set = KSU.query(KSU.parent_id == ksu_key).filter(KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch()
 			set_title = ksu.description
 			parent_id = ksu_id
 			parent_tags = ksu.tags
+			view_type ='Plan'
 		
 		else:
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(KSU.ksu_subtype).order(-KSU.is_active).order(KSU.importance).order(KSU.created)
 
 			if self.theory.hide_private_ksus:
 				ksu_set = ksu_set.filter(KSU.is_private == False)
-			
+		
 			ksu_set = ksu_set.fetch()
 		
+
+			if set_name == 'BigO':
+				ksu_set = self.remove_inactive_child_objectives(ksu_set)
+				dreams = self.get_active_dreams(user_key)
+
 
 		for ksu in ksu_set:
 			ksu.description_rows = determine_rows(ksu.description)
@@ -515,7 +523,7 @@ class SetViewer(Handler):
 
 		
 		tags = categories = self.theory.categories['tags'] # por el quick adder
-		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, parent_tags=parent_tags) #
+		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, parent_tags=parent_tags, dreams=dreams, view_type=view_type) #
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -549,6 +557,21 @@ class SetViewer(Handler):
 
 		return main_result + secondary_result
 
+	def get_active_dreams(self, user_key):
+		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == 'Wish', KSU.is_critical == True).order(KSU.importance).order(KSU.created)
+		dreams = [(None,'-- Target Dream --')]
+		for ksu in ksu_set:
+			dreams.append((ksu.key.id(), ksu.description))
+		return dreams
+
+	def remove_inactive_child_objectives(self, objectives):
+		result = []
+		for ksu in objectives:
+			if not ksu.parent_id:
+				result.append(ksu)
+			elif ksu.is_active:
+				result.append(ksu)
+		return result
 
 class MissionViewer(Handler):
 
@@ -598,14 +621,6 @@ class MissionViewer(Handler):
 		theory = self.theory
 		user_key = theory.key
 
-		## Apendix - TBD after update xx
-		# old_ksu_set = KSU.query(KSU.theory == user_key).fetch()
-		# for ksu in old_ksu_set:		
-		# 	ksu.mission_importance = 3
-		# 	ksu.put()
-		#
-
-
 		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date()
@@ -622,11 +637,6 @@ class MissionViewer(Handler):
 			ksu_set = ksu_set.order(KSU.best_time).order(KSU.mission_importance).fetch()
 		else:
 			ksu_set = ksu_set.order(KSU.next_event).order(KSU.mission_importance).order(KSU.best_time).fetch()
-
-		# if time_frame == 'Today':
-		# 	ksu_set = ksu_set.order(KSU.best_time).order(KSU.importance).fetch()
-		# else:
-		# 	ksu_set = ksu_set.order(KSU.next_event).order(KSU.importance).order(KSU.best_time).fetch()
 
 
 		full_mission = {
@@ -1076,9 +1086,10 @@ class EventHandler(Handler):
 			if attr_value == 'None':
 				ksu.parent_id = None
 			else:	
-				parent_ksu = KSU.get_by_id(int(attr_value))
+				parent_ksu = KSU.get_by_id(int(attr_value)) #xx
 				ksu.parent_id = parent_ksu.key
-				ksu.ksu_type = 'BOKA'
+				if ksu.ksu_subtype == 'KAS2':
+					ksu.ksu_type = 'BOKA'
 
 		ksu.put()	
 		return updated_value
@@ -1310,10 +1321,10 @@ class PopulateRandomTheory(Handler):
 			[3, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_event':today, 'kpts_value':0.25, 'frequency':30}],
 			[3, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
 			[3, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
-			[3, {'ksu_type':'Diary', 'ksu_subtype':'Diary', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
-			[3, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
-			[3, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
-			[3, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}]
+			[1, {'ksu_type':'Diary', 'ksu_subtype':'Diary', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[1, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[1, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[1, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}]
 		]
 
 		for e in theory_parameters:
@@ -1628,7 +1639,8 @@ def prepareInputForSaving(theory, ksu, post_details):
 				parent_ksu = KSU.get_by_id(int(a_val))
 				parent_key = parent_ksu.key
 				ksu.parent_id = parent_key
-				ksu.ksu_type = 'BOKA'
+				if post_details['ksu_type'] != 'BigO':
+					ksu.ksu_type = 'BOKA'
 
 	setattr(ksu, 'repeats_on', d_repeats_on)
 	
@@ -1742,10 +1754,6 @@ def get_ksu_to_remember(self):
 
 	return ksu_less_reviewed, current_objectives
 	
-
-
-
-
 
 
 #--- Validation and security functions ----------

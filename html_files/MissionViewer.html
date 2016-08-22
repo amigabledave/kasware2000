@@ -576,6 +576,7 @@
 
 <div class="row KSUdisplaySection" id="NewKSU" ksutype="OTOA" ksusubtype="KAS2" value="NewKSU" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 	<form method="post">
+	<input class="hidden" type="text" name="parent_id" id="parent_id" value="">
 	<input type="checkbox" id="is_active"  class="hidden" checked>
 	<div class="col-xs-12">
 		<div class="row">
@@ -653,7 +654,7 @@
 
 				<div class="col-xs-8">
 					<label> Targeted Objective </label>
-					<select class="form-control" name="parent_id" id="parent_id">
+					<select class="form-control DummyInput" ksuattr="parent_id" id="OTOA_parent_id">
 						{% for (ksu_id, description) in objectives %}																				
 							<option value="{{ksu_id}}"> {{description}} </option>								
 						{% endfor %}

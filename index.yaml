@@ -229,6 +229,16 @@ indexes:
   - name: is_active
   - name: ksu_type
   - name: theory
+  - name: ksu_subtype
+  - name: importance
+  - name: created
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: is_active
+  - name: ksu_type
+  - name: theory
   - name: times_reviewed
   - name: importance
   - name: created
@@ -247,6 +257,15 @@ indexes:
   - name: is_active
   - name: theory
   - name: times_reviewed
+  - name: importance
+  - name: created
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: is_critical
+  - name: ksu_type
+  - name: theory
   - name: importance
   - name: created
 

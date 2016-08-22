@@ -54,6 +54,11 @@ $('.DummyInput').on('change',function(){
 	if (ksu_attr == 'best_time'){
 		$('#best_time').val(this.value);
 	};
+// xx
+	if (ksu_attr == 'parent_id'){
+		$('#parent_id').val(this.value);
+	};
+
 });
 
 
@@ -369,6 +374,9 @@ $(document).on('click', '.RedirectUserButton', function(){
 	
 	} else if ( user_action == 'ViewBigOPlan') {
 		window.location.href = '/SetViewer?set_name=BOKA&ksu_id='+ksu_id;
+
+	} else if ( user_action == 'ViewDreamPlan') {
+		window.location.href = '/SetViewer?set_name=BigO&ksu_id='+ksu_id;
 	}
 
 
@@ -380,7 +388,7 @@ $('.SaveNewKSUButton').on('click', function(){
 	var ksu = $(this).closest('#NewKSU');
 	var ksu_type = ksu.attr("ksutype");
 	var ksu_subtype = ksu.attr("ksusubtype");
-	var parent_id = ksu.attr("parentid");
+	var parent_id = ksu.find('#parent_id').val();
 	if (parent_id == undefined){
 		parent_id = ksu.find('#parent_id option:selected').val();
 	};
@@ -661,7 +669,7 @@ $(document).on('focusout', '.QuickAttributeUpdate', function(){
 	var ksu_id = ksu.attr("value");
 	var content_type = 'KSU';
 	console.log(ksu.attr("KSUorEvent") == 'Event');
-	//xx 
+
 	if (ksu.attr("KSUorEvent") == 'Event'){ 
 		content_type = 'Event'
 	};
