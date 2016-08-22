@@ -67,7 +67,7 @@ d_SetTitles = {
 	'KeyA': 'Key Actions Set',
 	'BOKA': 'Objective Plan',
 	'BigO': 'Objectives',
-	'Wish': 'Wishes',
+	'Wish': 'Dreams & Wishes',
 	'EVPo': 'Joy Generators',
 	'ImPe': 'Important People',
 	'Idea': 'Principles',
