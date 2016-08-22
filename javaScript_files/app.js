@@ -12,6 +12,7 @@ $('.ExpandColapseSection').on('click', function(){
 $('#ShowHideReactiveMission').on('click', function(){
 		
 	$('#reactive_mission').toggleClass('hidden');
+	$('#ActionsToExecuteSubTitle').toggleClass('hidden');	
 	$('#Upcoming').toggleClass('hidden');
 
 	var GlaphiconDiv = $('#MissionPlusMinusGlyphicon');

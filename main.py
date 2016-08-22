@@ -72,7 +72,7 @@ class Handler(webapp2.RequestHandler):
 		else:
 			return t.render(**kw)
 
-	def print_html(self, template, **kw):#xx
+	def print_html(self, template, **kw):
 		ksu_to_remember = {}
 		current_objectives = []
 		if self.theory:
@@ -597,7 +597,15 @@ class MissionViewer(Handler):
 
 		theory = self.theory
 		user_key = theory.key
-		
+
+		## Apendix - TBD after update xx
+		# old_ksu_set = KSU.query(KSU.theory == user_key).fetch()
+		# for ksu in old_ksu_set:		
+		# 	ksu.mission_importance = 3
+		# 	ksu.put()
+		#
+
+
 		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date()
@@ -614,6 +622,12 @@ class MissionViewer(Handler):
 			ksu_set = ksu_set.order(KSU.best_time).order(KSU.mission_importance).fetch()
 		else:
 			ksu_set = ksu_set.order(KSU.next_event).order(KSU.mission_importance).order(KSU.best_time).fetch()
+
+		# if time_frame == 'Today':
+		# 	ksu_set = ksu_set.order(KSU.best_time).order(KSU.importance).fetch()
+		# else:
+		# 	ksu_set = ksu_set.order(KSU.next_event).order(KSU.importance).order(KSU.best_time).fetch()
+
 
 		full_mission = {
 			'today':{
@@ -1689,7 +1703,7 @@ def determine_rows(ksu_description):
 		return 0
 	return int(math.ceil((len(ksu_description)/64.0)))
 
-def get_ksu_to_remember(self): #xx
+def get_ksu_to_remember(self):
 	
 	theory = self.theory
 	user_key = theory.key
