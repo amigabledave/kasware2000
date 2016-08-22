@@ -558,7 +558,7 @@ class SetViewer(Handler):
 		return main_result + secondary_result
 
 	def get_active_dreams(self, user_key):
-		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == 'Wish', KSU.is_critical == True).order(KSU.importance).order(KSU.created)
+		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == 'Wish', KSU.is_critical == True, KSU.is_active == True).order(KSU.importance).order(KSU.created)
 		dreams = [(None,'-- Target Dream --')]
 		for ksu in ksu_set:
 			dreams.append((ksu.key.id(), ksu.description))
