@@ -61,6 +61,7 @@ d_SetTitles = {
 	'Upcoming':'Upcoming',
 	'Graveyard':'Graveyard',
 	'BigOPlan': 'BigO Plan',
+	'TheoryQuery': 'Theory Query',
 
 	'SomedayMaybe': 'Someday Maybe', 
 	'Gene': 'In-Basket',

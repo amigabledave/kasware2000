@@ -1,4 +1,28 @@
 
+$(document).on('focusout', '.SettingsTag', function(){
+	var original_tag = $(this).attr("originaltag");
+	var new_tag = $(this).val();
+	
+	console.log(original_tag);
+	console.log(new_tag);
+
+	$.ajax({
+		type: "POST",
+		url: "/EventHandler",
+		dataType: 'json',
+		data: JSON.stringify({
+			'user_action': 'UpdateSettingsTag',
+			'original_tag': original_tag,
+			'new_tag':new_tag,
+		})
+	})
+	.done(function(data){
+		console.log('Tag Succesfully Updated');
+	})
+});
+
+
+
 $('.ExpandColapseSection').on('click', function(){
 	var target_section = $(this).attr("targetsection")
 	$(target_section).toggleClass('hidden');
@@ -54,11 +78,10 @@ $('.DummyInput').on('change',function(){
 	if (ksu_attr == 'best_time'){
 		$('#best_time').val(this.value);
 	};
-// xx
+
 	if (ksu_attr == 'parent_id'){
 		$('#parent_id').val(this.value);
 	};
-
 });
 
 
@@ -378,8 +401,6 @@ $(document).on('click', '.RedirectUserButton', function(){
 	} else if ( user_action == 'ViewDreamPlan') {
 		window.location.href = '/SetViewer?set_name=BigO&ksu_id='+ksu_id;
 	}
-
-
 });
 
 

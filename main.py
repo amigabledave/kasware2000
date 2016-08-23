@@ -346,7 +346,9 @@ class Settings(Handler):
 
 		active_date = user_today.toordinal()
 		
-		self.print_html('Settings.html', today=today, local_today=local_today, user_today=user_today, constants=constants)
+		tags = self.theory.categories['tags']
+
+		self.print_html('Settings.html', today=today, local_today=local_today, user_today=user_today, constants=constants, tags=tags)
 
 
 	@super_user_bouncer
@@ -522,7 +524,7 @@ class SetViewer(Handler):
 			ksu.comments_rows = determine_rows(ksu.comments)
 
 		
-		tags = categories = self.theory.categories['tags'] # por el quick adder
+		tags =self.theory.categories['tags'] # por el quick adder
 		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, parent_tags=parent_tags, dreams=dreams, view_type=view_type) #
 
 	@super_user_bouncer
@@ -572,6 +574,7 @@ class SetViewer(Handler):
 			elif ksu.is_active:
 				result.append(ksu)
 		return result
+
 
 class MissionViewer(Handler):
 
@@ -786,6 +789,9 @@ class EventHandler(Handler):
 		print 'Si llego el AJAX Request. User action: ' + user_action + '. Event details: ' +  str(event_details)
 		print
 
+		if user_action == 'UpdateSettingsTag':
+			self.update_tags_from_settings(event_details['original_tag'], event_details['new_tag'])
+			return
 
 		if user_action == 'SaveNewKSU':			
 			ksu = KSU(theory=self.theory.key)
@@ -1086,7 +1092,7 @@ class EventHandler(Handler):
 			if attr_value == 'None':
 				ksu.parent_id = None
 			else:	
-				parent_ksu = KSU.get_by_id(int(attr_value)) #xx
+				parent_ksu = KSU.get_by_id(int(attr_value))
 				ksu.parent_id = parent_ksu.key
 				if ksu.ksu_subtype == 'KAS2':
 					ksu.ksu_type = 'BOKA'
@@ -1095,7 +1101,54 @@ class EventHandler(Handler):
 		return updated_value
 
 
-	def create_new_ksu_from_viewer(self):
+	def update_tags_from_settings(self, original_tag, new_tag): #xx		
+		theory = self.theory
+		current_tags = self.theory.categories['tags']
+		new_tag = prepare_new_tag_for_saving(new_tag)
+		new_tags = replace_in_list(current_tags, original_tag, new_tag)
+		theory.categories['tags'] = new_tags
+		theory.put()		
+
+		ksu_set = KSU.query(KSU.theory == theory.key ).fetch()
+		
+		print 'los originales'
+		print original_tag
+		print new_tag
+
+		for ksu in ksu_set:
+			tags_string = ksu.tags			
+			print
+			print tags_string
+			print tags_string and original_tag in tags_string			 
+
+			if tags_string and original_tag in tags_string:
+				tags_string = tags_string.replace(', ',',')							
+				print tags_string
+				new_tags_string = ''
+				ksu_tags = tags_string.split(',')
+				print ksu_tags
+
+				
+				i = len(ksu_tags)
+				if i == 1 and new_tag == '':
+					ksu.tags = None
+					ksu.put()
+					return
+				
+				for tag in ksu_tags:
+					i -= 1
+					if tag == original_tag:
+						if new_tag != '':
+							new_tags_string += new_tag
+							if i > 0:
+								new_tags_string += ', '
+					else:
+						new_tags_string += tag
+						if i > 0:
+							new_tags_string += ', '
+
+				ksu.tags = new_tags_string
+				ksu.put()
 		return
 
 
@@ -1685,7 +1738,8 @@ def remplaza_acentos(palabra):
 def prepare_tags_for_saving(tags_string):
 
 	tags_string = remplaza_acentos(tags_string)
-	valid_characters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','_',',','1','2','3','4','5','6','7','8','9','0']
+	tags_string = tags_string.replace(', ',',')
+	valid_characters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',' ','&','!','_',',','1','2','3','4','5','6','7','8','9','0']
 	clean_tags_string = ''
 	for i in range(0,len(tags_string)):
 		character = tags_string[i]
@@ -1693,14 +1747,32 @@ def prepare_tags_for_saving(tags_string):
 			clean_tags_string += character
 	tags = clean_tags_string.split(',')
 	final_tags_string = ''
-	i = len(tags)
-	for tag in tags:
-		i -= 1
-		final_tags_string += tag
-		if i > 0:
-			final_tags_string += ', '
 
+
+	final_tags_string = tags_string.replace(',',', ')
 	return final_tags_string, tags
+
+def prepare_new_tag_for_saving(new_tag):
+
+	tags_string = remplaza_acentos(new_tag)
+	tags_string = tags_string.replace(', ',',')
+	valid_characters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',' ','&','!','_','1','2','3','4','5','6','7','8','9','0']
+	clean_tags_string = ''
+	for i in range(0,len(tags_string)):
+		character = tags_string[i]
+		if character in valid_characters:
+			clean_tags_string += character
+	return clean_tags_string
+
+def replace_in_list(target_list, old_value, new_value): #xx
+	new_list = []
+	for e in target_list:
+		if e == old_value: 
+			if new_value !='':
+				new_list.append(new_value)
+		else:
+			new_list.append(e)
+	return new_list
 
 def update_user_tags(theory, tags):
 
@@ -1748,9 +1820,14 @@ def get_ksu_to_remember(self):
 			
 			current_objectives.append(ksu)
 
-	ksu_less_reviewed = filtered_ksu_set[0]
-	ksu_less_reviewed.times_reviewed += 1
-	ksu_less_reviewed.put()
+	
+	#xx - BUG ALERT! Necesito solucionar lo que pasa si el tamano de la lista es 0
+	if filtered_ksu_set:
+		ksu_less_reviewed = filtered_ksu_set[0]
+		ksu_less_reviewed.times_reviewed += 1
+		ksu_less_reviewed.put()
+	else:
+		ksu_less_reviewed = {}
 
 	return ksu_less_reviewed, current_objectives
 	
