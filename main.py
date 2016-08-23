@@ -588,7 +588,14 @@ class SetViewer(Handler):
 				ksu.tags = 'NoTags'
 
 		set_tags = ['NoTags'] + sorted(set_tags)
-		return ksu_set, set_tags 
+
+		tags_tuples = []
+		i = 0
+		for tag in set_tags:
+			tags_tuples.append(('TagId_' + str(i),tag))
+			i += 1
+
+		return ksu_set, tags_tuples 
 
 
 class MissionViewer(Handler):

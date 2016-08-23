@@ -1,3 +1,12 @@
+$('#ShowHideTagContents').on('click', function(){		
+	$('.tag_content').toggleClass('hidden');
+	
+	var GlaphiconDiv = $('.TagPlusMinus');
+	
+	GlaphiconDiv.toggleClass('glyphicon-minus');
+	GlaphiconDiv.toggleClass('glyphicon-plus');	
+});
+
 
 $(document).on('focusout', '.SettingsTag', function(){
 	var original_tag = $(this).attr("originaltag");
@@ -20,7 +29,6 @@ $(document).on('focusout', '.SettingsTag', function(){
 		console.log('Tag Succesfully Updated');
 	})
 });
-
 
 
 $('.ExpandColapseSection').on('click', function(){
