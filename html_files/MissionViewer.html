@@ -76,17 +76,30 @@
 						<div class="col-xs-12">
 							<div class="row">
 
-								<div class="col-xs-8">
-									{% if ksu.ksu_subtype != 'Diary' %}
-										<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_comments" id="event_comments" placeholder="Comment on this result"></textarea>								
-									{% endif %}
+
+								<div class="col-xs-2">
+									<div class="checkbox"> 
+										<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" {% if ksu.is_active %}checked{% endif %}> <b> Active </b> </label> 
+									</div>
+								</div>	
+
+								<div class="col-xs-2" style="padding-left:8px;">
+									<div class="checkbox"> 
+										<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" {% if ksu.is_critical %}checked{% endif %}> <b> Critical </b> </label> 
+									</div>			
 								</div>
 
-								<div class="col-xs-4">
+								<div class="col-xs-2" style="padding-left:3px;">
+									<div class="checkbox"> 
+							 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" {% if ksu.is_private %}checked{% endif %}> <b> Private </b> </label> 
+							 		</div>
+								</div>
+
+								<div class="col-xs-3"></div>
+
+								<div class="col-xs-3">
 
 									<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionPush' style="margin-right:10px;"><span class="glyphicon glyphicon-forward"  style="margin-left:5px;"></span></button>
-
-									<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-right:10px;"><span class="glyphicon glyphicon-remove"></span></button>
 
 									<button type="submit" class="btn btn-primary btn-circle btn-lg" name="action_description" value='EditKSU' style=""><span class="glyphicon glyphicon-pencil"></span></button>
 
@@ -511,17 +524,30 @@
 					<div class="col-xs-12">
 						<div class="row">
 
-							<div class="col-xs-8">
-								{% if ksu.ksu_subtype != 'Diary' %}
-									<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_comments" id="event_comments" placeholder="Comment on this result"></textarea>								
-								{% endif %}
+
+							<div class="col-xs-2">
+								<div class="checkbox"> 
+									<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" {% if ksu.is_active %}checked{% endif %}> <b> Active </b> </label> 
+								</div>
+							</div>	
+
+							<div class="col-xs-2" style="padding-left:8px;">
+								<div class="checkbox"> 
+									<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" {% if ksu.is_critical %}checked{% endif %}> <b> Critical </b> </label> 
+								</div>			
 							</div>
 
-							<div class="col-xs-4">
+							<div class="col-xs-2" style="padding-left:3px;">
+								<div class="checkbox"> 
+						 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" {% if ksu.is_private %}checked{% endif %}> <b> Private </b> </label> 
+						 		</div>
+							</div>
+
+							<div class="col-xs-3"></div>
+
+							<div class="col-xs-3">
 
 								<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionPush' style="margin-right:10px;"><span class="glyphicon glyphicon-forward"  style="margin-left:5px;"></span></button>
-
-								<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-right:10px;"><span class="glyphicon glyphicon-remove"></span></button>
 
 								<button type="submit" class="btn btn-primary btn-circle btn-lg" name="action_description" value='EditKSU' style=""><span class="glyphicon glyphicon-pencil"></span></button>
 
