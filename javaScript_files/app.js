@@ -1,5 +1,5 @@
 
-$('.SetViewerKSU').hover(
+$('.SetViewerKSU').hover(	
 	function(){
 		$(this).find('#TagsImportanceRow').toggleClass('hidden');
 	},

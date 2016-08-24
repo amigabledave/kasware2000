@@ -10,7 +10,7 @@
 <input type="text" class="form-control hidden" name="ksu_id" value="{{ksu['id']}}" id="ksu_id">
 
 <div class="row">
-	<div class="col-xs-12"><span class="NewEditKSU-title" id="KsuEditorTitle"> {% if ksu and ksu.ksu_type and ksu.ksu_type !='Gene'%}{{constants['d_KsuTypes'][ksu.ksu_type] + ' Editor'}}{% else %}KASware Standard Unit Editor{% endif %}</span></div>
+	<div class="col-xs-12"><span class="NewEditKSU-title" id="KsuEditorTitle"> {% if ksu and ksu.ksu_type and ksu.ksu_type not in ['Gene', 'BOKA'] %}{{constants['d_KsuTypes'][ksu.ksu_type] + ' Editor'}}{% elif ksu.ksu_type == 'BOKA' %}Objective Action Editor {% else %}KASware Standard Unit Editor{% endif %}</span></div>
 </div>
 <br>
 		

@@ -79,7 +79,7 @@ d_SetTitles = {
 d_KsuTypes = {
 	'Gene': '00. Unassigned',
 	'OTOA': '01. One Time Only Action',
-	'KeyA': '02. Key Action',
+	'KeyA': '02. Key Action', 
 	'BigO': '03. Objective',
 	'Wish': '04. Wish',
 	'Idea': '05. Principle',
