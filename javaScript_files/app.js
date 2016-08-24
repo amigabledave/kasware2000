@@ -1,3 +1,13 @@
+
+$('.SetViewerKSU').hover(
+	function(){
+		$(this).find('#TagsImportanceRow').toggleClass('hidden');
+	},
+	function(){
+		$(this).find('#TagsImportanceRow').toggleClass('hidden');
+	}
+	);
+
 $('#ShowHideTagContents').on('click', function(){		
 	$('.tag_content').toggleClass('hidden');
 	
