@@ -1012,19 +1012,6 @@
 								<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">	
 								<div class="row">
 									<div class="col-xs-6 col-sm-4">
-										<label> Reward</label>
-										<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value" style="margin-bottom:7px;">
-											{% for value in constants['l_Fibonacci'] %}
-												{% if ksu.kpts_value == value %}																					
-													<option selected="selected" value="{{value}}"> {{value}} </option>
-												{% else %}
-													<option value="{{value}}"> {{value}} </option>							
-												{% endif %}
-											{% endfor %}
-										</select>	
-									</div>
-
-									<div class="col-xs-6 col-sm-4">
 										<label> Next Event </label>
 										<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px; margin-bottom:7px;" name="next_event" id="next_event" value="{% if ksu.next_event %}{{ksu.next_event}}{% endif %}">
 									</div>	
@@ -1047,7 +1034,7 @@
 										</select> 
 									</div>
 
-									<div class="col-xs-12 col-sm-8 {% if ksu.repeats == 'R007'%}hidden{% endif %}" id="repeats_every">
+									<div class="col-xs-6 col-sm-8 {% if ksu.repeats == 'R007'%}hidden{% endif %}" id="repeats_every">
 
 										<div class="row">
 											<div class="col-xs-6 col-sm-4">
