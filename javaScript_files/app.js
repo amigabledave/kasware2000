@@ -100,6 +100,14 @@ $('.DummyInput').on('change',function(){
 	if (ksu_attr == 'parent_id'){
 		$('#parent_id').val(this.value);
 	};
+
+	if (ksu_attr == 'tags_value'){
+		$(this).closest('#NewKSU').find('#tags_value').val(this.value);
+	};
+
+	if (ksu_attr == 'tags'){
+		$(this).closest('#MissionKSU').find('#tags').val(this.value);
+	};
 });
 
 
@@ -544,6 +552,7 @@ $('.SaveNewKSUButton').on('click', function(){
 
 		if (ksu_type != 'BOKA'){
 			ksu.find('#tags_value').val('');
+			ksu.find('#Dummy_tags_value').val('');			
 		};
 		
 		ksu.find('#importance').val(3);
