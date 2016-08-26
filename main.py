@@ -969,7 +969,7 @@ class EventHandler(Handler):
 				ksu.in_graveyard = True
 
 			if ksu_subtype == 'Wish':				
-				event.kpts_type = 'Excitement'
+				event.kpts_type = 'Achievement'				
 				ksu.in_graveyard = True
 				
 			self.update_active_log(event)

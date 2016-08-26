@@ -4,7 +4,7 @@
 {% if time_frame == 'Today' and todays_questions_now %}
 	<div style="margin-top:30px;" id="QuestionsToAnswerNow">
 	{% for ksu in todays_questions_now %}
-		<div class="row KSUdisplaySection SetViewerKSU" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 			<form method="post">
 			<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
 				<div class="col-xs-12">
@@ -22,7 +22,7 @@
 						</div>
 					</div>
 
-					<div class="row hidden" id="TagsImportanceRow" style="margin-top:10px;">
+					<div class="row" id="TagsImportanceRow" style="margin-top:10px;">
 
 						
 						{% if ksu.ksu_subtype == 'Diary' %}
@@ -194,7 +194,7 @@
 		<div class="" id="KAS3_mission">
 		{% for ksu in KAS3_mission %}
 
-		<div class="row KSUdisplaySection SetViewerKSU" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 		<form method="post">
 		<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
 			<div class="col-xs-12">
@@ -213,7 +213,7 @@
 							</div>
 						</div>
 
-						<div class="row hidden" style="margin-top:5px;" id="TagsImportanceRow">
+						<div class="row" style="margin-top:5px;" id="TagsImportanceRow">
 
 							<div class="col-xs-3"></div>
 
@@ -319,7 +319,7 @@
 	<div class="" id="KAS4_mission">
 	{% for ksu in KAS4_mission %}
 
-		<div class="row KSUdisplaySection SetViewerKSU" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 		<form method="post">
 		<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
 			<div class="col-xs-12">
@@ -336,7 +336,7 @@
 							</div>
 						</div>
 
-						<div class="row hidden" style="margin-top:5px;" id="TagsImportanceRow">
+						<div class="row" style="margin-top:5px;" id="TagsImportanceRow">
 
 							<div class="col-xs-3"></div>
 
@@ -451,7 +451,7 @@
 	<div id="todays_questions_latter" class="">
 	{% for ksu in todays_questions_latter %}
 
-	<div class="row KSUdisplaySection SetViewerKSU" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+	<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 		<form method="post">
 		<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
 			<div class="col-xs-12">
@@ -469,7 +469,7 @@
 					</div>
 				</div>
 
-				<div class="row hidden" id="TagsImportanceRow" style="margin-top:10px;">
+				<div class="row" id="TagsImportanceRow" style="margin-top:10px;">
 
 					
 					{% if ksu.ksu_subtype == 'Diary' %}
@@ -743,7 +743,7 @@
 	</form>		
 </div>
 
-<div class="row KSUdisplaySection SetViewerKSU hidden" id="NewKSUTemplate_KAS2" value="NewKSUid" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+<div class="row KSUdisplaySection hidden" id="NewKSUTemplate_KAS2" value="NewKSUid" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 	<div class="col-xs-12">
 		<div class="row">
 			<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
@@ -878,7 +878,7 @@
 	{% if time_horizon == 'someday_maybe' %}</div>{% endif %}
 	<div id="{{time_horizon}}">
 		{% for ksu in full_mission[time_horizon]['horizon_set'] %}
-		<div class="row KSUdisplaySection SetViewerKSU" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 			<div class="col-xs-12">
 				<div class="row">
 					<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
@@ -897,7 +897,7 @@
 
 						</div>
 
-						<div class="row hidden" style="margin-top:5px;" id="TagsImportanceRow">
+						<div class="row" style="margin-top:5px;" id="TagsImportanceRow">
 						<!-- <div class="row" style="margin-top:5px;">	 -->
 							{% if time_frame == 'Today' %}
 							<div class="col-xs-5 col-sm-3">	
