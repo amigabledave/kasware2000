@@ -121,118 +121,90 @@
 				<label class="radio-inline">
 					<input type="radio" name="ksu_subtype" value="KAS4"> To be avoided </label></div>
 		</div>
-		
+		<!-- xx -->
 		<div class="{% if set_name != 'KeyA' %}hidden{% endif %}" id="KeyA_KAS1">
 			<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:12px;">	
 			<div class="row">
-				<div class="col-xs-4">
-					<label> Reward</label>
-					<select class="form-control" name="kpts_value" id="kpts_value">
-						{% for value in constants['l_Fibonacci'] %}																					
-							<option value="{{value}}"> {{value}} </option>							
-						{% endfor %}
-					</select>	
-				</div>
-
-				<div class="col-xs-4">
+				<div class="col-xs-6 col-sm-4">
 					<label> Next Event </label>
-					<input type="date" class="form-control" style="padding-right:3px;" name="next_event" id="next_event">
+					<input type="date" class="form-control" style="padding-right:3px; margin-bottom:7px;" name="next_event" id="next_event">
 				</div>	
 
-				<div class="col-xs-4">
+				<div class="col-xs-6 col-sm-4">
 					<label> Preferred Time </label>
-					<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control" name="best_time" id="best_time">	
+					<input style="padding-right:2px; padding-left:4px; margin-bottom:7px;" type="time" class="form-control" name="best_time" id="best_time">	
 				</div>				
-			</div>
-			
-			<div class="row" style="margin-top:10px;">
-				<div class="col-xs-4">
+
+				<div class="col-xs-6 col-sm-4">
 					<label> Repeats </label>
-					<select id="repeats" class="form-control" name="repeats">
-						{% for f in constants['l_repeats'] %}
-							<option value="{{f[0]}}"> {{f[1]}} </option>							
+					<select id="repeats" class="form-control KsuEditor_Repeats" name="repeats" style="margin-bottom:7px;">
+						{% for f in constants['l_repeats'] %}													
+							<option value="{{f[0]}}"> {{f[1]}} </option>								
 						{% endfor %}
 					</select> 
 				</div>
 
-				<div class="col-xs-8 {% if ksu.repeats != 'R007' %}hidden{% endif %}" id="repeats_on">
-				<div class="row" style="margin-top:15px;">
-			 		<div style="display: table; float:left; margin-right:15px;">
-			 		<div class="col-xs-1" style="margin-right:10px;">
-			 			<label style="display:table-row;"><b>Mon
-			 			<input style="display:table-row; width:100%;" type="checkbox" id="repeats_on_Mon"></b></label>		
-			 		</div><div class="col-xs-1" style="margin-right:10px;">
-			 			<label style="display:table-row;"><b>Tue 
-			 			<input style="display:table-row; width:100%;" type="checkbox" id="repeats_on_Tue"></b></label>
-					</div><div class="col-xs-1" style="margin-right:10px;">
-			 			<label style="display:table-row;"><b>Wed
-			 			<input style="display:table-row; width:100%;" type="checkbox" id="repeats_on_Wed"></b></label> 
-					</div><div class="col-xs-1" style="margin-right:10px;">			 			
-			 			<label style="display:table-row;"><b>Thu 
-			 			<input style="display:table-row; width:100%;" type="checkbox" id="repeats_on_Thu"></b></label>
-					</div><div class="col-xs-1" style="margin-right:10px;">			 		
-			 			<label style="display:table-row;"><b>Fri
-			 			<input style="display:table-row; width:100%;" type="checkbox" id="repeats_on_Fri"></b></label> 
-					</div><div class="col-xs-1" style="margin-right:10px;">			 		
-			 			<label style="display:table-row;"><b>Sat 
-			 			<input style="display:table-row; width:100%;" type="checkbox" id="repeats_on_Sat"></b></label>
-			 		</div><div class="col-xs-1" style="margin-right:10px;">
-			 			<label style="display:table-row;"><b>Sun 
-			 			<input style="display:table-row; width:100%;" type="checkbox" id="repeats_on_Sun"></b></label>
-			 		</div></div>
-				</div>
-				</div>
-
-				<div class="col-xs-8 {% if ksu.repeats == 'R007'%}hidden{% endif %}" id="repeats_every">
+				<div class="col-xs-6 col-sm-8 {% if ksu.repeats == 'R007'%}hidden{% endif %}" id="repeats_every">
 
 					<div class="row">
-						<div class="col-xs-4">
+						<div class="col-xs-6 col-sm-4">
 							<label> Every </label>
-							<input type="number" min="1" class="form-control" style="padding-right:3px;" name="frequency" id="frequency" placeholder="1"> 		
+							<input type="number" min="1" class="form-control" style="padding-right:3px; margin-bottom:7px;" name="frequency" id="frequency" placeholder="1"> 		
 						</div>
-						<div id="repeats_every_footnote" class="col-xs-8" style="position: absolute; bottom: 0; right: 0; padding-left: 0; font-style: italic;">Days
+						
+						<div id="repeats_every_footnote" class="col-xs-6 col-sm-8" style="position: absolute; bottom: 0; right: 0; padding-left: 0; font-style: italic; margin-bottom:7px;">Days
 						</div>									
 					</div>		
 				</div>
-			</div>	
+
+
+
+				<div class="col-xs-12 col-sm-8 {% if ksu.repeats != 'R007'%}hidden{% endif %}" id="repeats_on">
+					<div class="row" style="margin-top:15px;">
+				 		<div style="display: table; float:left; margin-right:15px;">
+				 		<div class="col-xs-1" style="margin-right:10px;">
+				 			<label style="display:table-row;"><b>Mon
+				 			<input style="display:table-row; width:100%;" type="checkbox" name="repeats_on_Mon" id="repeats_on_Mon"></b></label>		
+				 		</div><div class="col-xs-1" style="margin-right:10px;">
+				 			<label style="display:table-row;"><b>Tue 
+				 			<input style="display:table-row; width:100%;" type="checkbox" name="repeats_on_Tue" id="repeats_on_Tue"></b></label>
+						</div><div class="col-xs-1" style="margin-right:10px;">
+				 			<label style="display:table-row;"><b>Wed
+				 			<input style="display:table-row; width:100%;" type="checkbox" name="repeats_on_Wed" id="repeats_on_Wed"></b></label> 
+						</div><div class="col-xs-1" style="margin-right:10px;">			 			
+				 			<label style="display:table-row;"><b>Thu 
+				 			<input style="display:table-row; width:100%;" type="checkbox" name="repeats_on_Thu" id="repeats_on_Thu"></b></label>
+						</div><div class="col-xs-1" style="margin-right:10px;">			 		
+				 			<label style="display:table-row;"><b>Fri
+				 			<input style="display:table-row; width:100%;" type="checkbox" name="repeats_on_Fri" id="repeats_on_Fri"></b></label> 
+						</div><div class="col-xs-1" style="margin-right:10px;">			 		
+				 			<label style="display:table-row;"><b>Sat 
+				 			<input style="display:table-row; width:100%;" type="checkbox" name="repeats_on_Sat" id="repeats_on_Sat"></b></label>
+				 		</div><div class="col-xs-1" style="margin-right:10px;">
+				 			<label style="display:table-row;"><b>Sun 
+				 			<input style="display:table-row; width:100%;" type="checkbox" name="repeats_on_Sun" id="repeats_on_Sun"></b></label>
+				 		</div></div>
+					</div>
+				</div>
+			</div>
 		</div>	
 
 		<div class="hidden" id="KeyA_KAS3">
 			<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:12px;">
-			<div class="row" style="margin-bottom:8px;">				
-
-				<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-					<label> Reward</label>
-					<select class="form-control DummyInput" ksuattr="kpts_value" id="KAS3_kpts_value">
-						{% for value in constants['l_Fibonacci'] %}														
-							<option value="{{value}}"> {{value}} </option>							
-						{% endfor %}
-					</select>	
-				</div>
-
-				<div class="col-xs-9">
+			<div class="row" style="margin-bottom:8px;">								
+				<div class="col-xs-12">
 					<label>Trigger Circumstances </label>
-					<textarea class="form-control DummyInput autoExpand" rows="1" data-min-rows='1' ksuattr="secondary_description" id="KAS3_secondary_description" placeholder="e.g. A beautiful girl walks across the streat"></textarea>	
+					<textarea class="form-control DummyInput autoExpand" rows="1" data-min-rows='1' ksuattr="secondary_description" id="KAS3_secondary_description" placeholder="e.g. When someone tells me something that upsets me"></textarea>	
 				</div>
 			</div>
 		</div>
 				
 		<div class="hidden" id="KeyA_KAS4">	
 			<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:12px;">
-			<div class="row" style="margin-bottom:8px;">
-
-				<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-						<label> Punishment </label>
-						<select class="form-control DummyInput" ksuattr="kpts_value" id="KAS4_kpts_value">
-							{% for value in constants['l_Fibonacci'] %}																						
-								<option value="{{value}}"> {{value}} </option>								
-							{% endfor %}
-						</select>	
-				</div>
-					
-				<div class="col-xs-9">
+			<div class="row" style="margin-bottom:8px;">					
+				<div class="col-xs-12">
 					<label>Valid Exceptions</label>
-					<textarea class="form-control DummyInput autoExpand" rows="1" data-min-rows='1' ksuattr="secondary_description" id="KAS4_secondary_description" placeholder="e.g. When I'am on vacation, When the food its free!"></textarea>	
+					<textarea class="form-control DummyInput autoExpand" rows="1" data-min-rows='1' ksuattr="secondary_description" id="KAS4_secondary_description" placeholder="e.g. When I'am on vacation, When the food is free!"></textarea>	
 				</div>		
 			</div>
 		</div>
@@ -242,23 +214,25 @@
 
 		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 		<div class="row">		
-			<div class="col-xs-3" style="text-align:right;"><b>Achievement Value</b></div>
-			<div class="col-xs-3">
+	
+			<div class="col-xs-6">
+				<label>Achievement Value</label>
 				<select class="form-control DummyInput" ksuattr="kpts_value" id="BigO_kpts_value">
 					{% for value in constants['l_Fibonacci'] %}														
 						<option value="{{value}}"> {{value}} </option>							
 					{% endfor %}
 				</select>
 			</div>			
-			<div class="col-xs-2" style="text-align:right;"><b>Target Date </b></div>
-			<div class="col-xs-4" style="padding-left:0px;">
+
+			<div class="col-xs-6">
+				<label>Target Date</label>
 				<input type="date" class="form-control DummyInput" style="padding-right:3px;" id="BigO_next_event" ksuattr="next_event">		
 			</div>
 		</div>
 		{% if view_type != 'Plan' %}
-		<div class="row" style="margin-top:10px;">
+		<div class="row">
 			<div class="col-xs-12">
-				<!-- <label> Targeted Dream </label>	 -->
+				<label> Targeted Dream </label>	
 				<select class="form-control DummyInput" ksuattr="parent_id" id="BigO_parent_id">
 					{% for (ksu_id, description) in dreams %}																				
 						<option value="{{ksu_id}}"> {{description}} </option>								
@@ -432,29 +406,29 @@
 	<hr class="hr-1px-gray" style="margin-top:10px; margin-bottom:8px;">		
 	<div class="row" id="FooterClasificationAttributes">
 
-		<div class="col-xs-6" style="padding-right:0;">
-			<textarea class="autoExpand" style="border:0; width:100%;" rows="2" data-min-rows='2' id="comments" placeholder="Comments"></textarea>			
-		</div>
+			<div class="col-xs-4 col-sm-2">
+				<div class="checkbox"> 
+					<label> <input type="checkbox" id="is_active" checked> <b> Active </b> </label> 
+				</div>
+			</div>	
 
-		<div class="col-xs-2">
-			<div class="checkbox"> 
-				<label> <input type="checkbox" id="is_critical"> <b>{% if set_name != 'Wish' %} Critical {% else %} Dream {% endif %}</b> </label> 
-			</div>			
-		</div>
-
-		<div class="col-xs-2" style="padding-left:10px;">
-			<div class="checkbox"> 
-	 			<label> <input type="checkbox" id="is_private"> <b> Private </b> </label> 
-	 		</div>
-		</div>
-
-		<div class="col-xs-2" style="padding-left:8px;">
-			<div class="checkbox"> 
-				<label> <input type="checkbox" id="is_active" checked> <b> Active </b> </label> 
+			<div class="col-xs-4 col-sm-2" style="padding-left:8px;">
+				<div class="checkbox"> 
+					<label> <input type="checkbox" id="is_critical"> <b> Critical </b> </label> 
+				</div>			
 			</div>
-		</div>	
 
-	</div>
+
+			<div class="col-xs-4 col-sm-2" style="padding-left:3px;">
+				<div class="checkbox"> 
+		 			<label> <input type="checkbox" id="is_private"> <b> Private </b> </label> 
+		 		</div>
+			</div>
+
+			<div class="col-xs-12 col-sm-6">
+				<textarea class="autoExpand" style="border:0; width:100%;" rows="1" data-min-rows='1' id="comments" placeholder="Comments"></textarea>			
+			</div>
+		</div>
 	
 		</div>
 	</div>
@@ -2708,9 +2682,6 @@
 				<div class="SectionTitle" style="font-size:20px; margin-left:-25px;">{{tag}}</div>
 			</div>
 			
-<!-- 			<div class="col-xs-2" style="padding:0;">
-				<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#{{tag_id}}" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0; margin-top:4px;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-minus TagPlusMinus" style="font-size:20px;"></span></button>			
-			</div> -->
 		</div>
 
  	{% endif %}
@@ -2760,9 +2731,10 @@
 								</div>
 
 								{% if set_name != 'BOKA' %}
-								<div class="row hidden" style="margin-top:3px;" id="TagsImportanceRow">
+								<!-- <div class="row hidden" style="margin-top:3px;" id="TagsImportanceRow"> -->
+								<div class="row" style="margin-top:3px;">
 
-									<div class="col-xs-8">
+									<div class="col-xs-7 col-sm-8">
 										<input class="QuickAttributeUpdate" style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" type="text" list="tags" name="tags" id="tags" value="{% if ksu.tags and ksu.tags != 'NoTags' %}{{ksu.tags}}{% endif %}"> 
 									</div>
 									
@@ -2802,8 +2774,7 @@
 									{% endif %}
 										
 									</div>
-									<div class="col-xs-1" style="padding-left:0px;">
-
+									<div class="hidden-xs col-sm-1" style="padding-left:0px;">
 									{% if set_name == 'Graveyard' %}
 										<button type="button" class="btn btn-danger displaySectionVerticalButton UserActionButton ViewerOptionsButton" name='action_description' value='GraveyardDelete'>
 											<span class="glyphicon glyphicon-trash"></span>
@@ -2814,6 +2785,21 @@
 											<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
 							  		{% endif %}	
 									</div>
+
+
+									<div class="col-xs-1 hidden-sm hidden-md hidden-lg ">
+									{% if set_name == 'Graveyard' %}
+										<button type="button" class="btn btn-danger displaySectionVerticalButton UserActionButton ViewerOptionsButton" name='action_description' value='GraveyardDelete'>
+											<span class="glyphicon glyphicon-trash"></span>
+									  	</button>
+
+								  	{% else %}
+										<button type="button" class="btn btn-default displaySectionVerticalButton ShowDetailViewerButton ViewerOptionsButton" id="ShowDetailViewerButton">
+											<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+							  		{% endif %}	
+									</div>
+
+
 								</div>
 								{% else %}
 								<!-- xx -->
@@ -2865,28 +2851,28 @@
 								<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
 								<div class="row">
 									
-									<div class="col-xs-2">
+									<div class="col-xs-4 col-sm-2">
 										<div class="checkbox"> 
 											<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" {% if ksu.is_critical %}checked{% endif %}> <b>{% if set_name != 'Wish' %} Critical {% else %} Dream {% endif %}</b> </label> 
 										</div>			
 									</div>
 
-									<div class="col-xs-2" style="padding-left:10px;">
+									<div class="col-xs-4 col-sm-2" style="padding-left:10px;">
 										<div class="checkbox"> 
 								 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" {% if ksu.is_private %}checked{% endif %}> <b> Private </b> </label> 
 								 		</div>
 									</div>
 
-									<div class="col-xs-2" style="padding-left:8px;">
+									<div class="col-xs-4 col-sm-2" style="padding-left:8px;">
 										<div class="checkbox"> 
 											<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" {% if ksu.is_active %}checked{% endif %}> <b> Active </b> </label> 
 										</div>
 									</div>	
 
-									<div class="col-xs-{{3 - constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons_col']}}">
+									<div class="col-xs-{{6 - constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons_col']}} col-sm-{{3 - constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons_col']}}">
 									</div>
 									
-									<div class="col-xs-{{constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons_col'] + 3}}">
+									<div class="col-xs-{{constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons_col'] + 6}} col-sm-{{constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons_col'] + 3}}">
 
 									{% if 'Done' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}
 										<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
@@ -2906,52 +2892,52 @@
 										<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
 									</div>
 								
-								</div>					
+								</div>			
+								<!-- xx		 -->
 								<div class="row" id="KsuPlusOptions">
 									<div class="col-xs-12">
 									{%   if ksu.ksu_subtype == 'KAS1' %}
 										<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">	
-											<div class="row">
-												<div class="col-xs-4">
-													<label> Reward</label>
-													<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
-														{% for value in constants['l_Fibonacci'] %}
-															{% if ksu.kpts_value == value %}																					
-																<option selected="selected" value="{{value}}"> {{value}} </option>
-															{% else %}
-																<option value="{{value}}"> {{value}} </option>							
-															{% endif %}
-														{% endfor %}
-													</select>	
-												</div>
+										<div class="row">
+											<div class="col-xs-6 col-sm-4">
+												<label> Next Event </label>
+												<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px; margin-bottom:7px;" name="next_event" id="next_event" value="{% if ksu.next_event %}{{ksu.next_event}}{% endif %}">
+											</div>	
 
-												<div class="col-xs-4">
-													<label> Next Event </label>
-													<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" name="next_event" id="next_event" value="{% if ksu.next_event %}{{ksu.next_event}}{% endif %}">
-												</div>	
+											<div class="col-xs-6 col-sm-4">
+												<label> Preferred Time </label>
+												<input style="padding-right:2px; padding-left:4px; margin-bottom:7px;" type="time" class="form-control QuickAttributeUpdate" name="best_time" id="best_time" value="{% if ksu.best_time %}{{ksu.best_time}}{% endif %}">	
+											</div>				
 
-												<div class="col-xs-4">
-													<label> Preferred Time </label>
-													<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control QuickAttributeUpdate" name="best_time" id="best_time" value="{% if ksu.best_time %}{{ksu.best_time}}{% endif %}">	
-												</div>				
+											<div class="col-xs-6 col-sm-4">
+												<label> Repeats </label>
+												<select id="repeats" class="form-control KsuEditor_Repeats QuickAttributeUpdate" name="repeats" style="margin-bottom:7px;">
+													{% for f in constants['l_repeats'] %}
+														{% if f[0] == ksu.repeats %}
+														<option value="{{f[0]}}" selected="selected"> {{f[1]}} </option>
+														{% else %}
+														<option value="{{f[0]}}"> {{f[1]}} </option>	
+														{% endif %}						
+													{% endfor %}
+												</select> 
 											</div>
-											
 
-											<div class="row" style="margin-top:10px;">
-												<div class="col-xs-4">
-													<label> Repeats </label>
-													<select id="repeats" class="form-control KsuEditor_Repeats QuickAttributeUpdate" name="repeats">
-														{% for f in constants['l_repeats'] %}
-															{% if f[0] == ksu.repeats %}
-															<option value="{{f[0]}}" selected="selected"> {{f[1]}} </option>
-															{% else %}
-															<option value="{{f[0]}}"> {{f[1]}} </option>	
-															{% endif %}						
-														{% endfor %}
-													</select> 
-												</div>
+											<div class="col-xs-6 col-sm-8 {% if ksu.repeats == 'R007'%}hidden{% endif %}" id="repeats_every">
 
-												<div class="col-xs-8 {% if ksu.repeats != 'R007'%}hidden{% endif %}" id="repeats_on">
+												<div class="row">
+													<div class="col-xs-6 col-sm-4">
+														<label> Every </label>
+														<input type="number" min="1" class="form-control QuickAttributeUpdate" style="padding-right:3px; margin-bottom:7px;" name="frequency" id="frequency" placeholder="1" value="{% if ksu.frequency %}{{ksu.frequency}}{% endif %}"> 		
+													</div>
+													
+													<div id="repeats_every_footnote" class="col-xs-6 col-sm-8" style="position: absolute; bottom: 0; right: 0; padding-left: 0; font-style: italic; margin-bottom:7px;">Days
+													</div>									
+												</div>		
+											</div>
+
+
+
+											<div class="col-xs-12 col-sm-8 {% if ksu.repeats != 'R007'%}hidden{% endif %}" id="repeats_on">
 												<div class="row" style="margin-top:15px;">
 											 		<div style="display: table; float:left; margin-right:15px;">
 											 		<div class="col-xs-1" style="margin-right:10px;">
@@ -2977,63 +2963,23 @@
 											 			<input style="display:table-row; width:100%;" type="checkbox" {% if ksu and ksu.repeats_on['repeats_on_Sun']%}checked{% endif %} class="QuickAttributeUpdate" name="repeats_on_Sun" id="repeats_on_Sun"></b></label>
 											 		</div></div>
 												</div>
-												</div>
-
-												<div class="col-xs-8 {% if ksu.repeats == 'R007'%}hidden{% endif %}" id="repeats_every">
-
-													<div class="row">
-														<div class="col-xs-4">
-															<label> Every </label>
-															<input type="number" min="1" class="form-control QuickAttributeUpdate" style="padding-right:3px;" name="frequency" id="frequency" placeholder="1" value="{% if ksu.frequency %}{{ksu.frequency}}{% endif %}"> 		
-														</div>
-														
-														<div id="repeats_every_footnote" class="col-xs-8" style="position: absolute; bottom: 0; right: 0; padding-left: 0; font-style: italic;">Days
-														</div>									
-													</div>		
-												</div>
 											</div>
-									{% elif ksu.ksu_subtype == 'KAS3' %}
-										<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">		
-										<div class="row">
-											<div class="col-xs-4">		
-											<label> Reward</label>
-											<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
-												{% for value in constants['l_Fibonacci'] %}
-													{% if ksu.kpts_value == value %}																					
-														<option selected="selected" value="{{value}}"> {{value}} </option>
-													{% else %}
-														<option value="{{value}}"> {{value}} </option>							
-													{% endif %}
-												{% endfor %}
-											</select>
-											</div>
-										</div>
+										</div>										
 									{% elif ksu.ksu_subtype == 'KAS4' %}
 										<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">
-										<div class="row" style="margin-bottom:8px;">
-											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-													<label> Punishment </label>
-													<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
-														{% for value in constants['l_Fibonacci'] %}																						
-															{% if ksu.kpts_value == value %}
-															<option selected="selected" value="{{value}}"> {{value}} </option>
-															{% else %}
-															<option value="{{value}}"> {{value}} </option>								
-															{% endif %}
-														{% endfor %}
-													</select>	
-											</div>
-											<div class="col-xs-9">
+										<div class="row">
+											<div class="col-xs-12">
 												<label>Valid Exceptions</label>
 												<textarea class="form-control QuickAttributeUpdate autoExpand" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description" placeholder="e.g. When I'am on vacation, When the food its free!">{% if ksu.secondary_description %}{{ ksu.secondary_description }}{% endif %}</textarea>	
 											</div>		
 										</div>
 									{% elif ksu.ksu_type == 'BigO' %}
 									<!-- xx -->
-										<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+										<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:8px;">
 										<div class="row">								
-											<div class="col-xs-3" style="text-align:right;"><b>Achievement Value</b></div>
-											<div class="col-xs-3">
+											<!-- <div class="col-xs-3" style="text-align:right;"><b>Achievement Value</b></div> -->
+											<div class="col-xs-6">
+											<label>Achievement Value</label>
 											<select class="form-control QuickAttributeUpdate" name="kpts_value" id="kpts_value">
 												{% for value in constants['l_Fibonacci'] %}
 													{% if ksu.kpts_value == value %}																					
@@ -3045,14 +2991,15 @@
 											</select>
 											</div>
 
-											<div class="col-xs-2" style="text-align:right;"><b>Target Date </b></div>
-											<div class="col-xs-4" style="padding-left:0px;">
+											<!-- <div class="col-xs-2" style="text-align:right;"><b>Target Date </b></div> -->
+											<div class="col-xs-6"">
+												<label>Target Date</label>
 												<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">		
 											</div>
 										</div>
-										<div class="row" style="margin-top:10px;">
+										<div class="row">
 											<div class="col-xs-12">
-												<!-- <label> Targeted Dream </label>	 -->
+												<label> Targeted Dream </label>	
 												<select class="form-control QuickAttributeUpdate" name="parent_id" id="parent_id">
 													{% for (ksu_id, description) in dreams %}																				
 														{% if ksu.parent_id and ksu.parent_id.id() == ksu_id %}

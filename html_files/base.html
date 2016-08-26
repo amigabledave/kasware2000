@@ -52,7 +52,7 @@
 
 					<div class="col-xs-2 hidden-sm hidden-md hidden-lg">
 						<div class="dropdown">	
-							<button type="button" class="btn btn-default" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0; color:white; margin-top: 8px;" id="dLabel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" style="font-size:25px;"></span></button>
+							<button type="button" class="btn btn-default" style="background-color:transparent;border:1px; padding-top:3px; padding-bottom:0px;margin-left:0; color:white; margin-top: 5px;" id="dLabel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" style="font-size:25px;"></span></button>
 							<!-- xx					 -->
 							<ul class="dropdown-menu" aria-labelledby="dLabel"">
 								<li><a {% if time_frame == 'Today' %} class="active" {% endif %} href="/MissionViewer?time_frame=Today">Today's Mission</a></li>
@@ -68,6 +68,7 @@
 								<br>
 								<li><a {% if set_name == 'Diary' %} class="active" {% endif %} href="/SetViewer?set_name=Diary">Diary</a></li>
 								<li><a {% if set_name == 'ImIn' %} class="active" {% endif %} href="/SetViewer?set_name=ImIn">Indicators</a></li>
+								<li><a {% if set_name == 'Dashboard' %} class="active" {% endif %} href="/SetViewer?set_name=Dashboard">Dashboard</a></li>
 								<li><a {% if set_name == 'Graveyard' %} class="active" {% endif %} href="/SetViewer?set_name=Graveyard"> Graveyard </a></li>
 								<br>
 								<li><a href="/Settings">Settings</a></li>
@@ -151,7 +152,6 @@
 			
 			<div class="hidden-xs col-sm-3 col-md-2 col-lg-2">
 				<ul class="LeftNavigationBar">
-				  <!-- <li><a {% if set_name == 'Gene' %} class="active" {% endif %} href="/SetViewer?set_name=Gene">In-Basket</a></li> -->
 				  <li><a {% if time_frame == 'Today' %} class="active" {% endif %} href="/MissionViewer?time_frame=Today">Today's Mission</a></li>
 				  <li><a {% if time_frame == 'Upcoming' %} class="active" {% endif %} href="/MissionViewer?time_frame=Upcoming">Upcoming</a></li>
 				  <br>
@@ -166,6 +166,7 @@
 				  <br>
 				  <li><a {% if set_name == 'Diary' %} class="active" {% endif %} href="/SetViewer?set_name=Diary">Diary</a></li>
 				  <li><a {% if set_name == 'ImIn' %} class="active" {% endif %} href="/SetViewer?set_name=ImIn">Indicators</a></li>
+				  <li><a {% if set_name == 'Dashboard' %} class="active" {% endif %} href="/SetViewer?set_name=Dashboard">Dashboard</a></li>
 				  <li><a {% if set_name == 'Graveyard' %} class="active" {% endif %} href="/SetViewer?set_name=Graveyard"> Graveyard </a></li>
 				</ul>														
 			</div>
