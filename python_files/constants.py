@@ -62,6 +62,7 @@ d_SetTitles = {
 	'Graveyard':'Graveyard',
 	'BigOPlan': 'BigO Plan',
 	'TheoryQuery': 'Theory Query',
+	'Dashboard': 'Dashboard',
 
 	'SomedayMaybe': 'Someday Maybe', 
 	'Gene': 'In-Basket',
@@ -150,8 +151,8 @@ d_SetViewerDetails = {
 		'fields': {'pretty_next_event':'Next Event'},
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'Effort Reward',
-		'buttons_col':3,
-		'buttons':['Done', 'SendToMission']},
+		'buttons_col':2,
+		'buttons':['SendToMission']},
 
 	'KAS2':{		
 		'attributes': ['pretty_next_event'],
@@ -174,17 +175,17 @@ d_SetViewerDetails = {
 		'attributes': ['kpts_value'],
 		'fields': {'kpts_value':'Reward (Kpts.)'},
 		'columns': {'kpts_value':6},
-		'buttons_col':2,
+		'buttons_col':1,
 		'detailsLabel':'Effort Reward',
-		'buttons': ['Done']},
+		'buttons': []},
 
 	'KAS4':{
 		'attributes': ['kpts_value'],
 		'fields': {'kpts_value':'Punishment (Kpts.)'},
 		'columns':{'kpts_value':6},
 		'detailsLabel':'Stupidity Punishment',
-		'buttons_col':2,
-		'buttons':['Done']},
+		'buttons_col':1,
+		'buttons':[]},
 
 	'BigO':{
 		'QuickAdd':{
@@ -217,7 +218,7 @@ d_SetViewerDetails = {
 		'columns':{'frequency':6},
 		'detailsLabel':'Trigger Effort Reward',
 		'buttons_col':3,
-		'buttons':['Done', 'SendToMission']},
+		'buttons':['SendToMission']},
 
 	'ImPe': { 
 		'QuickAdd':{
@@ -227,7 +228,7 @@ d_SetViewerDetails = {
 		'columns':{'frequency':6},
 		'detailsLabel':'Contract Effort Reward',
 		'buttons_col':3,
-		'buttons':['Done', 'SendToMission']},
+		'buttons':['SendToMission']},
 
 	'Idea': {
 		'QuickAdd':{'description':'What are your Principles?'}, 		

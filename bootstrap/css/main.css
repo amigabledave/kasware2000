@@ -200,6 +200,16 @@ textarea{
 
 /*--- Base Formats----------------------------*/
 
+.SetViewerOptionsButton{
+    height: 25px;
+    margin-bottom: 0px;
+    width: 20px;
+    padding-top: 4px;
+    padding-left: 2px;
+    font-size: 12px;
+    margin-left:-5px;
+}
+
 .ViewerOptionsButton{
     height: 20px;
     margin-bottom: 0px;
