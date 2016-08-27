@@ -523,7 +523,7 @@ class SetViewer(Handler):
 			ksu.secondary_description_rows = determine_rows(ksu.secondary_description)
 			ksu.comments_rows = determine_rows(ksu.comments)
 
-		#xx
+		
 		tags = self.theory.categories['tags'] # por el quick adder
 		ksu_set, set_tags = self.get_set_tags(ksu_set)
 		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, parent_tags=parent_tags, dreams=dreams, view_type=view_type, set_tags=set_tags) #
@@ -576,10 +576,15 @@ class SetViewer(Handler):
 				result.append(ksu)
 		return result
 
-	def get_set_tags(self, ksu_set): #xx
+	def get_set_tags(self, ksu_set):
 		set_tags = []
 		for ksu in ksu_set:
-			if ksu.tags:
+			print
+			print set_tags
+			if ksu.tags and ksu.tags != 'NoTags':
+				print
+				print ksu.description
+				print ksu.tags
 				ksu_tags = (ksu.tags).replace(', ',',').split(',')
 				for tag in ksu_tags:
 					if tag not in set_tags:
@@ -588,7 +593,10 @@ class SetViewer(Handler):
 				ksu.tags = 'NoTags'
 
 		set_tags = ['NoTags'] + sorted(set_tags)
-
+		print
+		print 'Esta son las tags del set'
+		print set_tags
+		print
 		tags_tuples = []
 		i = 0
 		for tag in set_tags:
@@ -1757,7 +1765,7 @@ def remplaza_acentos(palabra):
 
 	return palabra
 
-def prepare_tags_for_saving(tags_string): #xx
+def prepare_tags_for_saving(tags_string):
 
 	tags_string = remplaza_acentos(tags_string)
 	tags_string = tags_string.replace(', ',',')
@@ -1836,6 +1844,11 @@ def get_ksu_to_remember(self):
 				ksu.days_left = '-- ' + str((ksu.next_event).toordinal() - today_ordinal) + ' days left --'
 			else:
 				ksu.days_left = '-- ??? days left --'
+
+			if ksu.parent_id:
+				ksu.parent_description = (KSU.get_by_id(ksu.parent_id.id())).description
+			else:
+				ksu.parent_description = None
 			
 			current_objectives.append(ksu)
 
