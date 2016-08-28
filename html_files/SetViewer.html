@@ -17,7 +17,7 @@
 
 </div>
 
-{% if set_name not in ['Graveyard', 'TheoryQuery', 'Gene', 'Dashboard'] %}
+{% if set_name not in ['Graveyard', 'TheoryQuery', 'Gene', 'Dashboard',''] %}
 <div class="row KSUdisplaySection" id="NewKSU" value="NewKSU" ksutype="{{set_name}}" ksusubtype="{% if set_name == 'KeyA' %}KAS1{% elif set_name == 'ImIn' %}RealitySnapshot{% elif set_name == 'BOKA' %}KAS2{% endif %}" style="margin-top: 0px; padding-bottom:8px;">
 	
 	<input class="hidden" type="text" name="parent_id" id="parent_id" value="{% if parent_id %}{{parent_id}}{% endif %}">
@@ -81,7 +81,7 @@
 		</div>	
 
 		<div class="col-xs-6">
-			<input style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" placeholder="Tag" type="text" list="tags" name="tags" id="tags_value" value="{{parent_tags}}">
+			<input style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" placeholder="Tag" type="text" list="tags" name="tags" id="tags_value">
 			<datalist id="tags">
 				{% for tag in tags %}
 					<option value="{{tag}}">
@@ -2665,7 +2665,7 @@
 
 							<div class="col-xs-12">
 
-								<div class="row {% if set_name not in ['TheoryQuery', 'Graveyard'] %} hidden {% endif %}">
+								<div class="row {% if set_name not in ['TheoryQuery', 'Graveyard', ''] %} hidden {% endif %}">
 									<div class="col-xs-12 displaySectionBulletContent" style="color:purple;" >				
 										{% if ksu.ksu_subtype != 'Gene' %}
 											{% if ksu.ksu_subtype != 'Gene' %}

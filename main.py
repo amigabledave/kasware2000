@@ -4,7 +4,9 @@ import webapp2, jinja2, os, re, random, string, hashlib, json, logging, math
 
 from datetime import datetime, timedelta, time
 from google.appengine.ext import ndb
+from google.appengine.api import mail
 from python_files import datastore, randomUser, constants, kasware_os
+
 
 constants = constants.constants
 
@@ -310,9 +312,15 @@ class SignUpLogIn(Handler):
 					ksu = KSU(theory=theory.key)
 					ksu = prepareInputForSaving(theory, ksu, post_details)
 					ksu.put()
-
-				self.login(theory)
-				self.redirect('/MissionViewer?time_frame=Today')
+				#xx
+				# self.login(theory)
+				#xx Send email
+				# email_receiver = str(theory.email)
+				email_receiver = 'amigabledave@gmail.com'
+    			email_body = '<a href="kasware.com/Accounts?user_id='+str(theory.key.id())+'&user_action=validate_email">Confirm my account,' + "I'm ready to start using KASware!</a>"
+    			mail.send_mail(sender="<accounts@kasware.com>", to=email_receiver, subject="Please confirm your email address to start using KASware", body=email_body)	
+    			self.redirect('/Accounts')
+				# self.redirect('/MissionViewer?time_frame=Today')
 
 		if user_action == 'LogIn':			
 			email = self.request.get('email')
@@ -323,6 +331,11 @@ class SignUpLogIn(Handler):
 				self.redirect('/MissionViewer?time_frame=Today')
 			else:
 				self.write('incorrect username or password')
+
+
+class Accounts(Handler):
+	def get(self):
+		self.print_html('Accounts.html')
 
 
 class LogOut(Handler):
@@ -479,7 +492,6 @@ class SetViewer(Handler):
 		ksu_id = self.request.get('ksu_id')
 		set_title = constants['d_SetTitles'][set_name]
 		parent_id = ''
-		parent_tags = ''
 		dreams = []
 		view_type = ''
 
@@ -501,7 +513,7 @@ class SetViewer(Handler):
 			ksu_set = KSU.query(KSU.parent_id == ksu_key).filter(KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch()
 			set_title = ksu.description
 			parent_id = ksu_id
-			parent_tags = ksu.tags
+			dreams = self.get_active_dreams(user_key)
 			view_type ='Plan'
 		
 		else:
@@ -526,7 +538,7 @@ class SetViewer(Handler):
 		
 		tags = self.theory.categories['tags'] # por el quick adder
 		ksu_set, set_tags = self.get_set_tags(ksu_set)
-		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, parent_tags=parent_tags, dreams=dreams, view_type=view_type, set_tags=set_tags) #
+		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, dreams=dreams, view_type=view_type, set_tags=set_tags) #
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -579,12 +591,7 @@ class SetViewer(Handler):
 	def get_set_tags(self, ksu_set):
 		set_tags = []
 		for ksu in ksu_set:
-			print
-			print set_tags
 			if ksu.tags and ksu.tags != 'NoTags':
-				print
-				print ksu.description
-				print ksu.tags
 				ksu_tags = (ksu.tags).replace(', ',',').split(',')
 				for tag in ksu_tags:
 					if tag not in set_tags:
@@ -593,10 +600,6 @@ class SetViewer(Handler):
 				ksu.tags = 'NoTags'
 
 		set_tags = ['NoTags'] + sorted(set_tags)
-		print
-		print 'Esta son las tags del set'
-		print set_tags
-		print
 		tags_tuples = []
 		i = 0
 		for tag in set_tags:
@@ -1936,6 +1939,7 @@ d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
 app = webapp2.WSGIApplication([
 							    ('/', SetViewer),
 							    ('/SignUpLogIn', SignUpLogIn),
+							    ('/Accounts', Accounts),
 							    ('/LogOut', LogOut),
 							    ('/Settings', Settings),
 							    

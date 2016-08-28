@@ -57,6 +57,7 @@ d_attributeType = {
 
 default_ksu = {}
 d_SetTitles = {
+	'':'My Theory',
 	'Today':"Today's Mission",
 	'Upcoming':'Upcoming',
 	'Graveyard':'Graveyard',

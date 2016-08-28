@@ -4,15 +4,6 @@ $('#MobileTheorySearchButton').on('click', function(){
 });
 
 
-// $('.SetViewerKSU').hover(	
-// 	function(){
-// 		$(this).find('#TagsImportanceRow').toggleClass('hidden');
-// 	},
-// 	function(){
-// 		$(this).find('#TagsImportanceRow').toggleClass('hidden');
-// 	}
-// );
-
 $('#ShowHideTagContents').on('click', function(){		
 	$('.tag_content').toggleClass('hidden');
 	
@@ -554,11 +545,9 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#ImPe_next_event').val('')
 		ksu.find('#ImIn_next_event').val('')
 		ksu.find('#Diary_next_event').val('')
-
-		if (ksu_type != 'BOKA'){
-			ksu.find('#tags_value').val('');
-			ksu.find('#Dummy_tags_value').val('');			
-		};
+		
+		ksu.find('#tags_value').val('');
+		ksu.find('#Dummy_tags_value').val('');			
 		
 		ksu.find('#importance').val(3);
 		ksu.find('#mission_importance').val(3);
@@ -801,6 +790,16 @@ $(document)
         rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 16);
         this.rows = minRows + rows;
     });
+
+
+// $('.SetViewerKSU').hover(	
+// 	function(){
+// 		$(this).find('#TagsImportanceRow').toggleClass('hidden');
+// 	},
+// 	function(){
+// 		$(this).find('#TagsImportanceRow').toggleClass('hidden');
+// 	}
+// );
 
 
 // function al_cargar(){
