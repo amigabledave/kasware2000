@@ -316,9 +316,12 @@ class SignUpLogIn(Handler):
 				# self.login(theory)
 				#xx Send email
 				# email_receiver = str(theory.email)
+
 				email_receiver = 'amigabledave@gmail.com'
-    			email_body = '<a href="kasware.com/Accounts?user_id='+str(theory.key.id())+'&user_action=validate_email">Confirm my account,' + "I'm ready to start using KASware!</a>"
-    			mail.send_mail(sender="<accounts@kasware.com>", to=email_receiver, subject="Please confirm your email address to start using KASware", body=email_body)	
+    			email_body = '<a href="kasware.com/Accounts?user_id='+str(theory.key.id())+'&user_action=validate_email">Confirm my account</a>' + ", I'm ready to start using KASware!"    			
+    			mail.send_mail(sender="KASware@kasware2000.appspotmail.com", to=email_receiver, subject="Please confirm your email address to start using KASware", body=email_body, html=email_body) #xx"<accounts@kasware.com>"
+    			print
+    			print email_body
     			self.redirect('/Accounts')
 				# self.redirect('/MissionViewer?time_frame=Today')
 
@@ -332,10 +335,24 @@ class SignUpLogIn(Handler):
 			else:
 				self.write('incorrect username or password')
 
-
+#xx
 class Accounts(Handler):
 	def get(self):
-		self.print_html('Accounts.html')
+		theory_id = self.request.get('user_id')
+
+		if theory_id:
+			theory = Theory.get_by_theory_id(int(theory_id))
+			if theory and not theory.valid_email:
+				theory.valid_email = True
+				theory.put()
+				self.login(theory)
+				self.redirect('/MissionViewer?time_frame=Today')
+			else:
+				self.redirect('/SignUpLogIn')
+		else:
+			self.print_html('Accounts.html')
+
+
 
 
 class LogOut(Handler):

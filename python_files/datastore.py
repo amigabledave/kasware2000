@@ -6,8 +6,9 @@ class Theory(ndb.Model):
 
 	#login details
 	email = ndb.StringProperty(required=True)
+	valid_email = ndb.BooleanProperty(default=False)
 	password_hash = ndb.StringProperty(required=True)
-	
+
 	#user details	
 	first_name = ndb.StringProperty(required=True)
 	last_name = ndb.StringProperty(required=True)
