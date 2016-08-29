@@ -235,7 +235,7 @@ class Handler(webapp2.RequestHandler):
 
 class SignUpLogIn(Handler):
 	def get(self):
-		self.print_html('SignUpLogIn.html')
+		self.print_html('SignUpLogIn.html', login_error = False)
 
 	def post(self):
 		post_details = get_post_details(self)
@@ -249,10 +249,12 @@ class SignUpLogIn(Handler):
 			theory = Theory.get_by_email(post_details['email'])	
 			
 			if input_error:
-				self.print_html('SignUpLogIn.html', post_details=post_details, input_error=input_error)
+				self.print_html('SignUpLogIn.html', post_details=post_details, input_error=input_error, login_error = False)
+				return
 			
 			elif theory:
-				self.print_html('SignUpLogIn.html', post_details=post_details, input_error = 'That email is already register to another user!')
+				self.print_html('SignUpLogIn.html', post_details=post_details, input_error = 'That email is already register to another user!', login_error = False)
+				return
 
 			else:
 				password_hash = make_password_hash(post_details['email'], post_details['password'])
@@ -312,17 +314,16 @@ class SignUpLogIn(Handler):
 					ksu = KSU(theory=theory.key)
 					ksu = prepareInputForSaving(theory, ksu, post_details)
 					ksu.put()
-				#xx
-				# self.login(theory)
-				#xx Send email
-				# email_receiver = str(theory.email)
-
-				email_receiver = 'amigabledave@gmail.com'
-    			email_body = '<a href="kasware.com/Accounts?user_id='+str(theory.key.id())+'&user_action=validate_email">Confirm my account</a>' + ", I'm ready to start using KASware!"    			
-    			mail.send_mail(sender="KASware@kasware2000.appspotmail.com", to=email_receiver, subject="Please confirm your email address to start using KASware", body=email_body, html=email_body) #xx"<accounts@kasware.com>"
-    			print
-    			print email_body
-    			self.redirect('/Accounts')
+				
+				# self.login(theory)				
+				email_receiver = str(theory.email)
+				# email_receiver = 'amigabledave@gmail.com'
+				email_body = '<a href="kasware.com/Accounts?user_id='+str(theory.key.id())+'&user_request=validate_email">Confirm my account</a>' + ", I'm ready to start using KASware!"    			
+				mail.send_mail(sender="KASware@kasware2000.appspotmail.com", to=email_receiver, subject="Please confirm your email address to start using KASware", body=email_body, html=email_body) #"<accounts@kasware.com>"
+				print
+				print email_body
+    			self.redirect('/Accounts?user_request=create_account')
+    			return
 				# self.redirect('/MissionViewer?time_frame=Today')
 
 		if user_action == 'LogIn':			
@@ -333,25 +334,102 @@ class SignUpLogIn(Handler):
 				self.login(theory)
 				self.redirect('/MissionViewer?time_frame=Today')
 			else:
-				self.write('incorrect username or password')
+				self.print_html('SignUpLogIn.html', login_error = True)
+				return
 
-#xx
+
 class Accounts(Handler):
 	def get(self):
 		theory_id = self.request.get('user_id')
+		reset_code = self.request.get('reset_code')
+		user_request = self.request.get('user_request')
+
 
 		if theory_id:
 			theory = Theory.get_by_theory_id(int(theory_id))
-			if theory and not theory.valid_email:
-				theory.valid_email = True
-				theory.put()
+			
+			if user_request == 'validate_email':
+				if theory and not theory.valid_email:
+					theory.valid_email = True
+					theory.put()
+					self.login(theory)
+					self.redirect('/MissionViewer?time_frame=Today')
+				else:
+					self.redirect('/SignUpLogIn')
+
+			else:
+				self.print_html('Accounts.html', user_request=user_request, theory_id=theory_id, password_hash=reset_code)
+
+		else:
+			self.print_html('Accounts.html', user_request=user_request, theory_id=theory_id, password_hash=reset_code)
+
+
+	def post(self):
+#xx Aqui nos quedamos
+		event_details = json.loads(self.request.body)
+		user_action = event_details['user_action']
+		next_step = 'No next step defined'
+
+		# post_details = get_post_details(self)
+		# if 'action_description' in post_details:
+		# 	user_action = post_details['action_description']
+		# else:
+
+		if user_action == 'LogIn':			
+			email = self.request.get('email')
+			password = self.request.get('password')
+			theory = Theory.valid_login(email, password)
+			if theory:
 				self.login(theory)
 				self.redirect('/MissionViewer?time_frame=Today')
 			else:
-				self.redirect('/SignUpLogIn')
-		else:
-			self.print_html('Accounts.html')
+				self.print_html('SignUpLogIn.html', login_error = True)
+				return
 
+		if user_action == 'RequestPasswordReset':#xx
+			theory = Theory.get_by_email(event_details['user_email'])	
+			if theory:
+				next_step = 'CheckYourEmail'
+
+				email_receiver = str(theory.email)
+				email_body = '<a href="kasware.com/Accounts?user_id='+str(theory.key.id())+'&user_request=set_new_password&reset_code='+str(theory.password_hash)+'">Reset my password</a>'
+				mail.send_mail(sender="KASware@kasware2000.appspotmail.com", to=email_receiver, subject="KASware password reset", body=email_body, html=email_body) #"<accounts@kasware.com>"
+				print
+				print email_body
+
+			else:
+				next_step = 'EnterValidEmail'
+
+			self.response.out.write(json.dumps({
+				'next_step':next_step,
+				}))
+			return
+
+
+		if user_action == 'SetNewPassword':
+		
+			theory_id = event_details['theory_id']
+			reset_code = event_details['password_hash']
+			print
+			print 'Theory id:' + theory_id
+			print 'Password hash: ' + reset_code
+
+			theory = Theory.get_by_theory_id(int(theory_id))
+			
+			#xx
+			if reset_code == theory.password_hash:
+				theory.password_hash = make_password_hash(theory.email, event_details['new_password'])
+				theory.put()
+				self.login(theory)
+				next_step = 'GoToYourTheory'
+			
+			else:
+				next_step = 'EnterValidPassword'
+
+			self.response.out.write(json.dumps({
+				'next_step':next_step,
+				}))
+			return
 
 
 
@@ -1939,16 +2017,16 @@ def input_error(target_attribute, user_input):
 		return d_RE[error_key]
 
 d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
-		'first_name_error': 'invalid first name syntax',
+		'first_name_error': 'Invalid first name. Your first name most be at least 3 charachers long and cannot contain any special characters.',
 		
 		'last_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
-		'last_name_error': 'invalid last name syntax',
+		'last_name_error': 'Invalid last name. Your first name most be at least 3 charachers long and cannot contain any special characters.',
 
-		'password': re.compile(r"^.{3,20}$"),
-		'password_error': 'invalid password syntax',
+		'password': re.compile(r"^.{8,20}$"),
+		'password_error': 'Invalid password. Your password most be at least 8 characters long.',
 		
 		'email': re.compile(r'^[\S]+@[\S]+\.[\S]+$'),
-		'email_error': 'invalid email syntax'}
+		'email_error': 'Invalid email syntax.'}
 
 
 

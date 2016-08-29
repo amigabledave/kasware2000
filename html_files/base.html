@@ -27,12 +27,18 @@
 						<div class="form-group" style="margin:10px; text-align: left;">
 							<div class="col-xs-5" style="padding-left: 0px;">
 								<label style="color:white; font-weight:500; font-size:12px; margin-bottom: 0px">Email</label>
-									<input type="email" style="height: 25px" name="email" class="form-control">	
+									<input type="email" style="height: 25px" name="email" class="form-control">
+									{% if login_error %}
+									<span class="" style="color:red" id="InvalidEmailOrPasswordError">Invalid email or password.</span>
+									{% endif %} 	
 							</div>
 
 							<div class="col-xs-5" style="padding-left: 0px;">
 								<label style="color:white; font-weight:500; font-size:12px; margin-bottom: 0px">Password</label>
-   								<input type="password" style="height: 25px" name="password" class="form-control">
+   								<input type="password" style="height: 25px; margin-bottom:0px;" name="password" class="form-control">
+   								<div style="text-align:center;">
+   									<a href="/Accounts?user_request=password_reset" style="font-size:12px;color:#E6E6FA;">Forgot your password?</a>
+   								</div>
 							</div>
 
 							<div class="col-xs-2" style="padding-left: 0px;">

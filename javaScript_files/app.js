@@ -1,4 +1,66 @@
 
+$('#PasswordResetButton').on('click', function(){
+	var theory_id = $('#theory_id').val()
+	var password_hash = $('#password_hash').val()
+	var new_password = $('#NewPassword').val()
+	$.ajax({
+		type: "POST",
+		url: "/Accounts",
+		dataType: 'json',
+		data: JSON.stringify({
+			'user_action': 'SetNewPassword',
+			'new_password': new_password,
+			'theory_id':theory_id,
+			'password_hash':password_hash		
+		})
+	})
+	.done(function(data){
+		var next_step = data['next_step'];
+		console.log(next_step);
+
+		if (next_step == 'EnterValidPassword'){
+			$('#InvalidPasswordError').removeClass('hidden');
+
+		};
+
+		if (next_step == 'GoToYourTheory'){
+			// window.location.href = '/MissionViewer?time_frame=Today'
+			$('#enter_new_password').toggleClass('hidden');
+			$('#password_reseted').toggleClass('hidden');
+			
+		};
+	})		
+});
+
+
+
+$('#RequestPasswordReset').on('click', function(){
+	var user_email = $('#user_email').val()
+	$.ajax({
+		type: "POST",
+		url: "/Accounts",
+		dataType: 'json',
+		data: JSON.stringify({
+			'user_action': 'RequestPasswordReset',
+			'user_email': user_email,			
+		})
+	})
+	.done(function(data){
+		var next_step = data['next_step'];
+		console.log(next_step);
+
+		if (next_step == 'EnterValidEmail'){
+			$('#InvalidEmailError').removeClass('hidden');
+		};
+
+		if (next_step == 'CheckYourEmail'){
+			$('#request_reset_email').toggleClass('hidden');
+			$('#reset_email_sent').toggleClass('hidden');
+		};
+	})		
+});
+
+
 $('#MobileTheorySearchButton').on('click', function(){		
 	$('#MobileSearchBar').toggleClass('hidden');	
 });
