@@ -27,23 +27,20 @@
 						<div class="form-group" style="margin:10px; text-align: left;">
 							<div class="col-xs-5" style="padding-left: 0px;">
 								<label style="color:white; font-weight:500; font-size:12px; margin-bottom: 0px">Email</label>
-									<input type="email" style="height: 25px" name="email" class="form-control">
-									{% if login_error %}
-									<span class="" style="color:red" id="InvalidEmailOrPasswordError">Invalid email or password.</span>
-									{% endif %} 	
+									<input type="email" style="height: 25px; margin-bottom:0px;" name="email" id="login_email" class="form-control">									
+									<span class="hidden" style="color:red; font-size:12px;" id="InvalidEmailOrPasswordError">Invalid email or password.</span>									
 							</div>
 
 							<div class="col-xs-5" style="padding-left: 0px;">
 								<label style="color:white; font-weight:500; font-size:12px; margin-bottom: 0px">Password</label>
-   								<input type="password" style="height: 25px; margin-bottom:0px;" name="password" class="form-control">
+   								<input type="password" style="height: 25px; margin-bottom:0px;" name="password" id="login_password" class="form-control">
    								<div style="text-align:center;">
    									<a href="/Accounts?user_request=password_reset" style="font-size:12px;color:#E6E6FA;">Forgot your password?</a>
    								</div>
 							</div>
 
 							<div class="col-xs-2" style="padding-left: 0px;">
-								<button type="submit" class="btn btn-xs btn-info" style="margin-top: 20px" name="action_description" value="LogIn"> Log In </button>
-
+								<button type="button" class="btn btn-xs btn-info" style="margin-top: 20px" name="action_description" value="LogIn" id="LogInButton"> Log In </button>
 							</div>
 
 						</div>

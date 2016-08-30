@@ -238,9 +238,15 @@ class SignUpLogIn(Handler):
 		self.print_html('SignUpLogIn.html', login_error = False)
 
 	def post(self):
-		post_details = get_post_details(self)
-		user_action = post_details['action_description']
+ 
+		post_details = json.loads(self.request.body)
+		user_action = post_details['user_action']
+		next_step = 'No next step defined'
 
+		print
+		print 'Asi se ve el AJAX Request'
+		print post_details
+		
 		if user_action == 'Random_SignUp':
 			post_details.update(randomUser.createRandomUser()) ## Creates a random user for testing purposes
 		
@@ -249,14 +255,15 @@ class SignUpLogIn(Handler):
 			theory = Theory.get_by_email(post_details['email'])	
 			
 			if input_error:
-				self.print_html('SignUpLogIn.html', post_details=post_details, input_error=input_error, login_error = False)
-				return
-			
+				next_step = 'TryAgain'
+											
 			elif theory:
-				self.print_html('SignUpLogIn.html', post_details=post_details, input_error = 'That email is already register to another user!', login_error = False)
-				return
+				next_step = 'TryAgain'
+				input_error = 'That email is already register to another user!'
+				
 
 			else:
+				next_step = 'CheckYourEmail'
 				password_hash = make_password_hash(post_details['email'], post_details['password'])
 				
 				kpts_goals_parameters = {
@@ -322,24 +329,37 @@ class SignUpLogIn(Handler):
 				mail.send_mail(sender="KASware@kasware2000.appspotmail.com", to=email_receiver, subject="Please confirm your email address to start using KASware", body=email_body, html=email_body) #"<accounts@kasware.com>"
 				print
 				print email_body
-    			self.redirect('/Accounts?user_request=create_account')
-    			return
+				# self.redirect('/Accounts?user_request=create_account')
+				# return
 				# self.redirect('/MissionViewer?time_frame=Today')
 
-		if user_action == 'LogIn':			
-			email = self.request.get('email')
-			password = self.request.get('password')
+			self.response.out.write(json.dumps({
+				'next_step':next_step,
+				'input_error':input_error
+				}))
+			return
+
+		if user_action == 'LogIn':
+			next_step = 'No next step defined'			
+			email = post_details['email']
+			password = post_details['password']
 			theory = Theory.valid_login(email, password)
 			if theory:
 				self.login(theory)
-				self.redirect('/MissionViewer?time_frame=Today')
+				next_step = 'GoToYourTheory'
 			else:
-				self.print_html('SignUpLogIn.html', login_error = True)
-				return
+				next_step = 'TryAgain'
+			
+			self.response.out.write(json.dumps({
+				'next_step':next_step,
+				}))
+			return
+
 
 
 class Accounts(Handler):
 	def get(self):
+		
 		theory_id = self.request.get('user_id')
 		reset_code = self.request.get('reset_code')
 		user_request = self.request.get('user_request')
@@ -365,26 +385,26 @@ class Accounts(Handler):
 
 
 	def post(self):
-#xx Aqui nos quedamos
+		#xx Aqui nos quedamos
 		event_details = json.loads(self.request.body)
 		user_action = event_details['user_action']
 		next_step = 'No next step defined'
 
-		# post_details = get_post_details(self)
-		# if 'action_description' in post_details:
-		# 	user_action = post_details['action_description']
-		# else:
-
-		if user_action == 'LogIn':			
-			email = self.request.get('email')
-			password = self.request.get('password')
+		if user_action == 'LogIn':					
+			email = event_details['email']
+			password = event_details['password']
 			theory = Theory.valid_login(email, password)
 			if theory:
 				self.login(theory)
-				self.redirect('/MissionViewer?time_frame=Today')
+				next_step = 'GoToYourTheory'
 			else:
-				self.print_html('SignUpLogIn.html', login_error = True)
-				return
+				next_step = 'TryAgain'
+			
+			self.response.out.write(json.dumps({
+				'next_step':next_step,
+				}))
+			return
+
 
 		if user_action == 'RequestPasswordReset':#xx
 			theory = Theory.get_by_email(event_details['user_email'])	

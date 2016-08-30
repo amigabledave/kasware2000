@@ -1,4 +1,73 @@
 
+$('#LogInButton').on('click', function(){
+	var email = $('#login_email').val();
+	var password = $('#login_password').val();
+
+	$.ajax({
+		type: "POST",
+		url: "/SignUpLogIn",
+		dataType: 'json',
+		data: JSON.stringify({
+			'user_action': 'LogIn',
+			'email':email,
+			'password':password		
+		})
+	})
+	.done(function(data){
+		var next_step = data['next_step'];
+		console.log(next_step);
+
+		if (next_step == 'GoToYourTheory'){
+			window.location.href = '/MissionViewer?time_frame=Today'
+		};
+
+		if (next_step == 'TryAgain'){
+			$('#InvalidEmailOrPasswordError').removeClass('hidden');			
+			
+		};
+	})		
+});
+
+
+
+$('#SignUpButton').on('click', function(){
+	console.log('ya se dio cuenta que quiero hacer sign up')
+	var first_name = $('#first_name').val()
+	var last_name = $('#last_name').val()
+	var email = $('#email').val()
+	var confirm_email = $('#confirm_email').val()
+	var password = $('#password').val()
+
+	$.ajax({
+		type: "POST",
+		url: "/SignUpLogIn",
+		dataType: 'json',
+		data: JSON.stringify({
+			'user_action': 'SignUp',
+			'first_name': first_name,
+			'last_name':last_name,
+			'email':email,
+			'confirm_email':confirm_email,
+			'password':password		
+		})
+	})
+	.done(function(data){
+		var next_step = data['next_step'];
+		console.log(next_step);
+
+		if (next_step == 'CheckYourEmail'){
+			window.location.href = '/Accounts?user_request=create_account'			
+		};
+
+		if (next_step == 'TryAgain'){
+			$('#input_error').text(data['input_error'])						
+			
+		};
+	})		
+});
+
+
+
 $('#PasswordResetButton').on('click', function(){
 	var theory_id = $('#theory_id').val()
 	var password_hash = $('#password_hash').val()
@@ -31,7 +100,6 @@ $('#PasswordResetButton').on('click', function(){
 		};
 	})		
 });
-
 
 
 $('#RequestPasswordReset').on('click', function(){
