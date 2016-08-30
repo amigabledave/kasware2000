@@ -199,6 +199,10 @@ $('.DummyInput').on('change',function(){
 	console.log(this.value)
 	var ksu_attr = $(this).attr("ksuattr");
  
+	if (ksu_attr == 'mission_view'){
+		$('#mission_view').val(this.value);
+	};
+
 	if (ksu_attr == 'kpts_value'){
 		$('#kpts_value').val(this.value);
 	};

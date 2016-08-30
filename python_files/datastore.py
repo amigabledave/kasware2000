@@ -75,6 +75,8 @@ class KSU(ndb.Model):
 	frequency = ndb.IntegerProperty(default=1)
 	repeats = ndb.StringProperty() # KAS1 Specific		
 	repeats_on = ndb.JsonProperty() #Day's of the week when it repeats if the frequency is Weekly, elese the repetition date is the same day of the month or year
+	
+	mission_view = ndb.StringProperty(default='Principal')
 	best_time = ndb.TimeProperty()
 	pretty_best_time = ndb.StringProperty()
 

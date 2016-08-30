@@ -51,6 +51,7 @@ d_attributeType = {
 	'best_time':'time',
 
 	# 'target':'tbd', # its a json For ksus that generate kpts and indicators target min, target max, reverse target etc
+	'mission_view':'string',
 	'birthday': 'date',
 	'money_cost': 'integer'
 	}
@@ -136,6 +137,18 @@ d_repeats_legend = {
 	'R007':'Weeks',
 	'R030':'Months',
 	'R365':'Years'}
+
+d_MissionViews = {
+	'KickOff':'Kick Off',
+	'Principal':'Principal',
+	'WrapUp':'Wrap Up'
+}
+
+l_MissionViews = [
+	'Principal',
+	'Kick Off',
+	'Wrap Up'
+]
 
 
 d_SetViewerDetails = {

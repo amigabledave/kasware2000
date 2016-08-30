@@ -77,7 +77,7 @@ class Handler(webapp2.RequestHandler):
 	def print_html(self, template, **kw):
 		ksu_to_remember = {}
 		current_objectives = []
-		if self.theory:#xx
+		if self.theory:
 			ksu_to_remember, current_objectives = get_ksu_to_remember(self)		
 
 		self.write(self.render_html(template, ksu_to_remember=ksu_to_remember, current_objectives=current_objectives, **kw))
@@ -384,7 +384,6 @@ class Accounts(Handler):
 
 
 	def post(self):
-		#xx Aqui nos quedamos
 		event_details = json.loads(self.request.body)
 		user_action = event_details['user_action']
 		next_step = 'No next step defined'
@@ -405,7 +404,7 @@ class Accounts(Handler):
 			return
 
 
-		if user_action == 'RequestPasswordReset':#xx
+		if user_action == 'RequestPasswordReset':
 			theory = Theory.get_by_email(event_details['user_email'])	
 			if theory:
 				next_step = 'CheckYourEmail'
@@ -435,7 +434,6 @@ class Accounts(Handler):
 
 			theory = Theory.get_by_theory_id(int(theory_id))
 			
-			#xx
 			if reset_code == theory.password_hash:
 				theory.password_hash = make_password_hash(theory.email, event_details['new_password'])
 				theory.put()
@@ -741,7 +739,11 @@ class MissionViewer(Handler):
 
 		tags = self.theory.categories['tags']
 
-		todays_questions_now, todays_questions_latter, KAS3_mission, KAS4_mission, today, full_mission, objectives = self.generate_todays_mission(time_frame)
+		# todays_questions_now, todays_questions_latter, KAS3_mission, KAS4_mission, today, full_mission, objectives = self.generate_todays_mission(time_frame)
+		kick_off_questions, kick_off_KAS3, kick_off_KAS4, kick_off_proactive, principal_KAS3, principal_KAS4, wrap_up_questions, wrap_up_KAS3, wrap_up_KAS4, wrap_up_proactive, today, full_mission, objectives = self.generate_todays_mission(time_frame)		
+		kick_off = kick_off_proactive or kick_off_questions or kick_off_KAS3 or kick_off_KAS4
+		wrap_up = wrap_up_proactive or wrap_up_KAS3 or wrap_up_KAS4 or wrap_up_questions
+
 
 		print 
 		print 'Today Horizon Value:'
@@ -762,10 +764,22 @@ class MissionViewer(Handler):
 						objectives=objectives,
 						time_frame_sets=time_frame_sets,
 						time_frame=time_frame,
-						todays_questions_now=todays_questions_now,
-						todays_questions_latter=todays_questions_latter,
-						KAS3_mission=KAS3_mission, 
-						KAS4_mission=KAS4_mission, 
+
+						kick_off=kick_off,
+						kick_off_questions=kick_off_questions,
+						kick_off_KAS3=kick_off_KAS3,
+						kick_off_KAS4=kick_off_KAS4,
+						kick_off_proactive=kick_off_proactive,
+
+						KAS3_mission=principal_KAS3, 
+						KAS4_mission=principal_KAS4,
+
+						wrap_up=wrap_up,
+						wrap_up_questions=wrap_up_questions,
+						wrap_up_KAS3=wrap_up_KAS3,
+						wrap_up_KAS4=wrap_up_KAS4,
+						wrap_up_proactive=wrap_up_proactive,
+
 						constants=constants,
 						today=today,
 						tags=tags)
@@ -800,6 +814,18 @@ class MissionViewer(Handler):
 
 
 		full_mission = {
+
+			'kick_off':{
+				'horizon_title':'Kick Off',
+				'horizon_set':[],
+				'horizon_value':0},
+
+			'wrap_up':{
+				'horizon_title':'Wrap Up',
+				'horizon_set':[],
+				'horizon_value':0},
+
+
 			'today':{
 				'horizon_title':'Today',
 				'horizon_set':[],
@@ -853,10 +879,16 @@ class MissionViewer(Handler):
 			next_event = next_event.toordinal()
 
 			if next_event <= today_ordinal:
-				if ksu.best_time:
-					return 'today'
-				else:
-					return 'timeless_today'
+				mission_view = ksu.mission_view
+				if mission_view == 'KickOff':
+					return 'kick_off'
+				elif mission_view == 'WrapUp':
+					return 'wrap_up'
+				else:				
+					if ksu.best_time:
+						return 'today'
+					else:
+						return 'timeless_today'
 
 			if next_event - 1 <= today_ordinal:
 				return 'tomorrow'
@@ -871,9 +903,19 @@ class MissionViewer(Handler):
 				return 'later'
 
 
-		todays_questions_now = []
-		todays_questions_latter = []		
-		# reactive_mission = []
+		
+		
+		kick_off_questions = []
+		kick_off_KAS3 = []
+		kick_off_KAS4 = []
+						
+		principal_KAS3 = []
+		principal_KAS4 = []
+				
+		wrap_up_questions = []
+		wrap_up_KAS3 = []
+		wrap_up_KAS4 = []
+
 		KAS3_mission = []
 		KAS4_mission = []
 		objectives = [(None,'-- None --')]
@@ -882,7 +924,7 @@ class MissionViewer(Handler):
 		questions_sets = ['RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'Diary']
 
 		for ksu in ksu_set:
-
+			mission_view = ksu.mission_view
 			ksu_subtype = ksu.ksu_subtype
 	
 			next_event = ksu.next_event
@@ -903,36 +945,47 @@ class MissionViewer(Handler):
 
 			elif ksu_subtype in questions_sets:
 				if today > next_event:
-					todays_questions_now.append(ksu)
+					kick_off_questions.append(ksu)
 				elif today == next_event:
-					if ksu.best_time:					
-						if current_time >= ksu.best_time:
-							todays_questions_now.append(ksu)
-						else:
-							todays_questions_latter.append(ksu)
+					if mission_view == 'KickOff':
+						kick_off_questions.append(ksu)
 					else:
-						todays_questions_latter.append(ksu)
-
-			# elif ksu_subtype in ['KAS3','KAS4'] and today >= next_event:
-			# 	reactive_mission.append(ksu)
+						wrap_up_questions.append(ksu)
+			
 			elif ksu_subtype == 'KAS3' and today >= next_event:
-				KAS3_mission.append(ksu)
-
+				if mission_view == 'KickOff':
+					kick_off_KAS3.append(ksu)
+				elif mission_view == 'Principal':
+					principal_KAS3.append(ksu)
+				else:
+					wrap_up_KAS3.append(ksu)
+				
 			elif ksu_subtype == 'KAS4' and today >= next_event:
-				KAS4_mission.append(ksu)
+				if mission_view == 'KickOff':
+					kick_off_KAS4.append(ksu)
+				elif mission_view == 'Principal':
+					principal_KAS4.append(ksu)
+				else:
+					wrap_up_KAS4.append(ksu)
 
 			elif ksu_subtype == 'BigO':
 				objectives.append((ksu.key.id(), ksu.description))
 
 
-						
+		kick_off_proactive = full_mission['kick_off']['horizon_set']
+
+		KAS3_mission = principal_KAS3
+		KAS4_mission = principal_KAS4
+		
+		wrap_up_proactive = full_mission['wrap_up']['horizon_set']
+					
 		full_mission['today'] = {
 			'horizon_title':'Today',
 			'horizon_set':full_mission['today']['horizon_set'] + full_mission['timeless_today']['horizon_set'],
 			'horizon_value':full_mission['today']['horizon_value'] + full_mission['timeless_today']['horizon_value']}
 
-		return todays_questions_now, todays_questions_latter, KAS3_mission, KAS4_mission, today, full_mission, objectives
-
+		# return todays_questions_now, todays_questions_latter, KAS3_mission, KAS4_mission, today, full_mission, objectives
+		return kick_off_questions, kick_off_KAS3, kick_off_KAS4, kick_off_proactive, principal_KAS3, principal_KAS4, wrap_up_questions, wrap_up_KAS3, wrap_up_KAS4, wrap_up_proactive, today, full_mission, objectives 
 
 class EventHandler(Handler):
 	
@@ -943,10 +996,6 @@ class EventHandler(Handler):
 		day_start_time = self.theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 		user_action = event_details['user_action']
-
-		print
-		print 'Si llego el AJAX Request. User action: ' + user_action + '. Event details: ' +  str(event_details)
-		print
 
 		if user_action == 'UpdateSettingsTag':
 			self.update_tags_from_settings(event_details['original_tag'], event_details['new_tag'])
@@ -1046,10 +1095,6 @@ class EventHandler(Handler):
 				'Streak':active_log.Streak})) 
 			return
 
-		print
-		print 'Si llego el AJAX Request. User action: ' + user_action + '. Event details: ' +  str(event_details)
-		print
-
 		if user_action == 'UpdateKsuAttribute':
 			if event_details['content_type'] == 'Event':
 				ksu = Event.get_by_id(int(event_details['ksu_id']))	
@@ -1075,17 +1120,20 @@ class EventHandler(Handler):
 			ksu_description = ksu.description,
 			ksu_subtype = ksu.ksu_subtype, 
 			ksu_tags = ksu.tags)
-			
+		
+		print 'Este es el tipo de KSU al que corresponde'
+		print ksu_subtype
+
 
 		if user_action == 'RecordValue':
 			event.kpts_type = 'IndicatorValue'
 			event.score = float(event_details['kpts_value'])
-			update_next_event(self, user_action, {}, ksu)
+			update_next_event(self, user_action, {}, ksu) #xx
 			event.put()	
 
 		if user_action in ['MissionDone', 'ViewerDone']:
 
-			if ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'EVPo', 'ImPe']:
+			if ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'EVPo', 'ImPe']:
 				event.kpts_type = 'SmartEffort'
 				event.score = float(event_details['kpts_value'])
 				
@@ -1190,7 +1238,7 @@ class EventHandler(Handler):
 	def update_single_attribute(self, ksu, attr_key, attr_value):
 		updated_value = None
 		
-		if attr_key in ['description', 'secondary_description', 'comments', 'repeats', 'secondary_comments']:
+		if attr_key in ['description', 'secondary_description', 'comments', 'repeats', 'secondary_comments','mission_view']:
 			setattr(ksu, attr_key, attr_value.encode('utf-8'))		
 			updated_value = attr_value.encode('utf-8')
 
@@ -1519,6 +1567,9 @@ class PopulateRandomTheory(Handler):
 		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 		
 		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour))
+		print
+		print 'Este es el today de PopulateTheory:'
+		print today
 
 		theory_parameters = [
 			[3	,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
@@ -1684,6 +1735,8 @@ def update_next_event(self, user_action, post_details, ksu):
 
 		return result
 	
+	print 'Este es el tipo de KSU que se esta intentado actualizar el evento'
+	print ksu.ksu_subtype
 
 	day_start_time = self.theory.day_start_time
 	user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
@@ -1735,11 +1788,19 @@ def update_next_event(self, user_action, post_details, ksu):
 			ksu.next_event = today
 			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
 
-		if user_action in ['MissionDone']:
-			ksu.next_event = today
-			ksu.pretty_next_event = today.strftime('%a, %b %d, %Y')
+		print
+		print 'Hasta aqui ya llego a darse cuenta que es KAS3 o KAS4 '
+		
 
-		if user_action == 'MissionPush':
+		if user_action in ['MissionDone']:
+			if ksu.mission_view == 'Principal':
+				ksu.next_event = today
+				ksu.pretty_next_event = today.strftime('%a, %b %d, %Y')
+			else:
+				ksu.next_event = tomorrow
+				ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
+
+		if user_action in ['MissionPush','MissionSkip']:
 			ksu.next_event = tomorrow
 			ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
 
@@ -1960,9 +2021,6 @@ def get_ksu_to_remember(self):
 	filtered_ksu_set = []
 	current_objectives = []
 	objectives = []
-
-#xx
-
 
 	for ksu in ksu_set:
 		ksu_type = ksu.ksu_type
