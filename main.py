@@ -77,7 +77,7 @@ class Handler(webapp2.RequestHandler):
 	def print_html(self, template, **kw):
 		ksu_to_remember = {}
 		current_objectives = []
-		if self.theory:
+		if self.theory:#xx
 			ksu_to_remember, current_objectives = get_ksu_to_remember(self)		
 
 		self.write(self.render_html(template, ksu_to_remember=ksu_to_remember, current_objectives=current_objectives, **kw))
@@ -606,6 +606,7 @@ class SetViewer(Handler):
 		set_title = constants['d_SetTitles'][set_name]
 		parent_id = ''
 		dreams = []
+		objectives = []
 		view_type = ''
 
 		if not set_name:
@@ -627,6 +628,8 @@ class SetViewer(Handler):
 			set_title = ksu.description
 			parent_id = ksu_id
 			dreams = self.get_active_dreams(user_key)
+			if set_name == 'BOKA':				
+				objectives = self.get_user_objectives(user_key)
 			view_type ='Plan'
 		
 		else:
@@ -639,7 +642,7 @@ class SetViewer(Handler):
 		
 
 			if set_name == 'BigO':
-				ksu_set = self.remove_inactive_child_objectives(ksu_set)
+				# ksu_set = self.remove_inactive_child_objectives(ksu_set)
 				dreams = self.get_active_dreams(user_key)
 
 
@@ -651,7 +654,7 @@ class SetViewer(Handler):
 		
 		tags = self.theory.categories['tags'] # por el quick adder
 		ksu_set, set_tags = self.get_set_tags(ksu_set)
-		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, dreams=dreams, view_type=view_type, set_tags=set_tags) #
+		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, dreams=dreams, objectives=objectives, view_type=view_type, set_tags=set_tags) #
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -686,11 +689,19 @@ class SetViewer(Handler):
 		return main_result + secondary_result
 
 	def get_active_dreams(self, user_key):
-		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == 'Wish', KSU.is_critical == True, KSU.is_active == True).order(KSU.importance).order(KSU.created)
-		dreams = [(None,'-- Target Dream --')]
+		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == 'Wish', KSU.is_critical == True).order(-KSU.is_active).order(KSU.importance).order(KSU.created)
+		dreams = [(None,'-- None --')]
 		for ksu in ksu_set:
 			dreams.append((ksu.key.id(), ksu.description))
 		return dreams
+
+	def get_user_objectives(self, user_key):
+		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == 'BigO').order(-KSU.is_active).order(KSU.importance).order(KSU.created)
+		objectives = [(None,'-- None --')]
+		for ksu in ksu_set:
+			objectives.append((ksu.key.id(), ksu.description))
+		return objectives
+
 
 	def remove_inactive_child_objectives(self, objectives):
 		result = []
@@ -1233,12 +1244,11 @@ class EventHandler(Handler):
 			ksu.repeats_on[attr_key] = attr_value 
 
 		elif attr_key == 'parent_id':
-			print
-			print 'Este es el valor del ID del padre'
-			print attr_value
-			print
+
 			if attr_value == 'None':
 				ksu.parent_id = None
+				if ksu.ksu_type == 'BOKA':
+					ksu.ksu_type = 'KAS2'
 			else:	
 				parent_ksu = KSU.get_by_id(int(attr_value))
 				ksu.parent_id = parent_ksu.key
@@ -1949,6 +1959,10 @@ def get_ksu_to_remember(self):
 	ksu_set = ksu_set.fetch()
 	filtered_ksu_set = []
 	current_objectives = []
+	objectives = []
+
+#xx
+
 
 	for ksu in ksu_set:
 		ksu_type = ksu.ksu_type

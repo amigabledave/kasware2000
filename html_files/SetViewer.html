@@ -672,7 +672,7 @@
 					</div>
 
 					
-					<!-- xx -->
+					
 					<div class="row" style="margin-top:3px;">
 						<div class="col-xs-4">	
 								<input type="date" class="QuickAttributeUpdate" style="padding-right:2px; padding-left:4px; border:0; color:purple;" name="next_event" id="next_event" value="None">
@@ -2731,7 +2731,7 @@
 						</div>
 
 						{% if set_name == 'BOKA' %}
-						<div class="row">
+						<div class="row" style="margin-top:2px;">
 
 							<div class="col-xs-6">	
 									<input type="date" class="QuickAttributeUpdate" style="padding-right:2px; padding-left:4px; border:0; color:purple;" name="next_event" id="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
@@ -2968,6 +2968,23 @@
 												</select>	
 											</div>
 										</div>										
+									{% elif ksu.ksu_type == 'BOKA' %}
+										<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+										<div class="row">
+											<div class="col-xs-12">
+												<label> Targeted Objective </label>	
+												<select class="form-control QuickAttributeUpdate" name="parent_id" id="parent_id">
+													{% for (ksu_id, description) in objectives %}																				
+														{% if ksu.parent_id and ksu.parent_id.id() == ksu_id %}
+														<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
+														{% else %}
+														<option value="{{ksu_id}}"> {{description}} </option>								
+														{% endif %}
+													{% endfor %}
+												</select>	
+											</div>
+										</div>
+
 									{% elif ksu.ksu_type == 'Wish' %}
 										<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 									
