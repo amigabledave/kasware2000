@@ -356,7 +356,6 @@ class SignUpLogIn(Handler):
 			return
 
 
-
 class Accounts(Handler):
 	def get(self):
 		
@@ -450,7 +449,6 @@ class Accounts(Handler):
 				'next_step':next_step,
 				}))
 			return
-
 
 
 class LogOut(Handler):
@@ -893,7 +891,9 @@ class MissionViewer(Handler):
 				full_mission[time_horizon]['horizon_value'] += ksu.kpts_value
 
 			elif ksu_subtype in questions_sets:
-				if today >= next_event:
+				if today > next_event:
+					todays_questions_now.append(ksu)
+				elif today == next_event:
 					if ksu.best_time:					
 						if current_time >= ksu.best_time:
 							todays_questions_now.append(ksu)
@@ -1743,15 +1743,12 @@ def update_next_event(self, user_action, post_details, ksu):
 			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
 
 		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone', 'RecordValue']:
-			ksu.next_event = today + timedelta(days=ksu.frequency)
-			ksu.pretty_next_event = (today + timedelta(days=ksu.frequency)).strftime('%a, %b %d, %Y')
+			ksu.next_event = next_event + timedelta(days=ksu.frequency)
+			ksu.pretty_next_event = (next_event + timedelta(days=ksu.frequency)).strftime('%a, %b %d, %Y')
 
 		if user_action == 'MissionPush':
 			ksu.next_event = tomorrow
 			ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
-
-
-
 	return		
 
 def prepareInputForSaving(theory, ksu, post_details):
