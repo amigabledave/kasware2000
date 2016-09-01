@@ -2045,7 +2045,7 @@
 			</div>
 		</div>	
 	{% endfor %}
-	{% for ksu in kick_off_KAS3 %}
+	{% for ksu in wrap_up_KAS3 %}
 		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">		
 			<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
 			<div class="col-xs-12">
@@ -2183,7 +2183,7 @@
 			</div>				
 		</div>
 	{% endfor %}
-	{% for ksu in kick_off_KAS4 %}
+	{% for ksu in wrap_up_KAS4 %}
 		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 		<form method="post">
 		<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
@@ -2325,7 +2325,7 @@
 		</form>		
 		</div>
 	{% endfor %}
-	{% for ksu in kick_off_questions %}
+	{% for ksu in wrap_up_questions %}
 		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 			<form method="post">
 			<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">

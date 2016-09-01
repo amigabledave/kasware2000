@@ -987,6 +987,7 @@ class MissionViewer(Handler):
 		# return todays_questions_now, todays_questions_latter, KAS3_mission, KAS4_mission, today, full_mission, objectives
 		return kick_off_questions, kick_off_KAS3, kick_off_KAS4, kick_off_proactive, principal_KAS3, principal_KAS4, wrap_up_questions, wrap_up_KAS3, wrap_up_KAS4, wrap_up_proactive, today, full_mission, objectives 
 
+
 class EventHandler(Handler):
 	
 	@super_user_bouncer
@@ -994,9 +995,15 @@ class EventHandler(Handler):
 			
 		event_details = json.loads(self.request.body)
 		day_start_time = self.theory.day_start_time
-		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
+		user_start_hour = day_start_time.hour + day_start_time.minute/60.0
+
+		print
+		print 'Si llego el AJAX Request. User action: ' +  event_details['user_action'] + '. Event details: ' +  str(event_details)
+		print  event_details['user_action']
+
 		user_action = event_details['user_action']
 
+		
 		if user_action == 'UpdateSettingsTag':
 			self.update_tags_from_settings(event_details['original_tag'], event_details['new_tag'])
 			return
@@ -1026,9 +1033,6 @@ class EventHandler(Handler):
 			return
 
 		if user_action == 'DeleteEvent':
-			print
-			print 'Si llego el AJAX Request. User action: ' + user_action + '. Event details: ' +  str(event_details)
-			print
 			
 			event = Event.get_by_id(int(event_details['event_id']))
 			kpts_type = event.kpts_type
@@ -1125,11 +1129,23 @@ class EventHandler(Handler):
 		print ksu_subtype
 
 
-		if user_action == 'RecordValue':
+		if user_action == 'RecordValue': #xx
 			event.kpts_type = 'IndicatorValue'
 			event.score = float(event_details['kpts_value'])
+			
+			if 'is_private' in event_details:
+				event.is_private = event_details['is_private']
+			
+			if 'importance' in event_details:
+				event.importance = int(event_details['importance'])
+
 			update_next_event(self, user_action, {}, ksu) #xx
 			event.put()	
+			self.response.out.write(json.dumps({
+				'event_id':event.key.id(),
+				'pretty_event_date':event.user_date_date.strftime('%a, %b %d, %Y') 
+				}))
+			return
 
 		if user_action in ['MissionDone', 'ViewerDone']:
 
@@ -1378,7 +1394,7 @@ class HistoryViewer(Handler):
 		day_start_time = self.theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
 		today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
-
+		pretty_today = (datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).date().strftime('%a, %b %d, %Y')
 
 		history_start = self.request.get('history_start')
 		if history_start:
@@ -1398,7 +1414,7 @@ class HistoryViewer(Handler):
 		history_start = datetime.fromordinal(history_start)
 		history_end = datetime.fromordinal(history_end)
 
-		self.print_html('HistoryViewer.html', diary_view=diary_view, history_title=history_title, history=history, history_start=history_start, history_end=history_end, history_value=history_value, constants=constants)
+		self.print_html('HistoryViewer.html', diary_view=diary_view, history_title=history_title, history=history, history_start=history_start, history_end=history_end, history_value=history_value, constants=constants, pretty_today=pretty_today, ksu_id=ksu_id)
 
 
 	@super_user_bouncer

@@ -1,4 +1,65 @@
 
+
+$('#NewDiaryEntryButton').on('click', function(){
+	// console.log('Si esta detectando que se aprieta el boton');
+	var ksu = $('#NewDiaryEntry');
+	console.log(ksu);
+	console.log('Se supone que ya se deberia de haber detectado el KSU')
+	var ksu_id = ksu.attr("value");
+	var user_action = 'RecordValue';
+	var is_private = ksu.find('#is_private').is(':checked');
+	var importance = ksu.find('#importance').val()
+
+	var event_comments = ksu.find('#comments').val()
+	var event_secondary_comments = ksu.find('#secondary_comments').val()
+
+	var dissapear_before_done = ['RecordValue']
+
+	ksu.fadeOut("slow")
+
+	$.ajax({
+		type: "POST",
+		url: "/EventHandler",
+		dataType: 'json',
+		data: JSON.stringify({
+			'ksu_id': ksu_id,
+			'user_action': user_action,
+			'is_private': is_private,
+			'importance':importance,
+			'kpts_value':0,
+			'event_comments':event_comments,
+			'event_secondary_comments':event_secondary_comments
+		})
+	})
+	.done(function(data){
+
+		ksu.find('#comments').val('');
+		ksu.find('#secondary_comments').val('');
+		ksu.find('#importance').val(3);		
+		ksu.find('#is_private').prop('checked', false);
+
+		var new_ksu = $('#NewDiaryEntry_Template').clone();
+		
+		new_ksu.attr("id", "MissionKSU");
+		new_ksu.attr("value",data['event_id']);		
+
+		new_ksu.find('#comments').val(event_comments);
+		new_ksu.find('#secondary_comments').val(event_secondary_comments);
+		new_ksu.find('#importance').val(importance);
+				
+		new_ksu.find('#event_pretty_datet').val(data['pretty_event_date']);
+		new_ksu.find('#is_private').prop('checked', is_private);
+
+		new_ksu.removeClass('hidden');
+		new_ksu.prependTo('#NewEventHolder');
+		new_ksu.fadeIn("slow");
+
+		ksu.fadeIn("slow");
+	});
+});
+
+
+
 $('#LogInButton').on('click', function(){
 	var email = $('#login_email').val();
 	var password = $('#login_password').val();
@@ -659,6 +720,7 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#description').val('');
 		ksu.find('#comments').val('');
 		ksu.find('#is_critical').prop('checked', false);
+		ksu.find('#is_private').prop('checked', false);
 		ksu.find('#is_active').prop('checked', true);
 		
 		ksu.find('#secondary_description').val('');
@@ -777,10 +839,6 @@ $('.SaveNewKSUButton').on('click', function(){
 		$('#QuickKsuSecondaryDescription').addClass('hidden');
 		$('#QuickKsuSubtypeDetails').addClass('hidden');
 		ksu.fadeIn("slow");
-
-	
-	
-
 
 	});
 });
