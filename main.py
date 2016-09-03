@@ -1833,6 +1833,11 @@ def update_next_event(self, user_action, post_details, ksu):
 		if user_action == 'MissionPush':
 			ksu.next_event = tomorrow
 			ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
+
+		if user_action == 'SendToMission':
+			ksu.next_event = today
+			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
+
 	return		
 
 def prepareInputForSaving(theory, ksu, post_details):
