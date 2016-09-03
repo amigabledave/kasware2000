@@ -1129,7 +1129,7 @@ class EventHandler(Handler):
 		print ksu_subtype
 
 
-		if user_action == 'RecordValue': #xx
+		if user_action == 'RecordValue':
 			event.kpts_type = 'IndicatorValue'
 			event.score = float(event_details['kpts_value'])
 			
@@ -1139,13 +1139,8 @@ class EventHandler(Handler):
 			if 'importance' in event_details:
 				event.importance = int(event_details['importance'])
 
-			update_next_event(self, user_action, {}, ksu) #xx
+			update_next_event(self, user_action, {}, ksu)
 			event.put()	
-			self.response.out.write(json.dumps({
-				'event_id':event.key.id(),
-				'pretty_event_date':event.user_date_date.strftime('%a, %b %d, %Y') 
-				}))
-			return
 
 		if user_action in ['MissionDone', 'ViewerDone']:
 
@@ -1209,7 +1204,9 @@ class EventHandler(Handler):
 		Streak = active_log.Streak
 
 
-		self.response.out.write(json.dumps({'mensaje':'Evento creado y guardado', 
+		self.response.out.write(json.dumps({'mensaje':'Evento creado y guardado',
+											'event_id':event.key.id(),
+											'pretty_event_date':event.user_date_date.strftime('%a, %b %d, %Y'), 
 											
 											'event_comments':event.comments,
 											'EventScore':event.score, 											
@@ -1567,7 +1564,7 @@ class PopulateRandomTheory(Handler):
 				theory.last_DailyLog = active_date
 				theory.put()
 
-				#Loads OS Ksus
+				#Loads OS Ksus #xx
 				for post_details in os_ksus:
 					ksu = KSU(theory=theory.key)
 					ksu = prepareInputForSaving(theory, ksu, post_details)
@@ -1935,7 +1932,7 @@ def prepareInputForSaving(theory, ksu, post_details):
 		ksu.secondary_description = 'Contact ' + ksu.description
 
 	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe', 'RealitySnapshot', 'Diary', 'FibonacciPerception', 'BinaryPerception'] and not ksu.next_event:
-		ksu.next_event = datetime.today() - timedelta(days=1)
+		ksu.next_event = datetime.today() ## - timedelta(days=1) #Esto tenia una logica, pero por el momento se lo quito 
 	print ksu.ksu_type
 	print ksu.next_event
 
