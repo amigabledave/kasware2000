@@ -165,8 +165,8 @@ d_SetViewerDetails = {
 		'fields': {'pretty_next_event':'Next Event'},
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'Effort Reward',
-		'buttons_col':2,
-		'buttons':['SendToMission']},
+		'buttons_col':3,
+		'buttons':['Done', 'SendToMission']},
 
 	'KAS2':{		
 		'attributes': ['pretty_next_event'],
@@ -189,17 +189,17 @@ d_SetViewerDetails = {
 		'attributes': ['kpts_value'],
 		'fields': {'kpts_value':'Reward (Kpts.)'},
 		'columns': {'kpts_value':6},
-		'buttons_col':1,
+		'buttons_col':2,
 		'detailsLabel':'Effort Reward',
-		'buttons': []},
+		'buttons': ['Done']},
 
 	'KAS4':{
 		'attributes': ['kpts_value'],
 		'fields': {'kpts_value':'Punishment (Kpts.)'},
 		'columns':{'kpts_value':6},
 		'detailsLabel':'Stupidity Punishment',
-		'buttons_col':1,
-		'buttons':[]},
+		'buttons_col':2,
+		'buttons':['Done']},
 
 	'BigO':{
 		'QuickAdd':{
@@ -232,7 +232,7 @@ d_SetViewerDetails = {
 		'columns':{'frequency':6},
 		'detailsLabel':'Trigger Effort Reward',
 		'buttons_col':3,
-		'buttons':['SendToMission']},
+		'buttons':['Done', 'SendToMission']},
 
 	'ImPe': { 
 		'QuickAdd':{
@@ -242,7 +242,7 @@ d_SetViewerDetails = {
 		'columns':{'frequency':6},
 		'detailsLabel':'Contract Effort Reward',
 		'buttons_col':3,
-		'buttons':['SendToMission']},
+		'buttons':['Done', 'SendToMission']},
 
 	'Idea': {
 		'QuickAdd':{'description':'What are your Principles?'}, 		
