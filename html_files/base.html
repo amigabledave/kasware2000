@@ -265,6 +265,21 @@
 									{{ksu.secondary_description}}
 								</div>
 							</div>	
+
+							{% if ksu.milestones %}
+								<div class="row" style="margin-bottom:3px;">
+									<div class="col-xs-12" style="color:blue;font-size:13px;">
+										{% if ksu.milestones_len == 1 %}									
+										<b>Next milestone: </b> {{ksu.milestones[0]}}
+										{% else %}
+										<b>Next milestones: </b> {% for i in range(0, ksu.milestones_len)%}{{ksu.milestones[i]}}{% if i < ksu.milestones_len -1 %}, {% endif %}{% endfor %}
+										{% endif %}
+									</div>
+								</div>
+															
+							{% endif %}
+
+
 							{% if ksu.parent_description %}
 							<div class="row" style="margin-bottom:3px;">
 								<div class="col-xs-12" style="color:purple;font-size:13px;">

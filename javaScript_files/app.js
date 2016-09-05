@@ -296,6 +296,10 @@ $('.DummyInput').on('change',function(){
 		$(this).closest('#NewKSU').find('#tags_value').val(this.value);
 	};
 
+	if (ksu_attr == 'importance'){
+		$(this).closest('#NewKSU').find('#importance').val(this.value);
+	};
+
 	if (ksu_attr == 'tags'){
 		$(this).closest('#MissionKSU').find('#tags').val(this.value);
 	};
@@ -415,6 +419,19 @@ $('input[type=radio][name=ksu_subtype]').on('change',function(){
 		$('#KeyA_KAS4').addClass('hidden');
 		
 	}
+
+	if (this.value == 'KAS2'){
+		$('#BOKA_Specific_TagsAndImportanceRow').removeClass('hidden');
+		$('#BOKA_SecondaryDescription').addClass('hidden');
+		$('#MiniO_Specific_TagsAndImportanceRow').addClass('hidden');
+	}
+
+	if (this.value == 'MiniO'){
+		$('#MiniO_Specific_TagsAndImportanceRow').removeClass('hidden');
+		$('#BOKA_SecondaryDescription').removeClass('hidden');
+		$('#BOKA_Specific_TagsAndImportanceRow').addClass('hidden');
+	}
+
 	console.log('Se detecto el cambio de KSU_SUBTYPE');
 	console.log(this.value);
 	$('#NewKSU').attr("ksusubtype", this.value);
@@ -781,6 +798,7 @@ $('.SaveNewKSUButton').on('click', function(){
 			'KAS4': $('#NewKSUTemplate_KAS4').clone(),
 			
 			'BigO': $('#NewKSUTemplate_BigO').clone(),
+			'MiniO': $('#NewKSUTemplate_MiniO').clone(),
 			'Wish': $('#NewKSUTemplate_Wish').clone(),
 			
 			'EVPo': $('#NewKSUTemplate_EVPo').clone(),

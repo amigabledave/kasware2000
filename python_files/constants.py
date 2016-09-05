@@ -104,6 +104,8 @@ d_KsuSubtypes = {
 	'KAS4':'Key Action To Avoid',
 
 	'BigO': 'Big Objective',
+	'MiniO': 'Mini Objective',
+
 	'Wish': 'Wish',
 	'EVPo': 'Joy Generator',
 	'ImPe': 'Important Person',
@@ -209,8 +211,18 @@ d_SetViewerDetails = {
 		'fields': {'pretty_next_event':'Target Date'},
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'',
-		'buttons_col':1,
+		'buttons_col':2,
 		'buttons':['Done']},
+
+
+	'MiniO':{
+		'attributes': ['pretty_next_event'],
+		'fields': {'pretty_next_event':'Target Date'},
+		'columns':{'pretty_next_event':6},
+		'detailsLabel':'',
+		'buttons_col':2,
+		'buttons':['Done']},
+
 
 	'Wish':{
 		'QuickAdd':{'description':'What do you wish for?'}, 		

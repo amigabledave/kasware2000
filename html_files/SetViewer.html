@@ -30,10 +30,18 @@
 		</div>
 
 		<div class="col-xs-11">			
-			<textarea style="width:100%; border:0; font-size:14px;{% if set_name in ['BigO', 'ImIn', 'Diary'] %}font-weight:bold;{% endif %}" class="autoExpand QuickKsuDescription" rows="1" data-min-rows='1' name="description" id="description" placeholder="{% if view_type != 'Plan' and set_name != 'BigO' %}{{constants['d_SetViewerDetails'][set_name]['QuickAdd']['description']}}{% else %}What do you need to do to make your Dream come true?{% endif%}"></textarea>
+			<textarea style="width:100%; border:0; font-size:14px;{% if set_name in ['BigO', 'ImIn', 'Diary'] %}font-weight:bold;{% endif %}" class="autoExpand QuickKsuDescription" rows="1" data-min-rows='1' name="description" id="description" placeholder="{% if view_type != 'Plan'%}{{constants['d_SetViewerDetails'][set_name]['QuickAdd']['description']}}{% elif set_name == 'BigO' %}What do you need to achieve to materialize this dream?{% else %}What do you need to do to acomplish this goal?{% endif%}"></textarea>
 			
 			<textarea class="hidden" name="secondary_description" id="secondary_description"></textarea>
 		</div>
+
+		<div class="hidden" id="BOKA_SecondaryDescription">
+			<div class="col-xs-1"></div>
+			<div class="col-xs-11" style="margin-top:2px;">
+				<textarea class="autoExpand DummyInput" ksuattr="secondary_description" style="width:100%; border:0; color:grey; font-style:italic; font-size:13px;" rows="1" data-min-rows='1' id="BigO_secondary_description" placeholder="How would you know you reached your milestone?"></textarea>
+			</div>
+		</div>
+
 
 		{% if set_name in ['BigO', 'ImIn', 'Diary'] %}
 		<div class="hidden" id="QuickKsuSecondaryDescription">
@@ -67,37 +75,62 @@
 		</div>
 		<div class="col-xs-1"></div>
 		{% else %}
-						
-		<div class="col-xs-4">	
-				<input type="date" style="padding-right:2px; padding-left:4px; border:0; color:purple;" name="next_event" id="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+					<!-- xx	 -->
+		<div id="BOKA_Specific_TagsAndImportanceRow">
+			<div class="col-xs-4">	
+					<input type="date" style="padding-right:2px; padding-left:4px; border:0; color:purple;" name="next_event" id="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
+			</div>
+
+			<div class="col-xs-1" style="padding-left:5px; font-weight:bold; padding-right:5px; text-align:right;">
+				<select class="kpts_value MissionKsuKpts" style="border:0" name="kpts_value" id="kpts_value">
+					{% for value in constants['l_Fibonacci'] %}
+						<option value="{{value}}"> {{value}} </option>
+					{% endfor %}
+				</select>	
+			</div>	
+			
+			<div class="col-xs-6">
+				<input style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" placeholder="Tag" type="text" list="tags" name="tags" id="tags_value">
+				<datalist id="tags">
+					{% for tag in tags %}
+						<option value="{{tag}}">
+					{% endfor %}
+				</datalist>
+			</div>
+
+			<div class="col-xs-1" style="padding-left:0px;">
+				<select style="border:0; color:purple; font-weight:bold; margin-left:-10px;" name="importance" id="importance">
+					<option value="1"> 1 </option>
+					<option value="2"> 2 </option>
+					<option selected="selected" value="3"> 3 </option>
+					<option value="4"> 4 </option>
+					<option value="5"> 5 </option>
+				</select>
+			</div>
+		</div>
+		<!-- xx -->
+		<div class="hidden" id="MiniO_Specific_TagsAndImportanceRow">
+			<div class="col-xs-10">
+				<input style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" class="DummyInput" ksuattr="tags_value" placeholder="Tag" type="text" list="tags">
+				<datalist id="tags">
+					{% for tag in tags %}
+						<option value="{{tag}}">
+					{% endfor %}
+				</datalist>
+			</div>
+			<div class="col-xs-1" style=" font-weight:bold; text-align:left; padding-left:25px;">
+				<select style="border:0; color:purple;" class="DummyInput" ksuattr="importance">
+					<option value="1"> 1 </option>
+					<option value="2"> 2 </option>
+					<option selected="selected" value="3"> 3 </option>
+					<option value="4"> 4 </option>
+					<option value="5"> 5 </option>
+				</select>	
+			</div>
 		</div>
 
-		<div class="col-xs-1" style="padding-left:5px; font-weight:bold; padding-right:5px; text-align:right;">
-			<select class="kpts_value MissionKsuKpts" style="border:0" name="kpts_value" id="kpts_value">
-				{% for value in constants['l_Fibonacci'] %}
-					<option value="{{value}}"> {{value}} </option>
-				{% endfor %}
-			</select>	
-		</div>	
 
-		<div class="col-xs-6">
-			<input style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" placeholder="Tag" type="text" list="tags" name="tags" id="tags_value">
-			<datalist id="tags">
-				{% for tag in tags %}
-					<option value="{{tag}}">
-				{% endfor %}
-			</datalist>
-		</div>
 
-		<div class="col-xs-1" style="padding-left:0px;">
-			<select style="border:0; color:purple; font-weight:bold; margin-left:-10px;" name="importance" id="importance">
-				<option value="1"> 1 </option>
-				<option value="2"> 2 </option>
-				<option selected="selected" value="3"> 3 </option>
-				<option value="4"> 4 </option>
-				<option value="5"> 5 </option>
-			</select>
-		</div>
 		{% endif %}							
 	</div>	
 
@@ -240,39 +273,61 @@
 			</div>
 		</div>
 	</div>
-
+	
 	<div class="{% if set_name != 'BigO' %}hidden{% endif %}" id="BigO">
 
 		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-		<div class="row">		
-	
-			<div class="col-xs-6">
-				<label>Achievement Value</label>
-				<select class="form-control DummyInput" ksuattr="kpts_value" id="BigO_kpts_value">
-					{% for value in constants['l_Fibonacci'] %}														
-						<option value="{{value}}"> {{value}} </option>							
-					{% endfor %}
-				</select>
-			</div>			
+		
+		<div class="{% if set_name != 'BigO' %}hidden{% endif %}" id="BigO_BigO">
 
-			<div class="col-xs-6">
-				<label>Target Date</label>
-				<input type="date" class="form-control DummyInput" style="padding-right:3px;" id="BigO_next_event" ksuattr="next_event">		
+			<div class="row">		
+		
+				<div class="col-xs-6">
+					<label>Achievement Value</label>
+					<select class="form-control DummyInput" ksuattr="kpts_value" id="BigO_kpts_value">
+						{% for value in constants['l_Fibonacci'] %}														
+							<option value="{{value}}"> {{value}} </option>							
+						{% endfor %}
+					</select>
+				</div>			
+
+				<div class="col-xs-6">
+					<label>Target Date</label>
+					<input type="date" class="form-control DummyInput" style="padding-right:3px;" id="BigO_next_event" ksuattr="next_event">		
+				</div>
 			</div>
-		</div>
-		{% if view_type != 'Plan' %}
-		<div class="row">
-			<div class="col-xs-12">
-				<label> Targeted Dream </label>	
-				<select class="form-control DummyInput" ksuattr="parent_id" id="BigO_parent_id">
-					{% for (ksu_id, description) in dreams %}																				
-						<option value="{{ksu_id}}"> {{description}} </option>								
-					{% endfor %}
-				</select>	
+
+			{% if view_type != 'Plan' %}
+			<div class="row">
+				<div class="col-xs-12">
+					<label> Targeted Dream </label>	
+					<select class="form-control DummyInput" ksuattr="parent_id" id="BigO_parent_id">
+						{% for (ksu_id, description) in dreams %}																				
+							<option value="{{ksu_id}}"> {{description}} </option>								
+						{% endfor %}
+					</select>	
+				</div>
 			</div>
+			{% endif %}
 		</div>
-		{% endif %}
 	</div>
+
+	<div class="{% if set_name != 'BOKA' %}hidden{% endif %}" id="BOKA">
+		
+		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+		<div class="row">				
+			<div class="col-xs-2"></div>
+			<div class="col-xs-4">
+				<label class="radio-inline">
+					<input type="radio" name="ksu_subtype" value="KAS2" {% if set_name == 'BOKA' %} checked="checked" {% endif %}> Action </label></div>
+
+			<div class="col-xs-4">
+				<label class="radio-inline" style="margin-left:2px;">
+					<input type="radio" name="ksu_subtype" value="MiniO"> Milestone </label></div>
+			<div class="col-xs-2"></div>
+		</div>				
+	</div>
+
 
 	<div class="{% if set_name != 'Wish' %}hidden{% endif %}" id="Wish">
 
@@ -2749,6 +2804,11 @@
 											<span style="color:red; font-style:italic; font-weight:bold; font-size:12px;"> Must avoid:</span> 
 										{% endif %}								
 
+										{% if ksu.ksu_subtype == 'MiniO' %}	
+											<span style="color:purple; font-style:italic; font-weight:bold; font-size:12px;"> Milestone:</span> 
+										{% endif %}	
+
+
 										<textarea style="width:100%; border:0; {% if ksu.ksu_type in ['ImIn', 'BigO', 'Diary'] %}font-weight:bold;{% endif %}{% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#b1adad;{% endif %}" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
 
 										{% if ksu.ksu_type in ['ImIn', 'BigO', 'Diary'] %}
@@ -2787,7 +2847,7 @@
 							</div>
 						</div>
 
-						{% if set_name == 'BOKA' %}
+						{% if set_name == 'BOKA' and ksu.ksu_subtype == 'KAS2' %}
 						<div class="row" style="margin-top:2px;">
 
 							<div class="col-xs-6">	
@@ -2824,8 +2884,8 @@
 						<div class="row hidden" id="ScoreDetail">
 							<div class="col-xs-12">
 
-								{% if set_name != 'BOKA' %}
-									<!-- xx	-->
+								{% if set_name != 'BOKA' or ksu.ksu_subtype == 'MiniO' %}
+									
 									<div class="row" style="margin-top:3px;">
 										{% if ksu.ksu_subtype in ['KAS1', 'KAS3', 'KAS4', 'ImPe', 'EVPo'] %}
 										<div class="col-xs-2" style="font-weight:bold; padding-right:5px; text-align:right;">
@@ -3035,7 +3095,8 @@
 												</select> 
 											</div>		
 										</div>
-									{% elif ksu.ksu_type == 'BigO' %}
+										<!-- xx -->
+									{% elif ksu.ksu_subtype == 'BigO' %}
 									
 										<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 										<div class="row">								
@@ -3072,7 +3133,30 @@
 													{% endfor %}
 												</select>	
 											</div>
-										</div>										
+										</div>	
+
+									{% elif ksu.ksu_subtype == 'MiniO' %}	
+										<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+										<div class="row">								
+											<div class="col-xs-6 col-xs-4">
+												<label>Target Date</label>
+												<input type="date" class="form-control QuickAttributeUpdate" style="padding-right:3px;" id="next_event" name="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">	
+											</div>
+
+											<div class="col-xs-6 col-sm-8">
+												<label> Parent Objective </label>	
+												<select class="form-control QuickAttributeUpdate" name="parent_id" id="parent_id">
+													{% for (ksu_id, description) in big_objectives %}	
+														{% if ksu.parent_id and ksu.parent_id.id() == ksu_id %}
+														<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
+														{% else %}
+														<option value="{{ksu_id}}"> {{description}} </option>								
+														{% endif %}
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+
 									{% elif ksu.ksu_type == 'BOKA' %}
 										<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 										<div class="row">

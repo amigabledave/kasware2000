@@ -723,12 +723,19 @@
 									<div class="col-xs-6 col-sm-8">
 										<label> Targeted Objective </label>
 										<select class="form-control QuickAttributeUpdate" name="parent_id" id="parent_id">
-											{% for (ksu_id, description) in objectives %}																				
+											{% for (ksu_id, description, milestones) in objectives %}										
 												{% if ksu.parent_id_id == ksu_id %}
 												<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
 												{% else %}
 												<option value="{{ksu_id}}"> {{description}} </option>								
 												{% endif %}
+												{% for (ksu_id, description) in milestones %}
+													{% if ksu.parent_id_id == ksu_id %}
+													<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
+													{% else %}
+													<option value="{{ksu_id}}"> {{description}} </option>								
+													{% endif %}
+												{% endfor %}
 											{% endfor %}
 										</select>	
 									</div>		
@@ -1227,9 +1234,12 @@
 				<div class="col-xs-6 col-sm-8">
 					<label> Targeted Objective </label>
 					<select class="form-control DummyInput" ksuattr="parent_id" id="OTOA_parent_id">
-						{% for (ksu_id, description) in objectives %}																				
-							<option value="{{ksu_id}}"> {{description}} </option>								
-						{% endfor %}
+						{% for (ksu_id, description, milestones) in objectives %}										
+							<option value="{{ksu_id}}"> {{description}} </option>						
+							{% for (ksu_id, description) in milestones %}
+								<option value="{{ksu_id}}"> {{description}} </option>													
+							{% endfor %}
+						{% endfor %}										
 					</select>	
 				</div>		
 			</div>
@@ -1630,12 +1640,19 @@
 									<div class="col-xs-6 col-sm-8">
 										<label> Targeted Objective </label>
 										<select class="form-control QuickAttributeUpdate" name="parent_id" id="parent_id">
-											{% for (ksu_id, description) in objectives %}																				
+											{% for (ksu_id, description, milestones) in objectives %}										
 												{% if ksu.parent_id_id == ksu_id %}
 												<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
 												{% else %}
 												<option value="{{ksu_id}}"> {{description}} </option>								
 												{% endif %}
+												{% for (ksu_id, description) in milestones %}
+													{% if ksu.parent_id_id == ksu_id %}
+													<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
+													{% else %}
+													<option value="{{ksu_id}}"> {{description}} </option>								
+													{% endif %}
+												{% endfor %}
 											{% endfor %}
 										</select>	
 									</div>		
@@ -1960,14 +1977,21 @@
 									<div class="col-xs-6 col-sm-8">
 										<label> Targeted Objective </label>
 										<select class="form-control QuickAttributeUpdate" name="parent_id" id="parent_id">
-											{% for (ksu_id, description) in objectives %}																				
+											{% for (ksu_id, description, milestones) in objectives %}										
 												{% if ksu.parent_id_id == ksu_id %}
 												<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
 												{% else %}
 												<option value="{{ksu_id}}"> {{description}} </option>								
 												{% endif %}
+												{% for (ksu_id, description) in milestones %}
+													{% if ksu.parent_id_id == ksu_id %}
+													<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
+													{% else %}
+													<option value="{{ksu_id}}"> {{description}} </option>								
+													{% endif %}
+												{% endfor %}
 											{% endfor %}
-										</select>	
+										</select>
 									</div>		
 								</div>
 

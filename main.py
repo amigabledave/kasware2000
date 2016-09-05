@@ -605,6 +605,7 @@ class SetViewer(Handler):
 		parent_id = ''
 		dreams = []
 		objectives = []
+		big_objectives = []
 		view_type = ''
 
 		if not set_name:
@@ -627,7 +628,7 @@ class SetViewer(Handler):
 			parent_id = ksu_id
 			dreams = self.get_active_dreams(user_key)
 			if set_name == 'BOKA':				
-				objectives = self.get_user_objectives(user_key)
+				objectives, big_objectives = self.get_user_objectives(user_key)
 			view_type ='Plan'
 		
 		else:
@@ -636,13 +637,14 @@ class SetViewer(Handler):
 			if self.theory.hide_private_ksus:
 				ksu_set = ksu_set.filter(KSU.is_private == False)
 		
-			ksu_set = ksu_set.fetch()
-		
-
-			if set_name == 'BigO':
-				# ksu_set = self.remove_inactive_child_objectives(ksu_set)
+			if set_name == 'BigO':				
+				ksu_set = ksu_set.filter(KSU.ksu_subtype == 'BigO')
+				objectives, big_objectives = self.get_user_objectives(user_key)
 				dreams = self.get_active_dreams(user_key)
 
+
+			ksu_set = ksu_set.fetch()
+		
 
 		for ksu in ksu_set:
 			ksu.description_rows = determine_rows(ksu.description)
@@ -652,7 +654,7 @@ class SetViewer(Handler):
 		
 		tags = self.theory.categories['tags'] # por el quick adder
 		ksu_set, set_tags = self.get_set_tags(ksu_set)
-		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, dreams=dreams, objectives=objectives, view_type=view_type, set_tags=set_tags) #
+		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, dreams=dreams, objectives=objectives, big_objectives=big_objectives, view_type=view_type, set_tags=set_tags) #
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -696,9 +698,14 @@ class SetViewer(Handler):
 	def get_user_objectives(self, user_key):
 		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == 'BigO').order(-KSU.is_active).order(KSU.importance).order(KSU.created)
 		objectives = [(None,'-- None --')]
+		big_objectives = [(None,'-- None --')]
 		for ksu in ksu_set:
-			objectives.append((ksu.key.id(), ksu.description))
-		return objectives
+			if ksu.ksu_subtype == 'BigO':				
+				objectives.append((ksu.key.id(), ksu.description))
+				big_objectives.append((ksu.key.id(), ksu.description))
+			else:
+				objectives.append((ksu.key.id(), ksu.description))
+		return objectives, big_objectives
 
 
 	def remove_inactive_child_objectives(self, objectives):
@@ -918,7 +925,8 @@ class MissionViewer(Handler):
 
 		KAS3_mission = []
 		KAS4_mission = []
-		objectives = [(None,'-- None --')]
+		objectives = [(None,'-- None --',[])]
+		milestones = []
 
 		mission_sets = ['KAS1', 'KAS2', 'EVPo', 'ImPe']
 		questions_sets = ['RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'Diary']
@@ -969,7 +977,17 @@ class MissionViewer(Handler):
 					wrap_up_KAS4.append(ksu)
 
 			elif ksu_subtype == 'BigO':
-				objectives.append((ksu.key.id(), ksu.description))
+				objectives.append((ksu.key.id(), ksu.description,[]))
+
+			elif ksu_subtype == 'MiniO':
+				milestones.append(ksu)
+
+
+		for (BigO_id,BigO_description,BigO_milestones) in objectives:
+			for milestone in milestones:					
+				milestone_parent_id = milestone.parent_id.id()
+				if BigO_id == milestone_parent_id:
+					BigO_milestones.append((milestone.key.id(),'--> ' + milestone.description))
 
 
 		kick_off_proactive = full_mission['kick_off']['horizon_set']
@@ -1851,7 +1869,7 @@ def prepareInputForSaving(theory, ksu, post_details):
 		else:
 			ksu_subtype = ksu_type
 
-		if ksu_type in ['OTOA', 'BOKA']:
+		if ksu_type in ['OTOA', 'BOKA'] and ksu_subtype != 'MiniO':
 			ksu_subtype = 'KAS2'
 
 		return ksu_subtype
@@ -1938,11 +1956,17 @@ def prepareInputForSaving(theory, ksu, post_details):
 
 	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe', 'RealitySnapshot', 'Diary', 'FibonacciPerception', 'BinaryPerception'] and not ksu.next_event:
 		ksu.next_event = datetime.today() ## - timedelta(days=1) #Esto tenia una logica, pero por el momento se lo quito 
-	print ksu.ksu_type
-	print ksu.next_event
 
 	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe', 'RealitySnapshot', 'Diary', 'FibonacciPerception', 'BinaryPerception'] and not ksu.frequency:
 		ksu.frequency = 1
+
+	if ksu.ksu_subtype == 'MiniO':
+		ksu.ksu_type = 'BigO'
+
+	print
+	print 'Este es el nuevo sub tipo de KSU que estoy creando'
+	print ksu.ksu_type
+	print ksu.ksu_subtype
 
 	return ksu
 
@@ -2038,6 +2062,7 @@ def get_ksu_to_remember(self):
 	ksu_set = ksu_set.fetch()
 	filtered_ksu_set = []
 	current_objectives = []
+	milestones = []
 	objectives = []
 
 	for ksu in ksu_set:
@@ -2045,17 +2070,30 @@ def get_ksu_to_remember(self):
 		if ksu_type in sets_to_remember:
 			filtered_ksu_set.append(ksu)
 		elif ksu_type == 'BigO':
-			if ksu.next_event:
-				ksu.days_left = '-- ' + str((ksu.next_event).toordinal() - today_ordinal) + ' days left --'
-			else:
-				ksu.days_left = '-- ??? days left --'
+			if ksu.ksu_subtype == 'BigO':
+				if ksu.next_event:
+					ksu.days_left = '-- ' + str((ksu.next_event).toordinal() - today_ordinal) + ' days left --'
+				else:
+					ksu.days_left = '-- ??? days left --'
 
-			if ksu.parent_id:
-				ksu.parent_description = (KSU.get_by_id(ksu.parent_id.id())).description
-			else:
-				ksu.parent_description = None
-			
-			current_objectives.append(ksu)
+				if ksu.parent_id:
+					ksu.parent_description = (KSU.get_by_id(ksu.parent_id.id())).description
+				else:
+					ksu.parent_description = None				
+				current_objectives.append(ksu)
+			elif ksu.ksu_subtype == 'MiniO':
+				milestones.append(ksu)
+
+	for BigO in current_objectives:
+		BigO_id = BigO.key.id()
+		BigO.milestones = []
+		BigO.milestones_len = 0
+		for milestone in milestones:
+			if milestone.parent_id and milestone.parent_id.id() == BigO_id:
+				BigO.milestones.append(milestone.description)
+				BigO.milestones_len += 1
+
+
 
 	if filtered_ksu_set:
 		ksu_less_reviewed = filtered_ksu_set[0]
