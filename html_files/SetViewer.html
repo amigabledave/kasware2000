@@ -2758,7 +2758,7 @@
 			<div class="col-xs-1"></div>	
 
 			<div class="col-xs-1" style="padding:0;">
-				<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#{{tag_id}}" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:-15px; margin-top:4px;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-minus TagPlusMinus" style="font-size:20px;"></span></button>			
+				<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#{{tag_id}}" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:-15px; margin-top:4px;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus TagPlusMinus" style="font-size:20px;"></span></button>			
 			</div>
 	
 
@@ -2768,7 +2768,7 @@
 			
 		</div>
  	{% endif %}
-	<div id="{{tag_id}}" class="tag_content">
+	<div id="{{tag_id}}" class="tag_content hidden">
 		{% for ksu in ksu_set %}
 			{% if tag in ksu.tags %}
 				<div class="row KSUdisplaySection SetViewerKSU" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:16px;">

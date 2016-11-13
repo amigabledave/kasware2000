@@ -200,6 +200,9 @@ textarea{
 
 /*--- Base Formats----------------------------*/
 
+
+
+
 .SetViewerOptionsButton{
     height: 25px;
     margin-bottom: 0px;
@@ -313,6 +316,10 @@ textarea{
     /*margin-left: 17px;*/
     text-decoration: none;
 
+}
+
+.ShowDetailViewerButton{
+    margin-top: 5px;
 }
 
 .MiniMissionValue{ 

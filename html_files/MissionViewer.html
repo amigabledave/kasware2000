@@ -25,11 +25,11 @@
 	</div>
 
 	<div class="col-xs-2" style="padding:0;">
-		<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#kick_off" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-minus" style="font-size:22px;"></span></button>			
+		<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#kick_off" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="font-size:22px;"></span></button>			
 	</div>
 </div>
 
-<div id="kick_off" class="">
+<div id="kick_off" class="hidden" style="margin-bottom:25px;">
 	{% for ksu in kick_off_questions %}
 		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 			<form method="post">
@@ -815,15 +815,8 @@
 			</div>
 		</div>	
 	{% endfor %}
-
-	<div class="row" id="KickOffActionsToExecuteSubTitle">
-		<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10"> 
-			<div class="SectionTitle" style="font-size:22px;"> Actions to execute </div>
-		</div>
-	</div>
 </div>
 {% endif %}
-
 
 
 <div id="reactive_mission" class="hidden">
@@ -993,7 +986,7 @@
 			<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#KAS4_mission" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-minus" style="font-size:22px;"></span></button>			
 		</div>
 	</div>
-	<div class="" id="KAS4_mission">
+	<div class="" id="KAS4_mission" style="margin-bottom:25px;">
 	{% for ksu in KAS4_mission %}
 
 		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
@@ -1140,9 +1133,13 @@
 </div>
 
 {% if time_frame == 'Today' %}
-	<div class="row hidden" id="ActionsToExecuteSubTitle">
-		<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10"> 
-			<div class="SectionTitle" style="font-size:22px;"> Actions to execute </div>
+	<div class="row" id="ActionsToExecuteSubTitle">
+		<div class="col-xs-10 col-sm-9 col-md-10 col-lg-10"> 
+			<div class="SectionTitle" style="font-size:22px;"> Actions to execute  </div>
+		</div>
+
+		<div class="col-xs-2" style="padding:0;">
+			<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#today" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-minus" style="font-size:22px;"></span></button>			
 		</div>
 	</div>
 {% endif %}
@@ -1742,11 +1739,11 @@
 	</div>
 
 	<div class="col-xs-2" style="padding:0;">
-		<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#wrap_up" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-minus" style="font-size:22px;"></span></button>			
+		<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#wrap_up" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="font-size:22px;"></span></button>			
 	</div>
 </div>
 
-<div id="wrap_up" class="">
+<div id="wrap_up" class="hidden">
 	{% for ksu in wrap_up_proactive %}
 		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 			<div class="col-xs-12">
@@ -2532,11 +2529,8 @@
 			</form>		
 		</div>
 	{% endfor %}
-
 </div>
 {% endif %}
-
-
 
 {% endblock %}
 
