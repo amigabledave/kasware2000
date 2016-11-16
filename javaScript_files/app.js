@@ -494,7 +494,7 @@ $(document).on('click', '.UserActionButton', function(){
 	var ksu = $(this).closest('#MissionKSU');
 	var ksu_id = ksu.attr("value");
 	var user_action = $(this).attr("value");
-	var kpts_value = ksu.find('#kpts_value option:selected').val();
+	var kpts_value = ksu.find('#kpts_value').val();
 	var event_comments = ksu.find('#event_comments').val()
 	var event_secondary_comments = ksu.find('#event_secondary_comments').val()
 
@@ -654,7 +654,7 @@ $('.SaveNewKSUButton').on('click', function(){
 	var secondary_description = ksu.find('#secondary_description').val();
 	var next_event = ksu.find('#next_event').val();
 	var best_time = ksu.find('#best_time').val();
-	var kpts_value = ksu.find('#kpts_value option:selected').val();
+	var kpts_value = ksu.find('#kpts_value').val();
 
 	var importance = ksu.find('#importance').val();
 	var mission_importance = ksu.find('#mission_importance').val();
@@ -752,7 +752,7 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#ImIn_best_time').val('');
 		ksu.find('#Diary_best_time').val('');
 
-		ksu.find('#next_event').val('');
+		// ksu.find('#next_event').val('');
 		ksu.find('#BigO_next_event').val('');
 		ksu.find('#EVPo_next_event').val('');
 		ksu.find('#ImPe_next_event').val('')
@@ -765,13 +765,13 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#importance').val(3);
 		ksu.find('#mission_importance').val(3);
 
-		ksu.find('#kpts_value').val(0.25);
-		ksu.find('#KAS3_kpts_value').val(0.25);
-		ksu.find('#KAS4_kpts_value').val(0.25);
-		ksu.find('#BigO_kpts_value').val(0.25);
-		ksu.find('#Wish_kpts_value').val(0.25);
-		ksu.find('#EVPo_kpts_value').val(0.25);
-		ksu.find('#ImPe_kpts_value').val(0.25);
+		ksu.find('#kpts_value').val(1);
+		ksu.find('#KAS3_kpts_value').val(1);
+		ksu.find('#KAS4_kpts_value').val(1);
+		ksu.find('#BigO_kpts_value').val(1);
+		ksu.find('#Wish_kpts_value').val(1);
+		ksu.find('#EVPo_kpts_value').val(1);
+		ksu.find('#ImPe_kpts_value').val(1);
 
 		ksu.find('#frequency').val('');
 		ksu.find('#EVPo_frequency').val('');
