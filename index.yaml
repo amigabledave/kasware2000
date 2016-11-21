@@ -150,6 +150,16 @@ indexes:
   - name: is_private
   - name: theory
   - name: best_time
+  - name: mission_importance
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: is_active
+  - name: is_deleted
+  - name: is_private
+  - name: theory
+  - name: best_time
   - name: next_event
 
 - kind: KSU
@@ -265,6 +275,16 @@ indexes:
   - name: next_event
   - name: mission_importance
   - name: best_time
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: is_active
+  - name: is_private
+  - name: theory
+  - name: times_reviewed
+  - name: importance
+  - name: created
 
 - kind: KSU
   properties:

@@ -110,7 +110,7 @@ class Handler(webapp2.RequestHandler):
 
 		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-		active_date = (datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).toordinal()# TT Time Travel aqui puedo hacer creer al programa que es otro dia
+		active_date = (datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).toordinal() # TT Time Travel aqui puedo hacer creer al programa que es otro dia
 		
 		last_DailyLog = theory.last_DailyLog
 		user_key = theory.key		
@@ -155,8 +155,8 @@ class Handler(webapp2.RequestHandler):
 
 		if not last_log.goal_achieved:
 			if EffortReserve - minimum_daily_effort >= 0:
-				last_log.goal_achieved = True
-				last_log.Streak = last_log.Streak + 1
+				# last_log.goal_achieved = True # Esto es para que no se marque como que alcance la meta del dia si no la alcance.
+				last_log.Streak = last_log.Streak + 1 #Es distinto sobrevivir que alcanzar la meta del dia
 				last_log.EffortReserve = EffortReserve - minimum_daily_effort
 				# last_log.PointsToGoal = 0 #Se vuelve irrelevante 
 
@@ -497,6 +497,8 @@ class Settings(Handler):
 
 			theory.day_start_time = datetime.strptime(post_details['day_start_time'][0:5], '%H:%M').time()
 
+			old_minimum_daily_effort = theory.kpts_goals_parameters['minimum_daily_effort'] #Esto se lo meti para solo resetear cuando este valor cambia.
+
 		 	theory.kpts_goals_parameters = {
 				'typical_week_effort_distribution':[
 					float(post_details['typical_week_effort_distribution_Mon']),
@@ -510,36 +512,33 @@ class Settings(Handler):
 				'yearly_shit_happens_days': int(post_details['yearly_shit_happens_days']),
 				'minimum_daily_effort':float(post_details['minimum_daily_effort'])}
 	 	
-	 		
-			
 	 		theory.kpts_goals = calculate_user_kpts_goals(theory.kpts_goals_parameters)
-			
-			active_log = self.update_active_log_based_on_new_kpts_goals(theory.kpts_goals) 		
+
+	 		if float(post_details['minimum_daily_effort']) != float(old_minimum_daily_effort):
+	 			active_log = self.update_active_log_based_on_new_kpts_goals(theory.kpts_goals)
+
 	 		theory.put()
  		self.redirect('/MissionViewer?time_frame=Today')
 
 
-	def update_active_log_based_on_new_kpts_goals(self, new_kpts_goals):
+	def update_active_log_based_on_new_kpts_goals(self, new_kpts_goals): #xx
 		active_log = self.active_log
 
 		new_minimum_daily_effort = new_kpts_goals['minimum_daily_effort']
 
 		user_date = active_log.user_date
-		user_date_date = datetime.fromordinal(user_date)
 
-		active_weekday = (user_date_date).weekday()
-		new_Goal = int(new_kpts_goals['kpts_weekly_goals'][active_weekday])
+		active_log.goal_achieved = False
+		active_log.streak_start_date =  user_date
 
-		if new_Goal + active_log.EffortReserve < new_minimum_daily_effort:
-			new_Goal = new_minimum_daily_effort
+		active_log.Streak = 0
+		active_log.Goal = new_minimum_daily_effort
 
-		new_PointsToGoal = new_Goal - active_log.SmartEffort + active_log.Stupidity
-
-		if new_PointsToGoal < 0:
-			new_minimum_dayly_effort = 0
-
- 		active_log.Goal = new_Goal
-		active_log.PointsToGoal = new_PointsToGoal
+		active_log.EffortReserve = 0
+		active_log.PointsToGoal = new_minimum_daily_effort
+	
+		active_log.SmartEffort = 0
+		active_log.Stupidity = 0
 						
 		active_log.put()
 		return 
@@ -804,7 +803,7 @@ class MissionViewer(Handler):
 
 		day_start_time = theory.day_start_time
 		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date()
+		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date() 
 		today_ordinal =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
 	
 		current_time = (datetime.today()+timedelta(hours=theory.timezone)).time()
@@ -1582,7 +1581,7 @@ class PopulateRandomTheory(Handler):
 				theory.last_DailyLog = active_date
 				theory.put()
 
-				#Loads OS Ksus #xx
+				#Loads OS Ksus 
 				for post_details in os_ksus:
 					ksu = KSU(theory=theory.key)
 					ksu = prepareInputForSaving(theory, ksu, post_details)
