@@ -746,7 +746,7 @@ class MissionViewer(Handler):
 		tags = self.theory.categories['tags']
 
 		# todays_questions_now, todays_questions_latter, KAS3_mission, KAS4_mission, today, full_mission, objectives = self.generate_todays_mission(time_frame)
-		kick_off_questions, kick_off_KAS3, kick_off_KAS4, kick_off_proactive, principal_KAS3, principal_KAS4, wrap_up_questions, wrap_up_KAS3, wrap_up_KAS4, wrap_up_proactive, today, full_mission, objectives = self.generate_todays_mission(time_frame)		
+		anywhere_anytime, kick_off_questions, kick_off_KAS3, kick_off_KAS4, kick_off_proactive, principal_KAS3, principal_KAS4, wrap_up_questions, wrap_up_KAS3, wrap_up_KAS4, wrap_up_proactive, today, full_mission, objectives = self.generate_todays_mission(time_frame)		
 		kick_off = kick_off_proactive or kick_off_questions or kick_off_KAS3 or kick_off_KAS4
 		wrap_up = wrap_up_proactive or wrap_up_KAS3 or wrap_up_KAS4 or wrap_up_questions
 
@@ -777,6 +777,7 @@ class MissionViewer(Handler):
 						kick_off_KAS4=kick_off_KAS4,
 						kick_off_proactive=kick_off_proactive,
 
+						anywhere_anytime=anywhere_anytime,
 						KAS3_mission=principal_KAS3, 
 						KAS4_mission=principal_KAS4,
 
@@ -823,6 +824,11 @@ class MissionViewer(Handler):
 
 			'kick_off':{
 				'horizon_title':'Kick Off',
+				'horizon_set':[],
+				'horizon_value':0},
+
+			'anywhere_anytime':{
+				'horizon_title':'Anywhere Anytime',
 				'horizon_set':[],
 				'horizon_value':0},
 
@@ -888,6 +894,10 @@ class MissionViewer(Handler):
 				mission_view = ksu.mission_view
 				if mission_view == 'KickOff':
 					return 'kick_off'
+
+				elif mission_view == 'AnywhereAnytime':
+					return 'anywhere_anytime'
+
 				elif mission_view == 'WrapUp':
 					return 'wrap_up'
 				else:				
@@ -991,6 +1001,8 @@ class MissionViewer(Handler):
 
 		kick_off_proactive = full_mission['kick_off']['horizon_set']
 
+		anywhere_anytime = full_mission['anywhere_anytime']['horizon_set']
+
 		KAS3_mission = principal_KAS3
 		KAS4_mission = principal_KAS4
 		
@@ -1002,7 +1014,7 @@ class MissionViewer(Handler):
 			'horizon_value':full_mission['today']['horizon_value'] + full_mission['timeless_today']['horizon_value']}
 
 		# return todays_questions_now, todays_questions_latter, KAS3_mission, KAS4_mission, today, full_mission, objectives
-		return kick_off_questions, kick_off_KAS3, kick_off_KAS4, kick_off_proactive, principal_KAS3, principal_KAS4, wrap_up_questions, wrap_up_KAS3, wrap_up_KAS4, wrap_up_proactive, today, full_mission, objectives 
+		return anywhere_anytime, kick_off_questions, kick_off_KAS3, kick_off_KAS4, kick_off_proactive, principal_KAS3, principal_KAS4, wrap_up_questions, wrap_up_KAS3, wrap_up_KAS4, wrap_up_proactive, today, full_mission, objectives 
 
 
 class EventHandler(Handler):
