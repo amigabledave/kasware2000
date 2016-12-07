@@ -18,6 +18,301 @@
 	{% endfor %}
 </datalist>
 
+<div id="reactive_mission" class="hidden">
+{% if time_frame == 'Today' and KAS3_mission %}
+	
+	<div class="row">
+		<div class="col-xs-10 col-sm-9 col-md-10 col-lg-10">
+			<div class="SectionTitle" style="font-size:22px;"> Reactions to have </div>
+		</div>
+
+		<div class="col-xs-2" style="padding:0;">
+			<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#KAS3_mission" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-minus" style="font-size:22px;"></span></button>			
+		</div>
+	</div>
+
+	<div class="" id="KAS3_mission">
+		{% for ksu in KAS3_mission %}
+
+		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+		<form method="post">
+		<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
+			<div class="col-xs-12">
+				<div class="row">
+					<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
+						<button type="button" class="btn btn-{% if ksu.ksu_subtype == 'KAS3' %}success{% else %}danger{% endif %} btn-circle btn-lg UserActionButton" name="action_description" value='ReactiveMissionDone'><i class="glyphicon glyphicon-ok"></i></button>
+					</div>
+
+					<div class="col-xs-11">
+						<div class="row">
+							<div class="col-xs-12">
+							
+								<textarea style="width:100%; font-weight:normal; font-style:italic; border:0;" class="QuickAttributeUpdate autoExpand" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>							
+								<textarea style="width:100%; border:0; font-weight:bold; {% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#b1adad;{% endif %}" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
+
+							</div>
+						</div>
+
+						<div class="row" style="margin-top:5px;" id="TagsImportanceRow">
+
+							<div class="col-xs-3"></div>
+
+							<div class="col-xs-2" style="padding-left:0; font-weight:bold; padding-right:5px; text-align:right;">
+								<input type="number" min="1" max="100" class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0;" name="kpts_value" id="kpts_value" value="{{ksu.kpts_value|round|int}}" placeholder="KPs">		
+							</div>	
+							<div class="col-xs-2 hidden-sm hidden-md hidden-lg"></div>
+							
+							<div class="hidden-xs col-sm-5">
+								<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; width:170px; text-align:center; margin-left:-10px;" type="text" list="tags" name="tags" id="tags" value="{% if ksu.tags %}{{ksu.tags}}{% endif %}"> 
+							</div>
+													
+							<div class="col-xs-1" style="padding-left:0px;">
+									<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold; margin-left:-10px;" name="mission_importance" id="mission_importance">
+										{% for value in range(1,6) %}													
+											{% if value == ksu.mission_importance %}
+												<option selected="selected" value="{{value}}"> {{value}} </option>
+											{% else %}
+												<option value="{{value}}"> {{value}} </option>
+											{% endif %}
+										{% endfor %}
+									</select>
+							</div>
+
+							<div class="col-xs-2 hidden-sm hidden-md hidden-lg"></div>
+						
+							<div class="col-xs-1" style="padding-left:0px">
+								<button type="button" class="btn btn-default displaySectionVerticalButton ShowDetailViewerButton ViewerOptionsButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+							</div>
+						</div>
+
+					</div>		
+				</div>
+
+				<div class="row hidden" id="ScoreDetail">
+					<div class="col-xs-12">
+						<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+						<div class="row">
+			
+							<div class="col-xs-7 hidden-sm hidden-md hidden-lg">
+								<input style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" class="QuickAttributeUpdate" placeholder="Tag" type="text" list="tags" name="tags" id="tags" value="{% if ksu.tags %}{{ksu.tags}}{% endif %}">
+							</div>
+
+							<div class="co-xs-5 hidden-sm hidden-md hidden-lg">					
+									<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-right:10px;"><span class="glyphicon glyphicon-remove""></span></button>
+									<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='MissionDelete' style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+									<button type="button" class="btn btn-primary btn-circle btn-lg RedirectUserButton" name="action_description" value='EditKSU' style=""><span class="glyphicon glyphicon-pencil"></span></button>
+							</div>
+
+
+							<div class="col-xs-4 col-sm-2">
+								<div class="checkbox"> 
+									<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" {% if ksu.is_active %}checked{% endif %}> <b> Active </b> </label> 
+								</div>
+							</div>	
+
+							<div class="col-xs-4 col-sm-2" style="padding-left:8px;">
+								<div class="checkbox"> 
+									<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" {% if ksu.is_critical %}checked{% endif %}> <b> Critical </b> </label> 
+								</div>			
+							</div>
+
+							<div class="col-xs-4 col-sm-2" style="padding-left:3px;">
+								<div class="checkbox"> 
+						 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" {% if ksu.is_private %}checked{% endif %}> <b> Private </b> </label> 
+						 		</div>
+							</div>
+
+							<div class="hidden-xs col-sm-2"></div>
+							
+							<div class="hidden-xs col-sm-4">
+									<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-right:10px;"><span class="glyphicon glyphicon-remove""></span></button>
+									<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='MissionDelete' style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+									<button type="button" class="btn btn-primary btn-circle btn-lg RedirectUserButton" name="action_description" value='EditKSU' style=""><span class="glyphicon glyphicon-pencil"></span></button>
+							</div>
+						</div>
+					
+						<div class="row" id="KsuPlusOptions">
+							<div class="col-xs-12">	
+
+								<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">
+								<div class="row" style="margin-bottom:8px;">
+									<div class="col-xs-6 col-sm-4">
+										<label> Mission View </label>
+										<select class="form-control QuickAttributeUpdate" name="mission_view" id="mission_view">						
+											<option value="KickOff" {% if ksu.mission_view == 'KickOff' %} selected="selected"{% endif %}>Kick Off</option>
+											<option value="Principal" {% if ksu.mission_view == 'Principal' %} selected="selected"{% endif %}>Principal</option>
+											<option value="WrapUp" {% if ksu.mission_view == 'WrapUp' %} selected="selected"{% endif %}>Wrap Up</option>
+										</select> 
+									</div>		
+								</div>							
+
+								<hr class="hr-1px-gray" style="margin-top:10px;margin-bottom:0px;">
+								<div class="row">
+									<div class="col-xs-12">
+										<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments">{% if ksu.comments %}{{ ksu.comments }}{% endif %}</textarea>	
+									</div>
+								</div>		
+							</div>
+						</div>
+					</div>	
+				</div>
+			</div>
+		</form>		
+		</div>
+		{% endfor %}
+	</div>	
+{% endif %}
+
+{% if time_frame == 'Today' and KAS4_mission %}
+	
+	<div class="row">
+		<div class="col-xs-10 col-sm-9 col-md-10 col-lg-10">
+			<div class="SectionTitle" style="font-size:22px;"> Actions to avoid </div>
+		</div>
+	
+		<div class="col-xs-2" style="padding:0;">
+			<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#KAS4_mission" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-minus" style="font-size:22px;"></span></button>			
+		</div>
+	</div>
+	<div class="" id="KAS4_mission" style="margin-bottom:25px;">
+	{% for ksu in KAS4_mission %}
+
+		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
+		<form method="post">
+		<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
+			<div class="col-xs-12">
+				<div class="row">
+					<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
+						<button type="button" class="btn btn-{% if ksu.ksu_subtype == 'KAS3' %}success{% else %}danger{% endif %} btn-circle btn-lg UserActionButton" name="action_description" value='ReactiveMissionDone'><i class="glyphicon glyphicon-ok"></i></button>
+					</div>
+
+					<div class="col-xs-11">
+						<div class="row">
+							<div class="col-xs-12">
+							<textarea style="width:100%; border:0; font-weight:bold; {% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#b1adad;{% endif %}" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
+
+							</div>
+						</div>
+					
+						<div class="row" style="margin-top:5px;" id="TagsImportanceRow">
+
+							<div class="col-xs-3"></div>
+
+							<div class="col-xs-2" style="padding-left:0; font-weight:bold; padding-right:5px; text-align:right;">
+								<input type="number" min="1" max="100" class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0;color:red;" name="kpts_value" id="kpts_value" value="{{ksu.kpts_value|round|int}}" placeholder="KPs">		
+							</div>	
+							<div class="col-xs-2 hidden-sm hidden-md hidden-lg"></div>
+							
+							<div class="hidden-xs col-sm-5">
+								<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; width:170px; text-align:center; margin-left:-10px;" type="text" list="tags" name="tags" id="tags" value="{% if ksu.tags %}{{ksu.tags}}{% endif %}"> 
+							</div>
+													
+							<div class="col-xs-1" style="padding-left:0px;">
+									<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold; margin-left:-10px;" name="mission_importance" id="mission_importance">
+										{% for value in range(1,6) %}													
+											{% if value == ksu.mission_importance %}
+												<option selected="selected" value="{{value}}"> {{value}} </option>
+											{% else %}
+												<option value="{{value}}"> {{value}} </option>
+											{% endif %}
+										{% endfor %}
+									</select>
+							</div>
+
+							<div class="col-xs-2 hidden-sm hidden-md hidden-lg"></div>
+						
+							<div class="col-xs-1" style="padding-left:0px">
+								<button type="button" class="btn btn-default displaySectionVerticalButton ShowDetailViewerButton ViewerOptionsButton" id="ShowDetailViewerButton">
+									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
+							</div>
+						</div>
+					</div>		
+				</div>
+
+			<div class="row hidden" id="ScoreDetail">
+				<div class="col-xs-12">
+					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
+					<div class="row">
+		
+						<div class="col-xs-7 hidden-sm hidden-md hidden-lg">
+							<input style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" class="QuickAttributeUpdate" placeholder="Tag" type="text" list="tags" name="tags" id="tags" value="{% if ksu.tags %}{{ksu.tags}}{% endif %}">
+						</div>
+
+						<div class="co-xs-5 hidden-sm hidden-md hidden-lg">					
+								<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-right:10px;"><span class="glyphicon glyphicon-remove""></span></button>
+								<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='MissionDelete' style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+								<button type="button" class="btn btn-primary btn-circle btn-lg RedirectUserButton" name="action_description" value='EditKSU' style=""><span class="glyphicon glyphicon-pencil"></span></button>
+						</div>
+
+
+						<div class="col-xs-4 col-sm-2">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" {% if ksu.is_active %}checked{% endif %}> <b> Active </b> </label> 
+							</div>
+						</div>	
+
+						<div class="col-xs-4 col-sm-2" style="padding-left:8px;">
+							<div class="checkbox"> 
+								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" {% if ksu.is_critical %}checked{% endif %}> <b> Critical </b> </label> 
+							</div>			
+						</div>
+
+						<div class="col-xs-4 col-sm-2" style="padding-left:3px;">
+							<div class="checkbox"> 
+					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" {% if ksu.is_private %}checked{% endif %}> <b> Private </b> </label> 
+					 		</div>
+						</div>
+
+						<div class="hidden-xs col-sm-2"></div>
+						
+						<div class="hidden-xs col-sm-4">
+								<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-right:10px;"><span class="glyphicon glyphicon-remove""></span></button>
+								<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='MissionDelete' style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
+								<button type="button" class="btn btn-primary btn-circle btn-lg RedirectUserButton" name="action_description" value='EditKSU' style=""><span class="glyphicon glyphicon-pencil"></span></button>
+						</div>
+					</div>
+
+					<div class="row" id="KsuPlusOptions">
+						<div class="col-xs-12">
+							<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">
+							<div class="row" style="margin-bottom:8px;">
+								<div class="col-xs-12">
+									<label>Valid Exceptions</label>
+									<textarea class="form-control QuickAttributeUpdate autoExpand" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description" placeholder="e.g. When I'am on vacation, When the food its free!">{% if ksu.secondary_description %}{{ ksu.secondary_description }}{% endif %}</textarea>	
+								</div>
+
+								<div class="col-xs-6 col-sm-4">
+									<label> Mission View </label>
+									<select class="form-control QuickAttributeUpdate" name="mission_view" id="mission_view">						
+										<option value="KickOff" {% if ksu.mission_view == 'KickOff' %} selected="selected"{% endif %}>Kick Off</option>
+										<option value="Principal" {% if ksu.mission_view == 'Principal' %} selected="selected"{% endif %}>Principal</option>
+										<option value="WrapUp" {% if ksu.mission_view == 'WrapUp' %} selected="selected"{% endif %}>Wrap Up</option>
+									</select> 
+								</div>		
+							</div>
+							
+							<hr class="hr-1px-gray" style="margin-top:10px;margin-bottom:0px;">
+							<div class="row">
+								<div class="col-xs-12">
+									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments">{% if ksu.comments %}{{ ksu.comments }}{% endif %}</textarea>	
+								</div>
+							</div>		
+						</div>
+					</div>
+				</div>	
+			</div>
+
+
+			</div>
+		</form>		
+		</div>
+	{% endfor %}
+	</div>	
+{% endif %}
+</div>
+
+
 {% if time_frame == 'Today' and kick_off %}	
 <div class="row" id="KickOffTitle">
 	<div class="col-xs-10 col-sm-9 col-md-10 col-lg-10"> 
@@ -796,302 +1091,7 @@
 {% endif %}
 
 
-<div id="reactive_mission" class="hidden">
-{% if time_frame == 'Today' and KAS3_mission %}
-	
-		<div class="row">
-			<div class="col-xs-10 col-sm-9 col-md-10 col-lg-10">
-				<div class="SectionTitle" style="font-size:22px;"> Reactions to have </div>
-			</div>
-	
-			<div class="col-xs-2" style="padding:0;">
-				<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#KAS3_mission" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-minus" style="font-size:22px;"></span></button>			
-			</div>
-		</div>
 
-		<div class="" id="KAS3_mission">
-		{% for ksu in KAS3_mission %}
-
-		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
-		<form method="post">
-		<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
-			<div class="col-xs-12">
-				<div class="row">
-					<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
-						<button type="button" class="btn btn-{% if ksu.ksu_subtype == 'KAS3' %}success{% else %}danger{% endif %} btn-circle btn-lg UserActionButton" name="action_description" value='ReactiveMissionDone'><i class="glyphicon glyphicon-ok"></i></button>
-					</div>
-
-					<div class="col-xs-11">
-						<div class="row">
-							<div class="col-xs-12">
-							
-								<textarea style="width:100%; font-weight:normal; font-style:italic; border:0;" class="QuickAttributeUpdate autoExpand" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>							
-								<textarea style="width:100%; border:0; font-weight:bold; {% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#b1adad;{% endif %}" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
-
-							</div>
-						</div>
-
-						<div class="row" style="margin-top:5px;" id="TagsImportanceRow">
-
-							<div class="col-xs-3"></div>
-
-							<div class="col-xs-2" style="padding-left:0; font-weight:bold; padding-right:5px; text-align:right;">
-								<input type="number" min="1" max="100" class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0;" name="kpts_value" id="kpts_value" value="{{ksu.kpts_value|round|int}}" placeholder="KPs">		
-							</div>	
-							<div class="col-xs-2 hidden-sm hidden-md hidden-lg"></div>
-							
-							<div class="hidden-xs col-sm-5">
-								<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; width:170px; text-align:center; margin-left:-10px;" type="text" list="tags" name="tags" id="tags" value="{% if ksu.tags %}{{ksu.tags}}{% endif %}"> 
-							</div>
-													
-							<div class="col-xs-1" style="padding-left:0px;">
-									<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold; margin-left:-10px;" name="mission_importance" id="mission_importance">
-										{% for value in range(1,6) %}													
-											{% if value == ksu.mission_importance %}
-												<option selected="selected" value="{{value}}"> {{value}} </option>
-											{% else %}
-												<option value="{{value}}"> {{value}} </option>
-											{% endif %}
-										{% endfor %}
-									</select>
-							</div>
-
-							<div class="col-xs-2 hidden-sm hidden-md hidden-lg"></div>
-						
-							<div class="col-xs-1" style="padding-left:0px">
-								<button type="button" class="btn btn-default displaySectionVerticalButton ShowDetailViewerButton ViewerOptionsButton" id="ShowDetailViewerButton">
-									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
-							</div>
-						</div>
-
-					</div>		
-				</div>
-
-			<div class="row hidden" id="ScoreDetail">
-				<div class="col-xs-12">
-					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
-					<div class="row">
-		
-						<div class="col-xs-7 hidden-sm hidden-md hidden-lg">
-							<input style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" class="QuickAttributeUpdate" placeholder="Tag" type="text" list="tags" name="tags" id="tags" value="{% if ksu.tags %}{{ksu.tags}}{% endif %}">
-						</div>
-
-						<div class="co-xs-5 hidden-sm hidden-md hidden-lg">					
-								<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-right:10px;"><span class="glyphicon glyphicon-remove""></span></button>
-								<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='MissionDelete' style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
-								<button type="button" class="btn btn-primary btn-circle btn-lg RedirectUserButton" name="action_description" value='EditKSU' style=""><span class="glyphicon glyphicon-pencil"></span></button>
-						</div>
-
-
-						<div class="col-xs-4 col-sm-2">
-							<div class="checkbox"> 
-								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" {% if ksu.is_active %}checked{% endif %}> <b> Active </b> </label> 
-							</div>
-						</div>	
-
-						<div class="col-xs-4 col-sm-2" style="padding-left:8px;">
-							<div class="checkbox"> 
-								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" {% if ksu.is_critical %}checked{% endif %}> <b> Critical </b> </label> 
-							</div>			
-						</div>
-
-						<div class="col-xs-4 col-sm-2" style="padding-left:3px;">
-							<div class="checkbox"> 
-					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" {% if ksu.is_private %}checked{% endif %}> <b> Private </b> </label> 
-					 		</div>
-						</div>
-
-						<div class="hidden-xs col-sm-2"></div>
-						
-						<div class="hidden-xs col-sm-4">
-								<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-right:10px;"><span class="glyphicon glyphicon-remove""></span></button>
-								<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='MissionDelete' style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
-								<button type="button" class="btn btn-primary btn-circle btn-lg RedirectUserButton" name="action_description" value='EditKSU' style=""><span class="glyphicon glyphicon-pencil"></span></button>
-						</div>
-					</div>
-				
-					<div class="row" id="KsuPlusOptions">
-						<div class="col-xs-12">	
-
-							<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">
-							<div class="row" style="margin-bottom:8px;">
-								<div class="col-xs-6 col-sm-4">
-									<label> Mission View </label>
-									<select class="form-control QuickAttributeUpdate" name="mission_view" id="mission_view">						
-										<option value="KickOff" {% if ksu.mission_view == 'KickOff' %} selected="selected"{% endif %}>Kick Off</option>
-										<option value="Principal" {% if ksu.mission_view == 'Principal' %} selected="selected"{% endif %}>Principal</option>
-										<option value="WrapUp" {% if ksu.mission_view == 'WrapUp' %} selected="selected"{% endif %}>Wrap Up</option>
-									</select> 
-								</div>		
-							</div>							
-
-							<hr class="hr-1px-gray" style="margin-top:10px;margin-bottom:0px;">
-							<div class="row">
-								<div class="col-xs-12">
-									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments">{% if ksu.comments %}{{ ksu.comments }}{% endif %}</textarea>	
-								</div>
-							</div>		
-						</div>
-					</div>
-				</div>	
-			</div>
-
-
-			</div>
-		</form>		
-		</div>
-		{% endfor %}
-	</div>	
-{% endif %}
-
-{% if time_frame == 'Today' and KAS4_mission %}
-	
-	<div class="row">
-		<div class="col-xs-10 col-sm-9 col-md-10 col-lg-10">
-			<div class="SectionTitle" style="font-size:22px;"> Actions to avoid </div>
-		</div>
-	
-		<div class="col-xs-2" style="padding:0;">
-			<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#KAS4_mission" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-minus" style="font-size:22px;"></span></button>			
-		</div>
-	</div>
-	<div class="" id="KAS4_mission" style="margin-bottom:25px;">
-	{% for ksu in KAS4_mission %}
-
-		<div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
-		<form method="post">
-		<input type="text" class="form-control hidden" name="ksu_id" id="ksu_id" value="{{ksu.key.id()}}">
-			<div class="col-xs-12">
-				<div class="row">
-					<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
-						<button type="button" class="btn btn-{% if ksu.ksu_subtype == 'KAS3' %}success{% else %}danger{% endif %} btn-circle btn-lg UserActionButton" name="action_description" value='ReactiveMissionDone'><i class="glyphicon glyphicon-ok"></i></button>
-					</div>
-
-					<div class="col-xs-11">
-						<div class="row">
-							<div class="col-xs-12">
-							<textarea style="width:100%; border:0; font-weight:bold; {% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#b1adad;{% endif %}" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
-
-							</div>
-						</div>
-					
-						<div class="row" style="margin-top:5px;" id="TagsImportanceRow">
-
-							<div class="col-xs-3"></div>
-
-							<div class="col-xs-2" style="padding-left:0; font-weight:bold; padding-right:5px; text-align:right;">
-								<input type="number" min="1" max="100" class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0;color:red;" name="kpts_value" id="kpts_value" value="{{ksu.kpts_value|round|int}}" placeholder="KPs">		
-							</div>	
-							<div class="col-xs-2 hidden-sm hidden-md hidden-lg"></div>
-							
-							<div class="hidden-xs col-sm-5">
-								<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; width:170px; text-align:center; margin-left:-10px;" type="text" list="tags" name="tags" id="tags" value="{% if ksu.tags %}{{ksu.tags}}{% endif %}"> 
-							</div>
-													
-							<div class="col-xs-1" style="padding-left:0px;">
-									<select class="QuickAttributeUpdate" style="border:0; color:purple; font-weight:bold; margin-left:-10px;" name="mission_importance" id="mission_importance">
-										{% for value in range(1,6) %}													
-											{% if value == ksu.mission_importance %}
-												<option selected="selected" value="{{value}}"> {{value}} </option>
-											{% else %}
-												<option value="{{value}}"> {{value}} </option>
-											{% endif %}
-										{% endfor %}
-									</select>
-							</div>
-
-							<div class="col-xs-2 hidden-sm hidden-md hidden-lg"></div>
-						
-							<div class="col-xs-1" style="padding-left:0px">
-								<button type="button" class="btn btn-default displaySectionVerticalButton ShowDetailViewerButton ViewerOptionsButton" id="ShowDetailViewerButton">
-									<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
-							</div>
-						</div>
-					</div>		
-				</div>
-
-			<div class="row hidden" id="ScoreDetail">
-				<div class="col-xs-12">
-					<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
-					<div class="row">
-		
-						<div class="col-xs-7 hidden-sm hidden-md hidden-lg">
-							<input style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" class="QuickAttributeUpdate" placeholder="Tag" type="text" list="tags" name="tags" id="tags" value="{% if ksu.tags %}{{ksu.tags}}{% endif %}">
-						</div>
-
-						<div class="co-xs-5 hidden-sm hidden-md hidden-lg">					
-								<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-right:10px;"><span class="glyphicon glyphicon-remove""></span></button>
-								<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='MissionDelete' style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
-								<button type="button" class="btn btn-primary btn-circle btn-lg RedirectUserButton" name="action_description" value='EditKSU' style=""><span class="glyphicon glyphicon-pencil"></span></button>
-						</div>
-
-
-						<div class="col-xs-4 col-sm-2">
-							<div class="checkbox"> 
-								<label> <input type="checkbox" id="is_active" class="QuickAttributeUpdate" name="is_active" {% if ksu.is_active %}checked{% endif %}> <b> Active </b> </label> 
-							</div>
-						</div>	
-
-						<div class="col-xs-4 col-sm-2" style="padding-left:8px;">
-							<div class="checkbox"> 
-								<label> <input type="checkbox" class="QuickAttributeUpdate" id="is_critical" name="is_critical" {% if ksu.is_critical %}checked{% endif %}> <b> Critical </b> </label> 
-							</div>			
-						</div>
-
-						<div class="col-xs-4 col-sm-2" style="padding-left:3px;">
-							<div class="checkbox"> 
-					 			<label> <input type="checkbox" id="is_private" name="is_private" class="QuickAttributeUpdate" {% if ksu.is_private %}checked{% endif %}> <b> Private </b> </label> 
-					 		</div>
-						</div>
-
-						<div class="hidden-xs col-sm-2"></div>
-						
-						<div class="hidden-xs col-sm-4">
-								<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip' style="margin-right:10px;"><span class="glyphicon glyphicon-remove""></span></button>
-								<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='MissionDelete' style="margin-right: 10px;"><span class="glyphicon glyphicon-trash"></span></button>
-								<button type="button" class="btn btn-primary btn-circle btn-lg RedirectUserButton" name="action_description" value='EditKSU' style=""><span class="glyphicon glyphicon-pencil"></span></button>
-						</div>
-					</div>
-
-					<div class="row" id="KsuPlusOptions">
-						<div class="col-xs-12">
-							<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">
-							<div class="row" style="margin-bottom:8px;">
-								<div class="col-xs-12">
-									<label>Valid Exceptions</label>
-									<textarea class="form-control QuickAttributeUpdate autoExpand" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description" placeholder="e.g. When I'am on vacation, When the food its free!">{% if ksu.secondary_description %}{{ ksu.secondary_description }}{% endif %}</textarea>	
-								</div>
-
-								<div class="col-xs-6 col-sm-4">
-									<label> Mission View </label>
-									<select class="form-control QuickAttributeUpdate" name="mission_view" id="mission_view">						
-										<option value="KickOff" {% if ksu.mission_view == 'KickOff' %} selected="selected"{% endif %}>Kick Off</option>
-										<option value="Principal" {% if ksu.mission_view == 'Principal' %} selected="selected"{% endif %}>Principal</option>
-										<option value="WrapUp" {% if ksu.mission_view == 'WrapUp' %} selected="selected"{% endif %}>Wrap Up</option>
-									</select> 
-								</div>		
-							</div>
-							
-							<hr class="hr-1px-gray" style="margin-top:10px;margin-bottom:0px;">
-							<div class="row">
-								<div class="col-xs-12">
-									<textarea class="autoExpand QuickAttributeUpdate" style="border:0; width:100%;" rows="3" data-min-rows='3' name="comments" id="comments" placeholder="Comments">{% if ksu.comments %}{{ ksu.comments }}{% endif %}</textarea>	
-								</div>
-							</div>		
-						</div>
-					</div>
-				</div>	
-			</div>
-
-
-			</div>
-		</form>		
-		</div>
-	{% endfor %}
-	</div>	
-{% endif %}
-
-</div>
 
 {% if time_frame == 'Today' %}
 	<div class="row" id="ActionsToExecuteSubTitle">

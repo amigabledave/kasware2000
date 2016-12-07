@@ -11,7 +11,7 @@
 	</div>
 
 	<div class="col-xs-2" style="padding:0;">
-		<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;" id="ShowHideTagContents"><span  class="glyphicon glyphicon-minus TagPlusMinus" style="font-size:25px;"></span></button>
+		
 	</div>
 
 
@@ -327,7 +327,6 @@
 			<div class="col-xs-2"></div>
 		</div>				
 	</div>
-
 
 	<div class="{% if set_name != 'Wish' %}hidden{% endif %}" id="Wish">
 
@@ -2768,7 +2767,7 @@
 			
 		</div>
  	{% endif %}
-	<div id="{{tag_id}}" class="tag_content hidden">
+	<div id="{{tag_id}}" class="{% if tag != 'NoTags' %}tag_content hidden{% endif %}">
 		{% for ksu in ksu_set %}
 			{% if tag in ksu.tags %}
 				<div class="row KSUdisplaySection SetViewerKSU" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:16px;">

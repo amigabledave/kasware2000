@@ -656,6 +656,7 @@ $('.SaveNewKSUButton').on('click', function(){
 	var best_time = ksu.find('#best_time').val();
 	var kpts_value = ksu.find('#kpts_value').val();
 
+	var mission_view = ksu.find('#mission_view').val()
 	var importance = ksu.find('#importance').val();
 	var mission_importance = ksu.find('#mission_importance').val();
 	var tags = ksu.find('#tags_value').val();
@@ -707,6 +708,7 @@ $('.SaveNewKSUButton').on('click', function(){
 			'best_time':best_time,
 			'kpts_value': kpts_value,
 			
+			'mission_view':mission_view,
 			'importance':importance,
 			'mission_importance':mission_importance,
 			'tags':tags,
