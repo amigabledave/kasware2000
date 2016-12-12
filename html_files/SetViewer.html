@@ -75,7 +75,7 @@
 		</div>
 		<div class="col-xs-1"></div>
 		{% else %}
-					<!-- xx	 -->
+					
 		<div id="BOKA_Specific_TagsAndImportanceRow">
 			<div class="col-xs-4">	
 					<input type="date" style="padding-right:2px; padding-left:4px; border:0; color:purple;" name="next_event" id="next_event" value="{% if ksu %}{{ksu.next_event}}{% endif %}">
@@ -108,7 +108,7 @@
 				</select>
 			</div>
 		</div>
-		<!-- xx -->
+		
 		<div class="hidden" id="MiniO_Specific_TagsAndImportanceRow">
 			<div class="col-xs-10">
 				<input style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" class="DummyInput" ksuattr="tags_value" placeholder="Tag" type="text" list="tags">
@@ -323,16 +323,26 @@
 	<div class="{% if set_name != 'BOKA' %}hidden{% endif %}" id="BOKA">
 		
 		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-		<div class="row">				
-			<div class="col-xs-2"></div>
-			<div class="col-xs-4">
-				<label class="radio-inline">
-					<input type="radio" name="ksu_subtype" value="KAS2" {% if set_name == 'BOKA' %} checked="checked" {% endif %}> Action </label></div>
+		<div class="row">
+			<div class="col-xs-4 col-sm-3">
+				<div class="checkbox"> 
+					<label> <input type="checkbox" class="QuickAttributeUpdate MiniObjectiveCheckbox" id="is_mini_o" name="is_mini_o" {% if ksu.is_mini_o %}checked{% endif %}> <b> Mini Objective </b> </label> 
+				</div>	
+			</div>
+			<div class="col-xs-8 col-sm-9"><!-- xx -->
+				<label> Targeted Objective {{parent_id}}</label>	
+				<select class="form-control QuickAttributeUpdate" name="parent_id" id="parent_id">
+					{% for (ksu_id, description) in objectives %}																				
+						{% if parent_id == ksu_id %}
+						<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
+						{% else %}
+						<option value="{{ksu_id}}"> {{description}} </option>								
+						{% endif %}
+						<option selected="selected" value="{{ksu_id}}"> {{parent_id == ksu_id}} </option>
+					{% endfor %}
+				</select>	
+			</div>	
 
-			<div class="col-xs-4">
-				<label class="radio-inline" style="margin-left:2px;">
-					<input type="radio" name="ksu_subtype" value="MiniO"> Milestone </label></div>
-			<div class="col-xs-2"></div>
 		</div>				
 	</div>
 

@@ -53,7 +53,8 @@ d_attributeType = {
 	# 'target':'tbd', # its a json For ksus that generate kpts and indicators target min, target max, reverse target etc
 	'mission_view':'string',
 	'birthday': 'date',
-	'money_cost': 'integer'
+	'money_cost': 'integer',
+	'is_mini_o': 'checkbox'
 	}
 
 default_ksu = {}

@@ -521,7 +521,7 @@ class Settings(Handler):
  		self.redirect('/MissionViewer?time_frame=Today')
 
 
-	def update_active_log_based_on_new_kpts_goals(self, new_kpts_goals): #xx
+	def update_active_log_based_on_new_kpts_goals(self, new_kpts_goals): 
 		active_log = self.active_log
 
 		new_minimum_daily_effort = new_kpts_goals['minimum_daily_effort']
@@ -703,7 +703,7 @@ class SetViewer(Handler):
 				objectives.append((ksu.key.id(), ksu.description))
 				big_objectives.append((ksu.key.id(), ksu.description))
 			else:
-				objectives.append((ksu.key.id(), ksu.description))
+				objectives.append(str(ksu.key.id(), ksu.description))
 		return objectives, big_objectives
 
 
@@ -1178,7 +1178,11 @@ class EventHandler(Handler):
 				event.score = float(event_details['kpts_value'])
 				
 				if ksu_subtype == 'KAS2':
-					ksu.is_deleted = True
+					if ksu.is_mini_o: #xx
+						print 'Si se dio cuenta de que es un MiniO'
+						ksu.secondary_description = None
+					else:
+						ksu.is_deleted = True
 
 				update_next_event(self, user_action, {}, ksu)
 			
@@ -1325,7 +1329,7 @@ class EventHandler(Handler):
 			setattr(ksu, attr_key, int(attr_value))	
 			updated_value = int(attr_value)
 
-		elif attr_key in ['is_critical', 'is_private', 'is_active']:
+		elif attr_key in ['is_critical', 'is_private', 'is_active', 'is_mini_o']:
 			if attr_value == 'on':
 				attr_value = True
 			setattr(ksu, attr_key, attr_value)
@@ -1809,9 +1813,14 @@ def update_next_event(self, user_action, post_details, ksu):
 
 	elif ksu_subtype in ['KAS2', 'EVPo']:
 
-		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone']:
+		if user_action in ['MissionDone', 'ViewerDone'] and not ksu.is_mini_o:
 			ksu.next_event = None
 			ksu.pretty_next_event = None
+
+		if user_action == 'MissionSkip':
+			ksu.next_event = None
+			ksu.pretty_next_event = None
+
 
 		if user_action == 'MissionPush':
 			ksu.next_event = tomorrow
@@ -2051,7 +2060,7 @@ def update_user_tags(theory, tags):
 def determine_rows(ksu_description):
 	if not ksu_description:
 		return 0
-	return int(math.ceil((len(ksu_description)/64.0)))
+	return int(math.ceil((len(ksu_description)/67.0)))
 
 def get_ksu_to_remember(self):
 	

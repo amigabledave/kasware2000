@@ -256,6 +256,26 @@ $('#ShowHideReactiveMission').on('click', function(){
 });
 
 
+$('.MiniObjectiveCheckbox').on('change',function(){
+	console.log('Si se dio cuenta de que es un mini o');
+	var ksu = $(this).closest('#NewKSU');
+	if (ksu.attr("value") != 'NewKSU'){
+		ksu = $(this).closest('#MissionKSU')
+	};
+	
+	var is_mini_o = ksu.find('#is_mini_o').is(':checked');
+
+	if (is_mini_o){
+		ksu.find('#description').css({'font-weight': 'bold'});
+		ksu.find('#description').css({'font-style':'italic'}); 
+	} else {
+		ksu.find('#description').css({'font-weight': 'normal'});
+		ksu.find('#description').css({'font-style':'normal'}); 
+	}
+	
+	ksu.find('#secondary_description').toggleClass('hidden');
+});
+
 $('.DummyInput').on('change',function(){
 	console.log(this.value)
 	var ksu_attr = $(this).attr("ksuattr");
@@ -680,6 +700,8 @@ $('.SaveNewKSUButton').on('click', function(){
 	var money_cost = ksu.find('#money_cost').val();
 	var birthday = ksu.find('#birthday').val();
 
+	var is_mini_o = ksu.find('#is_mini_o').is(':checked');
+
 	
 	if (description == ''){
 		description = ksu.find('#description').text();
@@ -731,6 +753,7 @@ $('.SaveNewKSUButton').on('click', function(){
 
 			'money_cost':money_cost,
 			'birthday':birthday,
+			'is_mini_o':is_mini_o
 
 		})
 	})
@@ -741,6 +764,7 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#is_critical').prop('checked', false);
 		ksu.find('#is_private').prop('checked', false);
 		ksu.find('#is_active').prop('checked', true);
+		ksu.find('#is_mini_o').prop('checked', false);
 		
 		ksu.find('#secondary_description').val('');
 		ksu.find('#BigO_secondary_description').val('');
@@ -839,6 +863,7 @@ $('.SaveNewKSUButton').on('click', function(){
 
 		new_ksu.find('#money_cost').val(money_cost);
 		new_ksu.find('#birthday').val(birthday);
+		new_ksu.find('#is_mini_o').prop('checked', is_mini_o);
 
 		new_ksu.find('#frequency').val(frequency);
 		new_ksu.find('#comments').val(comments);
@@ -961,10 +986,12 @@ $(document).on('focusout', '.QuickAttributeUpdate', function(){
 			} else {
 				description.css('color', '#b1adad');
 			};
+
 		};
 
 		if (attr_key == 'description'){
 			ksu.find('#description').val(data['updated_value'])};
+
 	})
 });
 
@@ -1002,6 +1029,10 @@ $(document)
         rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 16);
         this.rows = minRows + rows;
     });
+
+
+
+
 
 
 // $('.SetViewerKSU').hover(	
