@@ -624,7 +624,7 @@ class SetViewer(Handler):
 			ksu_key = ksu.key			
 			ksu_set = KSU.query(KSU.parent_id == ksu_key).filter(KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch()
 			set_title = ksu.description
-			parent_id = ksu_id
+			parent_id = int(ksu_id)
 			dreams = self.get_active_dreams(user_key)
 			if set_name == 'BOKA':				
 				objectives, big_objectives = self.get_user_objectives(user_key)
@@ -703,7 +703,7 @@ class SetViewer(Handler):
 				objectives.append((ksu.key.id(), ksu.description))
 				big_objectives.append((ksu.key.id(), ksu.description))
 			else:
-				objectives.append(str(ksu.key.id(), ksu.description))
+				objectives.append((ksu.key.id(), ksu.description))
 		return objectives, big_objectives
 
 
