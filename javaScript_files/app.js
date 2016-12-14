@@ -824,7 +824,6 @@ $('.SaveNewKSUButton').on('click', function(){
 			'KAS4': $('#NewKSUTemplate_KAS4').clone(),
 			
 			'BigO': $('#NewKSUTemplate_BigO').clone(),
-			'MiniO': $('#NewKSUTemplate_MiniO').clone(),
 			'Wish': $('#NewKSUTemplate_Wish').clone(),
 			
 			'EVPo': $('#NewKSUTemplate_EVPo').clone(),

@@ -751,17 +751,32 @@ class MissionViewer(Handler):
 		else:
 			time_frame_sets = ['tomorrow', 'this_week', 'this_month', 'later', 'someday_maybe']
 
+
+		new_ksu_required_templates = []
+		for ksu_subtype in ['KAS2']:
+			ksu = constants['ksu_for_template']
+			ksu['ksu_subtype'] = ksu_subtype
+			new_ksu_required_templates.append(ksu)
+	
+
+		full_mission_value = 0
+		for time_horizon in time_frame_sets:
+			full_mission_value += full_mission[time_horizon]['horizon_value']
+
+
 		self.print_html('MissionViewer.html',
 						full_mission=full_mission,
 						objectives=objectives,
 						time_frame_sets=time_frame_sets,
 						time_frame=time_frame,
+						full_mission_value=full_mission_value,
 
 						reactive_mission=full_mission['timeless_reactive']['horizon_set'],
 
 						constants=constants,
 						today=today,
-						tags=tags)
+						tags=tags,
+						new_ksu_required_templates=new_ksu_required_templates)
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
