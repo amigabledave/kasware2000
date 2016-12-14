@@ -1,14 +1,15 @@
+KSU_HTML_Template ="""
 <div class="row KSUdisplaySection" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:13px; padding-left:5px; padding-right:5px; padding-top:13px;">
 	<div class="col-xs-12">
 		<div class="row" id="KSUPreview">
 			<div class="col-xs-1" style="padding-right:0; padding-left:8px;">
 				
-				{% if ksu.ksu_type not in ['ImIn', 'Diary'] %}
+				{% if ksu.ksu_subtype not in ['ImIn', 'Diary'] %}
 				<button type="button" class="btn btn-{% if ksu.ksu_subtype == 'KAS4' %}danger{% else %}success{% endif %} btn-circle btn-lg UserActionButton" name="action_description" value='MissionDone'><i class="glyphicon glyphicon-ok"></i></button>
 				{% else %}
 				<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton" name="action_description" value='MissionRecordValue'><span class="glyphicon glyphicon-record"></span></button>
 				{% endif %}
-				{% if ksu.ksu_subtype in ['KAS3', 'KAS4', 'Diary', 'RealitySnapshot', 'BinaryPerception', 'FibonacciPerception'] %}
+				{% if ksu.ksu_subtype in ['KAS3', 'KAS4'] %}
 					<button type="button" class="btn btn-{% if ksu.ksu_subtype == 'KAS4' %}success{% else %}warning{% endif %} btn-circle btn-lg UserActionButton" style="margin-top:10px;" name="action_description" value='MissionSkip'><span class="glyphicon glyphicon-remove"></span></button>
 				{% endif %}
 			</div>
@@ -27,8 +28,8 @@
 						<span style="color:red; font-style:italic; font-weight:bold; font-size:12px;"> Did you manage to avoid?:</span> 
 						<textarea style="width:100%; border:0; font-weight:bold; {% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#b1adad;{% endif %}" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
 
-					{% elif ksu.ksu_type in ['ImPe', 'ImIn', 'Diary'] %}
-						<textarea style="width:100%; height:20px; border:0; {% if ksu.is_critical %}color:#B22222;{% endif %}{% if ksu.ksu_type in ['ImIn','Diary'] %}font-weight: bold;margin-bottom: 10px;{% endif %}" class="QuickAttributeUpdate" name="secondary_description" id="secondary_description" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}'>{{ksu.secondary_description}}</textarea>
+					{% elif ksu.ksu_subtype in ['ImPe', 'ImIn'] %}
+						<textarea style="width:100%; height:20px; border:0; {% if ksu.is_critical %}color:#B22222;{% endif %}{% if ksu.ksu_suptype = 'ImIn' %}font-weight: bold;{% endif %}" class="QuickAttributeUpdate" name="secondary_description" id="secondary_description" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}'>{{ksu.secondary_description}}</textarea>
 					{% elif ksu.is_mini_o %}
 						<textarea style="width:100%; border:0; font-size:14px; font-weight:bold; font-style:italic;{% if ksu.is_critical %}color:#B22222;{% endif %}" class="autoExpand QuickAttributeUpdate" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description" placeholder="What do you want to achieve?">{{ksu.description}}</textarea>
 
@@ -43,7 +44,7 @@
 				</div>
 				
 				<div class="row" style="margin-top:5px;" id="TagsImportanceRow">
-				{% if ksu.ksu_type not in ['ImIn', 'Diary'] %}
+				{% if ksu.ksu_subtype not in ['ImIn', 'Diary' %}
 				
 					{% if time_frame == 'Today' %}
 					<div class="col-xs-5 col-sm-3">	
@@ -85,14 +86,27 @@
 							<span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px;"></span></button>
 					</div>
 				{% else %}
+
+					<div class="col-xs-2 col-sm-1">	
+						<div class="hidden-xs col-sm-1" style="padding:0;">
+							<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip'><span class="glyphicon glyphicon-remove"></span></button>					
+						</div>
+					</div>
 					
 					{% if ksu.ksu_subtype == 'Diary' %}
-					<div class="col-xs-11">
-						<textarea style="width:100%;" class="form-control autoExpand" name="event_comments" id="event_comments" rows="1" placeholder="Your answer goes here"></textarea>
+					<div class="col-xs-8 col-sm-10">
+						<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_secondary_comments" id="event_secondary_comments" placeholder="Entry title"></textarea>
 					</div>
 
+					<div class="hidden-xs col-sm-1" style="padding:0;">	
+						<button type="button" class="btn btn-default btn-circle ShowDetailViewerButton" id="ShowDetailViewerButton"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus"></span></button>
+					</div>
+
+					<div class="col-xs-10 col-sm-12">
+						<textarea style="width:100%;" class="form-control autoExpand" name="event_comments" id="event_comments" rows="1" placeholder="Your answer goes here"></textarea>
+					</div>
 					{% else %}
-					<div class="col-xs-4 col-sm-3">
+					<div class="col-xs-8 col-sm-3">
 						{% if ksu.ksu_subtype in ['BinaryPerception', 'FibonacciPerception'] %}
 							<select class="form-control" name="indicator_value" id="select_indicator_value" style="margin-bottom:5px;">
 								{% if ksu.ksu_subtype == 'BinaryPerception' %}
@@ -111,21 +125,30 @@
 						{% endif %}
 					</div>
 
-					<div class="col-xs-6 col-sm-8">
+					<div class="col-xs-2 hidden-sm hidden-md hidden-lg">
+						<button type="button" class="btn btn-warning btn-circle btn-lg UserActionButton" name="action_description" value='MissionSkip'><span class="glyphicon glyphicon-remove"></span></button>
+					</div>
+
+					<div class="col-xs-10 col-sm-7">
 						<textarea style="width:100%;" class="form-control autoExpand" name="event_comments" id="event_comments" rows="1" placeholder="Comments on this result?"></textarea>
 					</div>
 					{% endif %}
 
-					<div class="col-xs-2 col-sm-1" style="padding-left:0px;">
+					<div class="col-xs-2 hidden-sm hidden-md hidden-lg">
 						<button type="button" class="btn btn-default btn-circle ShowDetailViewerButton" id="ShowDetailViewerButton"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus"></span></button>
 					</div>
 
+					{% if ksu.ksu_type != 'Diary' %}
+					<div class="hidden-xs col-sm-1" style="padding:0;">	
+						<button type="button" class="btn btn-default btn-circle ShowDetailViewerButton" id="ShowDetailViewerButton"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus"></span></button>
+					</div>
+					{% endif %}
 				{% endif %}
 				</div>
 			</div>
 		</div>
 		
-		<div class="row hidden" id="ScoreDetail">
+		<div class="row hidden" id="KSUDetail">
 			<div class="col-xs-12">
 				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:10px;">
 				<div class="row" id="UserActionsRow">
@@ -456,3 +479,4 @@
 		</div>
 	</div>
 </div>
+"""
