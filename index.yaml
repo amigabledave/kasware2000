@@ -235,6 +235,15 @@ indexes:
   - name: is_active
   - name: is_deleted
   - name: theory
+  - name: mission_importance
+  - name: best_time
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: is_active
+  - name: is_deleted
+  - name: theory
   - name: next_event
 
 - kind: KSU

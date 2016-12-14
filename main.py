@@ -743,23 +743,16 @@ class MissionViewer(Handler):
 	def get(self):
 		time_frame = self.request.get('time_frame')
 
-		tags = self.theory.categories['tags']
-
-		# todays_questions_now, todays_questions_latter, KAS3_mission, KAS4_mission, today, full_mission, objectives = self.generate_todays_mission(time_frame)
-		anywhere_anytime, kick_off_questions, kick_off_KAS3, kick_off_KAS4, kick_off_proactive, principal_KAS3, principal_KAS4, wrap_up_questions, wrap_up_KAS3, wrap_up_KAS4, wrap_up_proactive, today, full_mission, objectives = self.generate_todays_mission(time_frame)		
-		kick_off = kick_off_proactive or kick_off_questions or kick_off_KAS3 or kick_off_KAS4
-		wrap_up = wrap_up_proactive or wrap_up_KAS3 or wrap_up_KAS4 or wrap_up_questions
-
-
-		print 
-		print 'Today Horizon Value:'
-		print full_mission['today']['horizon_value']
+		tags = self.theory.categories['tags']		
+		full_mission, objectives, today = self.generate_todays_mission()
+		
+		#TBD
 		print
-
-		ksu_sets = []
-		horizons_values = {}
-		horizons_titles = {}
-
+		print 'Estos son los objetivos'
+		print objectives
+		print
+		#
+		
 		if time_frame == 'Today':
 			time_frame_sets = ['today']
 		else:
@@ -771,21 +764,13 @@ class MissionViewer(Handler):
 						time_frame_sets=time_frame_sets,
 						time_frame=time_frame,
 
-						kick_off=kick_off,
-						kick_off_questions=kick_off_questions,
-						kick_off_KAS3=kick_off_KAS3,
-						kick_off_KAS4=kick_off_KAS4,
-						kick_off_proactive=kick_off_proactive,
+						reactive_mission=full_mission['timeless_reactive']['horizon_set'],
 
-						anywhere_anytime=anywhere_anytime,
-						KAS3_mission=principal_KAS3, 
-						KAS4_mission=principal_KAS4,
+						kick_off=full_mission['kick_off']['horizon_set'],
 
-						wrap_up=wrap_up,
-						wrap_up_questions=wrap_up_questions,
-						wrap_up_KAS3=wrap_up_KAS3,
-						wrap_up_KAS4=wrap_up_KAS4,
-						wrap_up_proactive=wrap_up_proactive,
+						anywhere_anytime=full_mission['anywhere_anytime']['horizon_set'],
+
+						wrap_up=full_mission['wrap_up']['horizon_set'],
 
 						constants=constants,
 						today=today,
@@ -797,7 +782,7 @@ class MissionViewer(Handler):
 		return
 
 
-	def generate_todays_mission(self, time_frame):
+	def generate_todays_mission(self):
 
 		theory = self.theory
 		user_key = theory.key
@@ -814,13 +799,14 @@ class MissionViewer(Handler):
 		if theory.hide_private_ksus:
 			ksu_set = ksu_set.filter(KSU.is_private == False)
 		
-		if time_frame == 'Today':
-			ksu_set = ksu_set.order(KSU.best_time).order(KSU.mission_importance).fetch()
-		else:
-			ksu_set = ksu_set.order(KSU.next_event).order(KSU.mission_importance).order(KSU.best_time).fetch()
-
+		ksu_set = ksu_set.order(KSU.next_event).order(KSU.mission_importance).order(KSU.best_time).fetch()
 
 		full_mission = {
+
+			'timeless_reactive':{
+				'horizon_title':'Reactive Mission',
+				'horizon_set':[],
+				'horizon_value':0},
 
 			'kick_off':{
 				'horizon_title':'Kick Off',
@@ -840,11 +826,6 @@ class MissionViewer(Handler):
 
 			'today':{
 				'horizon_title':'Today',
-				'horizon_set':[],
-				'horizon_value':0},
-
-			'timeless_today':{
-				'horizon_title':'Timeless Today',
 				'horizon_set':[],
 				'horizon_value':0},
 		 	
@@ -889,9 +870,9 @@ class MissionViewer(Handler):
 					return 'someday_maybe'
 
 			next_event = next_event.toordinal()
+			mission_view = ksu.mission_view
 
-			if next_event <= today_ordinal:
-				mission_view = ksu.mission_view
+			if ksu.ksu_subtype in ['KAS3', 'KAS4']:
 				if mission_view == 'KickOff':
 					return 'kick_off'
 
@@ -900,11 +881,24 @@ class MissionViewer(Handler):
 
 				elif mission_view == 'WrapUp':
 					return 'wrap_up'
+
 				else:				
-					if ksu.best_time:
-						return 'today'
-					else:
-						return 'timeless_today'
+					return 'timeless_reactive'
+
+
+			if next_event <= today_ordinal:
+				if mission_view == 'KickOff':
+					return 'kick_off'
+
+				elif mission_view == 'AnywhereAnytime':
+					return 'anywhere_anytime'
+
+				elif mission_view == 'WrapUp':
+					return 'wrap_up'
+
+				else:				
+					return 'today'
+
 
 			if next_event - 1 <= today_ordinal:
 				return 'tomorrow'
@@ -919,27 +913,10 @@ class MissionViewer(Handler):
 				return 'later'
 
 
+		objectives = [(None,'-- None --')]
+
+		mission_sets = ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'EVPo', 'ImPe', 'RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'Diary']
 		
-		
-		kick_off_questions = []
-		kick_off_KAS3 = []
-		kick_off_KAS4 = []
-						
-		principal_KAS3 = []
-		principal_KAS4 = []
-				
-		wrap_up_questions = []
-		wrap_up_KAS3 = []
-		wrap_up_KAS4 = []
-
-		KAS3_mission = []
-		KAS4_mission = []
-		objectives = [(None,'-- None --',[])]
-		milestones = []
-
-		mission_sets = ['KAS1', 'KAS2', 'EVPo', 'ImPe']
-		questions_sets = ['RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'Diary']
-
 		for ksu in ksu_set:
 			mission_view = ksu.mission_view
 			ksu_subtype = ksu.ksu_subtype
@@ -960,61 +937,12 @@ class MissionViewer(Handler):
 				#
 				full_mission[time_horizon]['horizon_value'] += ksu.kpts_value
 
-			elif ksu_subtype in questions_sets:
-				if today > next_event:
-					kick_off_questions.append(ksu)
-				elif today == next_event:
-					if mission_view == 'KickOff':
-						kick_off_questions.append(ksu)
-					else:
-						wrap_up_questions.append(ksu)
-			
-			elif ksu_subtype == 'KAS3' and today >= next_event:
-				if mission_view == 'KickOff':
-					kick_off_KAS3.append(ksu)
-				elif mission_view == 'Principal':
-					principal_KAS3.append(ksu)
-				else:
-					wrap_up_KAS3.append(ksu)
-				
-			elif ksu_subtype == 'KAS4' and today >= next_event:
-				if mission_view == 'KickOff':
-					kick_off_KAS4.append(ksu)
-				elif mission_view == 'Principal':
-					principal_KAS4.append(ksu)
-				else:
-					wrap_up_KAS4.append(ksu)
 
 			elif ksu_subtype == 'BigO':
-				objectives.append((ksu.key.id(), ksu.description,[]))
+				objectives.append((ksu.key.id(), ksu.description))
+			
 
-			elif ksu_subtype == 'MiniO':
-				milestones.append(ksu)
-
-
-		for (BigO_id,BigO_description,BigO_milestones) in objectives:
-			for milestone in milestones:					
-				milestone_parent_id = milestone.parent_id.id()
-				if BigO_id == milestone_parent_id:
-					BigO_milestones.append((milestone.key.id(),'--> ' + milestone.description))
-
-
-		kick_off_proactive = full_mission['kick_off']['horizon_set']
-
-		anywhere_anytime = full_mission['anywhere_anytime']['horizon_set']
-
-		KAS3_mission = principal_KAS3
-		KAS4_mission = principal_KAS4
-		
-		wrap_up_proactive = full_mission['wrap_up']['horizon_set']
-					
-		full_mission['today'] = {
-			'horizon_title':'Today',
-			'horizon_set':full_mission['today']['horizon_set'] + full_mission['timeless_today']['horizon_set'],
-			'horizon_value':full_mission['today']['horizon_value'] + full_mission['timeless_today']['horizon_value']}
-
-		# return todays_questions_now, todays_questions_latter, KAS3_mission, KAS4_mission, today, full_mission, objectives
-		return anywhere_anytime, kick_off_questions, kick_off_KAS3, kick_off_KAS4, kick_off_proactive, principal_KAS3, principal_KAS4, wrap_up_questions, wrap_up_KAS3, wrap_up_KAS4, wrap_up_proactive, today, full_mission, objectives 
+		return full_mission, objectives, today  
 
 
 class EventHandler(Handler):
@@ -1555,10 +1483,10 @@ class PopulateRandomTheory(Handler):
 				password_hash = make_password_hash(post_details['email'], post_details['password'])
 				
 				kpts_goals_parameters = {
-						'typical_week_effort_distribution':[1, 1, 1, 1, 1, 0.5, 0],
-						'yearly_vacations_day': 12,
-						'yearly_shit_happens_days': 6,
-						'minimum_daily_effort':20}
+						'typical_week_effort_distribution':[1, 1, 1, 1, 1, 1, 1],
+						'yearly_vacations_day': 0,
+						'yearly_shit_happens_days': 0,
+						'minimum_daily_effort':100}
 
 				theory = Theory(
 					email=post_details['email'], 

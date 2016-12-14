@@ -19,11 +19,11 @@
 </datalist>
 
 <div id="reactive_mission" class="hidden">
-	{% if time_frame == 'Today' and KAS3_mission %}
+	{% if time_frame == 'Today' and reactive_mission %}
 		
 		<div class="row">
 			<div class="col-xs-10 col-sm-9 col-md-10 col-lg-10">
-				<div class="SectionTitle" style="font-size:22px;"> Reactions to have </div>
+				<div class="SectionTitle" style="font-size:22px;"> Reactive mission </div>
 			</div>
 
 			<div class="col-xs-2" style="padding:0;">
@@ -32,29 +32,12 @@
 		</div>
 
 		<div class="" id="KAS3_mission">
-			{% for ksu in KAS3_mission %}
+			{% for ksu in reactive_mission %}
 				{% include "KSU_Templates.html" %}
 			{% endfor %}
 		</div>	
 	{% endif %}
 
-	{% if time_frame == 'Today' and KAS4_mission %}
-		
-		<div class="row">
-			<div class="col-xs-10 col-sm-9 col-md-10 col-lg-10">
-				<div class="SectionTitle" style="font-size:22px;"> Actions to avoid </div>
-			</div>
-		
-			<div class="col-xs-2" style="padding:0;">
-				<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#KAS4_mission" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-minus" style="font-size:22px;"></span></button>			
-			</div>
-		</div>
-		<div class="" id="KAS4_mission" style="margin-bottom:25px;">
-		{% for ksu in KAS4_mission %}
-			{% include "KSU_Templates.html" %}
-		{% endfor %}
-		</div>	
-	{% endif %}
 </div>
 
 
@@ -70,16 +53,7 @@
 	</div>
 
 	<div id="kick_off" class="hidden" style="margin-bottom:25px;">
-		{% for ksu in kick_off_questions %}
-			{% include "KSU_Templates.html" %}
-		{% endfor %}
-		{% for ksu in kick_off_KAS3 %}
-			{% include "KSU_Templates.html" %}
-		{% endfor %}
-		{% for ksu in kick_off_KAS4 %}
-			{% include "KSU_Templates.html" %}
-		{% endfor %}
-		{% for ksu in kick_off_proactive %}
+		{% for ksu in kick_off %}
 			{% include "KSU_Templates.html" %}
 		{% endfor %}
 	</div>
@@ -208,12 +182,9 @@
 				<div class="col-xs-12 col-sm-6">
 					<label> Targeted Objective </label>
 					<select class="form-control DummyInput" ksuattr="parent_id" id="OTOA_parent_id">
-						{% for (ksu_id, description, milestones) in objectives %}										
+						{% for (ksu_id, description) in objectives %}										
 							<option value="{{ksu_id}}"> {{description}} </option>						
-							{% for (ksu_id, description) in milestones %}
-								<option value="{{ksu_id}}"> {{description}} </option>													
-							{% endfor %}
-						{% endfor %}										
+						{% endfor %}									
 					</select>	
 				</div>
 
@@ -395,18 +366,10 @@
 </div>
 
 <div id="wrap_up" class="hidden">
-	{% for ksu in wrap_up_proactive %}
+	{% for ksu in wrap_up %}
 		{% include "KSU_Templates.html" %}
 	{% endfor %}
-	{% for ksu in wrap_up_KAS3 %}
-		{% include "KSU_Templates.html" %}
-	{% endfor %}
-	{% for ksu in wrap_up_KAS4 %}
-		{% include "KSU_Templates.html" %}
-	{% endfor %}
-	{% for ksu in wrap_up_questions %}
-		{% include "KSU_Templates.html" %}
-	{% endfor %}
+
 </div>
 {% endif %}
 

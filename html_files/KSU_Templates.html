@@ -282,19 +282,12 @@
 							<div class="col-xs-12 col-sm-6">
 								<label> Targeted Objective </label>
 								<select class="form-control QuickAttributeUpdate" name="parent_id" id="parent_id">
-									{% for (ksu_id, description, milestones) in objectives %}										
+									{% for (ksu_id, description) in objectives %}										
 										{% if ksu.parent_id_id == ksu_id %}
 										<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
 										{% else %}
 										<option value="{{ksu_id}}"> {{description}} </option>								
 										{% endif %}
-										{% for (ksu_id, description) in milestones %}
-											{% if ksu.parent_id_id == ksu_id %}
-											<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
-											{% else %}
-											<option value="{{ksu_id}}"> {{description}} </option>								
-											{% endif %}
-										{% endfor %}
 									{% endfor %}
 								</select>	
 							</div>		
