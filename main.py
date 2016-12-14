@@ -745,16 +745,9 @@ class MissionViewer(Handler):
 
 		tags = self.theory.categories['tags']		
 		full_mission, objectives, today = self.generate_todays_mission()
-		
-		#TBD
-		print
-		print 'Estos son los objetivos'
-		print objectives
-		print
-		#
-		
+				
 		if time_frame == 'Today':
-			time_frame_sets = ['today']
+			time_frame_sets = ['kick_off', 'anywhere_anytime','today','wrap_up']
 		else:
 			time_frame_sets = ['tomorrow', 'this_week', 'this_month', 'later', 'someday_maybe']
 
@@ -765,12 +758,6 @@ class MissionViewer(Handler):
 						time_frame=time_frame,
 
 						reactive_mission=full_mission['timeless_reactive']['horizon_set'],
-
-						kick_off=full_mission['kick_off']['horizon_set'],
-
-						anywhere_anytime=full_mission['anywhere_anytime']['horizon_set'],
-
-						wrap_up=full_mission['wrap_up']['horizon_set'],
 
 						constants=constants,
 						today=today,
@@ -825,7 +812,7 @@ class MissionViewer(Handler):
 
 
 			'today':{
-				'horizon_title':'Today',
+				'horizon_title':'Actions to execute',
 				'horizon_set':[],
 				'horizon_value':0},
 		 	
