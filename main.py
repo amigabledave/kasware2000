@@ -744,7 +744,7 @@ class MissionViewer(Handler):
 		time_frame = self.request.get('time_frame')
 
 		tags = self.theory.categories['tags']		
-		full_mission, objectives, today = self.generate_todays_mission()
+		full_mission, objectives, today = self.generate_todays_mission(time_frame)
 				
 		if time_frame == 'Today':
 			time_frame_sets = ['kick_off', 'anywhere_anytime','today','wrap_up']
@@ -784,7 +784,7 @@ class MissionViewer(Handler):
 		return
 
 
-	def generate_todays_mission(self):
+	def generate_todays_mission(self, time_frame):
 
 		theory = self.theory
 		user_key = theory.key
@@ -801,11 +801,19 @@ class MissionViewer(Handler):
 		if theory.hide_private_ksus:
 			ksu_set = ksu_set.filter(KSU.is_private == False)
 		
-		ksu_set = ksu_set.order(KSU.next_event).order(KSU.importance).order(KSU.best_time).fetch()
+		if time_frame == 'Upcoming':
+			ksu_set = ksu_set.order(KSU.next_event).order(KSU.importance).order(KSU.best_time).fetch()
+		else:
+			ksu_set = ksu_set.order(KSU.importance).order(KSU.best_time).fetch()
 
 		full_mission = {
 
 			'timeless_reactive':{
+				'horizon_title':'Reactive Mission',
+				'horizon_set':[],
+				'horizon_value':0},
+
+			'hidden_reactive':{
 				'horizon_title':'Reactive Mission',
 				'horizon_set':[],
 				'horizon_value':0},
@@ -875,17 +883,20 @@ class MissionViewer(Handler):
 			mission_view = ksu.mission_view
 
 			if ksu.ksu_subtype in ['KAS3', 'KAS4']:
-				if mission_view == 'KickOff':
-					return 'kick_off'
+				if next_event <= today_ordinal:					
+					if mission_view == 'KickOff':
+						return 'kick_off'
 
-				elif mission_view == 'AnywhereAnytime':
-					return 'anywhere_anytime'
+					elif mission_view == 'AnywhereAnytime':
+						return 'anywhere_anytime'
 
-				elif mission_view == 'WrapUp':
-					return 'wrap_up'
+					elif mission_view == 'WrapUp':
+						return 'wrap_up'
 
-				else:				
-					return 'timeless_reactive'
+					else:				
+						return 'timeless_reactive'
+				else:
+					return 'hidden_reactive'
 
 
 			if next_event <= today_ordinal:
@@ -1795,7 +1806,7 @@ def update_next_event(self, user_action, post_details, ksu):
 			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
 
 		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone', 'RecordValue']:
-			ksu.next_event = next_event + timedelta(days=ksu.frequency)
+			ksu.next_event = today + timedelta(days=ksu.frequency)
 			ksu.pretty_next_event = (next_event + timedelta(days=ksu.frequency)).strftime('%a, %b %d, %Y')
 
 		if user_action == 'MissionPush':
