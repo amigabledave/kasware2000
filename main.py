@@ -801,7 +801,7 @@ class MissionViewer(Handler):
 		if theory.hide_private_ksus:
 			ksu_set = ksu_set.filter(KSU.is_private == False)
 		
-		ksu_set = ksu_set.order(KSU.next_event).order(KSU.mission_importance).order(KSU.best_time).fetch()
+		ksu_set = ksu_set.order(KSU.next_event).order(KSU.importance).order(KSU.best_time).fetch()
 
 		full_mission = {
 
@@ -1255,7 +1255,7 @@ class EventHandler(Handler):
 			theory.categories['tags'] = update_user_tags(theory, tags)
 			theory.put()
 
-		elif attr_key in ['importance', 'mission_importance','frequency', 'money_cost']:
+		elif attr_key in ['importance', 'frequency', 'money_cost']:
 			setattr(ksu, attr_key, int(attr_value))	
 			updated_value = int(attr_value)
 
