@@ -939,6 +939,21 @@ $(document).on('click', '.ShowDetailViewerButton', function(){
 	GlaphiconDiv.toggleClass('glyphicon-plus');	
 });
 
+$(document).on('click', '.OtherShowDetailViewerButton', function(){
+
+	var ksu = $(this).closest('#MissionKSU');
+	
+	var ScoreDetail = ksu.find('#ScoreDetail');
+	ScoreDetail.toggleClass('hidden');
+
+	var GlaphiconDiv = ksu.find('#PlusMinusGlyphicon');
+	GlaphiconDiv.toggleClass('glyphicon-minus');
+	GlaphiconDiv.toggleClass('glyphicon-plus');	
+});
+
+
+
+
 
 // $('.QuickAttributeUpdate').on('focusout', function(){
 $(document).on('focusout', '.QuickAttributeUpdate', function(){

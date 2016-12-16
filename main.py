@@ -650,10 +650,21 @@ class SetViewer(Handler):
 			ksu.secondary_description_rows = determine_rows(ksu.secondary_description)
 			ksu.comments_rows = determine_rows(ksu.comments)
 
+
+
+
+		new_ksu_required_templates = []
+		ksu = constants['ksu_for_template']
+		for ksu_subtype in constants['type_to_subtypes'][set_name]:
+			template = ksu.copy()
+			template['ksu_subtype'] = ksu_subtype
+			template['ksu_type'] = set_name
+			new_ksu_required_templates.append(template)	
+
 		
 		tags = self.theory.categories['tags'] # por el quick adder
 		ksu_set, set_tags = self.get_set_tags(ksu_set)
-		self.print_html('SetViewer.html', viewer_mode='Set',  ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, dreams=dreams, objectives=objectives, big_objectives=big_objectives, view_type=view_type, set_tags=set_tags) #
+		self.print_html('SetViewer.html', new_ksu_required_templates=new_ksu_required_templates, viewer_mode='Set',  ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, dreams=dreams, objectives=objectives, big_objectives=big_objectives, view_type=view_type, set_tags=set_tags) #
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -875,7 +886,7 @@ class MissionViewer(Handler):
 			next_event = ksu.next_event
 
 			if not next_event:
-				if ksu.ksu_type in ['EVPo', 'BOKA']:
+				if ksu.ksu_type in ['BOKA']:
 					return 'hidden_someday_maybe'
 				else:
 					return 'someday_maybe'
@@ -1245,7 +1256,8 @@ class EventHandler(Handler):
 			if attr_value == '':
 				ksu.next_event = None
 				ksu.pretty_next_event = None
-				ksu.put()
+				if ksu.ksu_subtype not in ['KAS1', 'EVPo', 'ImPe']:
+					ksu.put()
 				return None
 			ksu.next_event = datetime.strptime(attr_value, '%Y-%m-%d')
 			ksu.pretty_next_event = datetime.strptime(attr_value, '%Y-%m-%d').strftime('%a, %b %d, %Y')
@@ -1673,6 +1685,9 @@ def update_next_event(self, user_action, post_details, ksu):
 
 	def days_to_next_event(ksu):
 
+		if ksu_subtype in ['EVPo']:
+			return ksu.frequency
+
 		def find_next_weekly_repetition(d_repeats_on):
 
 			def d_to_l_repeats_on(d_repeats_on):
@@ -1736,9 +1751,13 @@ def update_next_event(self, user_action, post_details, ksu):
 	tomorrow = today + timedelta(days=1)
 	ksu_subtype = ksu.ksu_subtype	
 	
-	if ksu_subtype == 'KAS1':
+	if ksu_subtype in ['KAS1', 'EVPo']:
 		next_event = ksu.next_event
 		days_to_next_event = days_to_next_event(ksu)
+		print
+		print 'Si quiere actualizar el evento'
+		print days_to_next_event 
+
 
 		if not next_event:
 			ksu.next_event = today
@@ -1757,7 +1776,7 @@ def update_next_event(self, user_action, post_details, ksu):
 			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
 			print ksu.pretty_next_event
 
-	elif ksu_subtype in ['KAS2', 'EVPo']:
+	elif ksu_subtype in ['KAS2']:
 
 		if user_action in ['MissionDone', 'ViewerDone'] and not ksu.is_mini_o:
 			ksu.next_event = None

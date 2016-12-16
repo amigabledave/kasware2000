@@ -25,22 +25,22 @@
 				<div class="row" id="DescriptionRow">
 					<div class="col-xs-12">
 
-					{% if constants['d_SetViewerDetails'][ksu.ksu_subtype]['heading_exists'] %}
-					<span style="{{constants['d_SetViewerDetails'][ksu.ksu_subtype]['heading_style']}}" class=" {% if not constants['d_SetViewerDetails'][ksu.ksu_subtype]['heading_visible'] %}hidden{% endif %}{% if ksu.ksu_subtype == 'Wish' and not ksu.is_critical %}hidden{% endif %}">{{constants['d_SetViewerDetails'][ksu.ksu_subtype]['heading_content']}}</span>
+					{% if constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['heading_exists'] %}
+					<span style="{{constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['heading_style']}}" class=" {% if not constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['heading_visible'] %}hidden{% endif %}{% if ksu.ksu_subtype == 'Wish' and not ksu.is_critical %}hidden{% endif %}">{{constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['heading_content']}}</span>
 					{% endif %}
-
 					
-					{% if constants['d_SetViewerDetails'][ksu.ksu_subtype]['top_secondary_description_exists'] %}
-					<textarea style="width:100%; border:0; {{constants['d_SetViewerDetails'][ksu.ksu_subtype]['top_secondary_description_style']}}" class="QuickAttributeUpdate autoExpand  {% if not constants['d_SetViewerDetails'][ksu.ksu_subtype]['top_secondary_description_visible'] %}hidden{% endif %}" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>
+
+					{% if constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['top_sec_desc_exists'] %}
+					<textarea style="width:100%; border:0; {{constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['top_sec_desc_style']}}" class="QuickAttributeUpdate autoExpand  {% if not constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['top_sec_desc_visible'] %}hidden{% endif %}" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>
 					{% endif %}
 
 
-					{% if constants['d_SetViewerDetails'][ksu.ksu_subtype]['description_exists'] %}
-					<textarea style="width:100%; border:0; {{constants['d_SetViewerDetails'][ksu.ksu_subtype]['description_style']}} {% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#b1adad;{% endif %}{% if ksu.is_mini_o %} font-weight: bold {% endif %}" class="QuickAttributeUpdate autoExpand  {% if not constants['d_SetViewerDetails'][ksu.ksu_subtype]['description_visible'] %}hidden{% endif %}" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
+					{% if constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['description_exists'] %}
+					<textarea style="width:100%; border:0; {{constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['description_style']}} {% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#b1adad;{% endif %}{% if ksu.is_mini_o %} font-weight: bold {% endif %}" class="QuickAttributeUpdate autoExpand  {% if not constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['description_visible'] %}hidden{% endif %}" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
 					{% endif %}
 
-					{% if constants['d_SetViewerDetails'][ksu.ksu_subtype]['bottom_secondary_description_exists'] %}
-					<textarea style="width:100%; border:0; {{constants['d_SetViewerDetails'][ksu.ksu_subtype]['bottom_secondary_description_style']}}" class="QuickAttributeUpdate autoExpand  {% if not constants['d_SetViewerDetails'][ksu.ksu_subtype]['bottom_secondary_description_visible'] %}hidden{% endif %}{% if ksu.ksu_subtype == 'KAS2' and not ksu.is_mini_o %}hidden{% endif %}" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description" placeholder="{{constants['d_SetViewerDetails'][ksu.ksu_subtype]['bottom_secondary_description_placeholder']}}">{% if ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
+					{% if constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_exists'] %}
+					<textarea style="width:100%; border:0; {{constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_style']}}" class="QuickAttributeUpdate autoExpand  {% if not constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_visible'] %}hidden{% endif %}{% if ksu.ksu_subtype == 'KAS2' and not ksu.is_mini_o %}hidden{% endif %}" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description" placeholder="{{constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_placeholder']}}">{% if ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
 					{% endif %}
 
 					</div>
@@ -65,7 +65,7 @@
 					{% endif %}
 
 					<div class="col-xs-2 col-sm-2" style="padding-left:0; font-weight:bold; padding-right:5px; text-align:right;">
-						<input type="number" min="0" max="100" class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0;{% if ksu.ksu_subtype == 'KAS4' %}color:red;{% endif %}" name="kpts_value" id="kpts_value" value="{{ksu.kpts_value|round|int}}" placeholder="KPs">	
+						<input type="number" min="0" max="100" class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0;{% if ksu.ksu_subtype == 'KAS4' %}color:red;{% endif %}" name="kpts_value" id="kpts_value" value="{% if ksu.kpts_value %}{{ksu.kpts_value|round|int}}{% endif %}" placeholder="KPs">	
 					</div>	
 
 					{% if ksu.ksu_type != 'BOKA' %}
@@ -171,7 +171,7 @@
 				<div class="row" style="margin-top:3px;">
 					{% if ksu.ksu_subtype in ['KAS1', 'KAS3', 'KAS4', 'ImPe', 'EVPo'] %}
 					<div class="col-xs-2" style="font-weight:bold; padding-right:5px; text-align:right;">
-						<input type="number" min="0" max="100" class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0;{% if ksu.ksu_subtype == 'KAS4' %}color:red;{% endif %}" name="kpts_value" id="kpts_value" value="{{ksu.kpts_value|round|int}}" placeholder="KPs">	
+						<input type="number" min="0" max="100" class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0;{% if ksu.ksu_subtype == 'KAS4' %}color:red;{% endif %}" name="kpts_value" id="kpts_value" value="{% if ksu.kpts_value %}{{ksu.kpts_value|round|int}}{% endif %}" placeholder="KPs">	
 					</div>
 					<div class="col-xs-8">
 					{% elif ksu.ksu_type == 'BOKA' %}		
@@ -262,11 +262,11 @@
 					<div class="col-xs-{{constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons_col'] + 6}} col-sm-{{constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons_col'] + 3}}" style="margin-bottom:5px">
 
 					{% if 'Done' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}															
-						<button type="button" class="btn btn-{% if ksu.ksu_subtype != 'KAS4' %}success{% else %}danger{% endif %} btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
+						<button type="button" class="btn btn-{% if ksu.ksu_subtype != 'KAS4' %}success{% else %}danger{% endif %} btn-circle btn-lg UserActionButton OtherShowDetailViewerButton" name="action_description" value='ViewerDone' style="margin-right:10px;"><span class="glyphicon glyphicon-ok"></span></button>
 					{% endif %}
 
 					{% if 'SendToMission' in constants['d_SetViewerDetails'][ksu.ksu_subtype]['buttons'] %}
-						<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton" name="action_description" value='SendToMission' style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
+						<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton OtherShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
 					{% endif %}
 
 					{% if ksu.ksu_subtype not in ['KAS2', 'RTBG', 'Idea', 'BigO', 'Wish', 'Gene', 'Diary', 'RealitySnapshot', 'BinaryPerception', 'FibonacciPerception'] %}
@@ -478,10 +478,16 @@
 							</div>
 						</div>
 
+					{% elif ksu.ksu_type == 'Idea' %}
+						
+						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 
-
-
-
+						<div class="row">
+							<div class="col-xs-12">
+								<label>Source</label>
+								<textarea type="text" class="form-control autoExpands QuickAttributeUpdate" rows="1" data-min-rows='1' id="secondary_description" name="secondary_description" placeholder="e.g. name of a person, book or a link to an article">{% if ksu and ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
+							</div>
+						</div>
 
 					{% elif ksu.ksu_type == 'EVPo' %}
 						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
@@ -515,8 +521,15 @@
 						<div class="row" style="margin-bottom:8px;">
 
 							<div class="col-xs-12 col-sm-8">
+
+							{% if viewer_mode == 'Mission' %}
 								<label>Important Person</label>
 								<textarea type="text" class="form-control autoExpands QuickAttributeUpdate" rows="1" data-min-rows='1' id="description" name="description" placeholder="e.g. Mom, Dad, Jimmy, etc.">{% if ksu and ksu.description %}{{ksu.description}}{% endif %}</textarea>
+							{% else %}
+								<label>Mission Interaction</label>
+								<textarea type="text" class="form-control autoExpands QuickAttributeUpdate" rows="1" data-min-rows='1' id="secondary_description" name="secondary_description" placeholder="e.g. Text Jimmy, call mom, hangout with dad, etc.">{% if ksu and ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
+							{% endif %}
+
 							</div>
 				
 							<div class="col-xs-6 col-sm-4"> 
@@ -546,6 +559,38 @@
 						</div>
 
 					{% elif ksu.ksu_type == 'ImIn' %}
+
+						{% if viewer_mode == 'Set' %}
+							<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+							<div class="row">
+							<div class="col-xs-2 col-sm-1">						
+								<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
+							</div>
+							<div class="col-xs-4 col-sm-3">
+								{% if ksu.ksu_subtype in ['BinaryPerception', 'FibonacciPerception'] %}
+									<select class="form-control" name="indicator_value" id="select_indicator_value">
+										{% if ksu.ksu_subtype == 'BinaryPerception' %}
+											<option value="1"> Yes </option>
+											<option value="0"> No </option>
+										{% elif ksu.ksu_subtype == 'FibonacciPerception' %}
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option selected="selected" value="3">3</option>
+											<option value="5">5</option>
+											<option value="8">8</option>
+										{% endif %}
+									</select>
+								{% elif ksu.ksu_subtype == 'RealitySnapshot' %}
+									<input type="number" min="0" class="form-control" style="padding-right:3px;" name="indicator_value" id="open_indicator_value" placeholder="0">
+								{% endif %}
+							</div>
+							<div class="col-xs-6 col-sm-8">
+								<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_comments" id="event_comments" placeholder="Comment on this result"></textarea>
+							</div>
+							</div>
+						{% endif %}
+
+
 						<hr class="hr-1px-gray" style="margin-top:8px; margin-bottom:8px;">
 
 						<div class="row">
@@ -569,6 +614,26 @@
 						</div>
 
 					{% elif ksu.ksu_type == 'Diary' %}
+						{% if viewer_mode == 'Set' %}									
+						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+						<div class="row" style="margin-bottom:8px;">
+
+							<div class="col-xs-1" style="padding-right:0px;">						
+								<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-left:-6px;"><span class="glyphicon glyphicon-record"></span></button>
+							</div>
+
+							<div class="col-xs-11">
+								<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_secondary_comments" id="event_secondary_comments" placeholder="Entry title"></textarea>
+							</div>
+							
+							<div class="col-xs-12">
+								<textarea style="width:100%;" class="form-control autoExpand" rows="2" data-min-rows='2' name="event_comments" id="event_comments" placeholder="Anything new you would like to record?"></textarea>
+							</div>
+
+						</div>
+
+						{% endif %}
+						
 						<hr class="hr-1px-gray" style="margin-top:8px; margin-bottom:8px;">
 						<div class="row">
 							<div class="col-xs-6 col-sm-4">
