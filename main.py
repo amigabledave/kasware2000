@@ -653,7 +653,7 @@ class SetViewer(Handler):
 		
 		tags = self.theory.categories['tags'] # por el quick adder
 		ksu_set, set_tags = self.get_set_tags(ksu_set)
-		self.print_html('SetViewer.html', ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, dreams=dreams, objectives=objectives, big_objectives=big_objectives, view_type=view_type, set_tags=set_tags) #
+		self.print_html('SetViewer.html', viewer_mode='Set',  ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, dreams=dreams, objectives=objectives, big_objectives=big_objectives, view_type=view_type, set_tags=set_tags) #
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -765,6 +765,7 @@ class MissionViewer(Handler):
 
 
 		self.print_html('MissionViewer.html',
+						viewer_mode='Mission', 
 						full_mission=full_mission,
 						objectives=objectives,
 						time_frame_sets=time_frame_sets,

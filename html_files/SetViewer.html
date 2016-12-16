@@ -2761,6 +2761,7 @@
 </div>
 
 <div id="NewKSUsHolder"></div>
+
 {% endif %}
 
 
@@ -2768,24 +2769,27 @@
 {% for (tag_id, tag) in set_tags %}
  	{% if tag != 'NoTags' %}
  	
-		<div class="row" style="margin-top:8px; margin-bottom:4px;">
-			
-			<div class="col-xs-1"></div>	
+	<div class="row" style="margin-top:8px; margin-bottom:4px;" id="TagTitle">
+		
+		<div class="col-xs-1"></div>	
 
-			<div class="col-xs-1" style="padding:0;">
-				<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#{{tag_id}}" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:-15px; margin-top:4px;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus TagPlusMinus" style="font-size:20px;"></span></button>			
-			</div>
-	
-
-			<div class="col-xs-10"> 
-				<div class="SectionTitle" style="font-size:20px; margin-left:-25px;">{{tag}}</div>
-			</div>
-			
+		<div class="col-xs-1" style="padding:0;">
+			<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#{{tag_id}}" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:-15px; margin-top:4px;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus TagPlusMinus" style="font-size:20px;"></span></button>			
 		</div>
+
+
+		<div class="col-xs-10"> 
+			<div class="SectionTitle" style="font-size:20px; margin-left:-25px;">{{tag}}</div>
+		</div>			
+	</div>
+
  	{% endif %}
 	<div id="{{tag_id}}" class="{% if tag != 'NoTags' %}tag_content hidden{% endif %}">
 		{% for ksu in ksu_set %}
 			{% if tag in ksu.tags %}
+				
+				{% include "KSU_Templates.html" %}
+
 				<div class="row KSUdisplaySection SetViewerKSU" id="MissionKSU" value="{{ksu.key.id()}}" style="margin-top: 0px; padding-bottom:16px;">
 					<div class="col-xs-12" style="padding-left:4px; padding-right:4px;">
 						<div class="row">
