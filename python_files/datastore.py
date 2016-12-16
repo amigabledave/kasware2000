@@ -82,7 +82,8 @@ class KSU(ndb.Model):
 	is_mini_o = ndb.BooleanProperty(default=False)
 	target = ndb.JsonProperty() # For ksus that generate kpts and indicators target min, target max, reverse target etc
 	birthday = ndb.DateProperty()
-	money_cost = ndb.IntegerProperty()
+	cost = ndb.JsonProperty(default={'money_cost':0, 'days_cost':0, 'hours_cost':0})
+	# money_cost = ndb.IntegerProperty() - To be deleted
 	picture = ndb.BlobProperty() #Might be used in the future
 	times_reviewed = ndb.IntegerProperty(default=0)
 

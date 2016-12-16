@@ -1120,7 +1120,7 @@ class EventHandler(Handler):
 				event.score = float(event_details['kpts_value'])
 				
 				if ksu_subtype == 'KAS2':
-					if ksu.is_mini_o: #xx
+					if ksu.is_mini_o:
 						print 'Si se dio cuenta de que es un MiniO'
 						ksu.secondary_description = None
 					else:
@@ -1267,7 +1267,7 @@ class EventHandler(Handler):
 			theory.categories['tags'] = update_user_tags(theory, tags)
 			theory.put()
 
-		elif attr_key in ['importance', 'frequency', 'money_cost']:
+		elif attr_key in ['importance', 'frequency']:
 			setattr(ksu, attr_key, int(attr_value))	
 			updated_value = int(attr_value)
 
@@ -1290,6 +1290,10 @@ class EventHandler(Handler):
 				ksu.parent_id = parent_ksu.key
 				if ksu.ksu_subtype == 'KAS2':
 					ksu.ksu_type = 'BOKA'
+
+		elif attr_key in ['money_cost', 'days_cost', 'hours_cost']:
+			ksu.cost[attr_key] = int(attr_value)
+
 
 		ksu.put()	
 		return updated_value
@@ -1862,6 +1866,9 @@ def prepareInputForSaving(theory, ksu, post_details):
 		
 		if a_key in d_attributeType:
 			a_type = d_attributeType[a_key]
+			print 
+			print 'Este es el tipo de attributo que quiero actualizar'
+			print a_type
 		
 		if a_type == 'string':
 			setattr(ksu, a_key, a_val.encode('utf-8'))
@@ -1891,6 +1898,10 @@ def prepareInputForSaving(theory, ksu, post_details):
 			if a_val == 'on':
 				a_val = True
 			d_repeats_on[a_key] = a_val
+
+		if a_type == 'dict_cost':
+			ksu.cost[a_key] = int(a_val)
+		
 
 		if a_type =='user_tags':
 			a_val, tags = prepare_tags_for_saving(a_val)

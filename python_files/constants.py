@@ -53,7 +53,9 @@ d_attributeType = {
 	# 'target':'tbd', # its a json For ksus that generate kpts and indicators target min, target max, reverse target etc
 	'mission_view':'string',
 	'birthday': 'date',
-	'money_cost': 'integer',
+	'money_cost': 'dict_cost',
+	'days_cost': 'dict_cost',
+	'hours_cost': 'dict_cost',
 	'is_mini_o': 'checkbox'
 	}
 
@@ -333,10 +335,10 @@ d_SetViewerDetails = {
 		'buttons':['Done'],
 
 		#Master template parameters
-		'heading_exists': False,
-		'heading_visible': False,
-		'heading_style': '',
-		'heading_content': '',
+		'heading_exists': True,
+		'heading_visible': True,
+		'heading_style': 'color: purple; font-weight: bold;',
+		'heading_content': 'Dream: ',
 
 		'top_secondary_description_exists': False,
 		'top_secondary_description_visible': False,
