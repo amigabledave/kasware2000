@@ -312,12 +312,12 @@ d_SetViewerDetails = {
 
 		'description_exists': True,
 		'description_visible': True,
-		'description_style': '',
+		'description_style': 'font-weight:bold;',
 		'description_placeholder': 'This is a placeholder',
 
 		'bottom_secondary_description_exists': True,
 		'bottom_secondary_description_visible': True,
-		'bottom_secondary_description_style': '',
+		'bottom_secondary_description_style': 'color:grey; font-style:italic;',
 		'bottom_secondary_description_placeholder': 'This is a placeholder'},		
 
 
