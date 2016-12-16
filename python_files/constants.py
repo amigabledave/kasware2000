@@ -169,7 +169,28 @@ d_SetViewerDetails = {
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'Effort Reward',
 		'buttons_col':3,
-		'buttons':['Done', 'SendToMission']},
+		'buttons':['Done', 'SendToMission'],
+
+		#Master template parameters
+		'heading_exists': False,
+		'heading_visible': False,
+		'heading_style': '',
+		'heading_content': '',
+
+		'top_secondary_description_exists': False,
+		'top_secondary_description_visible': False,
+		'top_secondary_description_style': '',
+		'top_secondary_description_placeholder': 'This is a placeholder',	
+
+		'description_exists': True,
+		'description_visible': True,
+		'description_style': '',
+		'description_placeholder': 'This is a placeholder',
+
+		'bottom_secondary_description_exists': False,
+		'bottom_secondary_description_visible': False,
+		'bottom_secondary_description_style': '',
+		'bottom_secondary_description_placeholder': 'This is a placeholder'},
 
 	'KAS2':{		
 		'attributes': ['pretty_next_event'],
@@ -177,7 +198,28 @@ d_SetViewerDetails = {
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'Effort Reward',
 		'buttons_col':2,
-		'buttons':['Done', 'SendToMission']},
+		'buttons':['Done', 'SendToMission'],
+
+		#Master template parameters
+		'heading_exists': True,
+		'heading_visible': True,
+		'heading_style': '',
+		'heading_content': '',
+
+		'top_secondary_description_exists': False,
+		'top_secondary_description_visible': False,
+		'top_secondary_description_style': '',
+		'top_secondary_description_placeholder': 'This is a placeholder',	
+
+		'description_exists': True,
+		'description_visible': True,
+		'description_style': '',
+		'description_placeholder': 'This is a placeholder',
+
+		'bottom_secondary_description_exists': True,
+		'bottom_secondary_description_visible': True,
+		'bottom_secondary_description_style': '',
+		'bottom_secondary_description_placeholder': 'What is the next step?'},		
 	
 	'BOKA':{
 		'QuickAdd':{'description':'What do you need to do to achieve your Objective?'},		
@@ -194,7 +236,28 @@ d_SetViewerDetails = {
 		'columns': {'kpts_value':6},
 		'buttons_col':2,
 		'detailsLabel':'Effort Reward',
-		'buttons': ['Done']},
+		'buttons': ['Done'],
+
+		#Master template parameters
+		'heading_exists': True,
+		'heading_visible': True,
+		'heading_style': 'color:#32CD32; font-weight:bold; font-size:12px;',
+		'heading_content': 'Target Reaction:',
+
+		'top_secondary_description_exists': True,
+		'top_secondary_description_visible': True,
+		'top_secondary_description_style': 'ont-weight:normal; font-style:italic;',
+		'top_secondary_description_placeholder': 'This is a placeholder',	
+
+		'description_exists': True,
+		'description_visible': True,
+		'description_style': 'font-weight:bold;',
+		'description_placeholder': 'This is a placeholder',
+
+		'bottom_secondary_description_exists': False,
+		'bottom_secondary_description_visible': False,
+		'bottom_secondary_description_style': '',
+		'bottom_secondary_description_placeholder': 'This is a placeholder'},		
 
 	'KAS4':{
 		'attributes': ['kpts_value'],
@@ -202,7 +265,28 @@ d_SetViewerDetails = {
 		'columns':{'kpts_value':6},
 		'detailsLabel':'Stupidity Punishment',
 		'buttons_col':2,
-		'buttons':['Done']},
+		'buttons':['Done'],
+
+		#Master template parameters
+		'heading_exists': True,
+		'heading_visible': True,
+		'heading_style': 'color:red; font-weight:bold; font-size:12px;',
+		'heading_content': 'Must avoid: ',
+
+		'top_secondary_description_exists': False,
+		'top_secondary_description_visible': False,
+		'top_secondary_description_style': '',
+		'top_secondary_description_placeholder': 'This is a placeholder',	
+
+		'description_exists': True,
+		'description_visible': True,
+		'description_style': 'font-weight:bold;',
+		'description_placeholder': 'This is a placeholder',
+
+		'bottom_secondary_description_exists': False,
+		'bottom_secondary_description_visible': False,
+		'bottom_secondary_description_style': '',
+		'bottom_secondary_description_placeholder': 'This is a placeholder'},		
 
 	'BigO':{
 		'QuickAdd':{
@@ -213,16 +297,30 @@ d_SetViewerDetails = {
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'',
 		'buttons_col':2,
-		'buttons':['Done']},
+		'buttons':['Done'],
+
+		#Master template parameters
+		'heading_exists': False,
+		'heading_visible': False,
+		'heading_style': '',
+		'heading_content': '',
+
+		'top_secondary_description_exists': False,
+		'top_secondary_description_visible': False,
+		'top_secondary_description_style': '',
+		'top_secondary_description_placeholder': 'This is a placeholder',	
+
+		'description_exists': True,
+		'description_visible': True,
+		'description_style': '',
+		'description_placeholder': 'This is a placeholder',
+
+		'bottom_secondary_description_exists': True,
+		'bottom_secondary_description_visible': True,
+		'bottom_secondary_description_style': '',
+		'bottom_secondary_description_placeholder': 'This is a placeholder'},		
 
 
-	'MiniO':{
-		'attributes': ['pretty_next_event'],
-		'fields': {'pretty_next_event':'Target Date'},
-		'columns':{'pretty_next_event':6},
-		'detailsLabel':'',
-		'buttons_col':2,
-		'buttons':['Done']},
 
 
 	'Wish':{
@@ -232,7 +330,28 @@ d_SetViewerDetails = {
 		'columns':{'money_cost':6},
 		'detailsLabel':'',
 		'buttons_col':1,
-		'buttons':['Done']},
+		'buttons':['Done'],
+
+		#Master template parameters
+		'heading_exists': False,
+		'heading_visible': False,
+		'heading_style': '',
+		'heading_content': '',
+
+		'top_secondary_description_exists': False,
+		'top_secondary_description_visible': False,
+		'top_secondary_description_style': '',
+		'top_secondary_description_placeholder': 'This is a placeholder',	
+
+		'description_exists': True,
+		'description_visible': True,
+		'description_style': '',
+		'description_placeholder': 'This is a placeholder',
+
+		'bottom_secondary_description_exists': False,
+		'bottom_secondary_description_visible': False,
+		'bottom_secondary_description_style': '',
+		'bottom_secondary_description_placeholder': 'This is a placeholder'},		
 
 
 	'EVPo': { 
@@ -245,7 +364,29 @@ d_SetViewerDetails = {
 		'columns':{'frequency':6},
 		'detailsLabel':'Trigger Effort Reward',
 		'buttons_col':3,
-		'buttons':['Done', 'SendToMission']},
+		'buttons':['Done', 'SendToMission'],
+
+		#Master template parameters
+		'heading_exists': False,
+		'heading_visible': False,
+		'heading_style': '',
+		'heading_content': '',
+
+		'top_secondary_description_exists': False,
+		'top_secondary_description_visible': False,
+		'top_secondary_description_style': '',
+		'top_secondary_description_placeholder': 'This is a placeholder',	
+
+		'description_exists': True,
+		'description_visible': True,
+		'description_style': '',
+		'description_placeholder': 'This is a placeholder',
+
+		'bottom_secondary_description_exists': False,
+		'bottom_secondary_description_visible': False,
+		'bottom_secondary_description_style': '',
+		'bottom_secondary_description_placeholder': 'This is a placeholder'},
+
 
 	'ImPe': { 
 		'QuickAdd':{
@@ -255,7 +396,29 @@ d_SetViewerDetails = {
 		'columns':{'frequency':6},
 		'detailsLabel':'Contract Effort Reward',
 		'buttons_col':3,
-		'buttons':['Done', 'SendToMission']},
+		'buttons':['Done', 'SendToMission'],
+
+		#Master template parameters
+		'heading_exists': False,
+		'heading_visible': False,
+		'heading_style': '',
+		'heading_content': '',
+
+		'top_secondary_description_exists': False,
+		'top_secondary_description_visible': False,
+		'top_secondary_description_style': '',
+		'top_secondary_description_placeholder': 'This is a placeholder',	
+
+		'description_exists': False,
+		'description_visible': False,
+		'description_style': '',
+		'description_placeholder': 'This is a placeholder',
+
+		'bottom_secondary_description_exists': True,
+		'bottom_secondary_description_visible': True,
+		'bottom_secondary_description_style': 'height:20px;',
+		'bottom_secondary_description_placeholder': 'This is a placeholder'},
+
 
 	'Idea': {
 		'QuickAdd':{'description':'What are your Principles?'}, 		
@@ -264,17 +427,59 @@ d_SetViewerDetails = {
 		'columns':{'source':6},
 		'detailsLabel':'',
 		'buttons_col':0,
-		'buttons':[]},
+		'buttons':[],
+
+		#Master template parameters
+		'heading_exists': False,
+		'heading_visible': False,
+		'heading_style': '',
+		'heading_content': '',
+
+		'top_secondary_description_exists': False,
+		'top_secondary_description_visible': False,
+		'top_secondary_description_style': '',
+		'top_secondary_description_placeholder': 'This is a placeholder',	
+
+		'description_exists': True,
+		'description_visible': True,
+		'description_style': '',
+		'description_placeholder': 'This is a placeholder',
+
+		'bottom_secondary_description_exists': False,
+		'bottom_secondary_description_visible': False,
+		'bottom_secondary_description_style': '',
+		'bottom_secondary_description_placeholder': 'This is a placeholder'},		
 
 
 	'RTBG': { 
-			'QuickAdd':{'description':'What are you greateful for?'},		
-			'attributes': [],
-			'fields': {},
-			'columns':{},
-			'detailsLabel':'',
-			'buttons_col':0,
-			'buttons':[]},
+		'QuickAdd':{'description':'What are you greateful for?'},		
+		'attributes': [],
+		'fields': {},
+		'columns':{},
+		'detailsLabel':'',
+		'buttons_col':0,
+		'buttons':[],
+
+		#Master template parameters
+		'heading_exists': False,
+		'heading_visible': False,
+		'heading_style': '',
+		'heading_content': '',
+
+		'top_secondary_description_exists': False,
+		'top_secondary_description_visible': False,
+		'top_secondary_description_style': '',
+		'top_secondary_description_placeholder': 'This is a placeholder',	
+
+		'description_exists': True,
+		'description_visible': True,
+		'description_style': '',
+		'description_placeholder': 'This is a placeholder',
+
+		'bottom_secondary_description_exists': False,
+		'bottom_secondary_description_visible': False,
+		'bottom_secondary_description_style': '',
+		'bottom_secondary_description_placeholder': 'This is a placeholder'},			
 
 	'ImIn': { 
 		'QuickAdd':{
@@ -285,7 +490,29 @@ d_SetViewerDetails = {
 		'columns':{},
 		'detailsLabel':'',
 		'buttons_col':0,
-		'buttons':[]},
+		'buttons':[],
+
+		#Master template parameters
+		'heading_exists': False,
+		'heading_visible': False,
+		'heading_style': '',
+		'heading_content': '',
+
+		'top_secondary_description_exists': False,
+		'top_secondary_description_visible': False,
+		'top_secondary_description_style': '',
+		'top_secondary_description_placeholder': 'This is a placeholder',	
+
+		'description_exists': False,
+		'description_visible': False,
+		'description_style': '',
+		'description_placeholder': 'This is a placeholder',
+
+		'bottom_secondary_description_exists': False,
+		'bottom_secondary_description_visible': False,
+		'bottom_secondary_description_style': '',
+		'bottom_secondary_description_placeholder': 'This is a placeholder'},
+
 
 	'BinaryPerception': { 		
 		'attributes': ['pretty_next_event'],
@@ -293,7 +520,29 @@ d_SetViewerDetails = {
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'',
 		'buttons_col':0,
-		'buttons':['Record']},
+		'buttons':['Record'],
+
+		#Master template parameters
+		'heading_exists': False,
+		'heading_visible': False,
+		'heading_style': '',
+		'heading_content': '',
+
+		'top_secondary_description_exists': False,
+		'top_secondary_description_visible': False,
+		'top_secondary_description_style': '',
+		'top_secondary_description_placeholder': 'This is a placeholder',	
+
+		'description_exists': False,
+		'description_visible': False,
+		'description_style': '',
+		'description_placeholder': 'This is a placeholder',
+
+		'bottom_secondary_description_exists': True,
+		'bottom_secondary_description_visible': True,
+		'bottom_secondary_description_style': 'height:20px; font-weight: bold;margin-bottom: 10px;',
+		'bottom_secondary_description_placeholder': 'This is a placeholder'},
+
 
 	'FibonacciPerception': { 		
 		'attributes': ['pretty_next_event'],
@@ -301,7 +550,28 @@ d_SetViewerDetails = {
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'',
 		'buttons_col':0,
-		'buttons':['Record']},
+		'buttons':['Record'],
+
+		#Master template parameters
+		'heading_exists': False,
+		'heading_visible': False,
+		'heading_style': '',
+		'heading_content': '',
+
+		'top_secondary_description_exists': False,
+		'top_secondary_description_visible': False,
+		'top_secondary_description_style': '',
+		'top_secondary_description_placeholder': 'This is a placeholder',	
+
+		'description_exists': False,
+		'description_visible': False,
+		'description_style': '',
+		'description_placeholder': 'This is a placeholder',
+
+		'bottom_secondary_description_exists': True,
+		'bottom_secondary_description_visible': True,
+		'bottom_secondary_description_style': 'height:20px; font-weight: bold;margin-bottom: 10px;',
+		'bottom_secondary_description_placeholder': 'This is a placeholder'},		
 
 
 	'RealitySnapshot': { 		
@@ -310,7 +580,28 @@ d_SetViewerDetails = {
 		'columns':{'pretty_next_event':6},
 		'detailsLabel':'',
 		'buttons_col':0,
-		'buttons':['Record']},
+		'buttons':['Record'],
+
+		#Master template parameters
+		'heading_exists': False,
+		'heading_visible': False,
+		'heading_style': '',
+		'heading_content': '',
+
+		'top_secondary_description_exists': False,
+		'top_secondary_description_visible': False,
+		'top_secondary_description_style': '',
+		'top_secondary_description_placeholder': 'This is a placeholder',	
+
+		'description_exists': False,
+		'description_visible': False,
+		'description_style': '',
+		'description_placeholder': 'This is a placeholder',
+
+		'bottom_secondary_description_exists': True,
+		'bottom_secondary_description_visible': True,
+		'bottom_secondary_description_style': 'height:20px; font-weight: bold;margin-bottom: 10px;',
+		'bottom_secondary_description_placeholder': 'This is a placeholder'},		
 
 	'Diary': { 
 		'QuickAdd':
@@ -321,7 +612,29 @@ d_SetViewerDetails = {
 		'columns':{},
 		'detailsLabel':'',
 		'buttons_col':0,
-		'buttons':['Record']}
+		'buttons':['Record'],
+		
+		#Master template parameters
+		'heading_exists': False,
+		'heading_visible': False,
+		'heading_style': '',
+		'heading_content': '',
+
+		'top_secondary_description_exists': False,
+		'top_secondary_description_visible': False,
+		'top_secondary_description_style': '',
+		'top_secondary_description_placeholder': 'This is a placeholder',	
+
+		'description_exists': False,
+		'description_visible': False,
+		'description_style': '',
+		'description_placeholder': 'This is a placeholder',
+
+		'bottom_secondary_description_exists': True,
+		'bottom_secondary_description_visible': True,
+		'bottom_secondary_description_style': 'height:20px; font-weight: bold;margin-bottom: 10px;',
+		'bottom_secondary_description_placeholder': 'This is a placeholder'}		
+
 }
 
 d_HistoryViewer = {
@@ -389,9 +702,6 @@ ksu_for_template = {
 	'picture': None,
 	'times_reviewed': 0,
 }
-
-
-
 
 
 

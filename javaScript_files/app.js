@@ -677,8 +677,8 @@ $('.SaveNewKSUButton').on('click', function(){
 	var kpts_value = ksu.find('#kpts_value').val();
 
 	var mission_view = ksu.find('#mission_view').val()
-	var importance = ksu.find('#importance').val();
-	var mission_importance = ksu.find('#mission_importance').val();
+	var importance = ksu.find('#importance option:selected').val();
+
 	var tags = ksu.find('#tags_value').val();
 	var comments = ksu.find('#comments').val();
 
@@ -732,7 +732,6 @@ $('.SaveNewKSUButton').on('click', function(){
 			
 			'mission_view':mission_view,
 			'importance':importance,
-			'mission_importance':mission_importance,
 			'tags':tags,
 			'comments':comments, 
 		
@@ -789,7 +788,6 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#Dummy_tags_value').val('');			
 		
 		ksu.find('#importance').val(3);
-		ksu.find('#mission_importance').val(3);
 
 		ksu.find('#kpts_value').val(1);
 		ksu.find('#KAS3_kpts_value').val(1);
@@ -837,7 +835,7 @@ $('.SaveNewKSUButton').on('click', function(){
 			'Diary': $('#NewKSUTemplate_Diary').clone()
 		}
 
-
+ 
 		var new_ksu = Templates[ksu_subtype];
 
 		new_ksu.attr("id", "MissionKSU");
@@ -851,7 +849,6 @@ $('.SaveNewKSUButton').on('click', function(){
 		new_ksu.find('#next_event').val(next_event);
 
 		new_ksu.find('#importance').val(importance);
-		new_ksu.find('#mission_importance').val(mission_importance);
 		
 		new_ksu.find('#tags').val(tags);
 		new_ksu.find('#ksu_subtype').text(ksu_subtype);
@@ -878,6 +875,15 @@ $('.SaveNewKSUButton').on('click', function(){
 		} else {
 			new_ksu.find('#description').css('color', '#b1adad');
 		};
+
+		if(is_mini_o){
+			new_ksu.find('#description').css('font-weight', 'bold');
+			new_ksu.find('#secondary_description').removeClass('hidden');
+			ksu.find('#description').css('font-weight', 'normal');
+			ksu.find('#description').css('font-style', 'normal');
+			ksu.find('#secondary_description').addClass('hidden');
+		};
+
 
 		$('#TagsAndImportanceRow').addClass('hidden');	
 		$('#QuickKsuSecondaryDescription').addClass('hidden');

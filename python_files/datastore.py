@@ -58,7 +58,6 @@ class KSU(ndb.Model):
 	kpts_value = ndb.FloatProperty()
 
 	importance = ndb.IntegerProperty(default=3)
-	mission_importance = ndb.IntegerProperty(default=3)
 	tags = ndb.StringProperty()
 	parent_id = ndb.KeyProperty() # Ahora me esta dando un error porque lo estoy ligando a la misma clase que estoy definiendo
 		

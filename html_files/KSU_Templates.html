@@ -21,28 +21,24 @@
 				<div class="row" id="DescriptionRow">
 					<div class="col-xs-12">
 
-					{% if ksu.ksu_subtype == 'KAS3' %}
-
-						<span style="color:#32CD32; font-style:italic; font-weight:bold; font-size:12px;">Did you have this reaction?: </span>
-						<textarea style="width:100%; font-weight:normal; font-style:italic; border:0;" class="QuickAttributeUpdate autoExpand" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>							
-						<textarea style="width:100%; border:0; font-weight:bold; {% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#b1adad;{% endif %}" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
-
-					{% elif ksu.ksu_subtype == 'KAS4' %}
-						<span style="color:red; font-style:italic; font-weight:bold; font-size:12px;"> Did you manage to avoid?:</span> 
-						<textarea style="width:100%; border:0; font-weight:bold; {% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#b1adad;{% endif %}" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
-
-					{% elif ksu.ksu_type in ['ImPe', 'ImIn', 'Diary'] %}
-						<textarea style="width:100%; height:20px; border:0; {% if ksu.is_critical %}color:#B22222;{% endif %}{% if ksu.ksu_type in ['ImIn','Diary'] %}font-weight: bold;margin-bottom: 10px;{% endif %}" class="QuickAttributeUpdate" name="secondary_description" id="secondary_description" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}'>{{ksu.secondary_description}}</textarea>
-					{% elif ksu.is_mini_o %}
-						<textarea style="width:100%; border:0; font-size:14px; font-weight:bold; font-style:italic;{% if ksu.is_critical %}color:#B22222;{% endif %}" class="autoExpand QuickAttributeUpdate" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description" placeholder="What do you want to achieve?">{{ksu.description}}</textarea>
-
-						<textarea style="width:100%; border:0; font-size:14px;" class="autoExpand QuickAttributeUpdate" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description" placeholder="What is the next step?">{% if ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
-
-					{% else %}	
-						<textarea style="width:100%; border:0; {% if ksu.is_critical %}color:#B22222;{% endif %}" class="QuickAttributeUpdate autoExpand" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
-
-						<textarea style="width:100%; border:0; font-size:14px;" class="autoExpand QuickAttributeUpdate hidden" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description" placeholder="What is the next step?">{% if ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
+					{% if constants['d_SetViewerDetails'][ksu.ksu_subtype]['heading_exists'] %}
+					<span style="{{constants['d_SetViewerDetails'][ksu.ksu_subtype]['heading_style']}}" class=" {% if not constants['d_SetViewerDetails'][ksu.ksu_subtype]['heading_visible'] %}hidden{% endif %}">{{constants['d_SetViewerDetails'][ksu.ksu_subtype]['heading_content']}}</span>
 					{% endif %}
+
+					
+					{% if constants['d_SetViewerDetails'][ksu.ksu_subtype]['top_secondary_description_exists'] %}
+					<textarea style="width:100%; border:0; {{constants['d_SetViewerDetails'][ksu.ksu_subtype]['top_secondary_description_style']}}" class="QuickAttributeUpdate autoExpand  {% if not constants['d_SetViewerDetails'][ksu.ksu_subtype]['top_secondary_description_visible'] %}hidden{% endif %}" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description">{{ksu.secondary_description}}</textarea>
+					{% endif %}
+
+
+					{% if constants['d_SetViewerDetails'][ksu.ksu_subtype]['description_exists'] %}
+					<textarea style="width:100%; border:0; {{constants['d_SetViewerDetails'][ksu.ksu_subtype]['description_style']}} {% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#b1adad;{% endif %}{% if ksu.is_mini_o %} font-weight: bold {% endif %}" class="QuickAttributeUpdate autoExpand  {% if not constants['d_SetViewerDetails'][ksu.ksu_subtype]['description_visible'] %}hidden{% endif %}" rows="{{ksu.description_rows}}" data-min-rows='{{ksu.description_rows}}' name="description" id="description">{{ksu.description}}</textarea>
+					{% endif %}
+
+					{% if constants['d_SetViewerDetails'][ksu.ksu_subtype]['bottom_secondary_description_exists'] %}
+					<textarea style="width:100%; border:0; {{constants['d_SetViewerDetails'][ksu.ksu_subtype]['bottom_secondary_description_style']}}" class="QuickAttributeUpdate autoExpand  {% if not constants['d_SetViewerDetails'][ksu.ksu_subtype]['bottom_secondary_description_visible'] %}hidden{% endif %}{% if ksu.ksu_subtype == 'KAS2' and not ksu.is_mini_o %}hidden{% endif %}" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description" placeholder="{{constants['d_SetViewerDetails'][ksu.ksu_subtype]['bottom_secondary_description_placeholder']}}">{{ksu.secondary_description}}</textarea>
+					{% endif %}
+
 					</div>
 				</div>
 				
