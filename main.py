@@ -654,7 +654,7 @@ class SetViewer(Handler):
 
 
 		new_ksu_required_templates = []
-		ksu = constants['ksu_for_template']
+		ksu = constants['ksu_for_template']			
 		for ksu_subtype in constants['type_to_subtypes'][set_name]:
 			template = ksu.copy()
 			template['ksu_subtype'] = ksu_subtype
@@ -1854,7 +1854,7 @@ def prepareInputForSaving(theory, ksu, post_details):
 		else:
 			ksu_subtype = ksu_type
 
-		if ksu_type in ['OTOA', 'BOKA'] and ksu_subtype != 'MiniO':
+		if ksu_type in ['OTOA', 'BOKA']:
 			ksu_subtype = 'KAS2'
 
 		return ksu_subtype
@@ -1936,7 +1936,8 @@ def prepareInputForSaving(theory, ksu, post_details):
 				parent_ksu = KSU.get_by_id(int(a_val))
 				parent_key = parent_ksu.key
 				ksu.parent_id = parent_key
-				if post_details['ksu_type'] != 'BigO':
+				# if post_details['ksu_type'] != 'BigO': #Segun yo esto esta mal
+				if parent_ksu.ksu_type == 'BigO': #Creo que esto es mas correcto
 					ksu.ksu_type = 'BOKA'
 
 	setattr(ksu, 'repeats_on', d_repeats_on)

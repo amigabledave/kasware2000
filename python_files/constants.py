@@ -982,6 +982,7 @@ ksu_for_template = {
 
 
 type_to_subtypes = {
+	'TheoryQuery':[],
 	'KeyA':['KAS1', 'KAS2', 'KAS3', 'KAS4'], 
 	'OTOA':['KAS2'],
 	'BigO':['BigO'],
