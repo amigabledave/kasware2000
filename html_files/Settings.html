@@ -73,116 +73,14 @@
 			{% endfor %}
 			</select>
 		</div>
-	
-		<div class="col-xs-4">
-			<label> Day Start </label>
-			<input style="padding-right:2px; padding-left:4px;" type="time" class="form-control" name="day_start_time" value="{{theory.day_start_time}}">
-		</div>
-
-	</div>
-	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-
-	<div class="form-group">
 
 		<div class="col-xs-4"> 
 			<label> Minimum daily effort </label>			
-			<input type="number" min="0" class="form-control" name="minimum_daily_effort" placeholder="20" value="{{theory.kpts_goals_parameters['minimum_daily_effort']}}">
+			<input type="number" min="0" class="form-control" name="minimum_daily_effort" placeholder="20" value="{{theory.kpts_goals_parameters['minimum_daily_effort']|round|int}}">
 		</div>
 
-		<div class="col-xs-4"> 
-			<label> Yearly vacation days </label>			
-			<input type="number" min="0" class="form-control" name="yearly_vacations_day" placeholder="12" value="{{theory.kpts_goals_parameters['yearly_vacations_day']}}">
-		</div>
 
-		<div class="col-xs-4"> 
-			<label> Yearly shit happens days </label>			
-			<input type="number" min="0" class="form-control" name="yearly_shit_happens_days" placeholder="6" value="{{theory.kpts_goals_parameters['yearly_shit_happens_days']}}">
-		</div>
 	</div>
-
-	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-	<div class="form-group">
-		<div class="col-xs-12">
-			<label> Typical Week Effort Distribution </label>
-		</div>
-	</div>	
-
-
-	<div class="form-group">
-		<!-- <div class="col-xs-1" style="padding:0;"></div> -->
-		<div class="col-xs-1" style="padding:0; margin-right:20px; margin-left:15px;">
-			<label> Mon </label>
-			<select class="form-control" name="typical_week_effort_distribution_Mon">
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][0] == 1 %}selected="selected"{% endif %} value="{{1}}">1</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][0] == 0.5 %}selected="selected"{% endif %} value="{{0.5}}">0.5</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][0] == 0.25 %}selected="selected"{% endif %} value="{{0.25}}">0.25</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][0] == 0 %}selected="selected"{% endif %} value="{{0}}">0</option>
-			</select>
-		</div>	
-
-		<div class="col-xs-1" style="padding:0; margin-right:20px;">
-			<label> Tue </label>
-			<select class="form-control" name="typical_week_effort_distribution_Tue">
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][1] == 1 %}selected="selected"{% endif %} value="{{1}}">1</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][1] == 0.5 %}selected="selected"{% endif %} value="{{0.5}}">0.5</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][1] == 0.25 %}selected="selected"{% endif %} value="{{0.25}}">0.25</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][1] == 0 %}selected="selected"{% endif %} value="{{0}}">0</option>
-			</select>
-		</div>
-		
-		<div class="col-xs-1" style="padding:0; margin-right:20px;">
-			<label> Wed </label>
-			<select class="form-control" name="typical_week_effort_distribution_Wed">
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][2] == 1 %}selected="selected"{% endif %} value="{{1}}">1</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][2] == 0.5 %}selected="selected"{% endif %} value="{{0.5}}">0.5</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][2] == 0.25 %}selected="selected"{% endif %} value="{{0.25}}">0.25</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][2] == 0 %}selected="selected"{% endif %} value="{{0}}">0</option>
-			</select>
-		</div>
-
-
-		<div class="col-xs-1" style="padding:0; margin-right:20px;">
-			<label> Thu </label>
-			<select class="form-control" name="typical_week_effort_distribution_Thu">
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][3] == 1 %}selected="selected"{% endif %} value="{{1}}">1</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][3] == 0.5 %}selected="selected"{% endif %} value="{{0.5}}">0.5</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][3] == 0.25 %}selected="selected"{% endif %} value="{{0.25}}">0.25</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][3] == 0 %}selected="selected"{% endif %} value="{{0}}">0</option>
-			</select>
-		</div>
-		
-
-		<div class="col-xs-1" style="padding:0; margin-right:20px;">
-			<label> Fri </label>
-			<select class="form-control" name="typical_week_effort_distribution_Fri">
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][4] == 1 %}selected="selected"{% endif %} value="{{1}}">1</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][4] == 0.5 %}selected="selected"{% endif %} value="{{0.5}}">0.5</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][4] == 0.25 %}selected="selected"{% endif %} value="{{0.25}}">0.25</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][4] == 0 %}selected="selected"{% endif %} value="{{0}}">0</option>
-			</select>
-		</div>	
-		
-		<div class="col-xs-1" style="padding:0; margin-right:20px;">
-			<label> Sat </label>
-			<select class="form-control" name="typical_week_effort_distribution_Sat">
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][5] == 1 %}selected="selected"{% endif %} value="{{1}}">1</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][5] == 0.5 %}selected="selected"{% endif %} value="{{0.5}}">0.5</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][5] == 0.25 %}selected="selected"{% endif %} value="{{0.25}}">0.25</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][5] == 0 %}selected="selected"{% endif %} value="{{0}}">0</option>
-			</select>
-		</div>
-
-		<div class="col-xs-1" style="padding:0; margin-right:20px;">
-			<label> Sun </label>
-			<select class="form-control" name="typical_week_effort_distribution_Sun">
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][6] == 1 %}selected="selected"{% endif %} value="{{1}}">1</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][6] == 0.5 %}selected="selected"{% endif %} value="{{0.5}}">0.5</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][6] == 0.25 %}selected="selected"{% endif %} value="{{0.25}}">0.25</option>
-				<option {% if theory.kpts_goals_parameters['typical_week_effort_distribution'][6] == 0 %}selected="selected"{% endif %} value="{{0}}">0</option>
-			</select>
-		</div>
-	</div>
-
 
 	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 	<div class="form-group">

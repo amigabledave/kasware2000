@@ -18,10 +18,19 @@ class Theory(ndb.Model):
  	language = ndb.StringProperty(choices=('Spanish', 'English'), default='English')
  	hide_private_ksus = ndb.BooleanProperty(default=False)
  	timezone = ndb.IntegerProperty(default=-4) #Deberia de ser forzoza, pero para evitar errores por ahora no la solicito asi
- 	day_start_time = ndb.TimeProperty()
+ 	# day_start_time = ndb.TimeProperty() - TBD
  	kpts_goals_parameters = ndb.JsonProperty(required=True)
  	kpts_goals = ndb.JsonProperty(required=True)
  	categories = ndb.JsonProperty(required=True)
+
+ 	#Game details
+ 	game = ndb.JsonProperty(default={
+ 		'daily_goal':100,
+ 		'piggy_bank':0, 
+ 		'streak':0,
+ 		'last_log':None,
+ 		'goal_achieved':False,
+ 		'points_to_goal':100}) 
 	
 	#tracker fields
 	created = ndb.DateTimeProperty(auto_now_add=True)	

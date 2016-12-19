@@ -102,26 +102,26 @@
 						</form>
 					</div>
 
-					<div class="col-xs-1 hidden-sm hidden-md hidden-lg">						
+					<div class="col-xs-2 hidden-sm hidden-md hidden-lg">						
 						<button type="button" class="btn btn-default" style="background-color:transparent;border:1px; padding-top:3px; padding-bottom:0px;margin-left:-40px; color:white; margin-top: 5px;" id="MobileTheorySearchButton"><span class="glyphicon glyphicon-search" style="font-size:20px;"></span></button>						
 					</div>
 
 					<div class="col-xs-2 col-sm-1 col-md-1 col-lg-1 text-left" style="padding-left:0px;">
 						<div style="margin-top: 12px; color: white;"><a href="/HistoryViewer" style="color:white;">
-							<span class="glyphicon glyphicon-flag"> </span><span id="PointsToGoal"> {% if active_log.PointsToGoal == 0%}Achieved!{% else %}{{active_log.PointsToGoal|round|int}}{% endif %}</span></a>			
+							<span class="glyphicon glyphicon-flag"> </span><span id="PointsToGoal"> {% if game['points_to_goal'] == 0 %}Achieved!{% else %}{{game['points_to_goal']|round|int}}{% endif %}</span></a>			
 						</div>
 					</div>
 
 
-					<div class="hidden-xs col-sm-1 col-md-1 col-lg-1 text-left" style="padding-left:0px;">
+					<div class="col-xs-2 col-sm-1 col-md-1 col-lg-1 text-left" style="padding-left:0px;">
 						<div style="margin-top: 12px; color: white;">
-							<span class="glyphicon glyphicon-piggy-bank"> </span><span id="EffortReserve"> {{active_log.EffortReserve|round|int}}</span>
+							<span class="glyphicon glyphicon-piggy-bank"> </span><span id="EffortReserve"> {{game['piggy_bank']|round|int}}</span>
 						</div>
 					</div>
 
 					<div class="hidden-xs col-sm-1 col-md-1 col-lg-1 text-left" style="padding-left:0px;">
 						<div style="margin-top: 12px; color: white;">
-							<span class="glyphicon glyphicon-fire"> </span><span id="Streak"> {{active_log.Streak}}</span>   
+							<span class="glyphicon glyphicon-fire"> </span><span id="Streak"> {{game['streak']}}</span>   
 						</div>
 					</div>
 
@@ -136,12 +136,11 @@
 						<div style="margin-top: 12px; color: white; white-space: pre;"> <a href="/Settings" style="color: white;">{{theory.first_name}}'s theory</a>   |  <a href="/LogOut" style="color: white;"> Log out</a> </div>
 					</div>
 
-
-					<div class="col-xs-3 hidden-sm hidden-md hidden-lg">						
+<!-- 					<div class="col-xs-3 hidden-sm hidden-md hidden-lg">						
 						<form method="post">
 						<button type="Submit" class="btn btn-primary btn-xs" style="height: 25px; width: 60px; margin-top:10px; background-color:#00CCFF; color:white;" aria-label="Left Align"  name="action_description" value="NewKSU" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> KSU </button>
 						</form>						
-					</div>
+					</div> -->
 
 					<div class="hidden col-xs-12 hidden-sm hidden-md hidden-lg text-right" id="MobileSearchBar">
 						<form class="form-horizontal" method="post">

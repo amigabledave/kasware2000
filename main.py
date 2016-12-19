@@ -70,7 +70,7 @@ class Handler(webapp2.RequestHandler):
 		theory = self.theory 
 		active_log = self.active_log
 		if theory:				
-			return t.render(theory=theory, active_log=active_log, **kw)
+			return t.render(theory=theory, active_log=active_log, game=self.game, **kw)
 		else:
 			return t.render(**kw)
 
@@ -101,6 +101,48 @@ class Handler(webapp2.RequestHandler):
 		theory_id = self.read_secure_cookie('theory_id')
 		self.theory = theory_id and Theory.get_by_theory_id(int(theory_id)) #if the user exist, 'self.theory' will store the actual theory object
 		self.active_log = self.theory and self.get_active_log()
+		self.game = self.theory and self.update_game()
+
+
+	def update_game(self):
+		theory = self.theory
+		game = theory.game
+
+		last_log = game['last_log']
+		active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() # TT Time Travel aqui puedo hacer creer al programa que es otro dia
+
+		if not last_log:
+			last_log = active_date - 1
+			# TBD - To be deleted after I update my acount 
+			active_log = self.get_active_log()
+			game['points_to_goal'] = active_log.PointsToGoal
+			game['streak'] = active_log.Streak
+			game['piggy_bank'] = active_log.EffortReserve
+			game['goal_achieved'] = active_log.goal_achieved
+			if active_log.Streak > 0:
+				last_log = active_date
+			#
+
+		if last_log < active_date:
+			kpts_to_survie = (active_date - last_log - 1) * game['daily_goal'] + game['points_to_goal']
+			if kpts_to_survie <= game['piggy_bank']:
+				game['streak'] += active_date - last_log
+				game['piggy_bank'] -= kpts_to_survie
+				if game['goal_achieved']:
+					game['streak'] -= 1
+			else:
+				game['streak'] = 0
+				game['piggy_bank'] = 0
+			
+			game['points_to_goal'] = game['daily_goal']
+			game['goal_achieved'] = False
+			game['last_log'] = active_date
+			theory.game = game
+			theory.put()
+
+		return game
+
+
 
 
 	def get_active_log(self):
@@ -108,9 +150,7 @@ class Handler(webapp2.RequestHandler):
 		
 		minimum_daily_effort = theory.kpts_goals['minimum_daily_effort']
 
-		day_start_time = theory.day_start_time
-		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-		active_date = (datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).toordinal() # TT Time Travel aqui puedo hacer creer al programa que es otro dia
+		active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() # TT Time Travel aqui puedo hacer creer al programa que es otro dia
 		
 		last_DailyLog = theory.last_DailyLog
 		user_key = theory.key		
@@ -278,8 +318,7 @@ class SignUpLogIn(Handler):
 					password_hash=password_hash, 
 					first_name=post_details['first_name'], 
 					last_name=post_details['last_name'],
-					day_start_time=datetime.strptime('06:00', '%H:%M').time(),
-					timezone=-4,
+					timezone=-6,
 					kpts_goals_parameters=kpts_goals_parameters,
 					kpts_goals=calculate_user_kpts_goals(kpts_goals_parameters),
 					categories={'tags':[]},
@@ -288,11 +327,9 @@ class SignUpLogIn(Handler):
 				theory.put()
 
 				#creates the first DailyLog entry
-				day_start_time = theory.day_start_time
-				user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-				active_date = (datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).toordinal() 
+				active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() 
 				active_date_date = datetime.fromordinal(active_date)
-				active_weekday = (datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).weekday()
+				active_weekday = (datetime.today()+timedelta(hours=theory.timezone)).weekday()
 				goal = int(theory.kpts_goals['kpts_weekly_goals'][active_weekday])
 				
 				minimum_daily_effort = int(theory.kpts_goals['minimum_daily_effort'])
@@ -464,9 +501,7 @@ class Settings(Handler):
 
 		local_today = datetime.today()+timedelta(hours=theory.timezone)
 
-		day_start_time = theory.day_start_time
-		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-		user_today = local_today-timedelta(hours=user_start_hour)
+		user_today = local_today
 
 		active_date = user_today.toordinal()
 		
@@ -495,22 +530,9 @@ class Settings(Handler):
 
 		 	theory.timezone = int(post_details['timezone'])
 
-			theory.day_start_time = datetime.strptime(post_details['day_start_time'][0:5], '%H:%M').time()
-
 			old_minimum_daily_effort = theory.kpts_goals_parameters['minimum_daily_effort'] #Esto se lo meti para solo resetear cuando este valor cambia.
 
-		 	theory.kpts_goals_parameters = {
-				'typical_week_effort_distribution':[
-					float(post_details['typical_week_effort_distribution_Mon']),
-					float(post_details['typical_week_effort_distribution_Tue']),
-					float(post_details['typical_week_effort_distribution_Wed']),
-					float(post_details['typical_week_effort_distribution_Thu']),
-					float(post_details['typical_week_effort_distribution_Fri']),
-					float(post_details['typical_week_effort_distribution_Sat']),
-					float(post_details['typical_week_effort_distribution_Sun'])],
-				'yearly_vacations_day': int(post_details['yearly_vacations_day']),
-				'yearly_shit_happens_days': int(post_details['yearly_shit_happens_days']),
-				'minimum_daily_effort':float(post_details['minimum_daily_effort'])}
+		 	theory.kpts_goals_parameters['minimum_daily_effort'] = float(post_details['minimum_daily_effort'])
 	 	
 	 		theory.kpts_goals = calculate_user_kpts_goals(theory.kpts_goals_parameters)
 
@@ -801,10 +823,8 @@ class MissionViewer(Handler):
 		theory = self.theory
 		user_key = theory.key
 
-		day_start_time = theory.day_start_time
-		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date() 
-		today_ordinal =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
+		today =(datetime.today()+timedelta(hours=theory.timezone)).date() 
+		today_ordinal =(datetime.today()+timedelta(hours=theory.timezone)).date().toordinal()
 	
 		current_time = (datetime.today()+timedelta(hours=theory.timezone)).time()
 
@@ -976,8 +996,6 @@ class EventHandler(Handler):
 	def post(self):
 			
 		event_details = json.loads(self.request.body)
-		day_start_time = self.theory.day_start_time
-		user_start_hour = day_start_time.hour + day_start_time.minute/60.0
 
 		print
 		print 'Si llego el AJAX Request. User action: ' +  event_details['user_action'] + '. Event details: ' +  str(event_details)
@@ -1019,6 +1037,20 @@ class EventHandler(Handler):
 			event = Event.get_by_id(int(event_details['event_id']))
 			kpts_type = event.kpts_type
 			score = event.score
+
+			## Desde aqui empieza la nueva forma de actualizar para game
+			game = self.game
+
+			if kpts_type == 'Stupidity':
+				game['piggy_bank'] += score
+				
+			elif kpts_type == 'SmartEffort':
+				game['points_to_goal'] += score			
+			
+			theory = self.theory
+			theory.game = game
+			theory.put()
+			#
 
 			active_log = self.active_log
 			Streak = active_log.Streak
@@ -1068,17 +1100,15 @@ class EventHandler(Handler):
 			ksu = KSU.get_by_id(event.ksu_id.id())
 			ksu.in_graveyard = False
 			ksu.is_deleted = False
-			day_start_time = self.theory.day_start_time
-			user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-			today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour))
+			today =(datetime.today()+timedelta(hours=self.theory.timezone))
 			ksu.next_event = today
 			ksu.put()
 
 			self.response.out.write(json.dumps({
 				'mensaje':'Evento revertido',
-				'PointsToGoal':active_log.PointsToGoal,
-				'EffortReserve':active_log.EffortReserve,
-				'Streak':active_log.Streak})) 
+				'PointsToGoal': game['points_to_goal'],
+				'EffortReserve': game['piggy_bank'],
+				'Streak': game['streak']})) 
 			return
 
 		if user_action == 'UpdateKsuAttribute':
@@ -1095,13 +1125,13 @@ class EventHandler(Handler):
 
 		ksu = KSU.get_by_id(int(event_details['ksu_id']))
 		ksu_subtype = ksu.ksu_subtype
-		#xx
+		
 		event = Event(
 			theory=self.theory.key,
 			ksu_id =  ksu.key,
 			event_type = user_action,
 			user_date_date=(datetime.today()+timedelta(hours=self.theory.timezone)),
-			user_date=(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).toordinal(),
+			user_date=(datetime.today()+timedelta(hours=self.theory.timezone)).toordinal(),
 			
 			comments = event_details['event_comments'].encode('utf-8'),
 			secondary_comments = event_details['event_secondary_comments'].encode('utf-8'),
@@ -1192,6 +1222,7 @@ class EventHandler(Handler):
 		print 'Este fue el evento que se creo: '
 		print event
 
+		game = self.game
 
 		self.response.out.write(json.dumps({'mensaje':'Evento creado y guardado',
 											'event_id':event.key.id(),
@@ -1206,9 +1237,9 @@ class EventHandler(Handler):
 											'pretty_next_event':ksu.pretty_next_event,
 											'is_active':ksu.is_active,
 											
-											'PointsToGoal':PointsToGoal,
-											'EffortReserve':EffortReserve,
-											'Streak':Streak}))
+											'PointsToGoal':game['points_to_goal'],
+											'EffortReserve':game['piggy_bank'],
+											'Streak':game['streak']}))
 		return
 
 
@@ -1236,6 +1267,31 @@ class EventHandler(Handler):
 
 		active_log.put()
 		
+		game = self.game
+
+		minimum_daily_effort = game['daily_goal']
+
+		if event.kpts_type == 'SmartEffort':
+			if  game['points_to_goal'] == 0:
+				game['piggy_bank'] += event.score
+			
+			elif event.score >= game['points_to_goal']:
+				game['piggy_bank'] += event.score - game['points_to_goal'] 
+ 				game['points_to_goal'] = 0
+ 				if not game['goal_achieved']:
+	 				game['goal_achieved'] = True
+	 				game['streak'] += 1
+
+ 			else: 				 
+ 				game['points_to_goal'] -= event.score
+
+		if event.kpts_type == 'Stupidity':
+			game['points_to_goal'] += event.score
+
+		theory = self.theory
+		theory.game = game
+		theory.put()
+
 
 	def update_single_attribute(self, ksu, attr_key, attr_value):
 		updated_value = None
@@ -1382,10 +1438,8 @@ class HistoryViewer(Handler):
 			else:
 				history_title = 'KSU history'
 
-		day_start_time = self.theory.day_start_time
-		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-		today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
-		pretty_today = (datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).date().strftime('%a, %b %d, %Y')
+		today =(datetime.today()+timedelta(hours=self.theory.timezone)).date().toordinal()
+		pretty_today = (datetime.today()+timedelta(hours=self.theory.timezone)).date().strftime('%a, %b %d, %Y')
 
 		history_start = self.request.get('history_start')
 		if history_start:
@@ -1414,9 +1468,7 @@ class HistoryViewer(Handler):
 
 		redirect_to = '/HistoryViewer'
 
-		day_start_time = self.theory.day_start_time
-		user_start_hour = day_start_time.hour + day_start_time.minute/60.0
-		today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
+		today =(datetime.today()+timedelta(hours=self.theory.timezone)).date().toordinal()
 
 		print
 		print 'These are the post details:'
@@ -1455,15 +1507,12 @@ class HistoryViewer(Handler):
 		else:
 			event_set = Event.query(Event.theory == user_key).filter(Event.is_deleted == False, Event.user_date >= history_start, Event.user_date <= history_end).order(-Event.user_date,-Event.created).fetch()
 		
-		day_start_time = self.theory.day_start_time
-		user_start_hour = day_start_time.hour + day_start_time.minute/60.0
-
 		history = []
 		history_value = 0
 
 		for event in event_set:
 			ksu = KSU.get_by_id(event.ksu_id.id())
-			#xx .date()
+			
 			event.pretty_date = (event.user_date_date).strftime('%I:%M %p. %a, %b %d, %Y')
 			event.comments_rows = determine_rows(event.comments)
 
@@ -1515,8 +1564,7 @@ class PopulateRandomTheory(Handler):
 					password_hash=password_hash, 
 					first_name=post_details['first_name'], 
 					last_name=post_details['last_name'],
-					day_start_time=datetime.strptime('06:00', '%H:%M').time(),
-					timezone=-4,
+					timezone=-6,
 					kpts_goals_parameters=kpts_goals_parameters,
 					kpts_goals=calculate_user_kpts_goals(kpts_goals_parameters),
 					categories={'tags':[]},
@@ -1525,11 +1573,9 @@ class PopulateRandomTheory(Handler):
 				theory.put()
 
 				#creates the first DailyLog entry
-				day_start_time = theory.day_start_time
-				user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-				active_date = (datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).toordinal() 
+				active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() 
 				active_date_date = datetime.fromordinal(active_date)
-				active_weekday = (datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).weekday()
+				active_weekday = (datetime.today()+timedelta(hours=theory.timezone)).weekday()
 				goal = int(theory.kpts_goals['kpts_weekly_goals'][active_weekday])
 				
 				
@@ -1560,9 +1606,7 @@ class PopulateRandomTheory(Handler):
 		theory_key = theory.key
 		username = theory.first_name + ' ' + theory.last_name
 
-		day_start_time = theory.day_start_time
-		user_start_hour = day_start_time.hour + day_start_time.minute/60.0 		
-		today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour))
+		today =(datetime.today()+timedelta(hours=theory.timezone))
 		print
 		print 'Este es el today de PopulateTheory:'
 		print today
@@ -1702,9 +1746,7 @@ def update_next_event(self, user_action, post_details, ksu):
 					result.append(l[active_position]) 
 				return result
 
-			day_start_time = self.theory.day_start_time
-			user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-			today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour))
+			today =(datetime.today()+timedelta(hours=self.theory.timezone))
 
 			active_position = today.weekday()
 
@@ -1737,9 +1779,7 @@ def update_next_event(self, user_action, post_details, ksu):
 	print 'Este es el tipo de KSU que se esta intentado actualizar el evento'
 	print ksu.ksu_subtype
 
-	day_start_time = self.theory.day_start_time
-	user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-	today =(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour))
+	today =(datetime.today()+timedelta(hours=self.theory.timezone))
 	tomorrow = today + timedelta(days=1)
 	ksu_subtype = ksu.ksu_subtype	
 	
@@ -2032,10 +2072,8 @@ def get_ksu_to_remember(self):
 	theory = self.theory
 	user_key = theory.key
 
-	day_start_time = theory.day_start_time
-	user_start_hour = day_start_time.hour + day_start_time.minute/60.0 
-	today =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date()
-	today_ordinal =(datetime.today()+timedelta(hours=theory.timezone)-timedelta(hours=user_start_hour)).date().toordinal()
+	today =(datetime.today()+timedelta(hours=theory.timezone)).date()
+	today_ordinal =(datetime.today()+timedelta(hours=theory.timezone)).date().toordinal()
 
 
 	sets_to_remember = ['Idea', 'Wish', 'RTBG']
