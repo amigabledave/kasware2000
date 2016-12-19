@@ -1095,15 +1095,18 @@ class EventHandler(Handler):
 
 		ksu = KSU.get_by_id(int(event_details['ksu_id']))
 		ksu_subtype = ksu.ksu_subtype
-
+		#xx
 		event = Event(
 			theory=self.theory.key,
 			ksu_id =  ksu.key,
 			event_type = user_action,
+			user_date_date=(datetime.today()+timedelta(hours=self.theory.timezone)),
 			user_date=(datetime.today()+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).toordinal(),
+			
 			comments = event_details['event_comments'].encode('utf-8'),
 			secondary_comments = event_details['event_secondary_comments'].encode('utf-8'),
 			ksu_description = ksu.description,
+			ksu_secondary_description = ksu.secondary_description,
 			ksu_subtype = ksu.ksu_subtype, 
 			ksu_tags = ksu.tags)
 		
@@ -1139,9 +1142,6 @@ class EventHandler(Handler):
 
 				update_next_event(self, user_action, {}, ksu)
 			
-				if ksu_subtype in ['ImPe']:
-					event.ksu_description = ksu.secondary_description
-
 			if ksu_subtype == 'KAS4':
 				event.kpts_type = 'Stupidity'
 				event.score = float(event_details['kpts_value'])				
@@ -1168,7 +1168,6 @@ class EventHandler(Handler):
 				ksu.is_active = True
 			
 
-
 		if user_action in ['MissionDelete', 'ViewerDelete']:
 			ksu.in_graveyard = True
 			if ksu_subtype in ['Gene','KAS2']:
@@ -1188,6 +1187,10 @@ class EventHandler(Handler):
 		PointsToGoal = active_log.PointsToGoal
 		EffortReserve = active_log.EffortReserve
 		Streak = active_log.Streak
+
+		print
+		print 'Este fue el evento que se creo: '
+		print event
 
 
 		self.response.out.write(json.dumps({'mensaje':'Evento creado y guardado',
@@ -1386,11 +1389,11 @@ class HistoryViewer(Handler):
 
 		history_start = self.request.get('history_start')
 		if history_start:
-			history_start = int(history_start)
+			history_start = int(history_start) - 1
 		elif ksu_id:
-			history_start = (self.theory.created).toordinal()
+			history_start = (self.theory.created).toordinal() - 1
 		else:
-			history_start = today
+			history_start = today - 1
 
 		history_end = self.request.get('history_end')
 		if history_end:
@@ -1460,19 +1463,8 @@ class HistoryViewer(Handler):
 
 		for event in event_set:
 			ksu = KSU.get_by_id(event.ksu_id.id())
-			## Apendix - TBD once my theory is updated
-			ksu_subtype = ksu.ksu_subtype
-			if ksu_subtype in ['ImPe']:
-				event.ksu_description = ksu.secondary_description
-			else:
-				event.ksu_description = ksu.description
-			event.ksu_subtype = ksu_subtype
-			event.ksu_tags = ksu.tags
-			if not event.importance:
-				event.importance = 3
-			event.put()
-			##
-			event.pretty_date = (event.user_date_date+timedelta(hours=self.theory.timezone)-timedelta(hours=user_start_hour)).date().strftime('%a, %b %d, %Y')
+			#xx .date()
+			event.pretty_date = (event.user_date_date).strftime('%I:%M %p. %a, %b %d, %Y')
 			event.comments_rows = determine_rows(event.comments)
 
 			history.append(event)
