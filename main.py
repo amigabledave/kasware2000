@@ -127,7 +127,7 @@ class Handler(webapp2.RequestHandler):
 				if ksu.ksu_subtype in burn_sets and next_event and next_event < today_ordinal:
 
 					next_critical_burn = ksu.next_critical_burn
-					if not ksu.next_critical_burn:
+					if not ksu.next_critical_burn or next_critical_burn < next_event:
 						next_critical_burn = next_event
 					
 					kpts_burned = (today_ordinal - next_critical_burn) * critical_burn
@@ -135,7 +135,6 @@ class Handler(webapp2.RequestHandler):
 					game['points_to_goal'] += kpts_burned
 					ksu.next_critical_burn = today_ordinal
 					ksu.put()
-					#xx 
 
 					event = Event(
 						theory=self.theory.key,
@@ -699,9 +698,9 @@ class MissionViewer(Handler):
 			ksu_set = ksu_set.filter(KSU.is_private == False)
 		
 		if time_frame == 'Upcoming':
-			ksu_set = ksu_set.order(KSU.next_event).order(KSU.importance).order(KSU.best_time).fetch()
+			ksu_set = ksu_set.order(-KSU.is_critical).order(KSU.next_event).order(KSU.importance).order(KSU.best_time).fetch()
 		else:
-			ksu_set = ksu_set.order(KSU.importance).order(KSU.best_time).fetch()
+			ksu_set = ksu_set.order(-KSU.is_critical).order(KSU.importance).order(KSU.best_time).fetch()
 
 		full_mission = {
 
