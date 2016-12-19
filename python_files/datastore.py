@@ -17,15 +17,14 @@ class Theory(ndb.Model):
  	#user settings
  	language = ndb.StringProperty(choices=('Spanish', 'English'), default='English')
  	hide_private_ksus = ndb.BooleanProperty(default=False)
- 	timezone = ndb.IntegerProperty(default=-4) #Deberia de ser forzoza, pero para evitar errores por ahora no la solicito asi
+ 	timezone = ndb.IntegerProperty(default=-6) #Deberia de ser forzoza, pero para evitar errores por ahora no la solicito asi
  	# day_start_time = ndb.TimeProperty() - TBD
- 	kpts_goals_parameters = ndb.JsonProperty(required=True)
- 	kpts_goals = ndb.JsonProperty(required=True)
  	categories = ndb.JsonProperty(required=True)
 
  	#Game details
  	game = ndb.JsonProperty(default={
  		'daily_goal':100,
+ 		'critical_burn':10,
  		'piggy_bank':0, 
  		'streak':0,
  		'last_log':None,
@@ -35,7 +34,6 @@ class Theory(ndb.Model):
 	#tracker fields
 	created = ndb.DateTimeProperty(auto_now_add=True)	
 	last_modified = ndb.DateTimeProperty(auto_now=True)
-	last_DailyLog = ndb.IntegerProperty(required=True)
 
 	@classmethod # This means you can call a method directly on the Class (no on a Class Instance)
 	def get_by_theory_id(cls, theory_id):
@@ -95,6 +93,7 @@ class KSU(ndb.Model):
 	# money_cost = ndb.IntegerProperty() - To be deleted
 	picture = ndb.BlobProperty() #Might be used in the future
 	times_reviewed = ndb.IntegerProperty(default=0)
+	next_critical_burn = ndb.IntegerProperty() #Define siguiente fecha como ordinal en la que si no se cumplio la accion esta quema
 
 
 class Event(ndb.Model):
@@ -127,30 +126,6 @@ class Event(ndb.Model):
 	ksu_tags = ndb.StringProperty()
 
 
-class DailyLog(ndb.Model):
-
-	#tracker fields
-	theory = ndb.KeyProperty(kind=Theory, required=True)	
-	created = ndb.DateTimeProperty(auto_now_add=True)	
-	last_modified = ndb.DateTimeProperty(auto_now=True)
-	
-	user_date_date = ndb.DateTimeProperty(required=True)
-	user_date = ndb.IntegerProperty(required=True)
-	
-	#Score properties
-	goal_achieved = ndb.BooleanProperty(default=False)
-	streak_start_date =  ndb.IntegerProperty(required=True) #An number that represents a date
-
-	Streak = ndb.IntegerProperty(default=0)
-	Goal = ndb.FloatProperty(default=0)
-
-	EffortReserve = ndb.FloatProperty(default=0)
-	PointsToGoal = ndb.FloatProperty(default=0)
-	
-	SmartEffort = ndb.FloatProperty(default=0)
-	Stupidity = ndb.FloatProperty(default=0)
-
-	
 
 #--- Validation and security functions ----------
 import hashlib, random

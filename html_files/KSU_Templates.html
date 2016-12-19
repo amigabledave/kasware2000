@@ -40,7 +40,7 @@
 					{% endif %}
 
 					{% if constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_exists'] %}
-					<textarea style="width:100%; border:0; {{constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_style']}}" class="QuickAttributeUpdate autoExpand  {% if not constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_visible'] %}hidden{% endif %}{% if ksu.ksu_subtype == 'KAS2' and not ksu.is_mini_o %}hidden{% endif %}" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description" placeholder="{{constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_placeholder']}}">{% if ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
+					<textarea style="width:100%; border:0; {{constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_style']}} {% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#b1adad;{% endif %}" class="QuickAttributeUpdate autoExpand  {% if not constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_visible'] %}hidden{% endif %}{% if ksu.ksu_subtype == 'KAS2' and not ksu.is_mini_o %}hidden{% endif %}" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description" placeholder="{{constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_placeholder']}}">{% if ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
 					{% endif %}
 
 					</div>

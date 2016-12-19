@@ -138,7 +138,7 @@
 
 				<div class="col-xs-6">
 				{% if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'EVPo', 'ImPe', 'Diary', 'BinaryPerception', 'RealitySnapshot', 'FibonacciPerception'] %}
-					<span style="color:purple;" id="event_ksu_subtype">{{constants['d_HistoryViewer'][event.ksu_subtype]}}</span>
+					<span style="color:purple;" id="event_ksu_subtype">{% if event.comments == 'Critical burn' %}Lack off: {% endif %} {{constants['d_HistoryViewer'][event.ksu_subtype]}}</span>
 				{% endif %}
 				</div>
 
@@ -152,9 +152,9 @@
 				<div class="col-xs-12">
 					{{event.ksu_description}}
 					{% if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'EVPo', 'ImPe', 'BinaryPerception', 'RealitySnapshot', 'FibonacciPerception'] %}
-					<span style="color:{% if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'ImPe', 'EVPo'] %}green{% elif event.ksu_subtype == 'KAS4' %}red{% else %}black{% endif %};" id="event_score"> ({{event.score}}{% if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'ImPe', 'EVPo'] %} Kpts.{% endif %})</span>
+					<span style="color:{% if event.comments == 'Critical burn' %}red{% elif event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'ImPe', 'EVPo'] %}green{% elif event.ksu_subtype == 'KAS4' %}red{% else %}black{% endif %};" id="event_score"> ({{event.score}}{% if event.ksu_subtype in ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'ImPe', 'EVPo'] %} Kpts.{% endif %}) {% if event.comments == 'Critical burn' %} &lt; Critical burn! {% endif %}</span>
 					{% endif %}
-					{% if event.comments %}
+					{% if event.comments and event.comments != 'Critical burn' %}
 					<br>{{ event.comments }}
 					{% endif %}
 					{% if event.secondary_comments %}

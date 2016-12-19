@@ -13,7 +13,6 @@ constants = constants.constants
 Theory = datastore.Theory
 KSU = datastore.KSU
 Event = datastore.Event
-DailyLog = datastore.DailyLog
 os_ksus = kasware_os.os_ksus
 
 
@@ -68,9 +67,8 @@ class Handler(webapp2.RequestHandler):
 	def render_html(self, template, **kw):
 		t = jinja_env.get_template(template)
 		theory = self.theory 
-		active_log = self.active_log
 		if theory:				
-			return t.render(theory=theory, active_log=active_log, game=self.game, **kw)
+			return t.render(theory=theory, game=self.game, **kw)
 		else:
 			return t.render(**kw)
 
@@ -100,30 +98,77 @@ class Handler(webapp2.RequestHandler):
 		webapp2.RequestHandler.initialize(self, *a, **kw)
 		theory_id = self.read_secure_cookie('theory_id')
 		self.theory = theory_id and Theory.get_by_theory_id(int(theory_id)) #if the user exist, 'self.theory' will store the actual theory object
-		self.active_log = self.theory and self.get_active_log()
 		self.game = self.theory and self.update_game()
 
 
 	def update_game(self):
-		theory = self.theory
-		game = theory.game
 
+		theory = self.theory
+		active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() + 3 # TT Time Travel aqui puedo hacer creer al programa que es otro dia
+
+		def check_and_burn(theory, active_date):
+			
+			game = theory.game 
+			
+			critical_burn = theory.game['critical_burn']
+
+			user_key = theory.key
+
+			today =(datetime.today()+timedelta(hours=theory.timezone)) 
+			today_ordinal = active_date
+		
+			burn_candidates = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True, KSU.is_critical == True)
+
+			burn_sets = ['KAS1', 'KAS2', 'EVPo', 'ImPe']
+
+			for ksu in burn_candidates:
+				next_event = ksu.next_event.toordinal()
+
+				if ksu.ksu_subtype in burn_sets and next_event and next_event < today_ordinal:
+
+					next_critical_burn = ksu.next_critical_burn
+					if not ksu.next_critical_burn:
+						next_critical_burn = next_event
+					
+					kpts_burned = (today_ordinal - next_critical_burn) * critical_burn
+
+					game['points_to_goal'] += kpts_burned
+					ksu.next_critical_burn = today_ordinal
+					ksu.put()
+					#xx 
+
+					event = Event(
+						theory=self.theory.key,
+						ksu_id =  ksu.key,
+						event_type = 'Stupidity',
+						user_date_date=today,
+						user_date=today_ordinal,
+						score = kpts_burned,
+						
+						comments = 'Critical burn',
+						ksu_description = ksu.description,
+						ksu_secondary_description = ksu.secondary_description,
+						ksu_subtype = ksu.ksu_subtype, 
+						ksu_tags = ksu.tags)
+					event.put()
+
+			return game		
+
+		game = theory.game
 		last_log = game['last_log']
-		active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() # TT Time Travel aqui puedo hacer creer al programa que es otro dia
+
+		# TBD - To be deleted after I update my acount 
+		if 'critical_burn' not in game:
+			game['critical_burn'] = 10
+			theory.game = game
+			theory.put()
+		#			
 
 		if not last_log:
 			last_log = active_date - 1
-			# TBD - To be deleted after I update my acount 
-			active_log = self.get_active_log()
-			game['points_to_goal'] = active_log.PointsToGoal
-			game['streak'] = active_log.Streak
-			game['piggy_bank'] = active_log.EffortReserve
-			game['goal_achieved'] = active_log.goal_achieved
-			if active_log.Streak > 0:
-				last_log = active_date
-			#
 
 		if last_log < active_date:
+			game = check_and_burn(theory, active_date)
 			kpts_to_survie = (active_date - last_log - 1) * game['daily_goal'] + game['points_to_goal']
 			if kpts_to_survie <= game['piggy_bank']:
 				game['streak'] += active_date - last_log
@@ -142,135 +187,10 @@ class Handler(webapp2.RequestHandler):
 
 		return game
 
-
-
-
-	def get_active_log(self):
-		theory = self.theory
 		
-		minimum_daily_effort = theory.kpts_goals['minimum_daily_effort']
-
-		active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() # TT Time Travel aqui puedo hacer creer al programa que es otro dia
-		
-		last_DailyLog = theory.last_DailyLog
-		user_key = theory.key		
-
-		if last_DailyLog == active_date: 
-			active_log = DailyLog.query(DailyLog.theory == user_key).filter(DailyLog.user_date == active_date).fetch()
-			active_log = active_log[0]
-
-		else:
-			last_log = DailyLog.query(DailyLog.theory == user_key).filter(DailyLog.user_date == last_DailyLog).fetch()
-			last_log = last_log[0]
-			if last_log.user_date == (active_date - 1):
-				last_log = self.fix_last_log(last_log, active_date, minimum_daily_effort)
-			active_log = self.fill_log_gaps(theory, last_log, active_date)
-
-		return active_log
 
 
-	def fill_log_gaps(self, theory, last_log, active_date):
 
-		minimum_daily_effort = theory.kpts_goals['minimum_daily_effort']
-		kpts_weekly_goals = theory.kpts_goals['kpts_weekly_goals']
-
-		latest_log = last_log
-		latest_log_date = latest_log.user_date
-
-		while latest_log_date < active_date:
-			print latest_log.user_date_date, latest_log.user_date, latest_log.EffortReserve, latest_log.Streak, latest_log.streak_start_date
-			latest_log = self.fill_one_log_gap(theory, latest_log, active_date, kpts_weekly_goals, minimum_daily_effort)
-			latest_log_date = latest_log.user_date
-
-		print latest_log.user_date_date, latest_log.user_date, latest_log.EffortReserve, latest_log.Streak, latest_log.streak_start_date
-		theory.last_DailyLog = latest_log_date
-		theory.put()
-		return latest_log
-
-
-	def fix_last_log(self, last_log, active_date, minimum_daily_effort):
-
-		EffortReserve = last_log.EffortReserve
-		# PointsToGoal = last_log.PointsToGoal #Se vuelve irrelevante 
-
-		if not last_log.goal_achieved:
-			if EffortReserve - minimum_daily_effort >= 0:
-				# last_log.goal_achieved = True # Esto es para que no se marque como que alcance la meta del dia si no la alcance.
-				last_log.Streak = last_log.Streak + 1 #Es distinto sobrevivir que alcanzar la meta del dia
-				last_log.EffortReserve = EffortReserve - minimum_daily_effort
-				# last_log.PointsToGoal = 0 #Se vuelve irrelevante 
-
-			else:
-				last_log.streak_start_date = active_date - 1
-				last_log.Streak = 0
-				last_log.EffortReserve = 0
-				# last_log.PointsToGoal = last_log.PointsToGoal - last_log.EffortReserve	
-			last_log.put()
-		return last_log		
-
-
-	def fill_one_log_gap(self, theory, last_log, active_date, kpts_weekly_goals, minimum_daily_effort): #Creo que ya no necesito kpts_weekly_goals
-
-		old_EffortReserve = last_log.EffortReserve
-		old_PointsToGoal = last_log.PointsToGoal
-
-		user_date = last_log.user_date + 1
-		user_date_date = datetime.fromordinal(user_date)
-
-		active_weekday = (user_date_date).weekday()
-		Goal = int(kpts_weekly_goals[active_weekday])
-
-		if (Goal + old_EffortReserve) < minimum_daily_effort:
-			Goal = minimum_daily_effort - old_EffortReserve
-
-		if user_date == active_date:
-			if Goal == 0:
-				goal_achieved = True	
-				streak_start_date = last_log.streak_start_date
-				Streak = last_log.Streak + 1
-				EffortReserve = old_EffortReserve - minimum_daily_effort
-
-			else:			
-				goal_achieved = False
-				streak_start_date = last_log.streak_start_date
-
-				Streak = last_log.Streak
-				EffortReserve = old_EffortReserve
-
-			PointsToGoal = Goal
-
-		elif old_EffortReserve - minimum_daily_effort >= 0:
-			goal_achieved = True
-			streak_start_date = last_log.streak_start_date
-
-			Streak = last_log.Streak + 1
-			EffortReserve = old_EffortReserve - minimum_daily_effort
-			PointsToGoal = Goal 
-
-		else:
-			goal_achieved = False
-			streak_start_date = user_date
-
-			Streak = 0
-			EffortReserve = 0
-			PointsToGoal = Goal
-
-		new_log = DailyLog(
-			theory = theory.key,
-			
-			user_date_date = user_date_date,
-			user_date = user_date,
-
-			goal_achieved = goal_achieved,
-			streak_start_date = streak_start_date,
-
-			Streak = Streak,
-			Goal = Goal,
-			EffortReserve = EffortReserve,
-			PointsToGoal = PointsToGoal)
-		new_log.put()
-		
-		return new_log
 
 
 class SignUpLogIn(Handler):
@@ -306,51 +226,14 @@ class SignUpLogIn(Handler):
 				next_step = 'CheckYourEmail'
 				password_hash = make_password_hash(post_details['email'], post_details['password'])
 				
-				kpts_goals_parameters = {
-						'typical_week_effort_distribution':[1, 1, 1, 1, 1, 0.5, 0],
-						'yearly_vacations_day': 12,
-						'yearly_shit_happens_days': 6,
-						'minimum_daily_effort':20}
-
-
 				theory = Theory(
 					email=post_details['email'], 
 					password_hash=password_hash, 
 					first_name=post_details['first_name'], 
 					last_name=post_details['last_name'],
 					timezone=-6,
-					kpts_goals_parameters=kpts_goals_parameters,
-					kpts_goals=calculate_user_kpts_goals(kpts_goals_parameters),
-					categories={'tags':[]},
-					last_DailyLog = datetime.today().toordinal())
+					categories={'tags':[]})
 
-				theory.put()
-
-				#creates the first DailyLog entry
-				active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() 
-				active_date_date = datetime.fromordinal(active_date)
-				active_weekday = (datetime.today()+timedelta(hours=theory.timezone)).weekday()
-				goal = int(theory.kpts_goals['kpts_weekly_goals'][active_weekday])
-				
-				minimum_daily_effort = int(theory.kpts_goals['minimum_daily_effort'])
-
-				if goal < minimum_daily_effort:
-					print goal < minimum_daily_effort
-					goal = minimum_daily_effort
-
-				
-				active_log = DailyLog(
-					theory = theory.key,
-					
-					user_date_date = active_date_date,
-					user_date = active_date,
-					streak_start_date = active_date,
-					
-					Goal = goal,
-					PointsToGoal=goal)
-				active_log.put()
-
-				theory.last_DailyLog = active_date
 				theory.put()
 
 				#Loads OS Ksus
@@ -516,6 +399,7 @@ class Settings(Handler):
 		
 		if user_action == 'SaveChanges':
 			theory = self.theory
+			game = self.game
 			print
 			print post_details
 			theory.first_name = post_details['first_name'].encode('utf-8') 
@@ -530,40 +414,21 @@ class Settings(Handler):
 
 		 	theory.timezone = int(post_details['timezone'])
 
-			old_minimum_daily_effort = theory.kpts_goals_parameters['minimum_daily_effort'] #Esto se lo meti para solo resetear cuando este valor cambia.
+			game['daily_goal'] = float(post_details['minimum_daily_effort'])
 
-		 	theory.kpts_goals_parameters['minimum_daily_effort'] = float(post_details['minimum_daily_effort'])
-	 	
-	 		theory.kpts_goals = calculate_user_kpts_goals(theory.kpts_goals_parameters)
-
-	 		if float(post_details['minimum_daily_effort']) != float(old_minimum_daily_effort):
-	 			active_log = self.update_active_log_based_on_new_kpts_goals(theory.kpts_goals)
-
+	 		if float(post_details['minimum_daily_effort']) != game['daily_goal']:
+	 			game['daily_goal'] = float(post_details['minimum_daily_effort'])
+ 				game['piggy_bank'] = 0 
+ 				game['streak'] = 0
+ 				game['last_log'] = None,
+ 				game['goal_achieved'] = False,
+				game['points_to_goal'] = game['daily_goal']
+ 			
+ 			game['critical_burn'] = int(post_details['critical_burn'])
+ 			theory.game = game
 	 		theory.put()
+
  		self.redirect('/MissionViewer?time_frame=Today')
-
-
-	def update_active_log_based_on_new_kpts_goals(self, new_kpts_goals): 
-		active_log = self.active_log
-
-		new_minimum_daily_effort = new_kpts_goals['minimum_daily_effort']
-
-		user_date = active_log.user_date
-
-		active_log.goal_achieved = False
-		active_log.streak_start_date =  user_date
-
-		active_log.Streak = 0
-		active_log.Goal = new_minimum_daily_effort
-
-		active_log.EffortReserve = 0
-		active_log.PointsToGoal = new_minimum_daily_effort
-	
-		active_log.SmartEffort = 0
-		active_log.Stupidity = 0
-						
-		active_log.put()
-		return 
 
 
 class KsuEditor(Handler):
@@ -1051,48 +916,6 @@ class EventHandler(Handler):
 			theory.game = game
 			theory.put()
 			#
-
-			active_log = self.active_log
-			Streak = active_log.Streak
-	
-			EffortReserve = active_log.EffortReserve
-			Goal = active_log.Goal
-
-			if kpts_type == 'Stupidity':
-				active_log.Stupidity -= score
-				score = score * (-1)
-				
-			elif kpts_type == 'SmartEffort':
-				active_log.SmartEffort -= score
-
-			else:
-				score = 0
-
-			new_SmartEffort = active_log.SmartEffort
-			new_Stupidity = active_log.Stupidity
-
-
-			minimum_daily_effort = self.theory.kpts_goals['minimum_daily_effort']			
-			new_EffortReserve = EffortReserve - score
-			active_log.EffortReserve = new_EffortReserve
-
-			
-			new_PointsToGoal = Goal - new_SmartEffort + new_Stupidity 
-			if new_PointsToGoal < 0:
-				new_PointsToGoal = 0
-			active_log.PointsToGoal = new_PointsToGoal
-			
-			if not active_log.goal_achieved and new_PointsToGoal == 0:
-				active_log.goal_achieved = True				
-				active_log.Streak += 1
-				active_log.EffortReserve = new_EffortReserve - minimum_daily_effort
-			
-			elif active_log.goal_achieved and new_PointsToGoal > 0:
-				active_log.goal_achieved = False				
-				active_log.Streak -= 1
-				active_log.EffortReserve = new_EffortReserve + minimum_daily_effort
-
-			active_log.put()
  			
 			event.is_deleted = True
 			event.put()
@@ -1167,6 +990,8 @@ class EventHandler(Handler):
 					if ksu.is_mini_o:
 						print 'Si se dio cuenta de que es un MiniO'
 						ksu.secondary_description = None
+						ksu.best_time = None
+						ksu.kpts_value = 1
 					else:
 						ksu.is_deleted = True
 
@@ -1213,10 +1038,6 @@ class EventHandler(Handler):
 					
 		ksu.put()
 		
-		active_log = self.active_log
-		PointsToGoal = active_log.PointsToGoal
-		EffortReserve = active_log.EffortReserve
-		Streak = active_log.Streak
 
 		print
 		print 'Este fue el evento que se creo: '
@@ -1244,29 +1065,7 @@ class EventHandler(Handler):
 
 
 	def update_active_log(self, event):
-		active_log = self.active_log
-		minimum_daily_effort = self.theory.kpts_goals['minimum_daily_effort']
 
-		if event.kpts_type == 'SmartEffort':
-			active_log.SmartEffort += event.score
-			active_log.PointsToGoal -= event.score
-			active_log.EffortReserve += event.score
-
-		if event.kpts_type == 'Stupidity':
-			active_log.Stupidity += event.score
-			active_log.PointsToGoal += event.score
-			active_log.EffortReserve -= event.score
-
-		if not active_log.goal_achieved and active_log.PointsToGoal <= 0:
-			active_log.goal_achieved = True
-			active_log.Streak += 1
-			active_log.EffortReserve -= minimum_daily_effort 
-
-		if active_log.PointsToGoal < 0:
-			active_log.PointsToGoal = 0
-
-		active_log.put()
-		
 		game = self.game
 
 		minimum_daily_effort = game['daily_goal']
@@ -1553,11 +1352,6 @@ class PopulateRandomTheory(Handler):
 			else:
 				password_hash = make_password_hash(post_details['email'], post_details['password'])
 				
-				kpts_goals_parameters = {
-						'typical_week_effort_distribution':[1, 1, 1, 1, 1, 1, 1],
-						'yearly_vacations_day': 0,
-						'yearly_shit_happens_days': 0,
-						'minimum_daily_effort':100}
 
 				theory = Theory(
 					email=post_details['email'], 
@@ -1565,33 +1359,10 @@ class PopulateRandomTheory(Handler):
 					first_name=post_details['first_name'], 
 					last_name=post_details['last_name'],
 					timezone=-6,
-					kpts_goals_parameters=kpts_goals_parameters,
-					kpts_goals=calculate_user_kpts_goals(kpts_goals_parameters),
-					categories={'tags':[]},
-					last_DailyLog = datetime.today().toordinal())
+					categories={'tags':[]})
 
 				theory.put()
 
-				#creates the first DailyLog entry
-				active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() 
-				active_date_date = datetime.fromordinal(active_date)
-				active_weekday = (datetime.today()+timedelta(hours=theory.timezone)).weekday()
-				goal = int(theory.kpts_goals['kpts_weekly_goals'][active_weekday])
-				
-				
-				active_log = DailyLog(
-					theory = theory.key,
-					
-					user_date_date = active_date_date,
-					user_date = active_date,
-					streak_start_date = active_date,
-					
-					Goal = goal,
-					PointsToGoal=goal)
-				active_log.put()
-
-				theory.last_DailyLog = active_date
-				theory.put()
 
 				#Loads OS Ksus 
 				for post_details in os_ksus:
@@ -1691,31 +1462,6 @@ def determine_return_to(self):
 
 	return return_to
 
-def calculate_user_kpts_goals(kpts_goals_parameters):
-
-	minimum_daily_effort = kpts_goals_parameters['minimum_daily_effort']
-	yearly_vacations_day = kpts_goals_parameters['yearly_vacations_day']
-	yearly_shit_happens_days = kpts_goals_parameters['yearly_shit_happens_days']
-	typical_week_effort_distribution = kpts_goals_parameters['typical_week_effort_distribution']
-	typical_week_active_days = sum(typical_week_effort_distribution)
-
-	yearly_effort_goal = minimum_daily_effort * 365.25
-	active_days = 365.25 - (yearly_vacations_day + yearly_shit_happens_days) - ((7 - typical_week_active_days) * (365.25/7.0))
-	
-	typical_day_minimum_effort = yearly_effort_goal/active_days
-
-	kpts_weekly_goals = []
-	for e in typical_week_effort_distribution:
-		kpts_weekly_goals.append(math.ceil(e * typical_day_minimum_effort))
-
-	user_kpts_goals = {
-		'minimum_daily_effort':minimum_daily_effort,
-		'typical_day_minimum_effort': math.ceil(typical_day_minimum_effort),
-		'kpts_weekly_goals': kpts_weekly_goals,
-		'active_days': math.ceil(active_days)
-	}
-
-	return user_kpts_goals
 
 def update_next_event(self, user_action, post_details, ksu):
 

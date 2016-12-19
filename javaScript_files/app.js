@@ -518,18 +518,33 @@ $(document).on('click', '.UserActionButton', function(){
 	var event_comments = ksu.find('#event_comments').val()
 	var event_secondary_comments = ksu.find('#event_secondary_comments').val()
 
+	var is_mini_o = ksu.find('#is_mini_o').is(':checked');
+
 	var dissapear_before_done = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete', 'ViewerDelete','GraveyardDelete', 'GraveyardReanimate', 'MissionRecordValue']
 
-	if ($.inArray(user_action, dissapear_before_done)!= -1){
-		ksu.animate({
-			"opacity" : "0",
-			},{
-				"complete" : function() {
-				ksu.remove();
-				}
-			})
-		};
 
+	if (!is_mini_o) {
+		if ($.inArray(user_action, dissapear_before_done)!= -1 && !is_mini_o ){
+			ksu.animate({
+				"opacity" : "0",
+				},{
+					"complete" : function() {
+					ksu.remove();
+					}
+				})
+			};
+	} else {
+		ksu.fadeOut("slow")
+		setTimeout(function(){
+			ksu.find('#secondary_description').val('');
+			ksu.find('#best_time').val('');
+			ksu.find('#kpts_value').val(1);
+			ksu.fadeIn("fast")
+		},500);
+		
+	};
+
+	// xx and is not a mini_o
 
 	if (user_action == 'ReactiveMissionDone'){
 		user_action = 'MissionDone'};
@@ -711,7 +726,7 @@ $('.SaveNewKSUButton').on('click', function(){
 	if ((ksu_type == 'BigO' || ksu_type == 'Wish' ) && kpts_value == '0.25'){
 		kpts_value = 1
 	}
-
+// xx
 	ksu.fadeOut("slow")
 	
 	$.ajax({
