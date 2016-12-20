@@ -104,7 +104,8 @@ class Handler(webapp2.RequestHandler):
 	def update_game(self):
 
 		theory = self.theory
-		active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() # TT Time Travel aqui puedo hacer creer al programa que es otro dia
+		time_travel = 0 #To be deleted. Time Travel aqui puedo hacer creer al programa que es otro dia
+		active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() + time_travel # TT Time Travel aqui puedo hacer creer al programa que es otro dia
 
 		def check_and_burn(theory, active_date):
 			
@@ -497,13 +498,6 @@ class SetViewer(Handler):
 		
 		elif set_name == 'Graveyard':
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == True, KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch()
-			# TBD despues de actualizar
-			for ksu in ksu_set:
-				if ksu.ksu_subtype == 'MiniO':
-					ksu.ksu_type = 'BOKA'
-					ksu.ksu_subtype = 'KAS2'
-					ksu.put()
-			#
 
 		elif ksu_id:			
 			ksu = KSU.get_by_id(int(ksu_id))
@@ -535,8 +529,6 @@ class SetViewer(Handler):
 			ksu.description_rows = determine_rows(ksu.description)
 			ksu.secondary_description_rows = determine_rows(ksu.secondary_description)
 			ksu.comments_rows = determine_rows(ksu.comments)
-
-
 
 
 		new_ksu_required_templates = []

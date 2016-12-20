@@ -243,6 +243,7 @@ $('#ShowHideReactiveMission').on('click', function(){
 	$('#reactive_mission').toggleClass('hidden');
 	// $('#ActionsToExecuteSubTitle').toggleClass('hidden');	
 	$('#Upcoming').toggleClass('hidden');
+	$('#someday_maybe').toggleClass('hidden');
 
 	var GlaphiconDiv = $('#MissionPlusMinusGlyphicon');
 	GlaphiconDiv.toggleClass('glyphicon-minus');
