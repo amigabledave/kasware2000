@@ -104,7 +104,7 @@ class Handler(webapp2.RequestHandler):
 	def update_game(self):
 
 		theory = self.theory
-		active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() + 3 # TT Time Travel aqui puedo hacer creer al programa que es otro dia
+		active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() # TT Time Travel aqui puedo hacer creer al programa que es otro dia
 
 		def check_and_burn(theory, active_date):
 			
@@ -122,9 +122,13 @@ class Handler(webapp2.RequestHandler):
 			burn_sets = ['KAS1', 'KAS2', 'EVPo', 'ImPe']
 
 			for ksu in burn_candidates:
+
+				if not ksu.next_event:
+					ksu.next_event = today
+
 				next_event = ksu.next_event.toordinal()
 
-				if ksu.ksu_subtype in burn_sets and next_event and next_event < today_ordinal:
+				if ksu.ksu_subtype in burn_sets and next_event < today_ordinal:
 
 					next_critical_burn = ksu.next_critical_burn
 					if not ksu.next_critical_burn or next_critical_burn < next_event:
@@ -156,13 +160,7 @@ class Handler(webapp2.RequestHandler):
 		game = theory.game
 		last_log = game['last_log']
 
-		# TBD - To be deleted after I update my acount 
-		if 'critical_burn' not in game:
-			game['critical_burn'] = 10
-			theory.game = game
-			theory.put()
-		#			
-
+		
 		if not last_log:
 			last_log = active_date - 1
 
@@ -187,11 +185,6 @@ class Handler(webapp2.RequestHandler):
 		return game
 
 		
-
-
-
-
-
 class SignUpLogIn(Handler):
 	def get(self):
 		self.print_html('SignUpLogIn.html', login_error = False)
@@ -504,6 +497,13 @@ class SetViewer(Handler):
 		
 		elif set_name == 'Graveyard':
 			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == True, KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch()
+			# TBD despues de actualizar
+			for ksu in ksu_set:
+				if ksu.ksu_subtype == 'MiniO':
+					ksu.ksu_type = 'BOKA'
+					ksu.ksu_subtype = 'KAS2'
+					ksu.put()
+			#
 
 		elif ksu_id:			
 			ksu = KSU.get_by_id(int(ksu_id))
