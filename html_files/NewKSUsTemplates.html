@@ -10,9 +10,9 @@
 			</div>
 
 			<div class="col-xs-11">
-				<textarea style="resize: none; width:100%; border:0; font-size:14px;" class="autoExpand QuickKsuDescription" rows="1" data-min-rows='1' name="description" id="description" placeholder="{% if time_frame == 'Today' %}What do you want to achieve today?{% else %}What do you want to do someday?{% endif %}"></textarea>
+				<textarea style="width:100%; border:0; font-size:14px;" class="autoExpand QuickKsuDescription" rows="1" data-min-rows='1' name="description" id="description" placeholder="{% if time_frame == 'Today' %}What do you want to achieve today?{% else %}What do you want to do someday?{% endif %}"></textarea>
 
-				<textarea style="resize: none; width:100%; border:0; font-size:14px;" class="autoExpand hidden" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description" placeholder="What is the next step?"></textarea>
+				<textarea style="width:100%; border:0; font-size:14px;" class="autoExpand hidden" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description" placeholder="What is the next step?"></textarea>
 			</div>
 		</div>
 
@@ -142,9 +142,9 @@
 		</div>
 
 		<div class="col-xs-11">			
-			<textarea style="resize: none; width:100%; border:0; font-size:14px;{% if set_name in ['BigO', 'ImIn', 'Diary'] %}font-weight:bold;{% endif %}" class="autoExpand QuickKsuDescription" rows="1" data-min-rows='1' name="description" id="description" placeholder="{% if view_type != 'Plan'%}{{constants['d_SetViewerDetails'][set_name]['QuickAdd']['description']}}{% elif set_name == 'BigO' %}What do you need to achieve to materialize this dream?{% else %}What do you need to do to acomplish this goal?{% endif%}"></textarea>	
+			<textarea style="width:100%; border:0; font-size:14px;{% if set_name in ['BigO', 'ImIn', 'Diary'] %}font-weight:bold;{% endif %}" class="autoExpand QuickKsuDescription" rows="1" data-min-rows='1' name="description" id="description" placeholder="{% if view_type != 'Plan'%}{{constants['d_SetViewerDetails'][set_name]['QuickAdd']['description']}}{% elif set_name == 'BigO' %}What do you need to achieve to materialize this dream?{% else %}What do you need to do to acomplish this goal?{% endif%}"></textarea>	
 
-			<textarea style="resize: none; width:100%; border:0; font-size:14px;" class="autoExpand hidden" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description" placeholder="What is the next step?"></textarea>
+			<textarea style="width:100%; border:0; font-size:14px;" class="autoExpand hidden" rows="1" data-min-rows='1' name="secondary_description" id="secondary_description" placeholder="What is the next step?"></textarea>
 
 		</div>
 
@@ -155,7 +155,7 @@
 		<div class="hidden" id="QuickKsuSecondaryDescription">
 			<div class="col-xs-1"></div>
 			<div class="col-xs-11" style="margin-top:2px;">
-				<textarea class="autoExpand DummyInput" ksuattr="secondary_description" style="resize: none; width:100%; border:0; color:grey; font-style:italic; font-size:13px;" rows="1" data-min-rows='1' id="BigO_secondary_description" placeholder="{{constants['d_SetViewerDetails'][set_name]['QuickAdd']['secondary_description']}}"></textarea>
+				<textarea class="autoExpand DummyInput" ksuattr="secondary_description" style="width:100%; border:0; color:grey; font-style:italic; font-size:13px;" rows="1" data-min-rows='1' id="BigO_secondary_description" placeholder="{{constants['d_SetViewerDetails'][set_name]['QuickAdd']['secondary_description']}}"></textarea>
 			</div>
 		</div>
 		{% endif %}

@@ -976,6 +976,9 @@ ksu_for_template = {
 	'target': {},
 	'birthday': None,
 	'money_cost': 0,
+
+	'cost':{'money_cost': 0, 'days_cost': 0, 'hours_cost': 0},
+
 	'picture': None,
 	'times_reviewed': 0,
 	'description_rows':1,
