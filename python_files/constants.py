@@ -567,7 +567,7 @@ d_SetViewerDetails = {
 
 			'bot_sec_desc_exists': True,
 			'bot_sec_desc_visible': True,
-			'bot_sec_desc_style': 'height:20px;',
+			'bot_sec_desc_style': '',
 			'bot_sec_desc_placeholder': 'This is a placeholder'},
 
 		'Set':{
@@ -588,7 +588,7 @@ d_SetViewerDetails = {
 
 			'bot_sec_desc_exists': False,
 			'bot_sec_desc_visible': False,
-			'bot_sec_desc_style': 'height:20px;',
+			'bot_sec_desc_style': '',
 			'bot_sec_desc_placeholder': 'This is a placeholder'}},
 
 	'Idea': {
@@ -733,7 +733,7 @@ d_SetViewerDetails = {
 
 			'bot_sec_desc_exists': True,
 			'bot_sec_desc_visible': True,
-			'bot_sec_desc_style': 'height:20px; font-weight: bold;margin-bottom: 10px;',
+			'bot_sec_desc_style': 'font-weight: bold;margin-bottom: 10px;',
 			'bot_sec_desc_placeholder': 'This is a placeholder'},
 
 		'Set':{
@@ -784,7 +784,7 @@ d_SetViewerDetails = {
 
 			'bot_sec_desc_exists': True,
 			'bot_sec_desc_visible': True,
-			'bot_sec_desc_style': 'height:20px; font-weight: bold;margin-bottom: 10px;',
+			'bot_sec_desc_style': 'font-weight: bold;margin-bottom: 10px;',
 			'bot_sec_desc_placeholder': 'This is a placeholder'},
 
 		'Set':{
@@ -835,7 +835,7 @@ d_SetViewerDetails = {
 
 			'bot_sec_desc_exists': True,
 			'bot_sec_desc_visible': True,
-			'bot_sec_desc_style': 'height:20px; font-weight: bold;margin-bottom: 10px;',
+			'bot_sec_desc_style': 'font-weight: bold;margin-bottom: 10px;',
 			'bot_sec_desc_placeholder': 'This is a placeholder'},
 
 		'Set':{
@@ -889,7 +889,7 @@ d_SetViewerDetails = {
 
 			'bot_sec_desc_exists': True,
 			'bot_sec_desc_visible': True,
-			'bot_sec_desc_style': 'height:20px; font-weight: bold;margin-bottom: 10px;',
+			'bot_sec_desc_style': 'font-weight: bold;margin-bottom: 10px;',
 			'bot_sec_desc_placeholder': 'This is a placeholder'},
 
 		'Set':{
@@ -978,6 +978,8 @@ ksu_for_template = {
 	'money_cost': 0,
 	'picture': None,
 	'times_reviewed': 0,
+	'description_rows':1,
+	'secondary_description_rows':1,
 }
 
 

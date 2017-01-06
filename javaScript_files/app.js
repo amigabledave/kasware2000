@@ -334,6 +334,7 @@ $('.QuickKsuDescription').on('focusin', function(){
 });
 
 
+
 $('#ksu_type').on('change',function(){
 
 	if (this.value == 'KeyA'){
@@ -821,6 +822,7 @@ $('.SaveNewKSUButton').on('click', function(){
 
 		ksu.find('#money_cost').val('');
 		ksu.find('#birthday').val('');
+
 		
 		if (ksu_subtype == ''){
 			ksu_subtype = ksu_type
@@ -1052,23 +1054,28 @@ for(x = 0; x < allRadios.length; x++){
 
 // Hace que se resize las cajas de texto con autoexpand
 $(document)
-    .one('focus.textarea', '.autoExpand', function(){
+    .on('focus.textarea', '.autoExpand', function(){
         var savedValue = this.value;
         this.value = '';
         this.baseScrollHeight = this.scrollHeight;
         this.value = savedValue;
     })
     .on('input.textarea', '.autoExpand', function(){
-        var minRows = this.getAttribute('data-min-rows')|0,
-            rows;
-        this.rows = minRows;
-        rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 16);
-        this.rows = minRows + rows;
+        // var minRows = this.getAttribute('data-min-rows')|0, 
+        // rows;
+        // this.rows = minRows;
+        // console.log('Scroll height');
+        // console.log(this.scrollHeight );
+        // console.log('Base scroll height');
+        // console.log(this.baseScrollHeight);
+        rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 18);
+        console.log(this.baseScrollHeight)
+        console.log(this.scrollHeight)
+        // rows = Math.ceil((this.scrollHeight) / 17);
+        console.log(rows);
+        this.rows = 1 + rows;
+        // this.rows = rows + 1;
     });
-
-
-
-
 
 
 // $('.SetViewerKSU').hover(	

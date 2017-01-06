@@ -1801,8 +1801,8 @@ def update_user_tags(theory, tags):
 	
 def determine_rows(ksu_description):
 	if not ksu_description:
-		return 0
-	return int(math.ceil((len(ksu_description)/67.0)))
+		return 1
+	return int(math.ceil((len(ksu_description)/70.0)))
 
 def get_ksu_to_remember(self):
 	
