@@ -334,7 +334,6 @@ $('.QuickKsuDescription').on('focusin', function(){
 });
 
 
-
 $('#ksu_type').on('change',function(){
 
 	if (this.value == 'KeyA'){
@@ -538,9 +537,13 @@ $(document).on('click', '.UserActionButton', function(){
 	} else {
 		ksu.fadeOut("slow")
 		setTimeout(function(){
-			ksu.find('#secondary_description').val('');
-			ksu.find('#best_time').val('');
-			ksu.find('#kpts_value').val(1);
+			if (user_action == 'MissionDone'){
+				ksu.find('#secondary_description').val('');
+				ksu.find('#best_time').val('');
+				ksu.find('#kpts_value').val(1);
+			} else {
+				ksu.remove()
+			}
 			ksu.fadeIn("fast")
 		},500);
 		
