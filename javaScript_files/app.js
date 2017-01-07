@@ -1062,6 +1062,7 @@ for(x = 0; x < allRadios.length; x++){
 $(document)
     .on('input.autoExpand', 'textarea.autoExpand', function(){
         this.rows = 1;
+        console.log(this.scrollHeight)
         rows = Math.ceil((this.scrollHeight - 22) / 18);
         this.rows = 1 + rows;	
     });
