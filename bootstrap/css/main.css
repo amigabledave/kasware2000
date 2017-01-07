@@ -187,9 +187,8 @@ li a:hover:not(.active) {
 textarea{  
   display:block;
   box-sizing: padding-box;
-  /*resize: none;*/
-  /*overflow:hidden;*/
-  height: auto;
+  overflow:hidden;
+  /*height: auto;*/
 
 /*  padding:10px;
   width:250px;

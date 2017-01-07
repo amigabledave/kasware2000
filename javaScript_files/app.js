@@ -1055,40 +1055,63 @@ for(x = 0; x < allRadios.length; x++){
 }
 
 
+
+
+
 // Hace que se resize las cajas de texto con autoexpand
 $(document)
-    .on('focus.textarea', '.autoExpand', function(){
-        var savedValue = this.value;
-        this.value = '';
-        this.baseScrollHeight = this.scrollHeight;
-        this.value = savedValue;
-    })
-    .on('input.textarea', '.autoExpand', function(){
-        // var minRows = this.getAttribute('data-min-rows')|0, 
-        // rows;
-        // this.rows = minRows;
-        // console.log('Scroll height');
-        // console.log(this.scrollHeight );
-        // console.log('Base scroll height');
-        // console.log(this.baseScrollHeight);
-        rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 18);
-        console.log(this.baseScrollHeight)
-        console.log(this.scrollHeight)
-        // rows = Math.ceil((this.scrollHeight) / 17);
-        console.log(rows);
-        this.rows = 1 + rows;
-        // this.rows = rows + 1;
+    .on('input.autoExpand', 'textarea.autoExpand', function(){
+        this.rows = 1;
+        rows = Math.ceil((this.scrollHeight - 22) / 18);
+        this.rows = 1 + rows;	
     });
 
 
-// $('.SetViewerKSU').hover(	
-// 	function(){
-// 		$(this).find('#TagsImportanceRow').toggleClass('hidden');
-// 	},
-// 	function(){
-// 		$(this).find('#TagsImportanceRow').toggleClass('hidden');
-// 	}
-// );
+// $(document)
+//     .on('focus.autoExpand', 'textarea.autoExpand', function(){
+//         var savedValue = this.value;
+//         this.value = '';
+//         // var originalBaseScrollHeight = $(this).attr("originalBaseScrollHeight");
+       
+//        this.baseScrollHeight = 22;
+//        // this.baseScrollHeight = this.scrollHeight;
+//        //  if (typeof originalBaseScrollHeight === "undefined") {
+//        //  	this.baseScrollHeight = this.scrollHeight;
+//        //  	$(this).attr("originalBaseScrollHeight",this.scrollHeight);	
+//        //  } else {
+//        //  	this.baseScrollHeight = originalBaseScrollHeight
+//        //  }
+ 
+//         this.value = savedValue;
+//         // console.log('This is savedValue:')
+//         // console.log(savedValue)
+//         // console.log('This is baseScrollHeight:')
+//         // console.log(this.baseScrollHeight)
+//     })
+//     .on('input.autoExpand', 'textarea.autoExpand', function(){
+//         var minRows = this.getAttribute('data-min-rows')|0, rows;
+//         // console.log('This is minRows:')
+//         // console.log(minRows)
+//         // console.log('This is rows:')
+//         // console.log(rows)
+//         this.rows = minRows;
+//         rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 18);
+//         // console.log('This is scrollHeight:')
+//         // console.log(this.scrollHeight)
+//         // console.log('This is baseScrollHeight:')
+//         // console.log(this.baseScrollHeight)
+//         // console.log('This is rows:')
+//         // console.log(rows)
+//         this.rows = minRows + rows;	
+//         // if (rows < 0){
+//         // 	this.rows = minRows
+//         // } else {
+//         // 	this.rows = minRows + rows;	
+//         // }
+//     });
+//  //    .on('focusout', '.autoExpand', function(){
+// 	// 	$(this).attr("data-min-rows",this.rows);	
+// 	// });
 
 
 // function al_cargar(){

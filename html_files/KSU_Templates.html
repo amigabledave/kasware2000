@@ -40,7 +40,7 @@
 					{% endif %}
 
 					{% if constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_exists'] %}
-					<textarea style="width:100%; border:0; resize: none;{{constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_style']}} {% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#b1adad;{% endif %}" class="QuickAttributeUpdate autoExpand  {% if not constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_visible'] %}hidden{% endif %}{% if ksu.ksu_subtype == 'KAS2' and not ksu.is_mini_o %}hidden{% endif %}" rows="{{ksu.secondary_description_rows}}" data-min-rows='1' name="secondary_description" id="secondary_description" placeholder="{{constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_placeholder']}}">{% if ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
+					<textarea style="width:100%; border:0;{{constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_style']}} {% if ksu.is_critical and ksu.is_active %}color:#B22222;{% elif not ksu.is_active %}color:#b1adad;{% endif %}" class="QuickAttributeUpdate autoExpand  {% if not constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_visible'] %}hidden{% endif %}{% if ksu.ksu_subtype == 'KAS2' and not ksu.is_mini_o %}hidden{% endif %}" rows="{{ksu.secondary_description_rows}}" data-min-rows='1' name="secondary_description" id="secondary_description" placeholder="{{constants['d_SetViewerDetails'][ksu.ksu_subtype][viewer_mode]['bot_sec_desc_placeholder']}}">{% if ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
 					{% endif %}
 
 					</div>
@@ -65,7 +65,7 @@
 					{% endif %}
 
 					<div class="col-xs-2 col-sm-2" style="padding-left:0; font-weight:bold; padding-right:5px; text-align:right;">
-						<input type="number" min="0" max="100" class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0;{% if ksu.ksu_subtype == 'KAS4' %}color:red;{% endif %}" name="kpts_value" id="kpts_value" value="{% if ksu.kpts_value %}{{ksu.kpts_value|round|int}}{% endif %}" placeholder="KPs">	
+						<input type="number" min="0" max="100" class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0;{% if ksu.ksu_subtype == 'KAS4' %}color:red;{% endif %}" name="kpts_value" id="kpts_value" value="{% if ksu.kpts_value or ksu.kpts_value == 0 %}{{ksu.kpts_value|round|int}}{% endif %}" placeholder="KPs">	
 					</div>	
 	
 					<div class="hidden-xs {% if time_frame == 'Today' %}col-sm-5{% else %}col-sm-4{% endif %}">
@@ -170,7 +170,7 @@
 				<div class="row" style="margin-top:3px;">
 					{% if ksu.ksu_subtype in ['KAS1', 'KAS3', 'KAS4', 'ImPe', 'EVPo'] %}
 					<div class="col-xs-2" style="font-weight:bold; padding-right:5px; text-align:right;">
-						<input type="number" min="0" max="100" class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0;{% if ksu.ksu_subtype == 'KAS4' %}color:red;{% endif %}" name="kpts_value" id="kpts_value" value="{% if ksu.kpts_value %}{{ksu.kpts_value|round|int}}{% endif %}" placeholder="KPs">	
+						<input type="number" min="0" max="100" class="kpts_value QuickAttributeUpdate MissionKsuKpts" style="border:0;{% if ksu.ksu_subtype == 'KAS4' %}color:red;{% endif %}" name="kpts_value" id="kpts_value" value="{% if ksu.kpts_value or ksu.kpts_value == 0 %}{{ksu.kpts_value|round|int}}{% endif %}" placeholder="KPs">	
 					</div>
 					<div class="col-xs-8">
 					{% elif ksu.ksu_type == 'BOKA' %}		
