@@ -1067,53 +1067,6 @@ $(document)
     });
 
 
-// $(document)
-//     .on('focus.autoExpand', 'textarea.autoExpand', function(){
-//         var savedValue = this.value;
-//         this.value = '';
-//         // var originalBaseScrollHeight = $(this).attr("originalBaseScrollHeight");
-       
-//        this.baseScrollHeight = 22;
-//        // this.baseScrollHeight = this.scrollHeight;
-//        //  if (typeof originalBaseScrollHeight === "undefined") {
-//        //  	this.baseScrollHeight = this.scrollHeight;
-//        //  	$(this).attr("originalBaseScrollHeight",this.scrollHeight);	
-//        //  } else {
-//        //  	this.baseScrollHeight = originalBaseScrollHeight
-//        //  }
- 
-//         this.value = savedValue;
-//         // console.log('This is savedValue:')
-//         // console.log(savedValue)
-//         // console.log('This is baseScrollHeight:')
-//         // console.log(this.baseScrollHeight)
-//     })
-//     .on('input.autoExpand', 'textarea.autoExpand', function(){
-//         var minRows = this.getAttribute('data-min-rows')|0, rows;
-//         // console.log('This is minRows:')
-//         // console.log(minRows)
-//         // console.log('This is rows:')
-//         // console.log(rows)
-//         this.rows = minRows;
-//         rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 18);
-//         // console.log('This is scrollHeight:')
-//         // console.log(this.scrollHeight)
-//         // console.log('This is baseScrollHeight:')
-//         // console.log(this.baseScrollHeight)
-//         // console.log('This is rows:')
-//         // console.log(rows)
-//         this.rows = minRows + rows;	
-//         // if (rows < 0){
-//         // 	this.rows = minRows
-//         // } else {
-//         // 	this.rows = minRows + rows;	
-//         // }
-//     });
-//  //    .on('focusout', '.autoExpand', function(){
-// 	// 	$(this).attr("data-min-rows",this.rows);	
-// 	// });
-
-
 // function al_cargar(){
 // 	console.log('mas o menos ahi va')
 // };
