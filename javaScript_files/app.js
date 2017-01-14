@@ -549,7 +549,7 @@ $(document).on('click', '.UserActionButton', function(){
 		
 	};
 
-	// xx and is not a mini_o
+	// and is not a mini_o
 
 	if (user_action == 'ReactiveMissionDone'){
 		user_action = 'MissionDone'};
@@ -731,7 +731,7 @@ $('.SaveNewKSUButton').on('click', function(){
 	if ((ksu_type == 'BigO' || ksu_type == 'Wish' ) && kpts_value == '0.25'){
 		kpts_value = 1
 	}
-// xx
+
 	ksu.fadeOut("slow")
 	
 	$.ajax({
@@ -1059,14 +1059,46 @@ for(x = 0; x < allRadios.length; x++){
 
 
 // Hace que se resize las cajas de texto con autoexpand
-$(document)
-    .on('input.autoExpand', 'textarea.autoExpand', function(){
-        this.rows = 1;
-        console.log(this.scrollHeight)
-        rows = Math.ceil((this.scrollHeight - 22) / 18);
-        this.rows = 1 + rows;	
-    });
+// $(document)
+//     .on('input.autoExpand', 'textarea.autoExpand', function(){
+//         this.rows = 1;
+//         console.log(this.scrollHeight)
+//         rows = Math.ceil((this.scrollHeight - 22) / 18);
+//         this.rows = 1 + rows;	
+//     });
 
+// xx 
+
+
+$(document)
+    .on('focusin.autoExpand', 'textarea.autoExpand', function(){
+        var savedValue = this.value;
+        this.value = '';
+        this.rows = 1;
+        this.baseScrollHeight = this.scrollHeight;
+        // console.log('baseScrollHeight')
+        // console.log(this.baseScrollHeight)
+
+        this.rows = 2
+        this.lineHeight = this.scrollHeight - this.baseScrollHeight
+        // console.log('lineHeight')
+        // console.log(this.lineHeight)
+   
+        this.rows = 1;
+        this.value = savedValue;        
+ 
+        rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / this.lineHeight); 
+        this.rows = 1 + rows;
+
+    })
+    .on('input.autoExpand', 'textarea.autoExpand', function(){
+        var minRows = 1 //this.getAttribute('data-min-rows')|0, rows;
+        this.rows = minRows;
+        rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / this.lineHeight); 
+        // console.log('scrollHeight')
+        // console.log(this.scrollHeight)
+        this.rows = minRows + rows;
+    });
 
 // function al_cargar(){
 // 	console.log('mas o menos ahi va')
