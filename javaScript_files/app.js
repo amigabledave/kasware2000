@@ -1,3 +1,134 @@
+// $('.UserActionButton').on('click', function(){
+$(document).on('click', '.UserActionButton', function(){
+	console.log('Si esta detectando que se aprieta el boton');
+	var ksu = $(this).closest('#MissionKSU');
+	var ksu_id = ksu.attr("value");
+	var user_action = $(this).attr("value");
+	var kpts_value = ksu.find('#kpts_value').val();
+	var event_comments = ksu.find('#event_comments').val()
+	var event_secondary_comments = ksu.find('#event_secondary_comments').val()
+	var event_quality = ksu.find('#event_quality option:selected').val()
+
+	var is_mini_o = ksu.find('#is_mini_o').is(':checked');
+
+	var dissapear_before_done = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete', 'ViewerDelete','GraveyardDelete', 'GraveyardReanimate', 'MissionRecordValue']
+
+
+	if (!is_mini_o) {
+		if ($.inArray(user_action, dissapear_before_done)!= -1 && !is_mini_o ){
+			ksu.animate({
+				"opacity" : "0",
+				},{
+					"complete" : function() {
+					ksu.remove();
+					}
+				})
+			};
+	} else {
+		ksu.fadeOut("slow")
+		setTimeout(function(){
+			if (user_action == 'MissionDone'){
+				ksu.find('#secondary_description').val('');
+				ksu.find('#best_time').val('');
+				ksu.find('#kpts_value').val(1);
+			} else {
+				ksu.remove()
+			}
+			ksu.fadeIn("fast")
+		},500);
+		
+	};
+
+	// and is not a mini_o
+
+	if (user_action == 'ReactiveMissionDone'){
+		user_action = 'MissionDone'};
+
+
+	if (user_action == 'MissionRecordValue' || user_action == 'ViewerRecordValue'){
+		user_action = 'RecordValue'
+		kpts_value = ksu.find('#select_indicator_value option:selected').val()
+		
+		if(kpts_value == undefined){
+			kpts_value = ksu.find('#open_indicator_value').val()};	
+		};
+
+	if(kpts_value == undefined){
+		kpts_value = 0};
+
+	if(event_comments == undefined){
+		event_comments = ''};
+
+	if(event_secondary_comments == undefined){
+		event_secondary_comments = ''};		
+
+	$.ajax({
+		type: "POST",
+		url: "/EventHandler",
+		dataType: 'json',
+		data: JSON.stringify({
+			'ksu_id': ksu_id,
+			'user_action': user_action,
+			'kpts_value':kpts_value,
+			'event_comments':event_comments,
+			'event_secondary_comments':event_secondary_comments,
+			'event_quality': event_quality
+		})
+	})
+	.done(function(data){
+		console.log(data);
+		var EventScore = data['EventScore'];
+		var kpts_type = data['kpts_type'];
+		var PointsToGoal = data['PointsToGoal']
+
+		if ( PointsToGoal <= 0){
+			PointsToGoal = 'Achieved!'
+		}; 
+	
+		$('#PointsToGoal').text(' ' + PointsToGoal);
+		$('#EffortReserve').text(' ' + data['EffortReserve']);
+		$('#Streak').text(' ' + data['Streak']);
+
+
+		if ($.inArray(user_action, dissapear_before_done)!= -1){
+			$('#MissionValue').text(parseFloat($('#MissionValue').text())-data['kpts_value']);
+		};
+
+		var ksu_subtype = data['ksu_subtype'];
+
+		if (user_action == 'SendToMission' || user_action == 'ViewerDone' || user_action == 'RecordValue'){
+			ksu.find('#pretty_next_event').text(data['pretty_next_event']);
+		};
+
+		if (user_action == 'ViewerOnOff'){
+			console.log(data['is_active'])
+			if (data['is_active']){
+				ksu.find('#is_active').css({'color': 'black'});
+				ksu.find('#ViewerOnOffButton').removeClass('btn-success');
+				ksu.find('#ViewerOnOffButton').addClass('btn-warning');
+			} else {
+				ksu.find('#is_active').css({'color': '#b1adad'});
+				ksu.find('#ViewerOnOffButton').removeClass('btn-warning');
+				ksu.find('#ViewerOnOffButton').addClass('btn-success');				
+			}
+
+		};
+		
+		var dissapear_after_done_subtypes = ['KAS2', 'Wish', 'BigO'];
+		var dissapear_after_done_actions = ['ViewerDone'];
+
+		if (($.inArray(ksu_subtype, dissapear_after_done_subtypes)!= -1) && ($.inArray(user_action, dissapear_after_done_actions)!= -1)){
+			ksu.animate({
+				"opacity" : "0",
+				},{
+					"complete" : function() {
+					ksu.remove();
+					}
+				})
+			};
+
+	});
+});
 
 
 $('#NewDiaryEntryButton').on('click', function(){
@@ -57,7 +188,6 @@ $('#NewDiaryEntryButton').on('click', function(){
 		ksu.fadeIn("slow");
 	});
 });
-
 
 
 $('#LogInButton').on('click', function(){
@@ -506,137 +636,6 @@ $(document).on('change', '.KsuEditor_Repeats', function(){
 	} else {
 		ksu.find('#repeatsDetails').addClass('hidden');
 	}
-});
-
-
-// $('.UserActionButton').on('click', function(){
-$(document).on('click', '.UserActionButton', function(){
-	console.log('Si esta detectando que se aprieta el boton');
-	var ksu = $(this).closest('#MissionKSU');
-	var ksu_id = ksu.attr("value");
-	var user_action = $(this).attr("value");
-	var kpts_value = ksu.find('#kpts_value').val();
-	var event_comments = ksu.find('#event_comments').val()
-	var event_secondary_comments = ksu.find('#event_secondary_comments').val()
-
-	var is_mini_o = ksu.find('#is_mini_o').is(':checked');
-
-	var dissapear_before_done = ['MissionDone', 'MissionPush', 'MissionSkip' ,'MissionDelete', 'ViewerDelete','GraveyardDelete', 'GraveyardReanimate', 'MissionRecordValue']
-
-
-	if (!is_mini_o) {
-		if ($.inArray(user_action, dissapear_before_done)!= -1 && !is_mini_o ){
-			ksu.animate({
-				"opacity" : "0",
-				},{
-					"complete" : function() {
-					ksu.remove();
-					}
-				})
-			};
-	} else {
-		ksu.fadeOut("slow")
-		setTimeout(function(){
-			if (user_action == 'MissionDone'){
-				ksu.find('#secondary_description').val('');
-				ksu.find('#best_time').val('');
-				ksu.find('#kpts_value').val(1);
-			} else {
-				ksu.remove()
-			}
-			ksu.fadeIn("fast")
-		},500);
-		
-	};
-
-	// and is not a mini_o
-
-	if (user_action == 'ReactiveMissionDone'){
-		user_action = 'MissionDone'};
-
-
-	if (user_action == 'MissionRecordValue' || user_action == 'ViewerRecordValue'){
-		user_action = 'RecordValue'
-		kpts_value = ksu.find('#select_indicator_value option:selected').val()
-		
-		if(kpts_value == undefined){
-			kpts_value = ksu.find('#open_indicator_value').val()};	
-		};
-
-	if(kpts_value == undefined){
-		kpts_value = 0};
-
-	if(event_comments == undefined){
-		event_comments = ''};
-
-	if(event_secondary_comments == undefined){
-		event_secondary_comments = ''};		
-
-	$.ajax({
-		type: "POST",
-		url: "/EventHandler",
-		dataType: 'json',
-		data: JSON.stringify({
-			'ksu_id': ksu_id,
-			'user_action': user_action,
-			'kpts_value':kpts_value,
-			'event_comments':event_comments,
-			'event_secondary_comments':event_secondary_comments
-		})
-	})
-	.done(function(data){
-		console.log(data);
-		var EventScore = data['EventScore'];
-		var kpts_type = data['kpts_type'];
-		var PointsToGoal = data['PointsToGoal']
-
-		if ( PointsToGoal <= 0){
-			PointsToGoal = 'Achieved!'
-		}; 
-	
-		$('#PointsToGoal').text(' ' + PointsToGoal);
-		$('#EffortReserve').text(' ' + data['EffortReserve']);
-		$('#Streak').text(' ' + data['Streak']);
-
-
-		if ($.inArray(user_action, dissapear_before_done)!= -1){
-			$('#MissionValue').text(parseFloat($('#MissionValue').text())-data['kpts_value']);
-		};
-
-		var ksu_subtype = data['ksu_subtype'];
-
-		if (user_action == 'SendToMission' || user_action == 'ViewerDone' || user_action == 'RecordValue'){
-			ksu.find('#pretty_next_event').text(data['pretty_next_event']);
-		};
-
-		if (user_action == 'ViewerOnOff'){
-			console.log(data['is_active'])
-			if (data['is_active']){
-				ksu.find('#is_active').css({'color': 'black'});
-				ksu.find('#ViewerOnOffButton').removeClass('btn-success');
-				ksu.find('#ViewerOnOffButton').addClass('btn-warning');
-			} else {
-				ksu.find('#is_active').css({'color': '#b1adad'});
-				ksu.find('#ViewerOnOffButton').removeClass('btn-warning');
-				ksu.find('#ViewerOnOffButton').addClass('btn-success');				
-			}
-
-		};
-		
-		var dissapear_after_done_subtypes = ['KAS2', 'Wish', 'BigO'];
-		var dissapear_after_done_actions = ['ViewerDone'];
-
-		if (($.inArray(ksu_subtype, dissapear_after_done_subtypes)!= -1) && ($.inArray(user_action, dissapear_after_done_actions)!= -1)){
-			ksu.animate({
-				"opacity" : "0",
-				},{
-					"complete" : function() {
-					ksu.remove();
-					}
-				})
-			};
-
-	});
 });
 
 

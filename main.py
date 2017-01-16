@@ -107,7 +107,7 @@ class Handler(webapp2.RequestHandler):
 		time_travel = 0 #To be deleted. Time Travel aqui puedo hacer creer al programa que es otro dia
 		active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() + time_travel # TT Time Travel aqui puedo hacer creer al programa que es otro dia
 
-		def check_and_burn(theory, active_date):
+		def check_and_burn(theory, active_date,time_travel):
 			
 			game = theory.game 
 			
@@ -115,7 +115,7 @@ class Handler(webapp2.RequestHandler):
 
 			user_key = theory.key
 
-			today =(datetime.today()+timedelta(hours=theory.timezone)) 
+			today =(datetime.today()+timedelta(hours=theory.timezone)+timedelta(days=time_travel)) 
 			today_ordinal = active_date
 		
 			burn_candidates = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True, KSU.is_critical == True)
@@ -126,6 +126,7 @@ class Handler(webapp2.RequestHandler):
 
 				if not ksu.next_event:
 					ksu.next_event = today
+					ksu.put()
 
 				next_event = ksu.next_event.toordinal()
 
@@ -166,7 +167,7 @@ class Handler(webapp2.RequestHandler):
 			last_log = active_date - 1
 
 		if last_log < active_date:
-			game = check_and_burn(theory, active_date)
+			game = check_and_burn(theory, active_date, time_travel)
 			kpts_to_survie = (active_date - last_log - 1) * game['daily_goal'] + game['points_to_goal']
 			if kpts_to_survie <= game['piggy_bank']:
 				game['streak'] += active_date - last_log
@@ -492,7 +493,8 @@ class SetViewer(Handler):
 		
 		elif set_name == 'TheoryQuery':
 			lookup_string = self.request.get('lookup_string')
-			user_theory = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch()
+			user_theory = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch() 
+			# user_theory = KSU.query(KSU.theory == user_key ).order(KSU.importance).order(KSU.created).fetch() #TBD
 			ksu_set = self.search_theory(user_theory, lookup_string)
 			set_title = 'You searched for: ' + lookup_string
 		
@@ -565,7 +567,7 @@ class SetViewer(Handler):
 			if not ksu.tags:
 				ksu.tags =''
 			
-			ksu_description = remplaza_acentos(ksu.description).lower() + ' ' + remplaza_acentos(ksu.secondary_description).lower() + ' ' + remplaza_acentos(ksu.tags).lower()
+			ksu_description = remplaza_acentos(ksu.description).lower() + ' ' + remplaza_acentos(ksu.secondary_description).lower() + ' ' + remplaza_acentos(ksu.tags).lower() + str(ksu.key.id()) #Hace que tambien sea posible buscar un KSU por id
 
 			if ksu_description.find(lookup_string) != -1:
 				main_result.append(ksu)
@@ -987,6 +989,9 @@ class EventHandler(Handler):
 						ksu.is_deleted = True
 
 				update_next_event(self, user_action, {}, ksu)
+
+				if ksu_subtype in ['EVPo']:
+					event.quality = event_details['event_quality']
 			
 			if ksu_subtype == 'KAS4':
 				event.kpts_type = 'Stupidity'
@@ -999,6 +1004,7 @@ class EventHandler(Handler):
 			if ksu_subtype == 'Wish':				
 				event.kpts_type = 'Achievement'				
 				ksu.in_graveyard = True
+				event.quality = event_details['event_quality']
 				
 			self.update_active_log(event)
 			event.put()
@@ -1525,7 +1531,6 @@ def update_next_event(self, user_action, post_details, ksu):
 		days_to_next_event = days_to_next_event(ksu)
 		print
 		print 'Si quiere actualizar el evento'
-		print days_to_next_event 
 
 
 		if not next_event:

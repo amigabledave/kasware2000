@@ -111,13 +111,14 @@ class Event(ndb.Model):
 	event_type = ndb.StringProperty(required=True)
 	
 	comments = ndb.TextProperty()
-	secondary_comments = ndb.StringProperty()
+	secondary_comments = ndb.StringProperty() #Para ponerle titulos a los eventos cuando aplique
 	is_private = ndb.BooleanProperty(default=False)
-	importance = ndb.IntegerProperty(default=3)
+	importance = ndb.IntegerProperty(default=3) #No me acuerdo para que era la importancia en el evento. Puede volver a servir despues como denominador
 
 	#Score properties
 	kpts_type = ndb.StringProperty()
 	score = ndb.FloatProperty(default=0)
+	quality = ndb.StringProperty()
 
 	#KSU properties
 	ksu_description = ndb.StringProperty()

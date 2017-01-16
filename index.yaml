@@ -528,3 +528,9 @@ indexes:
   properties:
   - name: theory
   - name: created
+
+- kind: KSU
+  properties:
+  - name: theory
+  - name: importance
+  - name: created
