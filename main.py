@@ -694,7 +694,7 @@ class MissionViewer(Handler):
 		if time_frame == 'Upcoming':
 			ksu_set = ksu_set.order(-KSU.is_critical).order(KSU.next_event).order(KSU.importance).order(KSU.best_time).fetch()
 		else:
-			ksu_set = ksu_set.order(-KSU.is_critical).order(KSU.importance).order(KSU.best_time).fetch()
+			ksu_set = ksu_set.order(KSU.importance).order(-KSU.is_critical).order(KSU.best_time).fetch()
 
 		full_mission = {
 
