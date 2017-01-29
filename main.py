@@ -956,8 +956,8 @@ class EventHandler(Handler):
 			ksu_subtype = ksu.ksu_subtype, 
 			ksu_tags = ksu.tags)
 		
-		print 'Este es el tipo de KSU al que corresponde'
-		print ksu_subtype
+		# print 'Este es el tipo de KSU al que corresponde'
+		# print ksu_subtype
 
 
 		if user_action == 'RecordValue':
@@ -981,7 +981,7 @@ class EventHandler(Handler):
 				
 				if ksu_subtype == 'KAS2':
 					if ksu.is_mini_o:
-						print 'Si se dio cuenta de que es un MiniO'
+						# print 'Si se dio cuenta de que es un MiniO'
 						ksu.secondary_description = None
 						ksu.best_time = None
 						ksu.kpts_value = 1
@@ -990,7 +990,7 @@ class EventHandler(Handler):
 
 				update_next_event(self, user_action, {}, ksu)
 
-				if ksu_subtype in ['EVPo']:
+				if ksu_subtype in ['EVPo', 'ImPe']:
 					event.quality = event_details['event_quality']
 			
 			if ksu_subtype == 'KAS4':
@@ -1036,9 +1036,9 @@ class EventHandler(Handler):
 		ksu.put()
 		
 
-		print
-		print 'Este fue el evento que se creo: '
-		print event
+		# print
+		# print 'Este fue el evento que se creo: '
+		# print event
 
 		game = self.game
 
