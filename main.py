@@ -408,8 +408,6 @@ class Settings(Handler):
 
 		 	theory.timezone = int(post_details['timezone'])
 
-			game['daily_goal'] = float(post_details['minimum_daily_effort'])
-
 	 		if float(post_details['minimum_daily_effort']) != game['daily_goal']:
 	 			game['daily_goal'] = float(post_details['minimum_daily_effort'])
  				game['piggy_bank'] = 0 
