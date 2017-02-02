@@ -717,6 +717,8 @@ $('.SaveNewKSUButton').on('click', function(){
 	var repeats_on_Sun = ksu.find('#repeats_on_Sun').is(':checked');
 
 	var money_cost = ksu.find('#money_cost').val();
+	var days_cost = ksu.find('#days_cost').val();
+	var hours_cost = ksu.find('#hours_cost').val();
 	var birthday = ksu.find('#birthday').val();
 
 	var is_mini_o = ksu.find('#is_mini_o').is(':checked');
@@ -770,6 +772,8 @@ $('.SaveNewKSUButton').on('click', function(){
 			'repeats_on_Sun':repeats_on_Sun,
 
 			'money_cost':money_cost,
+			'days_cost':days_cost,
+			'hours_cost':hours_cost,
 			'birthday':birthday,
 			'is_mini_o':is_mini_o
 
@@ -823,6 +827,8 @@ $('.SaveNewKSUButton').on('click', function(){
 		ksu.find('#Diary_frequency').val('');
 
 		ksu.find('#money_cost').val('');
+		ksu.find('#days_cost').val('');
+		ksu.find('#hours_cost').val('');
 		ksu.find('#birthday').val('');
 
 		
@@ -878,6 +884,8 @@ $('.SaveNewKSUButton').on('click', function(){
 		new_ksu.find('#is_private').prop('checked', is_private);
 
 		new_ksu.find('#money_cost').val(money_cost);
+		new_ksu.find('#hours_cost').val(hours_cost);
+		new_ksu.find('#days_cost').val(days_cost);
 		new_ksu.find('#birthday').val(birthday);
 		new_ksu.find('#is_mini_o').prop('checked', is_mini_o);
 

@@ -103,10 +103,6 @@ class Handler(webapp2.RequestHandler):
 
 	def update_game(self):
 
-		theory = self.theory
-		time_travel = 0 #To be deleted. Time Travel aqui puedo hacer creer al programa que es otro dia
-		active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() + time_travel # TT Time Travel aqui puedo hacer creer al programa que es otro dia
-
 		def check_and_burn(theory, active_date,time_travel):
 			
 			game = theory.game 
@@ -157,7 +153,11 @@ class Handler(webapp2.RequestHandler):
 						ksu_tags = ksu.tags)
 					event.put()
 
-			return game		
+			return game				
+
+		theory = self.theory
+		time_travel = 0 #To be deleted. Time Travel aqui puedo hacer creer al programa que es otro dia
+		active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() + time_travel # TT Time Travel aqui puedo hacer creer al programa que es otro dia
 
 		game = theory.game
 		last_log = game['last_log']
@@ -185,6 +185,9 @@ class Handler(webapp2.RequestHandler):
 			theory.put()
 
 		return game
+
+
+
 
 		
 class SignUpLogIn(Handler):
@@ -408,15 +411,19 @@ class Settings(Handler):
 
 		 	theory.timezone = int(post_details['timezone'])
 
-	 		if float(post_details['minimum_daily_effort']) != game['daily_goal']:
-	 			game['daily_goal'] = float(post_details['minimum_daily_effort'])
- 				game['piggy_bank'] = 0 
- 				game['streak'] = 0
- 				game['last_log'] = None,
- 				game['goal_achieved'] = False,
-				game['points_to_goal'] = game['daily_goal']
+	 		# if float(post_details['minimum_daily_effort']) != game['daily_goal']:
+	 		# 	game['daily_goal'] = float(post_details['minimum_daily_effort'])
+ 			# 	game['piggy_bank'] = 0 
+ 			# 	game['streak'] = 0
+ 			# 	game['last_log'] = None
+ 			# 	game['goal_achieved'] = False
+				# game['points_to_goal'] = game['daily_goal']
  			
- 			game['critical_burn'] = int(post_details['critical_burn'])
+			game['critical_burn'] = int(post_details['critical_burn'])
+			game['daily_goal'] = int(post_details['minimum_daily_effort'])
+ 			game['piggy_bank'] = int(post_details['piggy_bank'])
+ 			game['streak'] = int(post_details['streak'])
+ 			
  			theory.game = game
 	 		theory.put()
 
@@ -1762,7 +1769,7 @@ def prepare_tags_for_saving(tags_string):
 
 	tags_string = remplaza_acentos(tags_string)
 	tags_string = tags_string.replace(', ',',')
-	valid_characters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',' ','&','!','_',',','.','1','2','3','4','5','6','7','8','9','0']
+	valid_characters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',' ','&','!','_','-',',','.','1','2','3','4','5','6','7','8','9','0']
 	clean_tags_string = ''
 	for i in range(0,len(tags_string)):
 		character = tags_string[i]
@@ -1776,7 +1783,7 @@ def prepare_new_tag_for_saving(new_tag):
 
 	tags_string = remplaza_acentos(new_tag)
 	tags_string = tags_string.replace(', ',',')
-	valid_characters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',' ','&','!','_','.','1','2','3','4','5','6','7','8','9','0']
+	valid_characters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',' ','&','!','_','-','.','1','2','3','4','5','6','7','8','9','0']
 	clean_tags_string = ''
 	for i in range(0,len(tags_string)):
 		character = tags_string[i]

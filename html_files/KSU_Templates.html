@@ -499,18 +499,25 @@
 					{% elif ksu.ksu_type == 'Wish' %}
 						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 					
+						<div class="row">
+							<div class="col-xs-12">
+								<label> Why is this important to me?</label>
+								<textarea type="text" class="form-control autoExpands QuickAttributeUpdate" rows="1" data-min-rows='1' id="secondary_description" name="secondary_description" placeholder="e.g. Because I never want to worry about money angain...">{% if ksu and ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
+							</div>
+						</div>
+
 						<div class="row">																		
 							<div class="col-xs-4">
 								<label>Money Cost ($) </label>
-								<input type="number" min="0" class="form-control QuickAttributeUpdate" name="money_cost" placeholder="e.g. $500" value={{ ksu.cost['money_cost'] }}>		
+								<input type="number" min="0" class="form-control QuickAttributeUpdate" name="money_cost" id="money_cost" placeholder="e.g. $500" value={{ ksu.cost['money_cost'] }}>		
 							</div>
 							<div class="col-xs-4">
 								<label>Days Required </label>
-								<input type="number" min="0" class="form-control QuickAttributeUpdate" name="days_cost" placeholder="e.g. 0 days" value={{ ksu.cost['days_cost'] }}>		
+								<input type="number" min="0" class="form-control QuickAttributeUpdate" name="days_cost" id="days_cost" placeholder="e.g. 0 days" value={{ ksu.cost['days_cost'] }}>		
 							</div>
 							<div class="col-xs-4">
 								<label>Hours Required </label>
-								<input type="number" min="0" class="form-control QuickAttributeUpdate" name="hours_cost" placeholder="e.g. 5 hours" value={{ ksu.cost['hours_cost'] }}>		
+								<input type="number" min="0" class="form-control QuickAttributeUpdate" name="hours_cost" id="hours_cost" placeholder="e.g. 5 hours" value={{ ksu.cost['hours_cost'] }}>		
 							</div>
 						</div>
 

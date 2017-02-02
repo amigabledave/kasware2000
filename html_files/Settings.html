@@ -75,16 +75,31 @@
 		</div>
 
 		<div class="col-xs-4"> 
-			<label> Daily goal (Kpts.) </label>			
-			<input type="number" min="0" class="form-control" name="minimum_daily_effort" placeholder="100" value="{{theory.game['daily_goal']|round|int}}">
-		</div>
-
-		<div class="col-xs-4"> 
 			<label> Critical burn (Kpts.) </label>			
 			<input type="number" min="0" class="form-control" name="critical_burn" placeholder="10" value="{{theory.game['critical_burn']|round|int}}">
 		</div>
 
 	</div>
+
+	<div class="form-group">
+
+		<div class="col-xs-4"> 
+			<label> Daily goal (Kpts.) </label>			
+			<input type="number" min="0" class="form-control" name="minimum_daily_effort" placeholder="100" value="{{theory.game['daily_goal']|round|int}}">
+		</div>		
+
+		<div class="col-xs-4"> 
+			<label> Piggy Bank (Kpts.) </label>			
+			<input type="number" min="0" class="form-control" name="piggy_bank" placeholder="0" value="{{theory.game['piggy_bank']|round|int}}">
+		</div>
+
+		<div class="col-xs-4"> 
+			<label> Streak (Days) </label>			
+			<input type="number" min="0" class="form-control" name="streak" placeholder="0" value="{{theory.game['streak']|round|int}}">
+		</div>	
+
+	</div>
+
 
 	<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
 	<div class="form-group">
