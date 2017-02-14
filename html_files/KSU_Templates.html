@@ -209,7 +209,7 @@
 				</div>
 				{% endif %}
 
-				{% if ksu.ksu_type in ['EVPo', 'Wish'] %}
+				{% if ksu.ksu_type in ['Wish'] %}
 					<div class="row" style="margin-top: 5px;">
 						<div class="col-xs-6 col-sm-5">
 							<select class="form-control" name="event_quality" id="event_quality" style="margin-bottom:7px;">
@@ -224,25 +224,6 @@
 					</div>	
 				{% endif %}
 				
-				{% if ksu.ksu_type == 'ImPe' %}
-					<div class="row" style="margin-top: 5px;">
-						<div class="col-xs-6 col-sm-3"><label style="text-align: right;">Investment type</label></div>
-						<div class="col-xs-6 col-sm-3">
-							<select class="form-control" name="event_quality" id="event_quality" style="margin-bottom:7px;">
-								<option value="Text"> Text </option>
-								<option value="Email"> Email </option>
-								<option value="Call"> Call </option>
-								<option value="Hangout"> Hangout </option>
-								<option value="OneOnOne"> One on one </option>
-								<option value="Favor"> Favor </option>	
-							</select> 
-						</div>
-						<div class="col-xs-12 col-sm-6">
-							<textarea style="width:100%;" class="form-control autoExpand" rows="1" data-min-rows='1' name="event_comments" id="event_comments" placeholder="Any comments?"></textarea>
-						</div>									
-					</div>	
-				{% endif %}
-
 				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:5px;">
 
 				<div class="row" id="UserActionsRow">

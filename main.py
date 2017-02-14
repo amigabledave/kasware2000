@@ -995,8 +995,6 @@ class EventHandler(Handler):
 
 				update_next_event(self, user_action, {}, ksu)
 
-				if ksu_subtype in ['EVPo', 'ImPe']:
-					event.quality = event_details['event_quality']
 			
 			if ksu_subtype == 'KAS4':
 				event.kpts_type = 'Stupidity'
