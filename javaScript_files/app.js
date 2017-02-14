@@ -1107,6 +1107,45 @@ $(document)
         this.rows = minRows + rows;
     });
 
+
+function add(target_timer, seconds, minutes, hours) {
+    seconds++;
+    if (seconds >= 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes >= 60) {
+            minutes = 0;
+            hours++;
+        }
+    }
+    
+
+    // console.log(seconds)
+    // console.log((hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds))
+   
+    target_timer.text((hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds));
+
+    timer(target_timer, seconds, minutes, hours);
+}
+
+
+function timer(target_timer, seconds, minutes, hours) {
+    t = setTimeout(function(){
+    	add(target_timer, seconds, minutes, hours)
+    }, 1000);
+}
+
+$(document).on('click', '.PlayStopButton', function(){
+	var ksu = $(this).closest('#MissionKSU');
+	var buttom_action = $(this).attr("button_action")
+
+	var target_timer = ksu.find('#ksu_timmer');
+	var seconds = 0, minutes = 0, hours = 0, t;
+
+	timer(target_timer, seconds, minutes, hours);
+});
+
+
 // function al_cargar(){
 // 	console.log('mas o menos ahi va')
 // };
