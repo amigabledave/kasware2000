@@ -857,6 +857,7 @@ $('.SaveNewKSUButton').on('click', function(){
 
 			'RealitySnapshot': $('#NewKSUTemplate_RealitySnapshot').clone(),
 			'BinaryPerception': $('#NewKSUTemplate_BinaryPerception').clone(),
+			'TernaryPerception': $('#NewKSUTemplate_TernaryPerception').clone(),
 			'FibonacciPerception': $('#NewKSUTemplate_FibonacciPerception').clone(),
 			'Diary': $('#NewKSUTemplate_Diary').clone()
 		}

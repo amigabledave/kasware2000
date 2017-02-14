@@ -119,6 +119,7 @@ d_KsuSubtypes = {
 	'ImIn': 'Indicator',
 	'RealitySnapshot':'Reality Indicator',
 	'BinaryPerception': 'Binary Perception Indicator',
+	'TernaryPerception': 'Ternary Perception Indicator',
 	'FibonacciPerception': 'Fibonacci Perception Indicator'} 
 
 d_repeats = {'R001':'Daily',
@@ -757,6 +758,58 @@ d_SetViewerDetails = {
 			'bot_sec_desc_style': 'color: grey; font-style:italic;',
 			'bot_sec_desc_placeholder': 'This is a placeholder'}},
 
+	'TernaryPerception': { 		
+		'attributes': ['pretty_next_event'],
+		'fields': {'pretty_next_event':'Next Question'},
+		'columns':{'pretty_next_event':6},
+		'detailsLabel':'',
+		'buttons_col':0,
+		'buttons':['Record'],
+
+		#Master template parameters
+		'Mission':{
+			'heading_exists': False,
+			'heading_visible': False,
+			'heading_style': '',
+			'heading_content': '',
+
+			'top_sec_desc_exists': False,
+			'top_sec_desc_visible': False,
+			'top_sec_desc_style': '',
+			'top_sec_desc_placeholder': 'This is a placeholder',	
+
+			'description_exists': False,
+			'description_visible': False,
+			'description_style': '',
+			'description_placeholder': 'This is a placeholder',
+
+			'bot_sec_desc_exists': True,
+			'bot_sec_desc_visible': True,
+			'bot_sec_desc_style': 'font-weight: bold;margin-bottom: 10px;',
+			'bot_sec_desc_placeholder': 'This is a placeholder'},
+
+		'Set':{
+			'heading_exists': False,
+			'heading_visible': False,
+			'heading_style': '',
+			'heading_content': '',
+
+			'top_sec_desc_exists': False,
+			'top_sec_desc_visible': False,
+			'top_sec_desc_style': '',
+			'top_sec_desc_placeholder': 'This is a placeholder',	
+
+			'description_exists': True,
+			'description_visible': True,
+			'description_style': 'font-weight:bold;',
+			'description_placeholder': 'This is a placeholder',
+
+			'bot_sec_desc_exists': True,
+			'bot_sec_desc_visible': True,
+			'bot_sec_desc_style': 'color: grey; font-style:italic;',
+			'bot_sec_desc_placeholder': 'This is a placeholder'}},	
+
+
 	'FibonacciPerception': { 		
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Next Question'},
@@ -931,6 +984,7 @@ d_HistoryViewer = {
 	'Diary': 'Diary Entry',
 	'RealitySnapshot':'Reality Indicator Measurement',
 	'BinaryPerception': 'Binary Perception Indicator Measurement',
+	'TernaryPerception': 'Ternary Perception Indicator Measurement',
 	'FibonacciPerception': 'Fibonacci Perception Indicator Measurement'
 }
 
@@ -999,7 +1053,7 @@ type_to_subtypes = {
 	'ImPe':['ImPe'],
 	'EVPo':['EVPo'],
 	'Diary':['Diary'],
-	'ImIn':['FibonacciPerception', 'BinaryPerception' , 'RealitySnapshot']	
+	'ImIn':['FibonacciPerception', 'BinaryPerception' , 'RealitySnapshot', 'TernaryPerception']	
 }
 
 # subtype_to_type = {

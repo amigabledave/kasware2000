@@ -41,7 +41,7 @@ os_ksus = [
 	{'description':'Life enjoyment',
 	 'secondary_description':"How much did I enjoyed this day?",
 	 'ksu_type':'ImIn', 
-	 'ksu_subtype':'FibonacciPerception',
+	 'ksu_subtype':'TernaryPerception',
 	 'mission_view':'WrapUp',
 	 'mission_importance':1,
 	 'is_active':True, 

@@ -823,7 +823,7 @@ class MissionViewer(Handler):
 
 		objectives = [(None,'-- None --')]
 
-		mission_sets = ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'EVPo', 'ImPe', 'RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'Diary']
+		mission_sets = ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'EVPo', 'ImPe', 'RealitySnapshot', 'BinaryPerception', 'TernaryPerception','FibonacciPerception', 'Diary']
 		
 		for ksu in ksu_set:
 			mission_view = ksu.mission_view
@@ -1399,7 +1399,8 @@ class PopulateRandomTheory(Handler):
 			[1, {'ksu_type':'Diary', 'ksu_subtype':'Diary', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[1, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[1, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
-			[1, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}]
+			[1, {'ksu_type':'ImIn', 'ksu_subtype':'TernaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],			
+			[0, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}]
 		]
 
 		for e in theory_parameters:
@@ -1600,7 +1601,7 @@ def update_next_event(self, user_action, post_details, ksu):
 			ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
 
 
-	elif ksu_subtype in ['ImPe', 'RealitySnapshot', 'FibonacciPerception', 'BinaryPerception', 'Diary']:
+	elif ksu_subtype in ['ImPe', 'RealitySnapshot', 'FibonacciPerception', 'TernaryPerception', 'BinaryPerception', 'Diary']:
 		
 		next_event = ksu.next_event
 
@@ -1726,10 +1727,10 @@ def prepareInputForSaving(theory, ksu, post_details):
 	if ksu.ksu_subtype == 'ImPe' and not ksu.secondary_description:
 		ksu.secondary_description = 'Contact ' + ksu.description
 
-	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe', 'RealitySnapshot', 'Diary', 'FibonacciPerception', 'BinaryPerception'] and not ksu.next_event:
+	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe', 'RealitySnapshot', 'Diary', 'FibonacciPerception', 'TernaryPerception', 'BinaryPerception'] and not ksu.next_event:
 		ksu.next_event = datetime.today() ## - timedelta(days=1) #Esto tenia una logica, pero por el momento se lo quito 
 
-	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe', 'RealitySnapshot', 'Diary', 'FibonacciPerception', 'BinaryPerception'] and not ksu.frequency:
+	if ksu.ksu_subtype in ['KAS1','KAS3','KAS4','ImPe', 'RealitySnapshot', 'Diary', 'FibonacciPerception', 'TernaryPerception', 'BinaryPerception'] and not ksu.frequency:
 		ksu.frequency = 1
 
 	if ksu.ksu_subtype == 'MiniO':

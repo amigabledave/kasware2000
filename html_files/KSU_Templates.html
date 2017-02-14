@@ -16,7 +16,7 @@
 				{% else %}
 				<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton" name="action_description" value='MissionRecordValue'><span class="glyphicon glyphicon-record"></span></button>
 				{% endif %}
-				{% if ksu.ksu_subtype in ['KAS3', 'KAS4', 'Diary', 'RealitySnapshot', 'BinaryPerception', 'FibonacciPerception'] %}
+				{% if ksu.ksu_subtype in ['KAS3', 'KAS4', 'Diary', 'RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'TernaryPerception'] %}
 					<button type="button" class="btn btn-{% if ksu.ksu_subtype == 'KAS4' %}success{% else %}warning{% endif %} btn-circle btn-lg UserActionButton" style="margin-top:10px;" name="action_description" value='MissionSkip'><span class="glyphicon glyphicon-remove"></span></button>
 				{% endif %}
 			</div>
@@ -105,11 +105,15 @@
 
 					{% else %}
 					<div class="col-xs-4 col-sm-3">
-						{% if ksu.ksu_subtype in ['BinaryPerception', 'FibonacciPerception'] %}
+						{% if ksu.ksu_subtype in ['BinaryPerception', 'FibonacciPerception', 'TernaryPerception'] %}
 							<select class="form-control" name="indicator_value" id="select_indicator_value" style="margin-bottom:5px;">
 								{% if ksu.ksu_subtype == 'BinaryPerception' %}
 									<option value="1"> Yes </option>
 									<option value="0"> No </option>
+								{% elif ksu.ksu_subtype == 'TernaryPerception' %}
+									<option value="0"> Dissapointed </option>
+									<option value="1" selected="selected"> Satisfied </option>
+									<option value="2"> Delighted </option>
 								{% elif ksu.ksu_subtype == 'FibonacciPerception' %}
 									<option value="1">1</option>
 									<option value="2">2</option>
@@ -305,7 +309,7 @@
 						<button type="button" class="btn btn-primary btn-circle btn-lg UserActionButton OtherShowDetailViewerButton" name="action_description" value='SendToMission' style="margin-right:10px;"><span class="glyphicon glyphicon-share-alt"></span></button>
 					{% endif %}
 
-					{% if ksu.ksu_subtype not in ['KAS2', 'RTBG', 'Idea', 'BigO', 'Wish', 'Gene', 'Diary', 'RealitySnapshot', 'BinaryPerception', 'FibonacciPerception'] %}
+					{% if ksu.ksu_subtype not in ['KAS2', 'RTBG', 'Idea', 'BigO', 'Wish', 'Gene', 'Diary', 'RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'TernaryPerception'] %}
 						<button style="margin-right:10px;" type="button" class="btn btn-primary btn-circle displaySectionVerticalButton RedirectUserButton" name='action_description' value="ViewKSUHistory"><span style="font-size:15px; margin-left:1px; margin-top:1px;" class="glyphicon glyphicon-eye-open"></span></button>
 					{% endif %}
 
@@ -610,11 +614,15 @@
 								<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton ShowDetailViewerButton" name="action_description" value='ViewerRecordValue' style="margin-right:10px;"><span class="glyphicon glyphicon-record"></span></button>
 							</div>
 							<div class="col-xs-4 col-sm-3">
-								{% if ksu.ksu_subtype in ['BinaryPerception', 'FibonacciPerception'] %}
+								{% if ksu.ksu_subtype in ['BinaryPerception', 'FibonacciPerception', 'TernaryPerception'] %}
 									<select class="form-control" name="indicator_value" id="select_indicator_value">
 										{% if ksu.ksu_subtype == 'BinaryPerception' %}
 											<option value="1"> Yes </option>
 											<option value="0"> No </option>
+										{% elif ksu.ksu_subtype == 'TernaryPerception' %}
+											<option value="0"> Dissapointed </option>
+											<option value="1" selected="selected"> Satisfied </option>
+											<option value="2"> Delighted </option>											
 										{% elif ksu.ksu_subtype == 'FibonacciPerception' %}
 											<option value="1">1</option>
 											<option value="2">2</option>
