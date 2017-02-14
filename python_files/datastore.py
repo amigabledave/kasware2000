@@ -95,6 +95,8 @@ class KSU(ndb.Model):
 	times_reviewed = ndb.IntegerProperty(default=0)
 	next_critical_burn = ndb.IntegerProperty() #Define siguiente fecha como ordinal en la que si no se cumplio la accion esta quema
 
+	effort_denominator = ndb.IntegerProperty(default=3)
+
 
 class Event(ndb.Model):
 

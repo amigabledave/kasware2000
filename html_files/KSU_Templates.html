@@ -223,7 +223,7 @@
 						</div>									
 					</div>	
 				{% endif %}
-				<!-- xx Aqui vamos -->
+				
 				{% if ksu.ksu_type == 'ImPe' %}
 					<div class="row" style="margin-top: 5px;">
 						<div class="col-xs-6 col-sm-3"><label style="text-align: right;">Investment type</label></div>
@@ -242,8 +242,6 @@
 						</div>									
 					</div>	
 				{% endif %}
-
-
 
 				<hr class="hr-1px-gray" style="margin-top:4px; margin-bottom:5px;">
 
@@ -319,9 +317,28 @@
 						<button type="button" class="btn btn-danger btn-circle btn-lg UserActionButton" name="action_description" value='ViewerDelete'><span class="glyphicon glyphicon-trash"></span></button>
 					</div>
 					{% endif %}
+				</div>
 
+				{% if ksu.ksu_type in ['KeyA', 'BOKA', 'ImPe', 'EVPo', 'OTOA'] %}
+				<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:5px;">
+				<div class="row" id="ExpectedImpactRow" style="margin-bottom: 5px">
+					<form>
+					<div class="col-xs-4">
+						<b>Expected impact:</b>
+					</div>
+					<div class="col-xs-2">
+						<label class="radio-inline" style="margin-left:2px;">
+							<input type="radio" name="effort_denominator" value="1" {% if ksu.effort_denominator == 1 %} checked="checked" {% endif %}> Huge </label></div>
+					<div class="col-xs-2">
+						<label class="radio-inline">
+							<input type="radio" name="effort_denominator" value="3" {% if ksu.effort_denominator == 3 %} checked="checked" {% endif %}> High </label></div>
+					<div class="col-xs-2">
+						<label class="radio-inline">
+							<input type="radio" name="effort_denominator" value="5" {% if ksu.effort_denominator == 5 %} checked="checked" {% endif %}> Low </label></div>
+					</form>			
+				</div>
+				{% endif %}
 
-				</div>					
 				<div class="row" id="KsuPlusOptions">
 					<div class="col-xs-12">
 					
