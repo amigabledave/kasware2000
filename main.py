@@ -1139,7 +1139,7 @@ class EventHandler(Handler):
 			theory.categories['tags'] = update_user_tags(theory, tags)
 			theory.put()
 
-		elif attr_key in ['importance', 'frequency']:
+		elif attr_key in ['importance', 'frequency', 'effort_denominator']:
 			setattr(ksu, attr_key, int(attr_value))	
 			updated_value = int(attr_value)
 

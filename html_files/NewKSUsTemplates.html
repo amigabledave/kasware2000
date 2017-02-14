@@ -70,6 +70,24 @@
 
 		<div class="hidden" id="QuickKsuSubtypeDetails">
 
+			<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:5px;">
+			<div class="row" id="ExpectedImpactRow" style="margin-bottom: 5px">
+
+				<div class="col-xs-4">
+					<b>Expected impact:</b>
+				</div>
+				<div class="col-xs-2">
+					<label class="radio-inline" style="margin-left:2px;">
+						<input type="radio" name="effort_denominator" value="1"> Huge </label></div>
+				<div class="col-xs-2">
+					<label class="radio-inline">
+						<input type="radio" name="effort_denominator" value="3" checked="checked"> High </label></div>
+				<div class="col-xs-2">
+					<label class="radio-inline">
+						<input type="radio" name="effort_denominator" value="5" > Low </label></div>
+			</div>
+
+
 			<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">
 			<div class="row" style="margin-bottom:8px;">
 				
@@ -165,6 +183,7 @@
 	</div>
 
 	<div class="row hidden" id="TagsAndImportanceRow" style="margin-top:2px;">
+		
 		{% if set_name != 'BOKA' %}
 		<div class="col-xs-10">
 			<input style="color:purple; text-align:center; font-weight:bold; border:0; width:100%;" placeholder="Tag" type="text" list="tags" name="tags" id="tags_value">
@@ -239,12 +258,32 @@
 			</div>
 		</div>
 
-
-
 		{% endif %}							
+
+		{% if set_name in ['KeyA', 'BOKA', 'ImPe', 'EVPo', 'OTOA'] %}
+		
+			<div class="col-xs-12" style="padding: 0px;">
+				<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:5px;">
+				<div class="row" id="ExpectedImpactRow"">
+					
+					<div class="col-xs-4">
+						<b>Expected impact:</b>
+					</div>
+					<div class="col-xs-2">
+						<label class="radio-inline" style="margin-left:2px;">
+							<input type="radio" name="effort_denominator" value="1"> Huge </label></div>
+					<div class="col-xs-2">
+						<label class="radio-inline">
+							<input type="radio" name="effort_denominator" value="3" checked="checked"> High </label></div>
+					<div class="col-xs-2">
+						<label class="radio-inline">
+							<input type="radio" name="effort_denominator" value="5" > Low </label></div>
+				</div>
+			</div>
+	
+		{% endif %}
+
 	</div>	
-
-
 
 	<div class="row hidden" id="QuickKsuSubtypeDetails">
 	 	<div class="col-xs-12" style="padding:0px;">
@@ -439,7 +478,7 @@
 					<label> <input type="checkbox" class="QuickAttributeUpdate MiniObjectiveCheckbox" id="is_mini_o" name="is_mini_o" {% if ksu.is_mini_o %}checked{% endif %}> <b> Mini Objective </b> </label> 
 				</div>	
 			</div>
-			<div class="col-xs-8 col-sm-9"><!-- xx -->
+			<div class="col-xs-8 col-sm-9">
 				<label> Targeted Objective </label>	
 				<select class="form-control QuickAttributeUpdate" name="parent_id" id="parent_id">
 					{% for (ksu_id, description) in objectives %}																				
@@ -512,7 +551,7 @@
 	</div>
 
 	<div class="{% if set_name != 'ImPe' %}hidden{% endif %}" id="ImPe">
-		<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">		
+		<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:8px;">		
 			<div class="row" style="margin-bottom:8px;">
 				<div class="col-xs-12">
 					<label>Minimum relationship effort description</label>

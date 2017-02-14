@@ -130,6 +130,251 @@ $(document).on('click', '.UserActionButton', function(){
 	});
 });
 
+$('.SaveNewKSUButton').on('click', function(){
+	var ksu = $(this).closest('#NewKSU');
+	var ksu_type = ksu.attr("ksutype");
+	var ksu_subtype = ksu.attr("ksusubtype");
+	var parent_id = ksu.find('#parent_id').val();
+	if (parent_id == undefined){
+		parent_id = ksu.find('#parent_id option:selected').val();
+	};
+	var effort_denominator = ksu.find('input:radio[name=effort_denominator]:checked').val();
+
+	var description = ksu.find('#description').val();
+	var secondary_description = ksu.find('#secondary_description').val();
+	var next_event = ksu.find('#next_event').val();
+	var best_time = ksu.find('#best_time').val();
+	var kpts_value = ksu.find('#kpts_value').val();
+
+	var mission_view = ksu.find('#mission_view').val()
+	var importance = ksu.find('#importance option:selected').val();
+
+	var tags = ksu.find('#tags_value').val();
+	var comments = ksu.find('#comments').val();
+
+	var frequency = ksu.find('#frequency').val();
+	var repeats = ksu.find('#repeats').val();		
+
+	var is_active = ksu.find('#is_active').is(':checked');
+	var is_critical = ksu.find('#is_critical').is(':checked');
+	var is_private = ksu.find('#is_private').is(':checked');
+	
+	var repeats_on_Mon = ksu.find('#repeats_on_Mon').is(':checked');
+	var repeats_on_Tue = ksu.find('#repeats_on_Tue').is(':checked'); 
+	var repeats_on_Wed = ksu.find('#repeats_on_Wed').is(':checked'); 
+	var repeats_on_Thu = ksu.find('#repeats_on_Thu').is(':checked');
+	var repeats_on_Fri = ksu.find('#repeats_on_Fri').is(':checked');
+	var repeats_on_Sat = ksu.find('#repeats_on_Sat').is(':checked');
+	var repeats_on_Sun = ksu.find('#repeats_on_Sun').is(':checked');
+
+	var money_cost = ksu.find('#money_cost').val();
+	var days_cost = ksu.find('#days_cost').val();
+	var hours_cost = ksu.find('#hours_cost').val();
+	var birthday = ksu.find('#birthday').val();
+
+	var is_mini_o = ksu.find('#is_mini_o').is(':checked');
+
+	
+	if (description == ''){
+		description = ksu.find('#description').text();
+		secondary_description = ksu.find('#secondary_description').text();
+	};
+
+	if ((ksu_type == 'BigO' || ksu_type == 'Wish' ) && kpts_value == '0.25'){
+		kpts_value = 1
+	}
+
+	ksu.fadeOut("slow")
+	
+	$.ajax({
+		type: "POST",
+		url: "/EventHandler",
+		dataType: 'json',
+		data: JSON.stringify({
+			'user_action': 'SaveNewKSU',
+			'ksu_type': ksu_type,
+			'ksu_subtype': ksu_subtype,
+			'parent_id': parent_id,
+			'effort_denominator':effort_denominator,
+
+			'description':description,
+			'secondary_description':secondary_description,
+			'next_event':next_event,
+			'best_time':best_time,
+			'kpts_value': kpts_value,
+			
+			'mission_view':mission_view,
+			'importance':importance,
+			'tags':tags,
+			'comments':comments, 
+		
+			'is_active':is_active,
+			'is_critical':is_critical, 
+			'is_private':is_private,
+
+			'frequency':frequency,
+			'repeats':repeats,
+	
+			'repeats_on_Mon':repeats_on_Mon,
+			'repeats_on_Tue':repeats_on_Tue,
+			'repeats_on_Wed':repeats_on_Wed,
+			'repeats_on_Thu':repeats_on_Thu,
+			'repeats_on_Fri':repeats_on_Fri,
+			'repeats_on_Sat':repeats_on_Sat,
+			'repeats_on_Sun':repeats_on_Sun,
+
+			'money_cost':money_cost,
+			'days_cost':days_cost,
+			'hours_cost':hours_cost,
+			'birthday':birthday,
+			'is_mini_o':is_mini_o
+
+		})
+	})
+	.done(function(data){
+		console.log(data);
+		ksu.find('#description').val('');
+		ksu.find('#comments').val('');
+		ksu.find('#is_critical').prop('checked', false);
+		ksu.find('#is_private').prop('checked', false);
+		ksu.find('#is_active').prop('checked', true);
+		ksu.find('#is_mini_o').prop('checked', false);
+		
+		ksu.find('#secondary_description').val('');
+		ksu.find('#BigO_secondary_description').val('');
+		ksu.find('#KAS3_secondary_description').val('');
+		ksu.find('#KAS4_secondary_description').val('');
+		ksu.find('#EVPo_secondary_description').val('');
+		ksu.find('#ImPe_secondary_description').val('');
+		ksu.find('#Idea_SecondaryDescription').val('');
+
+		ksu.find('#best_time').val('');
+		ksu.find('#ImIn_best_time').val('');
+		ksu.find('#Diary_best_time').val('');
+
+		// ksu.find('#next_event').val('');
+		ksu.find('#BigO_next_event').val('');
+		ksu.find('#EVPo_next_event').val('');
+		ksu.find('#ImPe_next_event').val('')
+		ksu.find('#ImIn_next_event').val('')
+		ksu.find('#Diary_next_event').val('')
+		
+		ksu.find('#tags_value').val('');
+		ksu.find('#Dummy_tags_value').val('');			
+		
+		ksu.find('#importance').val(3);
+
+		ksu.find('#kpts_value').val(1);
+		ksu.find('#KAS3_kpts_value').val(1);
+		ksu.find('#KAS4_kpts_value').val(1);
+		ksu.find('#BigO_kpts_value').val(1);
+		ksu.find('#Wish_kpts_value').val(1);
+		ksu.find('#EVPo_kpts_value').val(1);
+		ksu.find('#ImPe_kpts_value').val(1);
+
+		ksu.find('#frequency').val('');
+		ksu.find('#EVPo_frequency').val('');
+		ksu.find('#ImPe_frequency').val('');
+		ksu.find('#ImIn_frequency').val('');
+		ksu.find('#Diary_frequency').val('');
+
+		ksu.find('#money_cost').val('');
+		ksu.find('#days_cost').val('');
+		ksu.find('#hours_cost').val('');
+		ksu.find('#birthday').val('');
+
+		
+		if (ksu_subtype == ''){
+			ksu_subtype = ksu_type
+		};
+
+		console.log('Este es el tipo de KSU que ando pidiendo guardar:');
+		console.log(ksu_type);
+		console.log(ksu_subtype);
+
+		var Templates = {
+			'KeyA': $('#NewKSUTemplate_KeyA').clone(),
+			'KAS1': $('#NewKSUTemplate_KAS1').clone(),
+			'KAS2': $('#NewKSUTemplate_KAS2').clone(),
+			'KAS3': $('#NewKSUTemplate_KAS3').clone(),
+			'KAS4': $('#NewKSUTemplate_KAS4').clone(),
+			
+			'BigO': $('#NewKSUTemplate_BigO').clone(),
+			'Wish': $('#NewKSUTemplate_Wish').clone(),
+			
+			'EVPo': $('#NewKSUTemplate_EVPo').clone(),
+			'ImPe': $('#NewKSUTemplate_ImPe').clone(),
+			'Idea': $('#NewKSUTemplate_Idea').clone(),
+			'RTBG': $('#NewKSUTemplate_RTBG').clone(),
+
+			'RealitySnapshot': $('#NewKSUTemplate_RealitySnapshot').clone(),
+			'BinaryPerception': $('#NewKSUTemplate_BinaryPerception').clone(),
+			'TernaryPerception': $('#NewKSUTemplate_TernaryPerception').clone(),
+			'FibonacciPerception': $('#NewKSUTemplate_FibonacciPerception').clone(),
+			'Diary': $('#NewKSUTemplate_Diary').clone()
+		}
+
+ 
+		var new_ksu = Templates[ksu_subtype];
+
+		new_ksu.attr("id", "MissionKSU");
+		new_ksu.attr("value",data['ksu_id']);
+		new_ksu.find('#ksu_id').attr("value",data['ksu_id']);
+
+		new_ksu.find('#description').val(description);
+		new_ksu.find('#secondary_description').val(secondary_description);
+		new_ksu.find('#kpts_value').val(kpts_value);
+		new_ksu.find('#best_time').val(best_time);
+		new_ksu.find('#next_event').val(next_event);
+
+		new_ksu.find('#importance').val(importance);
+		
+		new_ksu.find('#tags').val(tags);
+		new_ksu.find('#ksu_subtype').text(ksu_subtype);
+
+		new_ksu.find('#is_critical').prop('checked', is_critical);
+		new_ksu.find('#is_active').prop('checked', is_active);
+		new_ksu.find('#is_private').prop('checked', is_private);
+
+		new_ksu.find('#money_cost').val(money_cost);
+		new_ksu.find('#hours_cost').val(hours_cost);
+		new_ksu.find('#days_cost').val(days_cost);
+		new_ksu.find('#birthday').val(birthday);
+		new_ksu.find('#is_mini_o').prop('checked', is_mini_o);
+
+		new_ksu.find('#frequency').val(frequency);
+		new_ksu.find('#comments').val(comments);
+
+		new_ksu.removeClass('hidden');
+		new_ksu.prependTo('#NewKSUsHolder');
+		new_ksu.fadeIn("slow");
+
+		if(is_critical && is_active){
+			new_ksu.find('#description').css('color', '#B22222');				
+		} else if (is_active){
+			new_ksu.find('#description').css('color', 'black');				
+		} else {
+			new_ksu.find('#description').css('color', '#b1adad');
+		};
+
+		if(is_mini_o){
+			new_ksu.find('#description').css('font-weight', 'bold');
+			new_ksu.find('#secondary_description').removeClass('hidden');
+			ksu.find('#description').css('font-weight', 'normal');
+			ksu.find('#description').css('font-style', 'normal');
+			ksu.find('#secondary_description').addClass('hidden');
+		};
+
+
+		$('#TagsAndImportanceRow').addClass('hidden');	
+		$('#QuickKsuSecondaryDescription').addClass('hidden');
+		$('#QuickKsuSubtypeDetails').addClass('hidden');
+		ksu.fadeIn("slow");
+
+	});
+});
+
+
 
 $('#NewDiaryEntryButton').on('click', function(){
 	// console.log('Si esta detectando que se aprieta el boton');
@@ -677,252 +922,6 @@ $(document).on('click', '.RedirectUserButton', function(){
 });
 
 
-
-$('.SaveNewKSUButton').on('click', function(){
-	var ksu = $(this).closest('#NewKSU');
-	var ksu_type = ksu.attr("ksutype");
-	var ksu_subtype = ksu.attr("ksusubtype");
-	var parent_id = ksu.find('#parent_id').val();
-	if (parent_id == undefined){
-		parent_id = ksu.find('#parent_id option:selected').val();
-	};
-	console.log('This is the parentid')
-	console.log(parent_id)
-
-	var description = ksu.find('#description').val();
-	var secondary_description = ksu.find('#secondary_description').val();
-	var next_event = ksu.find('#next_event').val();
-	var best_time = ksu.find('#best_time').val();
-	var kpts_value = ksu.find('#kpts_value').val();
-
-	var mission_view = ksu.find('#mission_view').val()
-	var importance = ksu.find('#importance option:selected').val();
-
-	var tags = ksu.find('#tags_value').val();
-	var comments = ksu.find('#comments').val();
-
-	var frequency = ksu.find('#frequency').val();
-	var repeats = ksu.find('#repeats').val();		
-
-	var is_active = ksu.find('#is_active').is(':checked');
-	var is_critical = ksu.find('#is_critical').is(':checked');
-	var is_private = ksu.find('#is_private').is(':checked');
-	
-	var repeats_on_Mon = ksu.find('#repeats_on_Mon').is(':checked');
-	var repeats_on_Tue = ksu.find('#repeats_on_Tue').is(':checked'); 
-	var repeats_on_Wed = ksu.find('#repeats_on_Wed').is(':checked'); 
-	var repeats_on_Thu = ksu.find('#repeats_on_Thu').is(':checked');
-	var repeats_on_Fri = ksu.find('#repeats_on_Fri').is(':checked');
-	var repeats_on_Sat = ksu.find('#repeats_on_Sat').is(':checked');
-	var repeats_on_Sun = ksu.find('#repeats_on_Sun').is(':checked');
-
-	var money_cost = ksu.find('#money_cost').val();
-	var days_cost = ksu.find('#days_cost').val();
-	var hours_cost = ksu.find('#hours_cost').val();
-	var birthday = ksu.find('#birthday').val();
-
-	var is_mini_o = ksu.find('#is_mini_o').is(':checked');
-
-	
-	if (description == ''){
-		description = ksu.find('#description').text();
-		secondary_description = ksu.find('#secondary_description').text();
-	};
-
-	if ((ksu_type == 'BigO' || ksu_type == 'Wish' ) && kpts_value == '0.25'){
-		kpts_value = 1
-	}
-
-	ksu.fadeOut("slow")
-	
-	$.ajax({
-		type: "POST",
-		url: "/EventHandler",
-		dataType: 'json',
-		data: JSON.stringify({
-			'user_action': 'SaveNewKSU',
-			'ksu_type': ksu_type,
-			'ksu_subtype': ksu_subtype,
-			'parent_id': parent_id,
-			
-			'description':description,
-			'secondary_description':secondary_description,
-			'next_event':next_event,
-			'best_time':best_time,
-			'kpts_value': kpts_value,
-			
-			'mission_view':mission_view,
-			'importance':importance,
-			'tags':tags,
-			'comments':comments, 
-		
-			'is_active':is_active,
-			'is_critical':is_critical, 
-			'is_private':is_private,
-
-			'frequency':frequency,
-			'repeats':repeats,
-	
-			'repeats_on_Mon':repeats_on_Mon,
-			'repeats_on_Tue':repeats_on_Tue,
-			'repeats_on_Wed':repeats_on_Wed,
-			'repeats_on_Thu':repeats_on_Thu,
-			'repeats_on_Fri':repeats_on_Fri,
-			'repeats_on_Sat':repeats_on_Sat,
-			'repeats_on_Sun':repeats_on_Sun,
-
-			'money_cost':money_cost,
-			'days_cost':days_cost,
-			'hours_cost':hours_cost,
-			'birthday':birthday,
-			'is_mini_o':is_mini_o
-
-		})
-	})
-	.done(function(data){
-		console.log(data);
-		ksu.find('#description').val('');
-		ksu.find('#comments').val('');
-		ksu.find('#is_critical').prop('checked', false);
-		ksu.find('#is_private').prop('checked', false);
-		ksu.find('#is_active').prop('checked', true);
-		ksu.find('#is_mini_o').prop('checked', false);
-		
-		ksu.find('#secondary_description').val('');
-		ksu.find('#BigO_secondary_description').val('');
-		ksu.find('#KAS3_secondary_description').val('');
-		ksu.find('#KAS4_secondary_description').val('');
-		ksu.find('#EVPo_secondary_description').val('');
-		ksu.find('#ImPe_secondary_description').val('');
-		ksu.find('#Idea_SecondaryDescription').val('');
-
-		ksu.find('#best_time').val('');
-		ksu.find('#ImIn_best_time').val('');
-		ksu.find('#Diary_best_time').val('');
-
-		// ksu.find('#next_event').val('');
-		ksu.find('#BigO_next_event').val('');
-		ksu.find('#EVPo_next_event').val('');
-		ksu.find('#ImPe_next_event').val('')
-		ksu.find('#ImIn_next_event').val('')
-		ksu.find('#Diary_next_event').val('')
-		
-		ksu.find('#tags_value').val('');
-		ksu.find('#Dummy_tags_value').val('');			
-		
-		ksu.find('#importance').val(3);
-
-		ksu.find('#kpts_value').val(1);
-		ksu.find('#KAS3_kpts_value').val(1);
-		ksu.find('#KAS4_kpts_value').val(1);
-		ksu.find('#BigO_kpts_value').val(1);
-		ksu.find('#Wish_kpts_value').val(1);
-		ksu.find('#EVPo_kpts_value').val(1);
-		ksu.find('#ImPe_kpts_value').val(1);
-
-		ksu.find('#frequency').val('');
-		ksu.find('#EVPo_frequency').val('');
-		ksu.find('#ImPe_frequency').val('');
-		ksu.find('#ImIn_frequency').val('');
-		ksu.find('#Diary_frequency').val('');
-
-		ksu.find('#money_cost').val('');
-		ksu.find('#days_cost').val('');
-		ksu.find('#hours_cost').val('');
-		ksu.find('#birthday').val('');
-
-		
-		if (ksu_subtype == ''){
-			ksu_subtype = ksu_type
-		};
-
-		console.log('Este es el tipo de KSU que ando pidiendo guardar:');
-		console.log(ksu_type);
-		console.log(ksu_subtype);
-
-		var Templates = {
-			'KeyA': $('#NewKSUTemplate_KeyA').clone(),
-			'KAS1': $('#NewKSUTemplate_KAS1').clone(),
-			'KAS2': $('#NewKSUTemplate_KAS2').clone(),
-			'KAS3': $('#NewKSUTemplate_KAS3').clone(),
-			'KAS4': $('#NewKSUTemplate_KAS4').clone(),
-			
-			'BigO': $('#NewKSUTemplate_BigO').clone(),
-			'Wish': $('#NewKSUTemplate_Wish').clone(),
-			
-			'EVPo': $('#NewKSUTemplate_EVPo').clone(),
-			'ImPe': $('#NewKSUTemplate_ImPe').clone(),
-			'Idea': $('#NewKSUTemplate_Idea').clone(),
-			'RTBG': $('#NewKSUTemplate_RTBG').clone(),
-
-			'RealitySnapshot': $('#NewKSUTemplate_RealitySnapshot').clone(),
-			'BinaryPerception': $('#NewKSUTemplate_BinaryPerception').clone(),
-			'TernaryPerception': $('#NewKSUTemplate_TernaryPerception').clone(),
-			'FibonacciPerception': $('#NewKSUTemplate_FibonacciPerception').clone(),
-			'Diary': $('#NewKSUTemplate_Diary').clone()
-		}
-
- 
-		var new_ksu = Templates[ksu_subtype];
-
-		new_ksu.attr("id", "MissionKSU");
-		new_ksu.attr("value",data['ksu_id']);
-		new_ksu.find('#ksu_id').attr("value",data['ksu_id']);
-
-		new_ksu.find('#description').val(description);
-		new_ksu.find('#secondary_description').val(secondary_description);
-		new_ksu.find('#kpts_value').val(kpts_value);
-		new_ksu.find('#best_time').val(best_time);
-		new_ksu.find('#next_event').val(next_event);
-
-		new_ksu.find('#importance').val(importance);
-		
-		new_ksu.find('#tags').val(tags);
-		new_ksu.find('#ksu_subtype').text(ksu_subtype);
-
-		new_ksu.find('#is_critical').prop('checked', is_critical);
-		new_ksu.find('#is_active').prop('checked', is_active);
-		new_ksu.find('#is_private').prop('checked', is_private);
-
-		new_ksu.find('#money_cost').val(money_cost);
-		new_ksu.find('#hours_cost').val(hours_cost);
-		new_ksu.find('#days_cost').val(days_cost);
-		new_ksu.find('#birthday').val(birthday);
-		new_ksu.find('#is_mini_o').prop('checked', is_mini_o);
-
-		new_ksu.find('#frequency').val(frequency);
-		new_ksu.find('#comments').val(comments);
-
-		new_ksu.removeClass('hidden');
-		new_ksu.prependTo('#NewKSUsHolder');
-		new_ksu.fadeIn("slow");
-
-		if(is_critical && is_active){
-			new_ksu.find('#description').css('color', '#B22222');				
-		} else if (is_active){
-			new_ksu.find('#description').css('color', 'black');				
-		} else {
-			new_ksu.find('#description').css('color', '#b1adad');
-		};
-
-		if(is_mini_o){
-			new_ksu.find('#description').css('font-weight', 'bold');
-			new_ksu.find('#secondary_description').removeClass('hidden');
-			ksu.find('#description').css('font-weight', 'normal');
-			ksu.find('#description').css('font-style', 'normal');
-			ksu.find('#secondary_description').addClass('hidden');
-		};
-
-
-		$('#TagsAndImportanceRow').addClass('hidden');	
-		$('#QuickKsuSecondaryDescription').addClass('hidden');
-		$('#QuickKsuSubtypeDetails').addClass('hidden');
-		ksu.fadeIn("slow");
-
-	});
-});
-
-
 $('.DeleteEventButton').on('click', function(){
 	var event = $(this).closest('#MissionKSU');
 	var event_id = event.attr("value");
@@ -991,18 +990,18 @@ $(document).on('focusout', '.QuickAttributeUpdate', function(){
 	var attr_value = $(this).val();
 	if( attr_type == 'checkbox'){
 		attr_value = $(this).is(':checked');
-	};
+	}; 
 
 	var ksu = $(this).closest('#MissionKSU');
 	var ksu_id = ksu.attr("value");
 	var content_type = 'KSU';
-	console.log(ksu.attr("KSUorEvent") == 'Event');
+	
 
 	if (ksu.attr("KSUorEvent") == 'Event'){ 
 		content_type = 'Event'
 	};
-	console.log(content_type);
 	
+	console.log(attr_type);
 	console.log(attr_key);
 	console.log(attr_value);
 
