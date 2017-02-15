@@ -1108,7 +1108,8 @@ $(document)
     });
 
 
-function add(target_timer, seconds, minutes, hours) {
+function add(target_timer, seconds, minutes, hours, effort_denominator, kpts_value) {
+    
     seconds++;
     if (seconds >= 60) {
         seconds = 0;
@@ -1119,30 +1120,62 @@ function add(target_timer, seconds, minutes, hours) {
         }
     }
     
-
-    // console.log(seconds)
-    // console.log((hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds))
-   
     target_timer.text((hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds));
+    timer(target_timer, seconds, minutes, hours, effort_denominator, kpts_value);
+    
+    target_timer.attr("seconds", seconds);
+    target_timer.attr("minutes", minutes); 
+    target_timer.attr("hours", hours);
 
-    timer(target_timer, seconds, minutes, hours);
+    if (seconds == 0 && minutes % effort_denominator == 0 ){
+    	kpts_value.val(parseInt(kpts_value.val())+1)
+    }
+
 }
 
 
-function timer(target_timer, seconds, minutes, hours) {
+var t;
+
+function timer(target_timer, seconds, minutes, hours, effort_denominator, kpts_value) {
     t = setTimeout(function(){
-    	add(target_timer, seconds, minutes, hours)
+    	add(target_timer, seconds, minutes, hours, effort_denominator, kpts_value)
     }, 1000);
 }
 
 $(document).on('click', '.PlayStopButton', function(){
+	clearTimeout(t);
 	var ksu = $(this).closest('#MissionKSU');
-	var buttom_action = $(this).attr("button_action")
+	var effort_denominator = parseInt(ksu.find('input:radio[name=effort_denominator]:checked').val());
+	var kpts_value = ksu.find('#kpts_value');
 
-	var target_timer = ksu.find('#ksu_timmer');
-	var seconds = 0, minutes = 0, hours = 0, t;
+	var button_action = $(this).attr("button_action")
+	var GlaphiconDiv = $(this).find('#PlayStopGlyphicon');
+	var target_timer = ksu.find('#ksu_timer');
+	var seconds = target_timer.attr("seconds"), minutes = target_timer.attr("minutes"), hours = target_timer.attr("hours");
 
-	timer(target_timer, seconds, minutes, hours);
+	if (button_action == 'Play'){
+		$(this).attr("button_action", "Stop")
+		timer(target_timer, seconds, minutes, hours, effort_denominator, kpts_value);				
+
+	} else {
+		$(this).attr("button_action", "Play");
+		$.ajax({
+			type: "POST",
+			url: "/EventHandler",
+			dataType: 'json',
+			data: JSON.stringify({
+				'ksu_id': ksu.attr("value"),
+				'content_type':'KSU',
+				'user_action': 'UpdateKsuAttribute',
+				'attr_key':'kpts_value',
+				'attr_value':ksu.find('#kpts_value').val()
+			})
+		})
+	}
+
+	GlaphiconDiv.toggleClass('glyphicon-play');
+	GlaphiconDiv.toggleClass('glyphicon-stop');	
+
 });
 
 
