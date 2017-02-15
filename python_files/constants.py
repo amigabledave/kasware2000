@@ -72,7 +72,7 @@ d_SetTitles = {
 
 	'SomedayMaybe': 'Someday Maybe', 
 	'Gene': 'In-Basket',
-	'KeyA': 'Key Actions Set',
+	'KeyA': 'Core Actions',
 	'BOKA': 'Objective Plan',
 	'BigO': 'Objectives',
 	'Wish': 'Dreams & Wishes',
