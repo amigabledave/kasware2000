@@ -410,6 +410,33 @@
 									<option value="WrapUp" {% if ksu.mission_view == 'WrapUp' %} selected="selected"{% endif %}>Wrap Up</option>
 								</select> 
 							</div>
+
+							<div class="col-xs-12">
+								<label> Targeted Dream or Objective </label>
+								<select class="form-control QuickAttributeUpdate" name="parent_id" id="parent_id">
+									<option value="None"> -- None -- </option>
+									<optgroup label="Objectives">
+									{% for (ksu_id, description) in objectives %}
+										{% if ksu.parent_id_id == ksu_id or (ksu.parent_id and ksu.parent_id.id() == ksu_id ) %}
+											<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
+										{% else %}
+											<option value="{{ksu_id}}"> {{description}} </option>								
+										{% endif %}
+									{% endfor %}
+									</optgroup>
+									<optgroup label="Dreams">
+									{% for (ksu_id, description) in dreams %}
+										{% if ksu.parent_id_id == ksu_id or (ksu.parent_id and ksu.parent_id.id() == ksu_id ) %}
+											<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
+										{% else %}
+											<option value="{{ksu_id}}"> {{description}} </option>								
+										{% endif %}
+									{% endfor %}
+									</optgroup>
+								</select>	
+							</div>	
+
+
 						</div>								
 												
 					{% elif ksu.ksu_subtype == 'KAS2' %}
@@ -428,25 +455,40 @@
 							{% endif %}
 							</div>
 							{% endif %}	
-							
-							<div class="col-xs-4 col-sm-2" {% if viewer_mode == 'Mission' %} style="padding-left:0px;"{% endif %}>
+														
+							<div {% if viewer_mode == 'Mission' %} class="col-xs-4 col-sm-2"  style="padding-left:0px;"{% else %} class="col-xs-4 col-sm-3" {% endif %}>
 								<div class="checkbox"> 
 									<label> <input type="checkbox" class="QuickAttributeUpdate MiniObjectiveCheckbox" id="is_mini_o" name="is_mini_o" {% if ksu.is_mini_o %}checked{% endif %}> <b> Mini Objective </b> </label> 
 								</div>	
 							</div>
 
+
 							<div class=" {% if viewer_mode == 'Mission' %} col-xs-12 col-sm-6 {% else %} col-xs-8 col-sm-9 {% endif %}">
-								<label> Targeted Objective </label>
+								<label> Targeted Dream or Objective </label>
 								<select class="form-control QuickAttributeUpdate" name="parent_id" id="parent_id">
+									<option value="None"> -- None -- </option>
+									<optgroup label="Objectives">
 									{% for (ksu_id, description) in objectives %}
-											{% if ksu.parent_id_id == ksu_id or (ksu.parent_id and ksu.parent_id.id() == ksu_id ) %}
+										{% if ksu.parent_id_id == ksu_id or (ksu.parent_id and ksu.parent_id.id() == ksu_id ) %}
 											<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
-											{% else %}
+										{% else %}
 											<option value="{{ksu_id}}"> {{description}} </option>								
-											{% endif %}
+										{% endif %}
 									{% endfor %}
+									</optgroup>
+									<optgroup label="Dreams">
+									{% for (ksu_id, description) in dreams %}
+										{% if ksu.parent_id_id == ksu_id or (ksu.parent_id and ksu.parent_id.id() == ksu_id ) %}
+											<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
+										{% else %}
+											<option value="{{ksu_id}}"> {{description}} </option>								
+										{% endif %}
+									{% endfor %}
+									</optgroup>
 								</select>	
-							</div>		
+							</div>	
+
+
 						</div>
 
 					{% elif ksu.ksu_subtype == 'KAS3' %}
@@ -460,7 +502,34 @@
 									<option value="Principal" {% if ksu.mission_view == 'Principal' %} selected="selected"{% endif %}>Principal</option>
 									<option value="WrapUp" {% if ksu.mission_view == 'WrapUp' %} selected="selected"{% endif %}>Wrap Up</option>
 								</select> 
-							</div>		
+							</div>
+
+							<div class="col-xs-12 col-sm-8">
+								<label> Targeted Dream or Objective </label>
+								<select class="form-control QuickAttributeUpdate" name="parent_id" id="parent_id">
+									<option value="None"> -- None -- </option>
+									<optgroup label="Objectives">
+									{% for (ksu_id, description) in objectives %}
+										{% if ksu.parent_id_id == ksu_id or (ksu.parent_id and ksu.parent_id.id() == ksu_id ) %}
+											<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
+										{% else %}
+											<option value="{{ksu_id}}"> {{description}} </option>								
+										{% endif %}
+									{% endfor %}
+									</optgroup>
+									<optgroup label="Dreams">
+									{% for (ksu_id, description) in dreams %}
+										{% if ksu.parent_id_id == ksu_id or (ksu.parent_id and ksu.parent_id.id() == ksu_id ) %}
+											<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
+										{% else %}
+											<option value="{{ksu_id}}"> {{description}} </option>								
+										{% endif %}
+									{% endfor %}
+									</optgroup>
+								</select>	
+							</div>							
+
+
 						</div>
 
 					{% elif ksu.ksu_subtype == 'KAS4' %}
@@ -481,7 +550,33 @@
 							<div class="col-xs-6 col-sm-8">
 								<label>Valid Exceptions</label>
 								<textarea class="form-control QuickAttributeUpdate autoExpand" rows="{{ksu.secondary_description_rows}}" data-min-rows='{{ksu.secondary_description_rows}}' name="secondary_description" id="secondary_description" placeholder="e.g. When I'am on vacation, When the food its free!">{% if ksu.secondary_description %}{{ ksu.secondary_description }}{% endif %}</textarea>	
+							</div>
+							<div class="col-xs-12">
+								<label> Targeted Dream or Objective </label>
+								<select class="form-control QuickAttributeUpdate" name="parent_id" id="parent_id">
+									<option value="None"> -- None -- </option>
+									<optgroup label="Objectives">
+									{% for (ksu_id, description) in objectives %}
+										{% if ksu.parent_id_id == ksu_id or (ksu.parent_id and ksu.parent_id.id() == ksu_id ) %}
+											<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
+										{% else %}
+											<option value="{{ksu_id}}"> {{description}} </option>								
+										{% endif %}
+									{% endfor %}
+									</optgroup>
+									<optgroup label="Dreams">
+									{% for (ksu_id, description) in dreams %}
+										{% if ksu.parent_id_id == ksu_id or (ksu.parent_id and ksu.parent_id.id() == ksu_id ) %}
+											<option selected="selected" value="{{ksu_id}}"> {{description}} </option>
+										{% else %}
+											<option value="{{ksu_id}}"> {{description}} </option>								
+										{% endif %}
+									{% endfor %}
+									</optgroup>
+								</select>	
 							</div>	
+
+
 						</div>	
 					
 					{% elif ksu.ksu_subtype == 'BigO' %}
@@ -496,6 +591,7 @@
 							<div class="col-xs-6">
 								<label> Targeted Dream </label>	
 								<select class="form-control QuickAttributeUpdate" name="parent_id" id="parent_id">
+									<option value="None"> -- None -- </option>
 									{% for (ksu_id, description) in dreams %}																				
 										{% if ksu.parent_id and ksu.parent_id.id() == ksu_id %}
 										<option selected="selected" value="{{ksu_id}}"> {{description}} </option>

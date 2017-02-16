@@ -102,7 +102,8 @@ class Event(ndb.Model):
 
 	#tracker fields
 	theory = ndb.KeyProperty(kind=Theory, required=True)
-	ksu_id = ndb.KeyProperty(kind=KSU, required=True)	
+	ksu_id = ndb.KeyProperty(kind=KSU, required=True)
+	parent_id = ndb.KeyProperty(kind=KSU)	
 	created = ndb.DateTimeProperty(auto_now_add=True)	
 	last_modified = ndb.DateTimeProperty(auto_now=True)
 	is_deleted = ndb.BooleanProperty(default=False)

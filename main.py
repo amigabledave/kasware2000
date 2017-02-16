@@ -490,7 +490,6 @@ class SetViewer(Handler):
 		parent_id = ''
 		dreams = []
 		objectives = []
-		big_objectives = []
 		view_type = ''
 
 		if not set_name:
@@ -513,8 +512,10 @@ class SetViewer(Handler):
 			set_title = ksu.description
 			parent_id = int(ksu_id)
 			dreams = self.get_active_dreams(user_key)
-			if set_name == 'BOKA':				
-				objectives, big_objectives = self.get_user_objectives(user_key)
+			objectives = self.get_user_objectives(user_key)
+			# if set_name == 'BOKA':				
+				# objectives, big_objectives = self.get_user_objectives(user_key)
+				# objectives = self.get_user_objectives(user_key)
 			view_type ='Plan'
 		
 		else:
@@ -525,8 +526,14 @@ class SetViewer(Handler):
 		
 			if set_name == 'BigO':				
 				ksu_set = ksu_set.filter(KSU.ksu_subtype == 'BigO')
-				objectives, big_objectives = self.get_user_objectives(user_key)
+				# objectives, big_objectives = self.get_user_objectives(user_key)
+				objectives = self.get_user_objectives(user_key)
 				dreams = self.get_active_dreams(user_key)
+
+			if set_name == 'KeyA':				
+				objectives = self.get_user_objectives(user_key)
+				dreams = self.get_active_dreams(user_key)
+
 
 
 			ksu_set = ksu_set.fetch()
@@ -549,7 +556,7 @@ class SetViewer(Handler):
 		
 		tags = self.theory.categories['tags'] # por el quick adder
 		ksu_set, set_tags = self.get_set_tags(ksu_set)
-		self.print_html('SetViewer.html', new_ksu_required_templates=new_ksu_required_templates, viewer_mode='Set',  ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, dreams=dreams, objectives=objectives, big_objectives=big_objectives, view_type=view_type, set_tags=set_tags) #
+		self.print_html('SetViewer.html', new_ksu_required_templates=new_ksu_required_templates, viewer_mode='Set',  ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, dreams=dreams, objectives=objectives, view_type=view_type, set_tags=set_tags) #
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -585,22 +592,23 @@ class SetViewer(Handler):
 
 	def get_active_dreams(self, user_key):
 		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == 'Wish', KSU.is_critical == True).order(-KSU.is_active).order(KSU.importance).order(KSU.created)
-		dreams = [(None,'-- None --')]
+		dreams = []
 		for ksu in ksu_set:
 			dreams.append((ksu.key.id(), ksu.description))
 		return dreams
 
 	def get_user_objectives(self, user_key):
 		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == 'BigO').order(-KSU.is_active).order(KSU.importance).order(KSU.created)
-		objectives = [(None,'-- None --')]
-		big_objectives = [(None,'-- None --')]
+		# objectives = [(None,'-- None --')]
+		big_objectives = []
 		for ksu in ksu_set:
-			if ksu.ksu_subtype == 'BigO':				
-				objectives.append((ksu.key.id(), ksu.description))
-				big_objectives.append((ksu.key.id(), ksu.description))
-			else:
-				objectives.append((ksu.key.id(), ksu.description))
-		return objectives, big_objectives
+			big_objectives.append((ksu.key.id(), ksu.description))
+			# if ksu.ksu_subtype == 'BigO':				
+			# 	objectives.append((ksu.key.id(), ksu.description))
+			# 	big_objectives.append((ksu.key.id(), ksu.description))
+			# else:
+			# 	objectives.append((ksu.key.id(), ksu.description))
+		return big_objectives #,objectives
 
 
 	def remove_inactive_child_objectives(self, objectives):
@@ -640,7 +648,7 @@ class MissionViewer(Handler):
 		time_frame = self.request.get('time_frame')
 
 		tags = self.theory.categories['tags']		
-		full_mission, objectives, today = self.generate_todays_mission(time_frame)
+		full_mission, objectives, today, dreams = self.generate_todays_mission(time_frame)
 				
 		if time_frame == 'Today':
 			time_frame_sets = ['kick_off', 'anywhere_anytime','today','wrap_up']
@@ -660,6 +668,7 @@ class MissionViewer(Handler):
 						viewer_mode='Mission', 
 						full_mission=full_mission,
 						objectives=objectives,
+						dreams=dreams,
 						time_frame_sets=time_frame_sets,
 						time_frame=time_frame,
 	
@@ -804,7 +813,8 @@ class MissionViewer(Handler):
 				return 'later'
 
 
-		objectives = [(None,'-- None --')]
+		objectives = []
+		dreams = []
 
 		mission_sets = ['KAS1', 'KAS2', 'KAS3', 'KAS4', 'EVPo', 'ImPe', 'RealitySnapshot', 'BinaryPerception', 'TernaryPerception','FibonacciPerception', 'Diary']
 		
@@ -829,9 +839,12 @@ class MissionViewer(Handler):
 
 			elif ksu_subtype == 'BigO':
 				objectives.append((ksu.key.id(), ksu.description))
+
+			elif ksu_subtype == 'Wish' and ksu.is_critical:
+				dreams.append((ksu.key.id(), ksu.description))
 			
 
-		return full_mission, objectives, today  
+		return full_mission, objectives, today , dreams 
 
 
 class EventHandler(Handler):
@@ -931,6 +944,7 @@ class EventHandler(Handler):
 		event = Event(
 			theory=self.theory.key,
 			ksu_id =  ksu.key,
+			parent_id=ksu.parent_id,
 			event_type = user_action,
 			user_date_date=(datetime.today()+timedelta(hours=self.theory.timezone)),
 			user_date=(datetime.today()+timedelta(hours=self.theory.timezone)).toordinal(),
