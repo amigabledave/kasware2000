@@ -1074,7 +1074,7 @@ for(x = 0; x < allRadios.length; x++){
 //         this.rows = 1 + rows;	
 //     });
 
-// xx 
+
 
 
 $(document)
@@ -1107,38 +1107,59 @@ $(document)
         this.rows = minRows + rows;
     });
 
+var t;
+var start_time;
 
-function add(target_timer, seconds, minutes, hours, effort_denominator, kpts_value) {
-    
-    seconds++;
-    if (seconds >= 60) {
-        seconds = 0;
-        minutes++;
-        if (minutes >= 60) {
-            minutes = 0;
-            hours++;
-        }
-    }
-    
-    target_timer.text((hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds));
-    timer(target_timer, seconds, minutes, hours, effort_denominator, kpts_value);
-    
-    target_timer.attr("seconds", seconds);
-    target_timer.attr("minutes", minutes); 
-    target_timer.attr("hours", hours);
 
-    if (seconds == 0 && minutes % effort_denominator == 0 ){
-    	kpts_value.val(parseInt(kpts_value.val())+1)
-    }
+function secondsToHms(segundos_timer, puntos_ya_agregados, effort_denominator, starting_seconds) {
 
+	d = segundos_timer + starting_seconds;	
+	var h = Math.floor(d / 3600);
+	var m = Math.floor(d % 3600 / 60);
+	var s = Math.floor(d % 3600 % 60);
+
+	effort_denominator = 60 * effort_denominator
+
+	// console.log('d: ' + d);
+	// console.log('starting_seconds: ' + starting_seconds);
+	// console.log('effort_denominator: ' + effort_denominator);
+	// console.log('puntos_ya_agregados: ' + puntos_ya_agregados)
+	var puntos_por_agregar = Math.floor((d - starting_seconds) / effort_denominator) - puntos_ya_agregados
+	// console.log('puntos_por_agregar: ' + puntos_por_agregar)
+
+	return [h, m, s, puntos_por_agregar]
 }
 
 
-var t;
+function add(target_timer, puntos_ya_agregados, effort_denominator, kpts_value, starting_seconds) {
+    
+	var segundos_timer = Math.floor((parseFloat(new Date().valueOf()) - parseFloat(start_time.valueOf()))/1000) ;
+	
+	var secondsToHms_output =  secondsToHms(segundos_timer, puntos_ya_agregados, effort_denominator, starting_seconds);
+	var hours = secondsToHms_output[0];
+	var minutes = secondsToHms_output[1];
+	var seconds = secondsToHms_output[2];
+	var puntos_por_agregar = secondsToHms_output[3];
+	
+	// console.log('input add: '+ hours + minutes + seconds + puntos_por_agregar)
+    
+    target_timer.text((hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds));
+    timer(target_timer, puntos_por_agregar + puntos_ya_agregados, effort_denominator, kpts_value, starting_seconds);
+    
+    target_timer.attr("seconds", seconds);
+    target_timer.attr("minutes", minutes);
+    target_timer.attr("hours", hours);
 
-function timer(target_timer, seconds, minutes, hours, effort_denominator, kpts_value) {
+    if (puntos_por_agregar > 0 ){
+    	kpts_value.val(parseInt(kpts_value.val())+puntos_por_agregar)
+    }
+}
+
+
+
+function timer(target_timer, puntos_ya_agregados, effort_denominator, kpts_value, starting_seconds) {
     t = setTimeout(function(){
-    	add(target_timer, seconds, minutes, hours, effort_denominator, kpts_value)
+    	add(target_timer, puntos_ya_agregados, effort_denominator, kpts_value, starting_seconds)
     }, 1000);
 }
 
@@ -1146,16 +1167,30 @@ $(document).on('click', '.PlayStopButton', function(){
 	clearTimeout(t);
 	var ksu = $(this).closest('#MissionKSU');
 	var effort_denominator = parseInt(ksu.find('input:radio[name=effort_denominator]:checked').val());
+	var puntos_ya_agregados = 0;
 	var kpts_value = ksu.find('#kpts_value');
+
+	if(kpts_value.val() == ''){
+		kpts_value.val(0)};	
 
 	var button_action = $(this).attr("button_action")
 	var GlaphiconDiv = $(this).find('#PlayStopGlyphicon');
 	var target_timer = ksu.find('#ksu_timer');
 	var seconds = target_timer.attr("seconds"), minutes = target_timer.attr("minutes"), hours = target_timer.attr("hours");
 
+	var starting_seconds =  parseInt(target_timer.attr("seconds")) + parseInt(target_timer.attr("minutes"))*60 + parseInt(target_timer.attr("hours"))*3600;
+	// console.log('starting_seconds seconds: ' + starting_seconds )
+	// console.log('starting_seconds: ' + starting_seconds);
+	// console.log('effort_denominator: ' + effort_denominator);
+	// console.log('puntos_ya_agregados: ' + puntos_ya_agregados)
+
+    
 	if (button_action == 'Play'){
+		start_time = new Date();
+		// console.log('start_time: ' + start_time)
+		// console.log('start_time.valueOf: ' + start_time.valueOf())
 		$(this).attr("button_action", "Stop")
-		timer(target_timer, seconds, minutes, hours, effort_denominator, kpts_value);				
+		timer(target_timer, puntos_ya_agregados, effort_denominator, kpts_value, starting_seconds);				
 
 	} else {
 		$(this).attr("button_action", "Play");
