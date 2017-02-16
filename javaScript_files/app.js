@@ -1171,7 +1171,7 @@ $(document).on('click', '.PlayStopButton', function(){
 	var kpts_value = ksu.find('#kpts_value');
 
 	if(kpts_value.val() == ''){
-		kpts_value.val(0)};	
+		kpts_value.val(1)};	
 
 	var button_action = $(this).attr("button_action")
 	var GlaphiconDiv = $(this).find('#PlayStopGlyphicon');
