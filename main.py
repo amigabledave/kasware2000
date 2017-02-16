@@ -655,10 +655,6 @@ class MissionViewer(Handler):
 			new_ksu_required_templates.append(ksu)
 	
 
-		full_mission_value = 0
-		for time_horizon in time_frame_sets:
-			full_mission_value += full_mission[time_horizon]['horizon_value']
-
 
 		self.print_html('MissionViewer.html',
 						viewer_mode='Mission', 
@@ -666,8 +662,7 @@ class MissionViewer(Handler):
 						objectives=objectives,
 						time_frame_sets=time_frame_sets,
 						time_frame=time_frame,
-						full_mission_value=full_mission_value,
-
+	
 						reactive_mission=full_mission['timeless_reactive']['horizon_set'],
 
 						constants=constants,
@@ -705,64 +700,52 @@ class MissionViewer(Handler):
 
 			'timeless_reactive':{
 				'horizon_title':'Reactive Mission',
-				'horizon_set':[],
-				'horizon_value':0},
+				'horizon_set':[]},
 
 			'hidden_reactive':{
 				'horizon_title':'Reactive Mission',
-				'horizon_set':[],
-				'horizon_value':0},
+				'horizon_set':[]},
 
 			'kick_off':{
 				'horizon_title':'Kick Off',
-				'horizon_set':[],
-				'horizon_value':0},
+				'horizon_set':[]},
 
 			'anywhere_anytime':{
 				'horizon_title':'Anywhere Anytime',
-				'horizon_set':[],
-				'horizon_value':0},
+				'horizon_set':[]},
 
 			'wrap_up':{
 				'horizon_title':'Wrap Up',
-				'horizon_set':[],
-				'horizon_value':0},
+				'horizon_set':[]},
 
 
 			'today':{
 				'horizon_title':'Actions to execute',
-				'horizon_set':[],
-				'horizon_value':0},
+				'horizon_set':[]},
 		 	
 		 	'tomorrow':{
 		 		'horizon_title':'Tomorrow',
-				'horizon_set':[],
-				'horizon_value':0},
+				'horizon_set':[]},
 			
 			'this_week':{
 				'horizon_title':'This Week',
-				'horizon_set':[],
-				'horizon_value':0},
+				'horizon_set':[]},
 			
 			'this_month':{
 				'horizon_title':'This Month',
-				'horizon_set':[],
-				'horizon_value':0},
+				'horizon_set':[]},
 			
 			'later':{
 				'horizon_title':'Later',
-				'horizon_set':[],
-				'horizon_value':0},
+				'horizon_set':[]},
 		 	
 		 	'someday_maybe':{
 		 		'horizon_title':'Someday... maybe',
-				'horizon_set':[],
-				'horizon_value':0},
+				'horizon_set':[]},
 
 			'hidden_someday_maybe':{
 		 		'horizon_title':'Joy Generators Someday ... maybe',
-				'horizon_set':[],
-				'horizon_value':0}}
+				'horizon_set':[]}}
 
 
 		def define_horizon(ksu, today_ordinal):
@@ -840,11 +823,9 @@ class MissionViewer(Handler):
 				time_horizon = define_horizon(ksu, today_ordinal)
 				full_mission[time_horizon]['horizon_set'].append(ksu)
 				## Apendix - TBD
-				if not ksu.kpts_value:
-					ksu.kpts_value = 0
-				#
-				full_mission[time_horizon]['horizon_value'] += ksu.kpts_value
-
+				# if not ksu.kpts_value:
+				# 	ksu.kpts_value = 0
+				#				
 
 			elif ksu_subtype == 'BigO':
 				objectives.append((ksu.key.id(), ksu.description))
