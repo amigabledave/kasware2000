@@ -16,8 +16,8 @@
 				{% else %}
 				<button type="button" class="btn btn-success btn-circle btn-lg UserActionButton" name="action_description" value='MissionRecordValue'><span class="glyphicon glyphicon-record"></span></button>
 				{% endif %}
-				{% if ksu.ksu_subtype in ['KAS3', 'KAS4', 'Diary', 'RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'TernaryPerception'] %}
-					<button type="button" class="btn btn-{% if ksu.ksu_subtype == 'KAS4' %}success{% else %}warning{% endif %} btn-circle btn-lg UserActionButton" style="margin-top:10px;" name="action_description" value='MissionSkip'><span class="glyphicon glyphicon-remove"></span></button>
+				{% if ksu.ksu_subtype in ['KAS3', 'Diary', 'RealitySnapshot', 'BinaryPerception', 'FibonacciPerception', 'TernaryPerception'] %}
+					<button type="button" class="{% if ksu.ksu_subtype == 'KAS3' and not ksu.is_critical %}hidden{% endif %} btn btn-{% if ksu.ksu_subtype == 'KAS3' and ksu.is_critical %}danger{% else %}warning{% endif %} btn-circle btn-lg UserActionButton" style="margin-top:10px;" name="action_description" value='MissionSkip'><span class="glyphicon glyphicon-remove"></span></button>
 				{% endif %}
 			</div>
 			{% endif %}

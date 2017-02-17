@@ -1009,9 +1009,19 @@ class EventHandler(Handler):
 			self.update_active_log(event)
 			event.put()
 
-		if user_action in ['MissionPush', 'MissionSkip', 'SendToMission']:
+		if user_action in ['MissionPush' 'SendToMission']:			
 			update_next_event(self, user_action, {}, ksu)
 			
+
+		if user_action == 'MissionSkip':
+			if ksu_subtype == 'KAS3':
+				event.kpts_type = 'Stupidity'
+				event.score = float(self.theory.game['critical_burn'])
+				self.update_active_log(event)
+				event.put()	
+			else:	
+				update_next_event(self, user_action, {}, ksu)			
+
 
 		if user_action == 'ViewerOnOff':
 			if ksu.is_active:
@@ -1591,9 +1601,11 @@ def update_next_event(self, user_action, post_details, ksu):
 				ksu.next_event = tomorrow
 				ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
 
-		if user_action in ['MissionPush','MissionSkip']:
+		if user_action == 'MissionPush':
 			ksu.next_event = tomorrow
 			ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
+
+
 
 
 	elif ksu_subtype in ['ImPe', 'RealitySnapshot', 'FibonacciPerception', 'TernaryPerception', 'BinaryPerception', 'Diary']:
