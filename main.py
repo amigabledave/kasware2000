@@ -940,7 +940,7 @@ class EventHandler(Handler):
 
 		ksu = KSU.get_by_id(int(event_details['ksu_id']))
 		ksu_subtype = ksu.ksu_subtype
-		
+		# XX
 		event = Event(
 			theory=self.theory.key,
 			ksu_id =  ksu.key,
@@ -958,6 +958,11 @@ class EventHandler(Handler):
 		
 		# print 'Este es el tipo de KSU al que corresponde'
 		# print ksu_subtype
+
+		if ksu.ksu_type in ['ImIn', 'Diary'] and ksu.next_event.toordinal() < event.user_date:
+			user_date = ksu.next_event.toordinal()
+			event.user_date_date = datetime.fromordinal(user_date) + timedelta(hours=23) + timedelta(minutes=59)
+			event.user_date = user_date
 
 
 		if user_action == 'RecordValue':
@@ -1606,8 +1611,6 @@ def update_next_event(self, user_action, post_details, ksu):
 			ksu.pretty_next_event = tomorrow.strftime('%a, %b %d, %Y')
 
 
-
-
 	elif ksu_subtype in ['ImPe', 'RealitySnapshot', 'FibonacciPerception', 'TernaryPerception', 'BinaryPerception', 'Diary']:
 		
 		next_event = ksu.next_event
@@ -1615,9 +1618,9 @@ def update_next_event(self, user_action, post_details, ksu):
 		if not next_event:
 			ksu.next_event = today
 			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
-
+		# xx
 		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone', 'RecordValue']:
-			ksu.next_event = today + timedelta(days=ksu.frequency)
+			ksu.next_event += timedelta(days=ksu.frequency)
 			ksu.pretty_next_event = (next_event + timedelta(days=ksu.frequency)).strftime('%a, %b %d, %Y')
 
 		if user_action == 'MissionPush':
