@@ -940,7 +940,7 @@ class EventHandler(Handler):
 
 		ksu = KSU.get_by_id(int(event_details['ksu_id']))
 		ksu_subtype = ksu.ksu_subtype
-		# XX
+		
 		event = Event(
 			theory=self.theory.key,
 			ksu_id =  ksu.key,
@@ -963,7 +963,6 @@ class EventHandler(Handler):
 			user_date = ksu.next_event.toordinal()
 			event.user_date_date = datetime.fromordinal(user_date) + timedelta(hours=23) + timedelta(minutes=59)
 			event.user_date = user_date
-
 
 		if user_action == 'RecordValue':
 			event.kpts_type = 'IndicatorValue'
@@ -1014,7 +1013,8 @@ class EventHandler(Handler):
 			self.update_active_log(event)
 			event.put()
 
-		if user_action in ['MissionPush' 'SendToMission']:			
+
+		if user_action in ['MissionPush', 'SendToMission']:			
 			update_next_event(self, user_action, {}, ksu)
 			
 
@@ -1057,8 +1057,12 @@ class EventHandler(Handler):
 
 		game = self.game
 
+		event_id = None
+		if event.key:
+			event_id = event.key.id()
+
 		self.response.out.write(json.dumps({'mensaje':'Evento creado y guardado',
-											'event_id':event.key.id(),
+											'event_id':event_id ,
 											'pretty_event_date':event.user_date_date.strftime('%a, %b %d, %Y'), 
 											
 											'event_comments':event.comments,
@@ -1618,7 +1622,7 @@ def update_next_event(self, user_action, post_details, ksu):
 		if not next_event:
 			ksu.next_event = today
 			ksu.pretty_next_event = (today).strftime('%a, %b %d, %Y')
-		# xx
+		
 		if user_action in ['MissionDone', 'MissionSkip', 'ViewerDone', 'RecordValue']:
 			ksu.next_event += timedelta(days=ksu.frequency)
 			ksu.pretty_next_event = (next_event + timedelta(days=ksu.frequency)).strftime('%a, %b %d, %Y')
