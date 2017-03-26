@@ -516,7 +516,18 @@
 		<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:8px;">
 
 		<div class="row">
-			<div class="col-xs-12">
+
+			<div class="col-xs-4">
+				<label> Wish Type </label>
+					<select class="form-control" name="wish_type" id="wish_type">														
+						<option value="doing">Doing</option>
+						<option value="having">Having</option>
+						<option value="being">Being</option>
+						<option value="achieving">Achieving</option>
+					</select>
+			</div>
+
+			<div class="col-xs-8">
 				<label> Why is this important to me?</label>
 				<textarea type="text" class="form-control autoExpands DummyInput" rows="1" data-min-rows='1' ksuattr="secondary_description" id="Wish_secondary_description" name="secondary_description" placeholder="e.g. Because I never want to worry about money angain...">{% if ksu and ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
 			</div>
@@ -600,6 +611,26 @@
 				</div>
 			</div>
 	</div>
+
+
+	<div class="{% if set_name != 'RTBG' %}hidden{% endif %}" id="Wish">
+
+		<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:8px;">
+
+		<div class="row">
+
+			<div class="col-xs-4">
+				<label> Reason Type </label>
+					<select class="form-control DummyInput" ksuattr="wish_type" id="RTBG_wish_type">														
+						<option value="doing">Expirience</option>
+						<option value="having">Having/ Have had</option>
+						<option value="being">Being/ Have been</option>
+						<option value="achieving">Achievement</option>
+					</select>
+			</div>
+		</div>
+	</div>
+
 
 	<div class="{% if set_name != 'Idea' %}hidden{% endif %}" id="Idea">
 		<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:8px;">

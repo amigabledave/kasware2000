@@ -139,6 +139,7 @@ $('.SaveNewKSUButton').on('click', function(){
 		parent_id = ksu.find('#parent_id option:selected').val();
 	};
 	var effort_denominator = ksu.find('input:radio[name=effort_denominator]:checked').val();
+	var wish_type = ksu.find('#wish_type option:selected').val();
 
 	var description = ksu.find('#description').val();
 	var secondary_description = ksu.find('#secondary_description').val();
@@ -195,7 +196,10 @@ $('.SaveNewKSUButton').on('click', function(){
 			'ksu_type': ksu_type,
 			'ksu_subtype': ksu_subtype,
 			'parent_id': parent_id,
+
 			'effort_denominator':effort_denominator,
+			'wish_type': wish_type,
+
 
 			'description':description,
 			'secondary_description':secondary_description,
@@ -699,6 +703,12 @@ $('.DummyInput').on('change',function(){
 	if (ksu_attr == 'tags'){
 		$(this).closest('#MissionKSU').find('#tags').val(this.value);
 	};
+
+	if (ksu_attr == 'wish_type'){
+		$('#wish_type').val(this.value);
+	};
+
+
 });
 
 

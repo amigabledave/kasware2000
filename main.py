@@ -555,8 +555,23 @@ class SetViewer(Handler):
 
 		
 		tags = self.theory.categories['tags'] # por el quick adder
-		ksu_set, set_tags = self.get_set_tags(ksu_set, set_name)
-		self.print_html('SetViewer.html', new_ksu_required_templates=new_ksu_required_templates, viewer_mode='Set',  ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, dreams=dreams, objectives=objectives, view_type=view_type, set_tags=set_tags) #
+		ksu_set, set_tags, wish_type_definitions = self.get_set_tags(ksu_set, set_name)
+		self.print_html(
+			'SetViewer.html', 
+			new_ksu_required_templates=new_ksu_required_templates, 
+			viewer_mode='Set',  
+			ksu_set=ksu_set, 
+			constants=constants, 
+			set_name=set_name, 
+			ksu={}, 
+			tags=tags, 
+			set_title=set_title, 
+			parent_id=parent_id, 
+			dreams=dreams, 
+			objectives=objectives, 
+			view_type=view_type, 
+			set_tags=set_tags, 
+			wish_type_definitions=wish_type_definitions) #
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -639,8 +654,8 @@ class SetViewer(Handler):
 			tags_tuples.append(('TagId_' + str(i),tag))
 			i += 1
 
-
-		if set_name == 'Wish':
+		wish_type_definitions = None
+		if set_name in ['Wish', 'RTBG']:
 			wish_tags = {'doing':['NoTags'], 'having':['NoTags'], 'being':['NoTags'], 'achieving':['NoTags']}
 			wish_tuples = {'doing':[], 'having':[], 'being':[], 'achieving':[]}
 
@@ -664,13 +679,18 @@ class SetViewer(Handler):
 
 			tags_tuples = wish_tuples
 
+			if set_name == 'Wish':
+				wish_type_definitions = [['doing', 'Experiencing'], ['having', 'Having'], ['being', 'Being'], ['achieving', 'Achieving']]
+			elif set_name == 'RTBG':
+				wish_type_definitions = [['doing', 'Experience'], ['having', 'Having/Have had'], ['being', 'Being/Had been'], ['achieving', 'Achievement']]
+
 		print
 		print 'These are the tags tuples'
 		print tags_tuples
 		print
 
 
-		return ksu_set, tags_tuples 
+		return ksu_set, tags_tuples, wish_type_definitions 
 
 
 class MissionViewer(Handler):

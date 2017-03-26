@@ -613,8 +613,8 @@
 										<option value="doing" {% if ksu.wish_type == 'doing' %} selected="selected" {% endif %}>Doing</option>
 										<option value="having" {% if ksu.wish_type == 'having' %} selected="selected" {% endif %}>Having</option>
 										<option value="being" {% if ksu.wish_type == 'being' %} selected="selected" {% endif %}>Being</option>
-										<option value="being" {% if ksu.wish_type == 'achieving' %} selected="selected" {% endif %}>achieving</option>
-									</select>
+										<option value="achieving" {% if ksu.wish_type == 'achieving' %} selected="selected" {% endif %}>Achieving</option>
+									</select> 
 							</div>
 							<div class="col-xs-8">
 								<label> Why is this important to me?</label>
@@ -719,6 +719,22 @@
 							</div>
 						</div>
 
+					{% elif ksu.ksu_type == 'RTBG' %}
+
+						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
+						
+						<div class="row">
+							<div class="col-xs-6">
+								<label> Reason Type </label>
+									<select class="form-control QuickAttributeUpdate" name="wish_type" id="wish_type">														
+										<option value="doing" {% if ksu.wish_type == 'doing' %} selected="selected" {% endif %}>Expirience</option>
+										<option value="having" {% if ksu.wish_type == 'having' %} selected="selected" {% endif %}>Having/ Have had</option>
+										<option value="being" {% if ksu.wish_type == 'being' %} selected="selected" {% endif %}>Being/ Have been</option>
+										<option value="achieving" {% if ksu.wish_type == 'achieving' %} selected="selected" {% endif %}>Achievement</option>
+									</select>
+							</div>
+						</div> 
+					
 					{% elif ksu.ksu_type == 'ImIn' %}
 
 						{% if viewer_mode == 'Set' %}

@@ -31,7 +31,7 @@
 
 {% endif %}
 
-{% if set_name not in ['Wish'] %}
+{% if set_name not in ['Wish', 'RTBG'] %}
 
 	{% for (tag_id, tag) in set_tags %}
 	 	{% if tag != 'NoTags' %}
@@ -62,14 +62,14 @@
 
 {% else %}
 
-	{% for wish_type in [['doing', 'Doing'], ['having', 'Having'], ['being', 'Being'], ['achieving', 'Achieving']] %}
+	{% for wish_type in wish_type_definitions %}
 		<div class="row" id="">
 			<div class="col-xs-10"> 
 				<div class="SectionTitle" id="" style="font-size: 26px;"> {{wish_type[1]}} </div>
 			</div>
 
 			<div class="col-xs-2" style="padding:0;">
-				<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#{{wish_type[0]}}" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;" id="ShowHideReactiveMission"><span id="MissionPlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="font-size:25px;"></span></button>
+				<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#{{wish_type[0]}}" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;" id="ShowHideReactiveMission"><span id="MissionPlusMinusGlyphicon" class="glyphicon glyphicon-minus" style="font-size:25px;"></span></button>
 			</div>
 		</div>
 

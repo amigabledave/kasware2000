@@ -25,6 +25,8 @@ d_attributeType = {
 	'ksu_subtype':'string',
 	'parent_id':'ndb_key',
 	'effort_denominator':'integer',
+	'wish_type': 'string',
+
 
 	'importance':'integer',
 	'mission_importance':'integer',
