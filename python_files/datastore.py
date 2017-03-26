@@ -90,12 +90,13 @@ class KSU(ndb.Model):
 	target = ndb.JsonProperty() # For ksus that generate kpts and indicators target min, target max, reverse target etc
 	birthday = ndb.DateProperty()
 	cost = ndb.JsonProperty(default={'money_cost':0, 'days_cost':0, 'hours_cost':0})
-	# money_cost = ndb.IntegerProperty() - To be deleted
+
 	picture = ndb.BlobProperty() #Might be used in the future
 	times_reviewed = ndb.IntegerProperty(default=0)
 	next_critical_burn = ndb.IntegerProperty() #Define siguiente fecha como ordinal en la que si no se cumplio la accion esta quema
 
 	effort_denominator = ndb.IntegerProperty(default=3)
+	wish_type = ndb.StringProperty(default='doing')
 
 
 class Event(ndb.Model):

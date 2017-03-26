@@ -555,7 +555,7 @@ class SetViewer(Handler):
 
 		
 		tags = self.theory.categories['tags'] # por el quick adder
-		ksu_set, set_tags = self.get_set_tags(ksu_set)
+		ksu_set, set_tags = self.get_set_tags(ksu_set, set_name)
 		self.print_html('SetViewer.html', new_ksu_required_templates=new_ksu_required_templates, viewer_mode='Set',  ksu_set=ksu_set, constants=constants, set_name=set_name, ksu={}, tags=tags, set_title=set_title, parent_id=parent_id, dreams=dreams, objectives=objectives, view_type=view_type, set_tags=set_tags) #
 
 	@super_user_bouncer
@@ -620,7 +620,8 @@ class SetViewer(Handler):
 				result.append(ksu)
 		return result
 
-	def get_set_tags(self, ksu_set):
+	#xx
+	def get_set_tags(self, ksu_set, set_name):
 		set_tags = []
 		for ksu in ksu_set:
 			if ksu.tags and ksu.tags != 'NoTags':
@@ -637,6 +638,37 @@ class SetViewer(Handler):
 		for tag in set_tags:
 			tags_tuples.append(('TagId_' + str(i),tag))
 			i += 1
+
+
+		if set_name == 'Wish':
+			wish_tags = {'doing':['NoTags'], 'having':['NoTags'], 'being':['NoTags'], 'achieving':['NoTags']}
+			wish_tuples = {'doing':[], 'having':[], 'being':[], 'achieving':[]}
+
+			for ksu in ksu_set:
+				if ksu.tags != 'NoTags':
+					set_tags = wish_tags[ksu.wish_type]
+					ksu_tags = (ksu.tags).replace(', ',',').split(',')
+					for tag in ksu_tags:
+						if tag not in set_tags:
+							set_tags.append(tag)
+					wish_tags[ksu.wish_type] = set_tags
+
+			i = 0	
+			for wish_type in ['doing', 'having', 'being', 'achieving']:
+				wish_type_tags_tuples = []
+				set_tags = wish_tags[wish_type]		
+				for tag in set_tags:
+					wish_type_tags_tuples.append(('TagId_' + str(i),tag))
+					i += 1
+				wish_tuples[wish_type] = wish_type_tags_tuples
+
+			tags_tuples = wish_tuples
+
+		print
+		print 'These are the tags tuples'
+		print tags_tuples
+		print
+
 
 		return ksu_set, tags_tuples 
 
@@ -1111,7 +1143,7 @@ class EventHandler(Handler):
 	def update_single_attribute(self, ksu, attr_key, attr_value):
 		updated_value = None
 		
-		if attr_key in ['description', 'secondary_description', 'comments', 'repeats', 'secondary_comments','mission_view']:
+		if attr_key in ['description', 'secondary_description', 'comments', 'repeats', 'secondary_comments','mission_view', 'wish_type']:
 			setattr(ksu, attr_key, attr_value.encode('utf-8'))		
 			updated_value = attr_value.encode('utf-8')
 

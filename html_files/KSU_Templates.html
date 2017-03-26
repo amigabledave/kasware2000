@@ -605,13 +605,24 @@
 
 					{% elif ksu.ksu_type == 'Wish' %}
 						<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:8px;">
-					
+						
 						<div class="row">
-							<div class="col-xs-12">
+							<div class="col-xs-4">
+								<label> Wish Type </label>
+									<select class="form-control QuickAttributeUpdate" name="wish_type" id="wish_type">														
+										<option value="doing" {% if ksu.wish_type == 'doing' %} selected="selected" {% endif %}>Doing</option>
+										<option value="having" {% if ksu.wish_type == 'having' %} selected="selected" {% endif %}>Having</option>
+										<option value="being" {% if ksu.wish_type == 'being' %} selected="selected" {% endif %}>Being</option>
+										<option value="being" {% if ksu.wish_type == 'achieving' %} selected="selected" {% endif %}>achieving</option>
+									</select>
+							</div>
+							<div class="col-xs-8">
 								<label> Why is this important to me?</label>
 								<textarea type="text" class="form-control autoExpands QuickAttributeUpdate" rows="1" data-min-rows='1' id="secondary_description" name="secondary_description" placeholder="e.g. Because I never want to worry about money angain...">{% if ksu and ksu.secondary_description %}{{ksu.secondary_description}}{% endif %}</textarea>
 							</div>
+
 						</div>
+					
 
 						<div class="row">																		
 							<div class="col-xs-4">

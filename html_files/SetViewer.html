@@ -31,34 +31,83 @@
 
 {% endif %}
 
+{% if set_name not in ['Wish'] %}
+
+	{% for (tag_id, tag) in set_tags %}
+	 	{% if tag != 'NoTags' %}
+	 	
+		<div class="row" style="margin-top:8px; margin-bottom:4px;" id="TagTitle">
+			
+			<div class="col-xs-1"></div>	
+
+			<div class="col-xs-1" style="padding:0;">
+				<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#{{tag_id}}" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:-15px; margin-top:4px;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus TagPlusMinus" style="font-size:20px;"></span></button>			
+			</div>
 
 
-{% for (tag_id, tag) in set_tags %}
- 	{% if tag != 'NoTags' %}
- 	
-	<div class="row" style="margin-top:8px; margin-bottom:4px;" id="TagTitle">
-		
-		<div class="col-xs-1"></div>	
-
-		<div class="col-xs-1" style="padding:0;">
-			<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#{{tag_id}}" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:-15px; margin-top:4px;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus TagPlusMinus" style="font-size:20px;"></span></button>			
+			<div class="col-xs-10"> 
+				<div class="SectionTitle" style="font-size:20px; margin-left:-25px;">{{tag}}</div>
+			</div>			
 		</div>
 
+	 	{% endif %}
+		<div id="{{tag_id}}" class="{% if tag != 'NoTags' %}tag_content hidden{% endif %}">
+			{% for ksu in ksu_set %}
+				{% if tag in ksu.tags %}
+					{% include "KSU_Templates.html" %}
+				{% endif %}
+			{% endfor %}
+		</div>
+	{% endfor %}
 
-		<div class="col-xs-10"> 
-			<div class="SectionTitle" style="font-size:20px; margin-left:-25px;">{{tag}}</div>
-		</div>			
-	</div>
+{% else %}
 
- 	{% endif %}
-	<div id="{{tag_id}}" class="{% if tag != 'NoTags' %}tag_content hidden{% endif %}">
-		{% for ksu in ksu_set %}
-			{% if tag in ksu.tags %}
-				{% include "KSU_Templates.html" %}
-			{% endif %}
+	{% for wish_type in [['doing', 'Doing'], ['having', 'Having'], ['being', 'Being'], ['achieving', 'Achieving']] %}
+		<div class="row" id="">
+			<div class="col-xs-10"> 
+				<div class="SectionTitle" id="" style="font-size: 26px;"> {{wish_type[1]}} </div>
+			</div>
+
+			<div class="col-xs-2" style="padding:0;">
+				<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#{{wish_type[0]}}" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:0;" id="ShowHideReactiveMission"><span id="MissionPlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="font-size:25px;"></span></button>
+			</div>
+		</div>
+
+		<div id="{{wish_type[0]}}">
+			
+		
+		{% for (tag_id, tag) in set_tags[wish_type[0]] %}
+		 	{% if tag != 'NoTags' %}
+		 	
+			<div class="row" style="margin-top:8px; margin-bottom:4px;" id="TagTitle">
+				
+				<div class="col-xs-1"></div>	
+
+				<div class="col-xs-1" style="padding:0;">
+					<button type="button" class="btn btn-default ShowDetailViewerButton SectionTitle ExpandColapseSection" targetsection="#{{tag_id}}" style="background-color:transparent;border:1px; padding-top:0; padding-bottom:0;margin-left:-15px; margin-top:4px;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus TagPlusMinus" style="font-size:20px;"></span></button>			
+				</div>
+
+
+				<div class="col-xs-10"> 
+					<div class="SectionTitle" style="font-size:20px; margin-left:-25px;">{{tag}}</div>
+				</div>			
+			</div>
+
+		 	{% endif %}
+			<div id="{{tag_id}}" class="{% if tag != 'NoTags' %}tag_content hidden{% endif %}">
+				{% for ksu in ksu_set %}
+					{% if tag in ksu.tags and ksu.wish_type == wish_type[0] %}
+						{% include "KSU_Templates.html" %}
+					{% endif %}
+				{% endfor %}
+			</div>
 		{% endfor %}
 	</div>
-{% endfor %}
+
+	{% endfor %}
+
+{% endif %}
+
 <!-- End of Set Viewer -->
 {% endblock %}
 
