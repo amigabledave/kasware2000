@@ -1035,6 +1035,7 @@ ksu_for_template = {
 	'money_cost': 0,
 
 	'cost':{'money_cost': 0, 'days_cost': 0, 'hours_cost': 0},
+	'timer':{},
 
 	'picture': None,
 	'times_reviewed': 0,

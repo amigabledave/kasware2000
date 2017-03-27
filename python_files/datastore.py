@@ -89,7 +89,9 @@ class KSU(ndb.Model):
 	is_mini_o = ndb.BooleanProperty(default=False)
 	target = ndb.JsonProperty() # For ksus that generate kpts and indicators target min, target max, reverse target etc
 	birthday = ndb.DateProperty()
-	cost = ndb.JsonProperty(default={'money_cost':0, 'days_cost':0, 'hours_cost':0})
+	
+	timer = ndb.JsonProperty(default={'hours':0, 'minutes':0, 'seconds':0, 'value':'00:00:00'})
+	cost = ndb.JsonProperty(default={'money_cost':0, 'days_cost':0, 'hours_cost':0, 'mierda':'Mierda!'})
 
 	picture = ndb.BlobProperty() #Might be used in the future
 	times_reviewed = ndb.IntegerProperty(default=0)
@@ -97,6 +99,7 @@ class KSU(ndb.Model):
 
 	effort_denominator = ndb.IntegerProperty(default=3)
 	wish_type = ndb.StringProperty(default='doing')
+	
 
 
 class Event(ndb.Model):

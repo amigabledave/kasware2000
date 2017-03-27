@@ -76,10 +76,10 @@
 
 
 					{% if time_frame == 'Today' %}
-					
+					<!-- xx -->
 						{% if ksu.ksu_subtype not in ['KAS4'] %}
 							<div class="col-xs-5 col-sm-2">									
-								<div style="margin-top: 2px;" id="ksu_timer" hours="0" minutes="0" seconds="0">00:00:00</div>								
+								<div style="margin-top: 2px;" id="ksu_timer" hours="{{ ksu.timer['hours'] }}" minutes="{{ ksu.timer['minutes'] }}" seconds="{{ ksu.timer['seconds'] }}">{{ ksu.timer['value'] }}</div>												
 							</div>
 
 							<div class="col-xs-1" style="padding-left:0px">
@@ -318,7 +318,7 @@
 					</div>
 					<div class="col-xs-2">
 						<label class="radio-inline" style="margin-left:2px;">
-							<input type="radio" name="effort_denominator" value="2" class="QuickAttributeUpdate" {% if ksu.effort_denominator == 1 %} checked="checked" {% endif %}> Huge </label></div>
+							<input type="radio" name="effort_denominator" value="2" class="QuickAttributeUpdate" {% if ksu.effort_denominator == 2 %} checked="checked" {% endif %}> Huge </label></div>
 					<div class="col-xs-2">
 						<label class="radio-inline">
 							<input type="radio" name="effort_denominator" value="3" class="QuickAttributeUpdate" {% if ksu.effort_denominator == 3 %} checked="checked" {% endif %}> High </label></div>

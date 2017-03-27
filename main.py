@@ -990,6 +990,16 @@ class EventHandler(Handler):
 			self.response.out.write(json.dumps({'updated_value':updated_value}))
 			return
 
+		if user_action == 'TimerStop':
+			ksu = KSU.get_by_id(int(event_details['ksu_id']))
+			ksu.timer['hours'] =  int(event_details['hours'])
+			ksu.timer['minutes'] =  int(event_details['minutes'])
+			ksu.timer['seconds'] =  int(event_details['seconds'])
+			ksu.timer['value'] =  event_details['timer_value']
+			ksu.kpts_value =  float(event_details['kpts_value'])
+			ksu.put()
+			return
+
 		ksu = KSU.get_by_id(int(event_details['ksu_id']))
 		ksu_subtype = ksu.ksu_subtype
 		
@@ -1048,6 +1058,13 @@ class EventHandler(Handler):
 
 				if ksu_subtype in ['EVPo']:
 					event.quality = event_details['event_quality']
+
+
+				ksu.timer['hours'] =  0
+				ksu.timer['minutes'] =  0
+				ksu.timer['seconds'] =  0
+				ksu.timer['value'] =  '00:00:00'
+
 			
 			if ksu_subtype == 'KAS4':
 				event.kpts_type = 'Stupidity'
@@ -1763,6 +1780,7 @@ def prepareInputForSaving(theory, ksu, post_details):
 			if a_val == 'on':
 				a_val = True
 			d_repeats_on[a_key] = a_val
+
 
 		if a_type == 'dict_cost':
 			ksu.cost[a_key] = int(a_val)
