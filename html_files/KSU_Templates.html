@@ -76,7 +76,7 @@
 
 
 					{% if time_frame == 'Today' %}
-					<!-- xx -->
+					
 						{% if ksu.ksu_subtype not in ['KAS4'] %}
 							<div class="col-xs-5 col-sm-2">									
 								<div style="margin-top: 2px;" id="ksu_timer" hours="{{ ksu.timer['hours'] }}" minutes="{{ ksu.timer['minutes'] }}" seconds="{{ ksu.timer['seconds'] }}">{{ ksu.timer['value'] }}</div>												
@@ -113,16 +113,16 @@
 					</div>
 
 					{% else %}
-					<div class="col-xs-4 col-sm-3">
+					<div class="col-xs-4 col-sm-3"> <!-- xx -->
 						{% if ksu.ksu_subtype in ['BinaryPerception', 'FibonacciPerception', 'TernaryPerception'] %}
 							<select class="form-control" name="indicator_value" id="select_indicator_value" style="margin-bottom:5px;">
 								{% if ksu.ksu_subtype == 'BinaryPerception' %}
-									<option value="1"> Yes </option>
-									<option value="0"> No </option>
+									<option value="1" selected="selected"> {{ksu.ImIn_details['positive_label']}} </option>
+									<option value="0"> {{ksu.ImIn_details['negative_label']}} </option>
 								{% elif ksu.ksu_subtype == 'TernaryPerception' %}
-									<option value="0"> Dissapointed </option>
-									<option value="1" selected="selected"> Satisfied </option>
-									<option value="2"> Delighted </option>
+									<option value="2"> {{ksu.ImIn_details['positive_label']}} </option>
+									<option value="1" selected="selected"> {{ksu.ImIn_details['neutral_label']}} </option>
+									<option value="0"> {{ksu.ImIn_details['negative_label']}} </option>
 								{% elif ksu.ksu_subtype == 'FibonacciPerception' %}
 									<option value="1">1</option>
 									<option value="2">2</option>
@@ -132,7 +132,7 @@
 								{% endif %}
 							</select>
 						{% elif ksu.ksu_subtype == 'RealitySnapshot' %}
-							<input type="number" min="0" class="form-control" name="indicator_value" id="open_indicator_value" placeholder="0" style="margin-bottom:5px;">
+							<input type="number" min="0" class="form-control" name="indicator_value" id="open_indicator_value" placeholder="{{ksu.ImIn_details['units']}}" style="margin-bottom:5px;">
 						{% endif %}
 					</div>
 
@@ -747,12 +747,13 @@
 								{% if ksu.ksu_subtype in ['BinaryPerception', 'FibonacciPerception', 'TernaryPerception'] %}
 									<select class="form-control" name="indicator_value" id="select_indicator_value">
 										{% if ksu.ksu_subtype == 'BinaryPerception' %}
-											<option value="1"> Yes </option>
-											<option value="0"> No </option>
+											<option value="1" selected="selected"> {{ksu.ImIn_details['positive_label']}} </option>
+											<option value="0"> {{ksu.ImIn_details['negative_label']}} </option>
 										{% elif ksu.ksu_subtype == 'TernaryPerception' %}
-											<option value="0"> Dissapointed </option>
-											<option value="1" selected="selected"> Satisfied </option>
-											<option value="2"> Delighted </option>											
+											<option value="2"> {{ksu.ImIn_details['positive_label']}} </option>
+											<option value="1" selected="selected"> {{ksu.ImIn_details['neutral_label']}} </option>
+											<option value="0"> {{ksu.ImIn_details['negative_label']}} </option>
+											
 										{% elif ksu.ksu_subtype == 'FibonacciPerception' %}
 											<option value="1">1</option>
 											<option value="2">2</option>
@@ -762,7 +763,7 @@
 										{% endif %}
 									</select>
 								{% elif ksu.ksu_subtype == 'RealitySnapshot' %}
-									<input type="number" min="0" class="form-control" style="padding-right:3px;" name="indicator_value" id="open_indicator_value" placeholder="0">
+									<input type="number" min="0" class="form-control" style="padding-right:3px;" name="indicator_value" id="open_indicator_value" placeholder="{{ksu.ImIn_details['units']}}">
 								{% endif %}
 							</div>
 							<div class="col-xs-6 col-sm-8">
@@ -792,6 +793,36 @@
 									<option value="WrapUp" {% if ksu.mission_view == 'WrapUp' %} selected="selected"{% endif %}>Wrap Up</option>
 								</select> 
 							</div>
+						</div>
+						
+						<div class="row">
+							{% if ksu.ksu_subtype in ['BinaryPerception', 'TernaryPerception'] %}
+								<div class="col-xs-6 col-sm-4">
+									<label>Positive label</label>
+									<input type="text" class="form-control QuickAttributeUpdate"  name="positive_label" id="" placeholder="e.g. Delighted" value="{{ksu.ImIn_details['positive_label']}}">
+								</div>
+							{% endif %}	
+
+							{% if ksu.ksu_subtype == 'TernaryPerception' %}
+								<div class="col-xs-6 col-sm-4">
+									<label>Neutral label</label>
+									<input type="text" class="form-control QuickAttributeUpdate"  name="neutral_label" id="" placeholder="e.g. Satisfied" value="{{ksu.ImIn_details['neutral_label']}}">
+								</div>
+							{% endif %}	
+
+							{% if ksu.ksu_subtype in ['BinaryPerception', 'TernaryPerception'] %}
+								<div class="col-xs-6 col-sm-4">
+									<label>Negative label</label>
+									<input type="text" class="form-control QuickAttributeUpdate"  name="negative_label" id="" placeholder="e.g. Dissapointed" value="{{ksu.ImIn_details['negative_label']}}">
+								</div>
+							{% endif %}	
+
+							{% if ksu.ksu_subtype == 'RealitySnapshot' %}
+								<div class="col-xs-6 col-sm-4">
+								<label>Meassurement Units</label>
+									<input type="text"  class="form-control QuickAttributeUpdate"  name="units" id="" placeholder="e.g. $, Kg" value="{{ksu.ImIn_details['units']}}">
+								</div>
+							{% endif %}							
 						</div>
 
 					{% elif ksu.ksu_type == 'Diary' %}
@@ -835,6 +866,38 @@
 								</select> 
 							</div>
 						</div>
+
+						<div class="row">
+							{% if ksu.ksu_subtype in ['BinaryPerception', 'TernaryPerception'] %}
+								<div class="col-xs-6 col-sm-4">
+									<label>Positive label</label>
+									<input type="text" class="form-control QuickAttributeUpdate"  name="positive_label" id="" placeholder="e.g. Delighted" value="{{ksu.ImIn_details['positive_label']}}">
+								</div>
+							{% endif %}	
+
+							{% if ksu.ksu_subtype == 'TernaryPerception' %}
+								<div class="col-xs-6 col-sm-4">
+									<label>Neutral label</label>
+									<input type="text" class="form-control QuickAttributeUpdate"  name="neutral_label" id="" placeholder="e.g. Satisfied" value="{{ksu.ImIn_details['neutral_label']}}">
+								</div>
+							{% endif %}	
+
+							{% if ksu.ksu_subtype in ['BinaryPerception', 'TernaryPerception'] %}
+								<div class="col-xs-6 col-sm-4">
+									<label>Negative label</label>
+									<input type="text" class="form-control QuickAttributeUpdate"  name="negative_label" id="" placeholder="e.g. Dissapointed" value="{{ksu.ImIn_details['negative_label']}}">
+								</div>
+							{% endif %}	
+
+							{% if ksu.ksu_subtype == 'RealitySnapshot' %}
+								<div class="col-xs-6 col-sm-4">
+								<label>Meassurement Units</label>
+									<input type="text"  class="form-control QuickAttributeUpdate"  name="units" id="" placeholder="e.g. $, Kg" value="{{ksu.ImIn_details['units']}}">
+								</div>
+							{% endif %}							
+						</div>
+
+
 					
 					{% endif %}		
 

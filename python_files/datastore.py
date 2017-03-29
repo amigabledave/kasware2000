@@ -99,6 +99,7 @@ class KSU(ndb.Model):
 
 	effort_denominator = ndb.IntegerProperty(default=3)
 	wish_type = ndb.StringProperty(default='doing')
+	ImIn_details = ndb.JsonProperty(default={'positive_label':'Delighted', 'neutral_label':'Satisfied', 'negative_label':'Dissapointed', 'units':'Units'})
 	
 
 

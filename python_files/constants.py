@@ -1036,6 +1036,7 @@ ksu_for_template = {
 
 	'cost':{'money_cost': 0, 'days_cost': 0, 'hours_cost': 0},
 	'timer':{},
+	'ImIn_details':{'positive_label':'Delighted', 'neutral_label':'Satisfied', 'negative_label':'Dissapointed', 'units': 'Units'},
 
 	'picture': None,
 	'times_reviewed': 0,

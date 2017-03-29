@@ -1250,6 +1250,13 @@ class EventHandler(Handler):
 			ksu.cost[attr_key] = int(attr_value)
 
 
+		elif attr_key in ['positive_label', 'negative_label', 'neutral_label', 'units']:
+			print
+			print 'So far si esta intentando actualizar el label del indicador'
+			print
+			ksu.ImIn_details[attr_key] = attr_value.encode('utf-8')
+
+
 		ksu.put()	
 		return updated_value
 
