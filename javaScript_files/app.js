@@ -39,7 +39,6 @@ $(document).on('click', '.UserActionButton', function(){
 		
 	};
 
-	// and is not a mini_o
 
 	if (user_action == 'ReactiveMissionDone'){
 		user_action = 'MissionDone'};
@@ -116,6 +115,15 @@ $(document).on('click', '.UserActionButton', function(){
 		
 		var dissapear_after_done_subtypes = ['KAS2', 'Wish', 'BigO'];
 		var dissapear_after_done_actions = ['ViewerDone'];
+
+
+		if (is_mini_o) {
+			var target_timer = ksu.find('#ksu_timer');
+			    target_timer.attr("seconds", 0);
+			    target_timer.attr("minutes", 0);
+			    target_timer.attr("hours", 0);
+			    target_timer.text('00:00:00')
+		}
 
 		if (($.inArray(ksu_subtype, dissapear_after_done_subtypes)!= -1) && ($.inArray(user_action, dissapear_after_done_actions)!= -1)){
 			ksu.animate({
