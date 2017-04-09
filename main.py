@@ -635,7 +635,7 @@ class SetViewer(Handler):
 				result.append(ksu)
 		return result
 
-	#xx
+	
 	def get_set_tags(self, ksu_set, set_name):
 		set_tags = []
 		for ksu in ksu_set:
@@ -1519,6 +1519,10 @@ class PopulateRandomTheory(Handler):
 				if ksu_subtype in ['KAS1','KAS3','KAS4','ImPe'] and not next_event:
 					new_ksu.next_event = today
 
+				new_ksu.importance = (theory.size + 1) * 10000 
+				theory.size += 1
+				theory.put() 	
+
 				new_ksu.put()		
 		return
 
@@ -1554,7 +1558,6 @@ def determine_return_to(self):
 
 
 	return return_to
-
 
 def update_next_event(self, user_action, post_details, ksu):
 
@@ -1832,6 +1835,10 @@ def prepareInputForSaving(theory, ksu, post_details):
 	print ksu.ksu_type
 	print ksu.ksu_subtype
 
+	ksu.importance = (theory.size + 1) * 10000 
+	theory.size += 1
+	theory.put() 
+
 	return ksu
 
 def remplaza_acentos(palabra):
@@ -1966,7 +1973,14 @@ def get_ksu_to_remember(self):
 
 	return ksu_less_reviewed, current_objectives
 	
-
+def recalibrate_theory_importance(ordered_ksu_set):
+	set_size = len(ordered_ksu_set)
+	next_importance = 10000 * set_size
+	for ksu in ordered_ksu_set:
+		ksu.importance = next_importance
+		next_importance -= 10000
+		ksu.put()
+		
 
 #--- Validation and security functions ----------
 secret = 'elzecreto'

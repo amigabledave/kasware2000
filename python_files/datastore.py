@@ -20,6 +20,7 @@ class Theory(ndb.Model):
  	timezone = ndb.IntegerProperty(default=-6) #Deberia de ser forzoza, pero para evitar errores por ahora no la solicito asi
  	# day_start_time = ndb.TimeProperty() - TBD
  	categories = ndb.JsonProperty(required=True)
+ 	size = ndb.IntegerProperty(default=0)
 
  	#Game details
  	game = ndb.JsonProperty(default={
