@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- <div class="KSUdisplaySection"> -->
+<!-- Section title -->
+<div class="row">
+	<div class="col-xs-10"> 
+		<div class="SectionTitle"> 
+			Theory Viewer
+		</div>	
+	</div>
+	<div class="col-xs-2" style="padding:0;"></div>
+</div>
+
+<div id="sortable" class="sortable">
+	{% for ksu in ksu_set %}	
+		{% include "KSU_Templates.html" %}
+	{% endfor %}
+</div>
+
+{% endblock %}

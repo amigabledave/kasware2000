@@ -186,9 +186,6 @@ class Handler(webapp2.RequestHandler):
 
 		return game
 
-
-
-
 		
 class SignUpLogIn(Handler):
 	def get(self):
@@ -493,22 +490,22 @@ class SetViewer(Handler):
 		view_type = ''
 
 		if not set_name:
-			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(KSU.importance).order(KSU.created).fetch()
+			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(-KSU.importance).order(KSU.created).fetch()
 		
 		elif set_name == 'TheoryQuery':
 			lookup_string = self.request.get('lookup_string')
-			user_theory = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch() 
+			user_theory = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.is_deleted == False).order(-KSU.importance).fetch() 
 			# user_theory = KSU.query(KSU.theory == user_key ).order(KSU.importance).order(KSU.created).fetch() #TBD
 			ksu_set = self.search_theory(user_theory, lookup_string)
 			set_title = 'You searched for: ' + lookup_string
 		
 		elif set_name == 'Graveyard':
-			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == True, KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch()
+			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == True, KSU.is_deleted == False).order(-KSU.importance).fetch()
 
 		elif ksu_id:			
 			ksu = KSU.get_by_id(int(ksu_id))
 			ksu_key = ksu.key			
-			ksu_set = KSU.query(KSU.parent_id == ksu_key).filter(KSU.is_deleted == False).order(KSU.importance).order(KSU.created).fetch()
+			ksu_set = KSU.query(KSU.parent_id == ksu_key).filter(KSU.is_deleted == False).order(-KSU.importance).fetch()
 			set_title = ksu.description
 			parent_id = int(ksu_id)
 			dreams = self.get_active_dreams(user_key)
@@ -519,7 +516,7 @@ class SetViewer(Handler):
 			view_type ='Plan'
 		
 		else:
-			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(KSU.ksu_subtype).order(-KSU.is_active).order(KSU.importance).order(KSU.created)
+			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(-KSU.importance)
 
 			if self.theory.hide_private_ksus:
 				ksu_set = ksu_set.filter(KSU.is_private == False)
@@ -753,9 +750,9 @@ class MissionViewer(Handler):
 			ksu_set = ksu_set.filter(KSU.is_private == False)
 		
 		if time_frame == 'Upcoming':
-			ksu_set = ksu_set.order(-KSU.is_critical).order(KSU.next_event).order(KSU.importance).order(KSU.best_time).fetch()
+			ksu_set = ksu_set.order(-KSU.importance).fetch()
 		else:
-			ksu_set = ksu_set.order(KSU.importance).order(-KSU.is_critical).order(KSU.best_time).fetch()
+			ksu_set = ksu_set.order(-KSU.importance).fetch()
 
 		full_mission = {
 
@@ -897,6 +894,243 @@ class MissionViewer(Handler):
 			
 
 		return full_mission, objectives, today , dreams 
+
+
+class TheoryViewer(Handler):
+
+	# @super_user_bouncer
+	# def get(self):
+	# 	user_key = self.theory.key
+				
+	# 	ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(-KSU.importance).fetch()
+		
+	# 	for ksu in ksu_set:
+	# 		ksu.description_rows = determine_rows(ksu.description)
+	# 		ksu.secondary_description_rows = determine_rows(ksu.secondary_description)
+	# 		ksu.comments_rows = determine_rows(ksu.comments)
+		
+	# 	tags = self.theory.categories['tags'] # por el quick adder
+		
+	# 	self.print_html(
+	# 		'TheoryViewer.html', 
+	# 		ksu_set=ksu_set, 
+	# 		constants=constants, 			
+	# 		ksu={}, 
+	# 		tags=tags) #
+
+	@super_user_bouncer
+	def get(self):
+		# set_name = self.request.get('set_name')
+		set_name = 'KeyA'
+		user_key = self.theory.key
+		ksu_id = self.request.get('ksu_id')
+		set_title = constants['d_SetTitles'][set_name]
+		parent_id = ''
+		dreams = []
+		objectives = []
+		view_type = ''
+
+		if not set_name:
+			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(-KSU.importance).order(KSU.created).fetch()
+		
+		elif set_name == 'TheoryQuery':
+			lookup_string = self.request.get('lookup_string')
+			user_theory = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.is_deleted == False).order(-KSU.importance).fetch() 
+			# user_theory = KSU.query(KSU.theory == user_key ).order(KSU.importance).order(KSU.created).fetch() #TBD
+			ksu_set = self.search_theory(user_theory, lookup_string)
+			set_title = 'You searched for: ' + lookup_string
+		
+		elif set_name == 'Graveyard':
+			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == True, KSU.is_deleted == False).order(-KSU.importance).fetch()
+
+		elif ksu_id:			
+			ksu = KSU.get_by_id(int(ksu_id))
+			ksu_key = ksu.key			
+			ksu_set = KSU.query(KSU.parent_id == ksu_key).filter(KSU.is_deleted == False).order(-KSU.importance).fetch()
+			set_title = ksu.description
+			parent_id = int(ksu_id)
+			dreams = self.get_active_dreams(user_key)
+			objectives = self.get_user_objectives(user_key)
+			# if set_name == 'BOKA':				
+				# objectives, big_objectives = self.get_user_objectives(user_key)
+				# objectives = self.get_user_objectives(user_key)
+			view_type ='Plan'
+		
+		else:
+			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(-KSU.importance)
+
+			if self.theory.hide_private_ksus:
+				ksu_set = ksu_set.filter(KSU.is_private == False)
+		
+			if set_name == 'BigO':				
+				ksu_set = ksu_set.filter(KSU.ksu_subtype == 'BigO')
+				# objectives, big_objectives = self.get_user_objectives(user_key)
+				objectives = self.get_user_objectives(user_key)
+				dreams = self.get_active_dreams(user_key)
+
+			if set_name == 'KeyA':				
+				objectives = self.get_user_objectives(user_key)
+				dreams = self.get_active_dreams(user_key)
+
+
+
+			ksu_set = ksu_set.fetch()
+		
+
+		for ksu in ksu_set:
+			ksu.description_rows = determine_rows(ksu.description)
+			ksu.secondary_description_rows = determine_rows(ksu.secondary_description)
+			ksu.comments_rows = determine_rows(ksu.comments)
+
+
+		new_ksu_required_templates = []
+		ksu = constants['ksu_for_template']			
+		for ksu_subtype in constants['type_to_subtypes'][set_name]:
+			template = ksu.copy()
+			template['ksu_subtype'] = ksu_subtype
+			template['ksu_type'] = set_name
+			new_ksu_required_templates.append(template)	
+
+		
+		tags = self.theory.categories['tags'] # por el quick adder
+		ksu_set, set_tags, wish_type_definitions = self.get_set_tags(ksu_set, set_name)
+		self.print_html(
+			'TheoryViewer.html', 
+			new_ksu_required_templates=new_ksu_required_templates, 
+			viewer_mode='Set',  
+			ksu_set=ksu_set, 
+			constants=constants, 
+			set_name=set_name, 
+			ksu={}, 
+			tags=tags, 
+			set_title=set_title, 
+			parent_id=parent_id, 
+			dreams=dreams, 
+			objectives=objectives, 
+			view_type=view_type, 
+			set_tags=set_tags, 
+			wish_type_definitions=wish_type_definitions) #
+
+	@super_user_bouncer
+	@CreateOrEditKSU_request_handler	
+	def post(self, user_action, post_details):
+		return
+
+
+	def search_theory(self, user_theory, lookup_string):
+		# -*- coding: utf-8 -*-
+		lookup_string = lookup_string.lower()
+		lookup_words =	lookup_string.split(' ')
+		main_result = []
+		secondary_result = []
+
+		for ksu in user_theory:
+			if not ksu.description:
+				ksu.description=''
+			if not ksu.secondary_description:
+				ksu.secondary_description=''
+			if not ksu.tags:
+				ksu.tags =''
+			
+			ksu_description = remplaza_acentos(ksu.description).lower() + ' ' + remplaza_acentos(ksu.secondary_description).lower() + ' ' + remplaza_acentos(ksu.tags).lower() + str(ksu.key.id()) #Hace que tambien sea posible buscar un KSU por id
+
+			if ksu_description.find(lookup_string) != -1:
+				main_result.append(ksu)
+			else:
+				for word in lookup_words:
+					if ksu_description.find(word) != -1 and ksu not in secondary_result:
+						secondary_result.append(ksu)
+
+		return main_result + secondary_result
+
+	def get_active_dreams(self, user_key):
+		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == 'Wish', KSU.is_critical == True).order(-KSU.is_active).order(KSU.importance).order(KSU.created)
+		dreams = []
+		for ksu in ksu_set:
+			dreams.append((ksu.key.id(), ksu.description))
+		return dreams
+
+	def get_user_objectives(self, user_key):
+		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == 'BigO').order(-KSU.is_active).order(KSU.importance).order(KSU.created)
+		# objectives = [(None,'-- None --')]
+		big_objectives = []
+		for ksu in ksu_set:
+			big_objectives.append((ksu.key.id(), ksu.description))
+			# if ksu.ksu_subtype == 'BigO':				
+			# 	objectives.append((ksu.key.id(), ksu.description))
+			# 	big_objectives.append((ksu.key.id(), ksu.description))
+			# else:
+			# 	objectives.append((ksu.key.id(), ksu.description))
+		return big_objectives #,objectives
+
+
+	def remove_inactive_child_objectives(self, objectives):
+		result = []
+		for ksu in objectives:
+			if not ksu.parent_id:
+				result.append(ksu)
+			elif ksu.is_active:
+				result.append(ksu)
+		return result
+
+	
+	def get_set_tags(self, ksu_set, set_name):
+		set_tags = []
+		for ksu in ksu_set:
+			if ksu.tags and ksu.tags != 'NoTags':
+				ksu_tags = (ksu.tags).replace(', ',',').split(',')
+				for tag in ksu_tags:
+					if tag not in set_tags:
+						set_tags.append(tag)
+			else:
+				ksu.tags = 'NoTags'
+
+		set_tags = ['NoTags'] + sorted(set_tags)
+		tags_tuples = []
+		i = 0
+		for tag in set_tags:
+			tags_tuples.append(('TagId_' + str(i),tag))
+			i += 1
+
+		wish_type_definitions = None
+		if set_name in ['Wish', 'RTBG']:
+			wish_tags = {'doing':['NoTags'], 'having':['NoTags'], 'being':['NoTags'], 'achieving':['NoTags']}
+			wish_tuples = {'doing':[], 'having':[], 'being':[], 'achieving':[]}
+
+			for ksu in ksu_set:
+				if ksu.tags != 'NoTags':
+					set_tags = wish_tags[ksu.wish_type]
+					ksu_tags = (ksu.tags).replace(', ',',').split(',')
+					for tag in ksu_tags:
+						if tag not in set_tags:
+							set_tags.append(tag)
+					wish_tags[ksu.wish_type] = set_tags
+
+			i = 0	
+			for wish_type in ['doing', 'having', 'being', 'achieving']:
+				wish_type_tags_tuples = []
+				set_tags = wish_tags[wish_type]		
+				for tag in set_tags:
+					wish_type_tags_tuples.append(('TagId_' + str(i),tag))
+					i += 1
+				wish_tuples[wish_type] = wish_type_tags_tuples
+
+			tags_tuples = wish_tuples
+
+			if set_name == 'Wish':
+				wish_type_definitions = [['doing', 'Experiencing'], ['having', 'Having'], ['being', 'Being'], ['achieving', 'Achieving']]
+			elif set_name == 'RTBG':
+				wish_type_definitions = [['doing', 'Experience'], ['having', 'Having/Have had'], ['being', 'Being/Had been'], ['achieving', 'Achievement']]
+
+		print
+		print 'These are the tags tuples'
+		print tags_tuples
+		print
+
+
+		return ksu_set, tags_tuples, wish_type_definitions 
+
+
 
 
 class EventHandler(Handler):
@@ -1527,6 +1761,24 @@ class PopulateRandomTheory(Handler):
 		return
 
 
+class UpdateTheoryStructure(Handler):
+	
+	@super_user_bouncer
+	def get(self):
+		user_key = self.theory.key
+		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(-KSU.importance).fetch()	
+		self.recalibrate_theory_importance(ksu_set, self.theory.size)
+		self.redirect('/MissionViewer?time_frame=Today')
+
+
+	def recalibrate_theory_importance(self, ordered_ksu_set, theory_size):		
+		next_importance = 10000 * theory_size
+		for ksu in ordered_ksu_set:
+			ksu.importance = next_importance
+			next_importance -= 10000
+			ksu.put()
+
+
 #--- Essential Helper Functions ----------
 def get_post_details(self):
 	post_details = {}
@@ -1973,13 +2225,7 @@ def get_ksu_to_remember(self):
 
 	return ksu_less_reviewed, current_objectives
 	
-def recalibrate_theory_importance(ordered_ksu_set):
-	set_size = len(ordered_ksu_set)
-	next_importance = 10000 * set_size
-	for ksu in ordered_ksu_set:
-		ksu.importance = next_importance
-		next_importance -= 10000
-		ksu.put()
+
 		
 
 #--- Validation and security functions ----------
@@ -2062,10 +2308,12 @@ app = webapp2.WSGIApplication([
 							    ('/KsuEditor', KsuEditor),
 							    ('/MissionViewer', MissionViewer),
 							    ('/SetViewer', SetViewer),
+							    ('/TheoryViewer', TheoryViewer),
 						
 							    ('/EventHandler',EventHandler),
 							    ('/HistoryViewer', HistoryViewer),
 
-							    ('/PopulateRandomTheory',PopulateRandomTheory)
+							    ('/PopulateRandomTheory',PopulateRandomTheory),
+							    ('/UpdateTheoryStructure', UpdateTheoryStructure)
 								], debug=True)
 

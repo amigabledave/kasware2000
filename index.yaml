@@ -246,6 +246,15 @@ indexes:
   - name: is_active
   - name: is_deleted
   - name: theory
+  - name: importance
+    direction: desc
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: is_active
+  - name: is_deleted
+  - name: theory
   - name: is_critical
   - name: importance
   - name: best_time
@@ -461,6 +470,14 @@ indexes:
   - name: in_graveyard
   - name: ksu_type
   - name: theory
+  - name: importance
+    direction: desc
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: ksu_type
+  - name: theory
   - name: is_active
   - name: importance
   - name: created
@@ -492,6 +509,18 @@ indexes:
   - name: ksu_type
   - name: theory
   - name: ksu_subtype
+  - name: is_active
+    direction: desc
+  - name: importance
+    direction: desc
+  - name: created
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: ksu_type
+  - name: theory
+  - name: ksu_subtype
     direction: desc
   - name: is_active
     direction: desc
@@ -509,6 +538,21 @@ indexes:
   - name: in_graveyard
   - name: theory
   - name: importance
+  - name: created
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: theory
+  - name: importance
+    direction: desc
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: theory
+  - name: importance
+    direction: desc
   - name: created
 
 - kind: KSU

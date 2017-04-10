@@ -156,7 +156,7 @@ $('.SaveNewKSUButton').on('click', function(){
 	var kpts_value = ksu.find('#kpts_value').val();
 
 	var mission_view = ksu.find('#mission_view').val()
-	var importance = ksu.find('#importance option:selected').val();
+	var importance = ksu.find('#importance').val();
 
 	var tags = ksu.find('#tags_value').val();
 	var comments = ksu.find('#comments').val();
@@ -1081,34 +1081,15 @@ for(x = 0; x < allRadios.length; x++){
 
 
 
-
-
-// Hace que se resize las cajas de texto con autoexpand
-// $(document)
-//     .on('input.autoExpand', 'textarea.autoExpand', function(){
-//         this.rows = 1;
-//         console.log(this.scrollHeight)
-//         rows = Math.ceil((this.scrollHeight - 22) / 18);
-//         this.rows = 1 + rows;	
-//     });
-
-
-
-
-$(document)
-    .on('focusin.autoExpand', 'textarea.autoExpand', function(){
+$(document).on('focusin.autoExpand', 'textarea.autoExpand', function(){
         var savedValue = this.value;
         this.value = '';
         this.rows = 1;
         this.baseScrollHeight = this.scrollHeight;
-        // console.log('baseScrollHeight')
-        // console.log(this.baseScrollHeight)
-
+        
         this.rows = 2
         this.lineHeight = this.scrollHeight - this.baseScrollHeight
-        // console.log('lineHeight')
-        // console.log(this.lineHeight)
-   
+
         this.rows = 1;
         this.value = savedValue;        
  
@@ -1120,33 +1101,11 @@ $(document)
         var minRows = 1 //this.getAttribute('data-min-rows')|0, rows;
         this.rows = minRows;
         rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / this.lineHeight); 
-        // console.log('scrollHeight')
-        // console.log(this.scrollHeight)
         this.rows = minRows + rows;
     });
 
 var t;
 var start_time;
-
-
-// function secondsToHms(segundos_timer, puntos_ya_agregados, effort_denominator, starting_seconds) {
-
-// 	d = segundos_timer + starting_seconds;	
-// 	var h = Math.floor(d / 3600);
-// 	var m = Math.floor(d % 3600 / 60);
-// 	var s = Math.floor(d % 3600 % 60);
-
-// 	effort_denominator = 60 * effort_denominator
-
-// 	// console.log('d: ' + d);
-// 	// console.log('starting_seconds: ' + starting_seconds);
-// 	// console.log('effort_denominator: ' + effort_denominator);
-// 	// console.log('puntos_ya_agregados: ' + puntos_ya_agregados)
-// 	var puntos_por_agregar = Math.floor((d - starting_seconds) / effort_denominator) - puntos_ya_agregados
-// 	// console.log('puntos_por_agregar: ' + puntos_por_agregar)
-
-// 	return [h, m, s, puntos_por_agregar]
-// }
 
 
 function secondsToHms(segundos_timer, effort_denominator, starting_seconds) {
@@ -1160,11 +1119,9 @@ function secondsToHms(segundos_timer, effort_denominator, starting_seconds) {
 	var new_kpts_value = Math.floor(d  / effort_denominator) + 1
 
 	return [h, m, s, new_kpts_value]
-
 }
 
 
-// function add(target_timer, puntos_ya_agregados, effort_denominator, kpts_value, starting_seconds) {
 function add(target_timer, effort_denominator, kpts_value, starting_seconds) {	
     
 	var segundos_timer = Math.floor((parseFloat(new Date().valueOf()) - parseFloat(start_time.valueOf()))/1000) ;
@@ -1198,11 +1155,8 @@ function add(target_timer, effort_denominator, kpts_value, starting_seconds) {
 }
 
 
-
-// function timer(target_timer, puntos_ya_agregados, effort_denominator, kpts_value, starting_seconds) {
 function timer(target_timer, effort_denominator, kpts_value, starting_seconds) {	
     t = setTimeout(function(){
-    	// add(target_timer, puntos_ya_agregados, effort_denominator, kpts_value, starting_seconds)
     	add(target_timer, effort_denominator, kpts_value, starting_seconds)
     }, 1000);
 }
@@ -1261,21 +1215,47 @@ $(document).on('click', '.PlayStopButton', function(){
 
 	GlaphiconDiv.toggleClass('glyphicon-play');
 	GlaphiconDiv.toggleClass('glyphicon-stop');	
-
 });
 
 
-// function al_cargar(){
-// 	console.log('mas o menos ahi va')
-// };
-// $(al_cargar);
 
-// $('body').on('click', function(){
-// 	console.log('Logre linkear un archivo de JS a KASware!!! :)')
-// });
+new Sortable(document.getElementsByClassName('sortable')[0]);
 
-// $(document).ready(function(){
-// 	$('body').on('click', function(){
-// 		console.log('Logre linkear un archivo de JS a KASware!!! :)')
-// 	});
-// });
+
+
+$( ".KSUdisplaySection" ).on("dragstart", function(){
+	var ksu = $(this)
+	var posicion_inicial = ksu.index();
+	console.log('Esta es la posicion inicial:')
+	console.log(ksu.index())
+	
+	$( ".KSUdisplaySection" ).on("dragend", function(){
+		var posicion_final = ksu.index();
+		var valor_inferior = parseInt(ksu.next().find('#importance').val());
+		var valor_superior = parseInt(ksu.prev().find('#importance').val());
+		
+		if (isNaN(valor_inferior)){
+			valor_inferior = valor_superior - 2
+		}
+
+		if (isNaN(valor_superior)){
+			valor_superior = valor_inferior + 2
+		}		
+
+		if (posicion_final != posicion_inicial){
+			console.log('Cambio de posicion!')			
+			ksu.find('#importance').val((valor_inferior+valor_superior)/2)
+		} else {
+			console.log('No hubo cambio de posicion')
+		} 
+		
+	});
+});
+
+
+
+
+
+
+
+
