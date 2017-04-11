@@ -1235,11 +1235,11 @@ $( ".KSUdisplaySection" ).on("dragstart", function(){
 		var valor_superior = parseInt(ksu.prev().find('#importance').val());
 		
 		if (isNaN(valor_inferior)){
-			valor_inferior = valor_superior - 2
+			valor_inferior = valor_superior - 100
 		}
 
 		if (isNaN(valor_superior)){
-			valor_superior = valor_inferior + 2
+			valor_superior = valor_inferior + 100
 		}		
 
 		if (posicion_final != posicion_inicial){
