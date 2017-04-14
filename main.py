@@ -898,118 +898,27 @@ class MissionViewer(Handler):
 
 class TheoryViewer(Handler):
 
-	# @super_user_bouncer
-	# def get(self):
-	# 	user_key = self.theory.key
-				
-	# 	ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(-KSU.importance).fetch()
-		
-	# 	for ksu in ksu_set:
-	# 		ksu.description_rows = determine_rows(ksu.description)
-	# 		ksu.secondary_description_rows = determine_rows(ksu.secondary_description)
-	# 		ksu.comments_rows = determine_rows(ksu.comments)
-		
-	# 	tags = self.theory.categories['tags'] # por el quick adder
-		
-	# 	self.print_html(
-	# 		'TheoryViewer.html', 
-	# 		ksu_set=ksu_set, 
-	# 		constants=constants, 			
-	# 		ksu={}, 
-	# 		tags=tags) #
-
 	@super_user_bouncer
 	def get(self):
-		# set_name = self.request.get('set_name')
-		set_name = 'KeyA'
 		user_key = self.theory.key
-		ksu_id = self.request.get('ksu_id')
-		set_title = constants['d_SetTitles'][set_name]
-		parent_id = ''
-		dreams = []
-		objectives = []
-		view_type = ''
-
-		if not set_name:
-			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(-KSU.importance).order(KSU.created).fetch()
-		
-		elif set_name == 'TheoryQuery':
-			lookup_string = self.request.get('lookup_string')
-			user_theory = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.is_deleted == False).order(-KSU.importance).fetch() 
-			# user_theory = KSU.query(KSU.theory == user_key ).order(KSU.importance).order(KSU.created).fetch() #TBD
-			ksu_set = self.search_theory(user_theory, lookup_string)
-			set_title = 'You searched for: ' + lookup_string
-		
-		elif set_name == 'Graveyard':
-			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == True, KSU.is_deleted == False).order(-KSU.importance).fetch()
-
-		elif ksu_id:			
-			ksu = KSU.get_by_id(int(ksu_id))
-			ksu_key = ksu.key			
-			ksu_set = KSU.query(KSU.parent_id == ksu_key).filter(KSU.is_deleted == False).order(-KSU.importance).fetch()
-			set_title = ksu.description
-			parent_id = int(ksu_id)
-			dreams = self.get_active_dreams(user_key)
-			objectives = self.get_user_objectives(user_key)
-			# if set_name == 'BOKA':				
-				# objectives, big_objectives = self.get_user_objectives(user_key)
-				# objectives = self.get_user_objectives(user_key)
-			view_type ='Plan'
-		
-		else:
-			ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False, KSU.ksu_type == set_name).order(-KSU.importance)
-
-			if self.theory.hide_private_ksus:
-				ksu_set = ksu_set.filter(KSU.is_private == False)
-		
-			if set_name == 'BigO':				
-				ksu_set = ksu_set.filter(KSU.ksu_subtype == 'BigO')
-				# objectives, big_objectives = self.get_user_objectives(user_key)
-				objectives = self.get_user_objectives(user_key)
-				dreams = self.get_active_dreams(user_key)
-
-			if set_name == 'KeyA':				
-				objectives = self.get_user_objectives(user_key)
-				dreams = self.get_active_dreams(user_key)
-
-
-
-			ksu_set = ksu_set.fetch()
-		
+		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(-KSU.importance).fetch()
 
 		for ksu in ksu_set:
 			ksu.description_rows = determine_rows(ksu.description)
 			ksu.secondary_description_rows = determine_rows(ksu.secondary_description)
 			ksu.comments_rows = determine_rows(ksu.comments)
 
-
-		new_ksu_required_templates = []
-		ksu = constants['ksu_for_template']			
-		for ksu_subtype in constants['type_to_subtypes'][set_name]:
-			template = ksu.copy()
-			template['ksu_subtype'] = ksu_subtype
-			template['ksu_type'] = set_name
-			new_ksu_required_templates.append(template)	
-
-		
 		tags = self.theory.categories['tags'] # por el quick adder
-		ksu_set, set_tags, wish_type_definitions = self.get_set_tags(ksu_set, set_name)
+
 		self.print_html(
-			'TheoryViewer.html', 
-			new_ksu_required_templates=new_ksu_required_templates, 
-			viewer_mode='Set',  
-			ksu_set=ksu_set, 
-			constants=constants, 
-			set_name=set_name, 
-			ksu={}, 
-			tags=tags, 
-			set_title=set_title, 
-			parent_id=parent_id, 
-			dreams=dreams, 
-			objectives=objectives, 
-			view_type=view_type, 
-			set_tags=set_tags, 
-			wish_type_definitions=wish_type_definitions) #
+				'TheoryViewer.html',
+				viewer_mode='Set', 
+				ksu_set=ksu_set,
+				set_name='KeyA', 
+				constants=constants, 			
+				ksu={}, 
+				tags=tags)
+
 
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
@@ -1709,7 +1618,6 @@ class PopulateRandomTheory(Handler):
 		print today
 
 		theory_parameters = [
-			[3	,{'ksu_type':'Gene', 'ksu_subtype':'Gene'}],
 			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
 			[3, {'ksu_type':'OTOA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
 			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_value':0.25}],

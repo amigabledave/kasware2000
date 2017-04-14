@@ -92,7 +92,7 @@ class KSU(ndb.Model):
 	birthday = ndb.DateProperty()
 	
 	timer = ndb.JsonProperty(default={'hours':0, 'minutes':0, 'seconds':0, 'value':'00:00:00'})
-	cost = ndb.JsonProperty(default={'money_cost':0, 'days_cost':0, 'hours_cost':0, 'mierda':'Mierda!'})
+	cost = ndb.JsonProperty(default={'money_cost':0, 'days_cost':0, 'hours_cost':0})
 
 	picture = ndb.BlobProperty() #Might be used in the future
 	times_reviewed = ndb.IntegerProperty(default=0)
