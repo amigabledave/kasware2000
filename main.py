@@ -103,20 +103,37 @@ class Handler(webapp2.RequestHandler):
 
 	def update_game(self):
 
-		def check_and_burn(theory, active_date,time_travel):
-			
+		def check_and_burn(theory, active_date, time_travel):
+			print
+			print 'Esta a punto de hacer check and burn!'
+			print
+
 			game = theory.game 
 			
 			critical_burn = theory.game['critical_burn']
+			mission_burn = theory.game['mission_burn']
 
 			user_key = theory.key
 
 			today =(datetime.today()+timedelta(hours=theory.timezone)+timedelta(days=time_travel)) 
-			today_ordinal = active_date
+			today_ordinal = active_date			
 		
-			burn_candidates = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True, KSU.is_critical == True)
+			ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True).fetch()
+			# ksu_set = KSU.query(KSU.theory == user_key).filter(KSU.is_deleted == False, KSU.in_graveyard == False, KSU.is_active == True, KSU.is_critical == True)
+
+
+			burn_candidates = []
+			mission_burn_candidates = [] 
 
 			burn_sets = ['KAS1', 'KAS2', 'EVPo', 'ImPe']
+			mission_burn_sets = ['KAS1', 'KAS2', 'EVPo', 'ImPe', 'ImIn']
+
+			for ksu in ksu_set:			
+				if ksu.is_critical and ksu.ksu_type in burn_sets:
+					burn_candidates.append(ksu)
+				elif ksu.next_event and ksu.ksu_type in mission_burn_sets:
+					mission_burn_candidates.append(ksu)
+
 
 			for ksu in burn_candidates:
 
@@ -152,13 +169,44 @@ class Handler(webapp2.RequestHandler):
 						ksu_subtype = ksu.ksu_subtype, 
 						ksu_tags = ksu.tags)
 					event.put()
+			
+			for ksu in mission_burn_candidates:
+
+				next_event = ksu.next_event.toordinal()
+
+				if next_event < today_ordinal:
+
+					next_critical_burn = ksu.next_critical_burn
+					if not ksu.next_critical_burn or next_critical_burn < next_event:
+						next_critical_burn = next_event
+					
+					kpts_burned = (today_ordinal - next_critical_burn) * mission_burn
+
+					game['points_to_goal'] += kpts_burned
+					ksu.next_critical_burn = today_ordinal
+					ksu.put()
+
+					event = Event(
+						theory=self.theory.key,
+						ksu_id =  ksu.key,
+						event_type = 'Stupidity',
+						user_date_date=today,
+						user_date=today_ordinal,
+						score = kpts_burned,
+						
+						comments = 'Mission burn',
+						ksu_description = ksu.description,
+						ksu_secondary_description = ksu.secondary_description,
+						ksu_subtype = ksu.ksu_subtype, 
+						ksu_tags = ksu.tags)
+					event.put()
 
 			return game				
 
 		theory = self.theory
 		time_travel = 0 #To be deleted. Time Travel aqui puedo hacer creer al programa que es otro dia
 		active_date = (datetime.today()+timedelta(hours=theory.timezone)).toordinal() + time_travel # TT Time Travel aqui puedo hacer creer al programa que es otro dia
-
+		
 		game = theory.game
 		last_log = game['last_log']
 
@@ -168,10 +216,10 @@ class Handler(webapp2.RequestHandler):
 
 		if last_log < active_date:
 			game = check_and_burn(theory, active_date, time_travel)
-			kpts_to_survie = (active_date - last_log - 1) * game['daily_goal'] + game['points_to_goal']
-			if kpts_to_survie <= game['piggy_bank']:
+			kpts_to_survive = (active_date - last_log - 1) * game['daily_goal'] + game['points_to_goal']
+			if kpts_to_survive <= game['piggy_bank']:
 				game['streak'] += active_date - last_log
-				game['piggy_bank'] -= kpts_to_survie
+				game['piggy_bank'] -= kpts_to_survive
 				if game['goal_achieved']:
 					game['streak'] -= 1
 			else:
@@ -416,6 +464,7 @@ class Settings(Handler):
  			# 	game['goal_achieved'] = False
 				# game['points_to_goal'] = game['daily_goal']
  			
+			game['mission_burn'] = int(post_details['mission_burn'])
 			game['critical_burn'] = int(post_details['critical_burn'])
 			game['daily_goal'] = int(post_details['minimum_daily_effort'])
  			game['piggy_bank'] = int(post_details['piggy_bank'])
@@ -881,11 +930,7 @@ class MissionViewer(Handler):
 			if ksu_subtype in mission_sets:
 				time_horizon = define_horizon(ksu, today_ordinal)
 				full_mission[time_horizon]['horizon_set'].append(ksu)
-				## Apendix - TBD
-				# if not ksu.kpts_value:
-				# 	ksu.kpts_value = 0
-				#				
-
+			
 			elif ksu_subtype == 'BigO':
 				objectives.append((ksu.key.id(), ksu.description))
 
@@ -1675,9 +1720,17 @@ class UpdateTheoryStructure(Handler):
 	@super_user_bouncer
 	def get(self):
 		user_key = self.theory.key
-		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(-KSU.importance).fetch()	
+		# ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(-KSU.importance).fetch()	
+		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(KSU.importance).fetch()
+
+		if 'mission_burn' not in self.theory.game:
+			self.theory.game['mission_burn'] = 5
+			self.theory.put()
+
 		self.recalibrate_theory_importance(ksu_set, self.theory.size)
 		self.redirect('/MissionViewer?time_frame=Today')
+
+
 
 
 	def recalibrate_theory_importance(self, ordered_ksu_set, theory_size):		
@@ -1686,6 +1739,8 @@ class UpdateTheoryStructure(Handler):
 			ksu.importance = next_importance
 			next_importance -= 10000
 			ksu.put()
+
+
 
 
 #--- Essential Helper Functions ----------

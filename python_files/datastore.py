@@ -26,6 +26,7 @@ class Theory(ndb.Model):
  	game = ndb.JsonProperty(default={
  		'daily_goal':100,
  		'critical_burn':10,
+ 		'mission_burn':5,
  		'piggy_bank':0, 
  		'streak':0,
  		'last_log':None,

@@ -538,6 +538,12 @@ indexes:
   - name: in_graveyard
   - name: theory
   - name: importance
+
+- kind: KSU
+  properties:
+  - name: in_graveyard
+  - name: theory
+  - name: importance
   - name: created
 
 - kind: KSU
