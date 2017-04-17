@@ -32,7 +32,7 @@
 			</div>
 		</div>
 
-		<div class="" id="KAS3_mission">
+		<div class="sortable" id="KAS3_mission">
 			{% for ksu in reactive_mission %}
 				{% include "KSU_Templates.html" %}
 			{% endfor %}
@@ -76,13 +76,15 @@
 			{% include "KSU_Templates.html" %}
 		{% endfor %}	
 
-		<div id="NewKSUsHolder"></div>
+		<div id="NewKSUsHolder" class="sortable"></div>
 		
 	{% endif %}
+		<div id="{{'sortable_' + time_horizon}}" class="sortable">
+			{% for ksu in full_mission[time_horizon]['horizon_set'] %}
+				{% include "KSU_Templates.html" %}
+			{% endfor %}
+		</div>
 
-		{% for ksu in full_mission[time_horizon]['horizon_set'] %}
-			{% include "KSU_Templates.html" %}
-		{% endfor %}
 	</div>
 	{% endif %}
 {% endfor %}

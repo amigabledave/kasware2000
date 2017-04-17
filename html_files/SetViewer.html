@@ -27,7 +27,7 @@
 		{% endfor %}
 	</div>
 
-	<div id="NewKSUsHolder"></div>
+	<div id="NewKSUsHolder" class="sortable"></div>
 
 {% endif %}
 
@@ -51,7 +51,7 @@
 		</div>
 
 	 	{% endif %}
-		<div id="{{tag_id}}" class="{% if tag != 'NoTags' %}tag_content hidden{% endif %}">
+		<div id="{{tag_id}}" class="{% if tag != 'NoTags' %}tag_content hidden{% endif %} sortable">
 			{% for ksu in ksu_set %}
 				{% if tag in ksu.tags %}
 					{% include "KSU_Templates.html" %}
@@ -94,7 +94,7 @@
 			</div>
 
 		 	{% endif %}
-			<div id="{{tag_id}}" class="{% if tag != 'NoTags' %}tag_content hidden{% endif %}">
+			<div id="{{tag_id}}" class="{% if tag != 'NoTags' %}tag_content hidden{% endif %} sortable">
 				{% for ksu in ksu_set %}
 					{% if tag in ksu.tags and ksu.wish_type == wish_type[0] %}
 						{% include "KSU_Templates.html" %}

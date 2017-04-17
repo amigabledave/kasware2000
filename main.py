@@ -1080,7 +1080,8 @@ class EventHandler(Handler):
 				'ksu_id': ksu.key.id(),
 				'description': ksu.description,
 				# 'next_event': ksu.next_event,
-				'kpts_value':ksu.kpts_value
+				'kpts_value':ksu.kpts_value,
+				'importance': ksu.importance
 				}))
 			return
 
@@ -1918,9 +1919,6 @@ def prepareInputForSaving(theory, ksu, post_details):
 		
 		if a_key in d_attributeType:
 			a_type = d_attributeType[a_key]
-			print 
-			print 'Este es el tipo de attributo que quiero actualizar'
-			print a_type
 		
 		if a_type == 'string':
 			setattr(ksu, a_key, a_val.encode('utf-8'))

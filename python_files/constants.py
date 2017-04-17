@@ -812,7 +812,6 @@ d_SetViewerDetails = {
 			'bot_sec_desc_style': 'color: grey; font-style:italic;',
 			'bot_sec_desc_placeholder': 'This is a placeholder'}},	
 
-
 	'FibonacciPerception': { 		
 		'attributes': ['pretty_next_event'],
 		'fields': {'pretty_next_event':'Next Question'},
@@ -1042,6 +1041,7 @@ ksu_for_template = {
 	'times_reviewed': 0,
 	'description_rows':1,
 	'secondary_description_rows':1,
+	'timer':{'hours':0, 'minutes':0, 'seconds':0, 'value':'00:00:00'}
 }
 
 

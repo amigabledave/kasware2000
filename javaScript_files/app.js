@@ -216,7 +216,6 @@ $('.SaveNewKSUButton').on('click', function(){
 			'kpts_value': kpts_value,
 			
 			'mission_view':mission_view,
-			'importance':importance,
 			'tags':tags,
 			'comments':comments, 
 		
@@ -300,9 +299,6 @@ $('.SaveNewKSUButton').on('click', function(){
 			ksu_subtype = ksu_type
 		};
 
-		console.log('Este es el tipo de KSU que ando pidiendo guardar:');
-		console.log(ksu_type);
-		console.log(ksu_subtype);
 
 		var Templates = {
 			'KeyA': $('#NewKSUTemplate_KeyA').clone(),
@@ -339,7 +335,7 @@ $('.SaveNewKSUButton').on('click', function(){
 		new_ksu.find('#best_time').val(best_time);
 		new_ksu.find('#next_event').val(next_event);
 
-		new_ksu.find('#importance').val(importance);
+		new_ksu.find('#importance').val(data['importance']);
 		
 		new_ksu.find('#tags').val(tags);
 		new_ksu.find('#ksu_subtype').text(ksu_subtype);
@@ -999,68 +995,87 @@ $(document).on('click', '.OtherShowDetailViewerButton', function(){
 
 
 
-
-
-// $('.QuickAttributeUpdate').on('focusout', function(){
-$(document).on('focusout', '.QuickAttributeUpdate', function(){
-	var attr_key = $(this).attr("name");
-	var attr_type = $(this).attr("type");
+$(document).on('focusin', '.QuickAttributeUpdate', function(){
+	
 	var attr_value = $(this).val();
-	if( attr_type == 'checkbox'){
+	if($(this).attr("type") == 'checkbox'){
 		attr_value = $(this).is(':checked');
 	}; 
 
-	var ksu = $(this).closest('#MissionKSU');
-	var ksu_id = ksu.attr("value");
-	var content_type = 'KSU';
-	
+	$(this).on('focusout', function(){
+		if(attr_value != $(this).val()){
+			var attr_key = $(this).attr("name");
+			var attr_type = $(this).attr("type");
+			attr_value = $(this).val();
+			if( attr_type == 'checkbox'){
+				attr_value = $(this).is(':checked');
+			}; 
 
-	if (ksu.attr("KSUorEvent") == 'Event'){ 
-		content_type = 'Event'
-	};
-	
-	console.log(attr_type);
-	console.log(attr_key);
-	console.log(attr_value);
+			var ksu = $(this).closest('#MissionKSU');
+			var ksu_id = ksu.attr("value");
+			var content_type = 'KSU';
+			
 
-	$.ajax({
-		type: "POST",
-		url: "/EventHandler",
-		dataType: 'json',
-		data: JSON.stringify({
-			'ksu_id': ksu_id,
-			'content_type':content_type,
-			'user_action': 'UpdateKsuAttribute',
-			'attr_key':attr_key,
-			'attr_value':attr_value,
-		})
-	})
-	
-	.done(function(data){
-		console.log(data['updated_value']);
-
-		if( attr_type == 'checkbox'){
-			var description = ksu.find('#description');
-			var secondary_description = ksu.find('#secondary_description');
-			var is_critical = ksu.find('#is_critical').is(':checked');
-			var is_active = ksu.find('#is_active').is(':checked');
-			console.log(is_active, is_critical);
-			if(is_critical && is_active){
-				description.css('color', '#B22222');				
-			} else if (is_active){
-				description.css('color', 'black');				
-			} else {
-				description.css('color', '#b1adad');
+			if (ksu.attr("KSUorEvent") == 'Event'){ 
+				content_type = 'Event'
 			};
+			
+			console.log(attr_type);
+			console.log(attr_key);
+			console.log(attr_value);
 
+			$.ajax({
+				type: "POST",
+				url: "/EventHandler",
+				dataType: 'json',
+				data: JSON.stringify({
+					'ksu_id': ksu_id,
+					'content_type':content_type,
+					'user_action': 'UpdateKsuAttribute',
+					'attr_key':attr_key,
+					'attr_value':attr_value,
+				})
+			})
+			
+			.done(function(data){
+				console.log(data['updated_value']);
+
+				if( attr_type == 'checkbox'){
+					var description = ksu.find('#description');
+					var secondary_description = ksu.find('#secondary_description');
+					var is_critical = ksu.find('#is_critical').is(':checked');
+					var is_active = ksu.find('#is_active').is(':checked');
+					console.log(is_active, is_critical);
+					if(is_critical && is_active){
+						description.css('color', '#B22222');				
+					} else if (is_active){
+						description.css('color', 'black');				
+					} else {
+						description.css('color', '#b1adad');
+					};
+
+				};
+
+				if (attr_key == 'description'){
+					ksu.find('#description').val(data['updated_value'])};
+
+				if(attr_key == 'next_event'){
+					var TodayDate = new Date().toJSON().slice(0,10).replace(/-/g,'-');
+					if(attr_value > TodayDate){
+						ksu.animate({
+							"opacity" : "0",},{
+							"complete" : function(){
+								ksu.remove();
+							}
+						})
+						console.log('Evento en el futuro');
+					}					
+				};
+			})
 		};
-
-		if (attr_key == 'description'){
-			ksu.find('#description').val(data['updated_value'])};
-
 	})
+	
 });
-
 
 
 // Hace que sea posible desseleccionar radios    
@@ -1219,17 +1234,22 @@ $(document).on('click', '.PlayStopButton', function(){
 
 
 
-new Sortable(document.getElementsByClassName('sortable')[0]);
+// new Sortable(document.getElementsByClassName('sortable')[0]);
 
 
 
-$( ".KSUdisplaySection" ).on("dragstart", function(){
+$(document).on('dragstart', '.KSUdisplaySection', function(){
+// $( ".KSUdisplaySection" ).on("dragstart", function(){
 	var ksu = $(this)
-	var posicion_inicial = ksu.index();
-	console.log('Esta es la posicion inicial:')
-	console.log(ksu.index())
+	var posicion_inicial = ksu.index() - 1;
+
+	// console.log('Esta es la posicion inicial:')
+	// console.log(posicion_inicial)
+
 	
 	$( ".KSUdisplaySection" ).on("dragend", function(){
+		// console.log('Esta es la posicion final:')
+		// console.log(ksu.index())
 		var posicion_final = ksu.index();
 		var valor_inferior = parseInt(ksu.next().find('#importance').val());
 		var valor_superior = parseInt(ksu.prev().find('#importance').val());
@@ -1243,8 +1263,24 @@ $( ".KSUdisplaySection" ).on("dragstart", function(){
 		}		
 
 		if (posicion_final != posicion_inicial){
-			console.log('Cambio de posicion!')			
-			ksu.find('#importance').val((valor_inferior+valor_superior)/2)
+			// console.log('Cambio de posicion!')			
+			ksu.find('#importance').val(Math.round((valor_inferior+valor_superior)/2))
+			// console.log('Importancia final:')
+			// console.log(ksu.find('#importance').val())
+
+			$.ajax({
+				type: "POST",
+				url: "/EventHandler",
+				dataType: 'json',
+				data: JSON.stringify({
+					'ksu_id': ksu.attr("value"),
+					'content_type':'KSU',
+					'user_action': 'UpdateKsuAttribute',
+					'attr_key':'importance',
+					'attr_value':ksu.find('#importance').val(),
+				})
+			}).done(function(data){console.log(data['updated_value'])})
+
 		} else {
 			console.log('No hubo cambio de posicion')
 		} 
@@ -1253,7 +1289,21 @@ $( ".KSUdisplaySection" ).on("dragstart", function(){
 });
 
 
+function MakeSortable(){
+	var SeccionesSorteables = document.getElementsByClassName('sortable');
+	var ListasRequeridas = SeccionesSorteables.length;
+	
+	for (var i = 0; i < ListasRequeridas; i++) {
+	   new Sortable(document.getElementsByClassName('sortable')[i], { group: "omega" });	    
+	    // console.log('BOOM!');
+	}
+};
 
+
+$(document).ready(function(){
+	MakeSortable()
+	// new Sortable(document.getElementsByClassName('sortable')[0]);
+});
 
 
 

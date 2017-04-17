@@ -5,6 +5,9 @@
 {% endif %}
 	<div class="col-xs-12">
 		<textarea class="hidden" id="rawKSU">{{ ksu }}</textarea> 
+		<input type="number"  class="hidden" style="color:purple; font-weight:bold; border:0; width:170px; text-align:center; margin-left:-10px;" id="importance" name="importance" value="{{ksu.importance}}"> 	
+
+
 		<div class="row" id="KSUPreview">
 			
 			{% if viewer_mode == 'Mission' %}
@@ -135,11 +138,7 @@
 				{% endif %}
 				</div>
 				{% endif %}
-				<div class="row">
-					<div class="col-xs-12" style="padding-left:0px;">
-						<input type="number"  class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; width:170px; text-align:center; margin-left:-10px;" id="importance" name="importance" value="{{ksu.importance}}"> 	
-					</div>
-				</div>
+
 
 			</div>
 
@@ -191,7 +190,6 @@
 					
 
 					<div class="col-xs-4" style="padding-left:0px;">
-						<input type="number"  class="QuickAttributeUpdate" name="importance" id="importance" style="color:purple; font-weight:bold; border:0; width:170px; text-align:center; margin-left:-10px;" id="tags" value="{{ksu.importance}}"> 	
 					</div>
 
 					{% endif %}	
