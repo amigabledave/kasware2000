@@ -336,6 +336,7 @@ $('.SaveNewKSUButton').on('click', function(){
 		new_ksu.find('#next_event').val(next_event);
 
 		new_ksu.find('#importance').val(data['importance']);
+		new_ksu.find('input:radio[name=effort_denominator][value='+ effort_denominator +']').prop("checked",true);
 		
 		new_ksu.find('#tags').val(tags);
 		new_ksu.find('#ksu_subtype').text(ksu_subtype);

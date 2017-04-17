@@ -758,6 +758,7 @@ class MissionViewer(Handler):
 		for ksu_subtype in ['KAS2']:
 			ksu = constants['ksu_for_template']
 			ksu['ksu_subtype'] = ksu_subtype
+			ksu['ksu_type'] = 'KAS2'
 			new_ksu_required_templates.append(ksu)
 	
 
@@ -1664,10 +1665,6 @@ class PopulateRandomTheory(Handler):
 		print today
 
 		theory_parameters = [
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
-			[3, {'ksu_type':'OTOA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3', 'kpts_value':0.25}],
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4', 'kpts_value':5}],
 			[3, {'ksu_type':'BigO', 'ksu_subtype':'BigO'}],
 			[3, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
 			[3, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_event':today, 'kpts_value':1, 'frequency':7}],
@@ -1678,7 +1675,12 @@ class PopulateRandomTheory(Handler):
 			[1, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[1, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[1, {'ksu_type':'ImIn', 'ksu_subtype':'TernaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],			
-			[0, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}]
+			[0, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],			
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3'}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4'}],
+			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
+			[3, {'ksu_type':'OTOA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
+
 		]
 
 		for e in theory_parameters:
@@ -1720,13 +1722,8 @@ class UpdateTheoryStructure(Handler):
 	@super_user_bouncer
 	def get(self):
 		user_key = self.theory.key
-		# ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(-KSU.importance).fetch()	
-		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(KSU.importance).fetch()
-
-		if 'mission_burn' not in self.theory.game:
-			self.theory.game['mission_burn'] = 5
-			self.theory.put()
-
+		ksu_set = KSU.query(KSU.theory == user_key ).filter(KSU.in_graveyard == False).order(-KSU.importance).fetch()	
+		
 		self.recalibrate_theory_importance(ksu_set, self.theory.size)
 		self.redirect('/MissionViewer?time_frame=Today')
 
