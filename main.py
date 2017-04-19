@@ -129,9 +129,9 @@ class Handler(webapp2.RequestHandler):
 			mission_burn_sets = ['KAS1', 'KAS2', 'EVPo', 'ImPe', 'ImIn']
 
 			for ksu in ksu_set:			
-				if ksu.is_critical and ksu.ksu_type in burn_sets:
+				if ksu.is_critical and ksu.ksu_subtype in burn_sets:
 					burn_candidates.append(ksu)
-				elif ksu.next_event and ksu.ksu_type in mission_burn_sets:
+				elif ksu.next_event and ksu.ksu_subtype in mission_burn_sets:
 					mission_burn_candidates.append(ksu)
 
 
