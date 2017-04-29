@@ -380,6 +380,20 @@ $('.SaveNewKSUButton').on('click', function(){
 		$('#QuickKsuSubtypeDetails').addClass('hidden');
 		ksu.fadeIn("slow");
 
+		
+		var TodayDate = new Date().toJSON().slice(0,10).replace(/-/g,'-');
+		if(next_event > TodayDate){
+			new_ksu.animate({
+				"opacity" : "0",},{
+				"complete" : function(){
+					new_ksu.remove();
+				}
+			})
+			console.log('Evento en el futuro');
+		};
+
+
+
 	});
 });
 

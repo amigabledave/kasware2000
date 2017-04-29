@@ -610,4 +610,6 @@ textarea{
     color: #0000FF;
 }
 
-
+.no-spin::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
