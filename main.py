@@ -1728,14 +1728,17 @@ class UpdateTheoryStructure(Handler):
 		self.redirect('/MissionViewer?time_frame=Today')
 
 
-
-
 	def recalibrate_theory_importance(self, ordered_ksu_set, theory_size):		
-		next_importance = 10000 * theory_size
+		theory = self.theory
+		theory_size = 0
+		next_importance = 10000 
 		for ksu in ordered_ksu_set:
 			ksu.importance = next_importance
-			next_importance -= 10000
+			next_importance += 10000
 			ksu.put()
+			theory_size += 1
+		theory.size = theory_size
+		theory.put()
 
 
 
