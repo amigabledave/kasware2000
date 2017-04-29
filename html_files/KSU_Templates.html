@@ -60,7 +60,7 @@
 					<div class="hidden-xs {% if time_frame == 'Today' %}col-sm-5{% else %}col-sm-4{% endif %}">
 						<input class="QuickAttributeUpdate" style="color:purple; font-weight:bold; border:0; width:170px; text-align:center; margin-left:-10px;" type="text" list="tags" name="tags" id="tags" value="{% if ksu.tags and ksu.tags != 'NoTags' %}{{ksu.tags}}{% endif %}"> 			
 					</div>
-					<div class="col-xs-1 hidden-sm hidden-md hidden-lg"></div>
+					
 					<div class="col-xs-1"></div>
 
 					<div class="col-xs-1 hidden-sm hidden-md hidden-lg"></div>
@@ -69,11 +69,11 @@
 					{% if time_frame == 'Today' %}
 					
 						{% if ksu.ksu_subtype not in ['KAS4'] %}
-							<div class="col-xs-5 col-sm-2">									
+							<div class="col-xs-4 col-sm-2">									
 								<div style="margin-top: 2px;" id="ksu_timer" hours="{{ ksu.timer['hours'] }}" minutes="{{ ksu.timer['minutes'] }}" seconds="{{ ksu.timer['seconds'] }}">{{ ksu.timer['value'] }}</div>												
 							</div>
 
-							<div class="col-xs-1" style="padding-left:0px">
+							<div class="col-xs-2 col-sm-1" style="padding-left:0px">
 								<button type="button" class="btn btn-default displaySectionVerticalButton PlayStopButton ViewerOptionsButton" id="" button_action="Play">
 									<span id="PlayStopGlyphicon" class="glyphicon glyphicon-play" style=""></span></button>
 							</div>
