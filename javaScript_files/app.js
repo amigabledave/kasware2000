@@ -1260,9 +1260,9 @@ $(document).on('dragstart', '.KSUdisplaySection', function(){
 
 	// console.log('Esta es la posicion inicial:')
 	// console.log(posicion_inicial)
-
 	
 	$( ".KSUdisplaySection" ).on("dragend", function(){
+	// ksu.on("dragend", function(){
 		// console.log('Esta es la posicion final:')
 		// console.log(ksu.index())
 		var posicion_final = ksu.index();
@@ -1294,12 +1294,18 @@ $(document).on('dragstart', '.KSUdisplaySection', function(){
 					'attr_key':'importance',
 					'attr_value':ksu.find('#importance').val(),
 				})
-			}).done(function(data){console.log(data['updated_value'])})
+			}).done(function(data){
+				console.log(ksu.find('#description').val());
+				console.log(data['updated_value'])})
 
 		} else {
+			// console.log(ksu.find('#description').val());
 			console.log('No hubo cambio de posicion')
 		} 
-		
+
+		$( ".KSUdisplaySection" ).off( "dragend");
+		// ksu.removeClass('sortable-chosen')
+		// ksu.removeAttr('draggable')
 	});
 });
 
