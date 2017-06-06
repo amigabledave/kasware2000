@@ -31,6 +31,7 @@ class Theory(ndb.Model):
  		'streak':0,
  		'last_log':None,
  		'goal_achieved':False,
+ 		'points_today':0,
  		'points_to_goal':100}) 
 	
 	#tracker fields

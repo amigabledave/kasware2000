@@ -78,13 +78,15 @@ $(document).on('click', '.UserActionButton', function(){
 		console.log(data);
 		var EventScore = data['EventScore'];
 		var kpts_type = data['kpts_type'];
-		var PointsToGoal = data['PointsToGoal']
+		// var PointsToGoal = data['PointsToGoal']
+		var PointsToday = data['PointsToday']
 
-		if ( PointsToGoal <= 0){
-			PointsToGoal = 'Achieved!'
-		}; 
+		// if ( PointsToGoal <= 0){
+		// 	PointsToGoal = 'Achieved!'
+		// }; 
 	
-		$('#PointsToGoal').text(' ' + PointsToGoal);
+		// $('#PointsToGoal').text(' ' + PointsToGoal);
+		$('#PointsToday').text(' ' + PointsToday);
 		$('#EffortReserve').text(' ' + data['EffortReserve']);
 		$('#Streak').text(' ' + data['Streak']);
 
@@ -969,13 +971,15 @@ $('.DeleteEventButton').on('click', function(){
 	.done(function(data){
 		console.log(data);
 
-		var PointsToGoal = data['PointsToGoal'];
+		// var PointsToGoal = data['PointsToGoal'];
 
-		if ( PointsToGoal <= 0){
-			PointsToGoal = 'Achieved!'
-		}; 
+		// if ( PointsToGoal <= 0){
+		// 	PointsToGoal = 'Achieved!'
+		// }; 
 	
-		$('#PointsToGoal').text(' ' + PointsToGoal);
+		// $('#PointsToGoal').text(' ' + PointsToGoal);
+		var PointsToday = data['PointsToday'];
+		$('#PointsToday').text(' ' + PointsToday);
 		$('#EffortReserve').text(' ' + data['EffortReserve']);
 		$('#Streak').text(' ' + data['Streak']);
 	

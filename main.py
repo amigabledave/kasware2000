@@ -151,7 +151,8 @@ class Handler(webapp2.RequestHandler):
 					
 					kpts_burned = (today_ordinal - next_critical_burn) * critical_burn
 
-					game['points_to_goal'] += kpts_burned
+					# game['points_to_goal'] += kpts_burned
+					game['points_today'] -= kpts_burned
 					ksu.next_critical_burn = today_ordinal
 					ksu.put()
 
@@ -182,7 +183,8 @@ class Handler(webapp2.RequestHandler):
 					
 					kpts_burned = (today_ordinal - next_critical_burn) * mission_burn
 
-					game['points_to_goal'] += kpts_burned
+					# game['points_to_goal'] += kpts_burned
+					game['points_today'] -= kpts_burned
 					ksu.next_critical_burn = today_ordinal
 					ksu.put()
 
@@ -216,7 +218,9 @@ class Handler(webapp2.RequestHandler):
 
 		if last_log < active_date:
 			game = check_and_burn(theory, active_date, time_travel)
-			kpts_to_survive = (active_date - last_log - 1) * game['daily_goal'] + game['points_to_goal']
+			# kpts_to_survive = (active_date - last_log - 1) * game['daily_goal'] + game['points_to_goal']
+			kpts_to_survive = (active_date - last_log) * game['daily_goal']			
+			game['piggy_bank'] += game['points_today']
 			if kpts_to_survive <= game['piggy_bank']:
 				game['streak'] += active_date - last_log
 				game['piggy_bank'] -= kpts_to_survive
@@ -226,7 +230,8 @@ class Handler(webapp2.RequestHandler):
 				game['streak'] = 0
 				game['piggy_bank'] = 0
 			
-			game['points_to_goal'] = game['daily_goal']
+			# game['points_to_goal'] = game['daily_goal']
+			game['points_today'] = 0
 			game['goal_achieved'] = False
 			game['last_log'] = active_date
 			theory.game = game
@@ -438,12 +443,13 @@ class Settings(Handler):
 	@super_user_bouncer
 	@CreateOrEditKSU_request_handler	
 	def post(self, user_action, post_details):
-		
+		logging.info('These are the post details: ') #Asi es como se imprime algo en la consola de windows
+		logging.info(post_details)
+
 		if user_action == 'SaveChanges':
 			theory = self.theory
 			game = self.game
-			print
-			print post_details
+
 			theory.first_name = post_details['first_name'].encode('utf-8') 
 			theory.last_name = post_details['last_name'].encode('utf-8')	
 	 	
@@ -455,14 +461,6 @@ class Settings(Handler):
 				theory.hide_private_ksus = False
 
 		 	theory.timezone = int(post_details['timezone'])
-
-	 		# if float(post_details['minimum_daily_effort']) != game['daily_goal']:
-	 		# 	game['daily_goal'] = float(post_details['minimum_daily_effort'])
- 			# 	game['piggy_bank'] = 0 
- 			# 	game['streak'] = 0
- 			# 	game['last_log'] = None
- 			# 	game['goal_achieved'] = False
-				# game['points_to_goal'] = game['daily_goal']
  			
 			game['mission_burn'] = int(post_details['mission_burn'])
 			game['critical_burn'] = int(post_details['critical_burn'])
@@ -1142,9 +1140,11 @@ class EventHandler(Handler):
 
 			if kpts_type == 'Stupidity':
 				game['piggy_bank'] += score
-				
+				game['points_today'] += score
+
 			elif kpts_type == 'SmartEffort':
-				game['points_to_goal'] += score			
+				# game['points_to_goal'] += score
+				game['points_today'] -= score			
 			
 			theory = self.theory
 			theory.game = game
@@ -1163,7 +1163,8 @@ class EventHandler(Handler):
 
 			self.response.out.write(json.dumps({
 				'mensaje':'Evento revertido',
-				'PointsToGoal': game['points_to_goal'],
+				# 'PointsToGoal': game['points_to_goal'],
+				'PointsToday': game['points_today'],
 				'EffortReserve': game['piggy_bank'],
 				'Streak': game['streak']})) 
 			return
@@ -1333,7 +1334,8 @@ class EventHandler(Handler):
 											'pretty_next_event':ksu.pretty_next_event,
 											'is_active':ksu.is_active,
 											
-											'PointsToGoal':game['points_to_goal'],
+											'PointsToday': game['points_today'],
+											# 'PointsToGoal':game['points_to_goal'],
 											'EffortReserve':game['piggy_bank'],
 											'Streak':game['streak']}))
 		return
@@ -1345,22 +1347,28 @@ class EventHandler(Handler):
 
 		minimum_daily_effort = game['daily_goal']
 
-		if event.kpts_type == 'SmartEffort':
-			if  game['points_to_goal'] == 0:
-				game['piggy_bank'] += event.score
+		# if event.kpts_type == 'SmartEffort':
+		# 	if  game['points_to_goal'] == 0:
+		# 		game['piggy_bank'] += event.score
 			
-			elif event.score >= game['points_to_goal']:
-				game['piggy_bank'] += event.score - game['points_to_goal'] 
- 				game['points_to_goal'] = 0
- 				if not game['goal_achieved']:
-	 				game['goal_achieved'] = True
-	 				game['streak'] += 1
+		# 	elif event.score >= game['points_to_goal']:
+		# 		game['piggy_bank'] += event.score - game['points_to_goal'] 
+ 	# 			game['points_to_goal'] = 0
+ 	# 			if not game['goal_achieved']:
+	 # 				game['goal_achieved'] = True
+	 # 				game['streak'] += 1
 
- 			else: 				 
- 				game['points_to_goal'] -= event.score
+ 	# 		else: 				 
+ 	# 			game['points_to_goal'] -= event.score
 
-		if event.kpts_type == 'Stupidity':
-			game['points_to_goal'] += event.score
+		# if event.kpts_type == 'Stupidity':
+		# 	game['points_to_goal'] += event.score
+		
+		if event.kpts_type == 'SmartEffort':
+			game['points_today'] += event.score
+
+		elif event.kpts_type == 'Stupidity':
+			game['points_today'] -= event.score
 
 		theory = self.theory
 		theory.game = game
@@ -2257,6 +2265,24 @@ d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
 		'email_error': 'Invalid email syntax.'}
 
 
+#--- Theory Structure Updates
+class UpdateTheories(Handler):
+	def get(self):
+		theories = Theory.query().fetch()
+		print
+		print theories
+		print
+		self.update_all_theories(theories)
+		self.redirect('/Settings')
+		return
+
+	def update_all_theories(self, theories):
+		for theory in theories:
+			if 'points_today' not in theory.game:
+				theory.game['points_today'] = 0				
+				theory.put()
+		return		
+
 
 #--- Request index
 app = webapp2.WSGIApplication([
@@ -2275,6 +2301,7 @@ app = webapp2.WSGIApplication([
 							    ('/HistoryViewer', HistoryViewer),
 
 							    ('/PopulateRandomTheory',PopulateRandomTheory),
-							    ('/UpdateTheoryStructure', UpdateTheoryStructure)
+							    ('/UpdateTheoryStructure', UpdateTheoryStructure),
+							    ('/UpdateTheories', UpdateTheories)
 								], debug=True)
 
