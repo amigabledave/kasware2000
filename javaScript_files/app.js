@@ -140,6 +140,7 @@ $(document).on('click', '.UserActionButton', function(){
 	});
 });
 
+
 $('.SaveNewKSUButton').on('click', function(){
 	var ksu = $(this).closest('#NewKSU');
 	var ksu_type = ksu.attr("ksutype");
@@ -1252,9 +1253,29 @@ $(document).on('click', '.PlayStopButton', function(){
 });
 
 
-
-// new Sortable(document.getElementsByClassName('sortable')[0]);
-
+$('input[type=radio][name=effort_denominator]').on('change',function(){
+	var ksu = $(this).closest('#MissionKSU');
+	var effort_denominator = $(this).val()
+	var segundos_timer = 0
+	var target_timer = ksu.find('#ksu_timer');
+	var starting_seconds =  parseInt(target_timer.attr("seconds")) + parseInt(target_timer.attr("minutes"))*60 + parseInt(target_timer.attr("hours"))*3600;
+	var new_kpts_value = secondsToHms(segundos_timer, effort_denominator, starting_seconds)[3];
+	$.ajax({
+		type: "POST",
+		url: "/EventHandler",
+		dataType: 'json',
+		data: JSON.stringify({
+			'ksu_id': ksu.attr("value"),
+			'content_type':'KSU',
+			'user_action': 'UpdateKsuAttribute',
+			'attr_key':'effort_denominator',
+			'attr_value':new_kpts_value,
+			})
+	}).done(function(data){
+		var kpts_value = ksu.find('#kpts_value');
+		kpts_value.val(new_kpts_value);
+	})
+}); 
 
 
 $(document).on('dragstart', '.KSUdisplaySection', function(){
