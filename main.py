@@ -2269,18 +2269,13 @@ d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
 class UpdateTheories(Handler):
 	def get(self):
 		theories = Theory.query().fetch()
-		print
-		print theories
-		print
 		self.update_all_theories(theories)
 		self.redirect('/Settings')
 		return
 
 	def update_all_theories(self, theories):
 		for theory in theories:
-			if 'points_today' not in theory.game:
-				theory.game['points_today'] = 0				
-				theory.put()
+			theory['something'] = 0
 		return		
 
 
@@ -2302,6 +2297,6 @@ app = webapp2.WSGIApplication([
 
 							    ('/PopulateRandomTheory',PopulateRandomTheory),
 							    ('/UpdateTheoryStructure', UpdateTheoryStructure),
-							    ('/UpdateTheories', UpdateTheories)
+							    # ('/UpdateTheories', UpdateTheories)
 								], debug=True)
 
