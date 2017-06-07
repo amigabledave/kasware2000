@@ -328,6 +328,8 @@ $('.SaveNewKSUButton').on('click', function(){
  
 		var new_ksu = Templates[ksu_subtype];
 
+		kpts_value = data['kpts_value'];
+
 		new_ksu.attr("id", "MissionKSU");
 		new_ksu.attr("value",data['ksu_id']);
 		new_ksu.find('#ksu_id').attr("value",data['ksu_id']);
@@ -340,7 +342,8 @@ $('.SaveNewKSUButton').on('click', function(){
 
 		new_ksu.find('#importance').val(data['importance']);
 		new_ksu.find('input:radio[name=effort_denominator][value='+ effort_denominator +']').prop("checked",true);
-		
+		new_ksu.find('input:radio[name=jg_size][value='+ effort_denominator +']').prop("checked",true);
+
 		new_ksu.find('#tags').val(tags);
 		new_ksu.find('#ksu_subtype').text(ksu_subtype);
 
@@ -1268,7 +1271,7 @@ $('input[type=radio][name=effort_denominator]').on('change',function(){
 			'ksu_id': ksu.attr("value"),
 			'content_type':'KSU',
 			'user_action': 'UpdateKsuAttribute',
-			'attr_key':'effort_denominator',
+			'attr_key':'kpts_value',
 			'attr_value':new_kpts_value,
 			})
 	}).done(function(data){
@@ -1276,6 +1279,29 @@ $('input[type=radio][name=effort_denominator]').on('change',function(){
 		kpts_value.val(new_kpts_value);
 	})
 }); 
+
+
+$('input[type=radio][name=jg_size]').on('change',function(){
+	var ksu = $(this).closest('#MissionKSU');
+	var jg_size = $(this).val()
+	
+	$.ajax({
+		type: "POST",
+		url: "/EventHandler",
+		dataType: 'json',
+		data: JSON.stringify({
+			'ksu_id': ksu.attr("value"),
+			'content_type':'KSU',
+			'user_action': 'UpdateKsuAttribute',
+			'attr_key':'effort_denominator',
+			'attr_value':jg_size,
+			})
+	}).done(function(data){
+		var kpts_value = ksu.find('#kpts_value');
+		kpts_value.val(jg_size);
+	})
+}); 
+
 
 
 $(document).on('dragstart', '.KSUdisplaySection', function(){

@@ -261,7 +261,7 @@
 
 		{% endif %}							
 
-		{% if set_name in ['KeyA', 'BOKA', 'ImPe', 'EVPo', 'OTOA'] %}
+		{% if set_name in ['KeyA', 'BOKA', 'ImPe', 'OTOA'] %}
 		
 			<div class="col-xs-12" style="padding: 0px;">
 				
@@ -279,6 +279,26 @@
 					<div class="col-xs-2">
 						<label class="radio-inline">
 							<input type="radio" name="effort_denominator" value="5" > Low </label></div>
+				</div>
+			</div>
+		{% elif set_name == 'EVPo' %}
+		
+			<div class="col-xs-12" style="padding: 0px;">
+				<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:5px;">	
+				<div class="row" id="ExpectedImpactRow" style="margin-bottom: 5px;">
+					
+					<div class="col-xs-4">
+						<b>Generator size:</b>
+					</div>
+					<div class="col-xs-2">
+						<label class="radio-inline" style="margin-left:2px;">
+							<input type="radio" name="effort_denominator" value="8"> Big </label></div>
+					<div class="col-xs-2">
+						<label class="radio-inline">
+							<input type="radio" name="effort_denominator" value="5" checked="checked"> Medium </label></div>
+					<div class="col-xs-2">
+						<label class="radio-inline">
+							<input type="radio" name="effort_denominator" value="3" > Small </label></div>
 				</div>
 			</div>
 	

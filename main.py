@@ -1178,6 +1178,8 @@ class EventHandler(Handler):
 			attr_key = event_details['attr_key']
 			attr_value = event_details['attr_value']			
 			updated_value = self.update_single_attribute(ksu, attr_key, attr_value)
+			if attr_key == 'effort_denominator' and ksu.ksu_subtype == 'EVPo':
+				self.update_single_attribute(ksu, 'kpts_value', attr_value)
 			self.response.out.write(json.dumps({'updated_value':updated_value}))
 			return
 
@@ -2050,6 +2052,9 @@ def prepareInputForSaving(theory, ksu, post_details):
 
 	if ksu.ksu_subtype == 'MiniO':
 		ksu.ksu_type = 'BigO'
+
+	if ksu.ksu_subtype == 'EVPo':
+		ksu.kpts_value = ksu.effort_denominator
 
 	print
 	print 'Este es el nuevo sub tipo de KSU que estoy creando'
