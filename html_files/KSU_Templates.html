@@ -70,11 +70,11 @@
 					
 						{% if ksu.ksu_subtype not in ['KAS4', 'EVPo'] %}
 							<div class="col-xs-4 col-sm-2">									
-								<div style="margin-top: 2px;" id="ksu_timer" hours="{{ ksu.timer['hours'] }}" minutes="{{ ksu.timer['minutes'] }}" seconds="{{ ksu.timer['seconds'] }}">{{ ksu.timer['value'] }}</div>												
+								<div style="margin-top: 2px;" class="{% if ksu.is_jg %}hidden{% endif %}" id="ksu_timer" hours="{{ ksu.timer['hours'] }}" minutes="{{ ksu.timer['minutes'] }}" seconds="{{ ksu.timer['seconds'] }}">{{ ksu.timer['value'] }}</div>												
 							</div>
 
 							<div class="col-xs-2 col-sm-1" style="padding-left:0px">
-								<button type="button" class="btn btn-default displaySectionVerticalButton PlayStopButton ViewerOptionsButton" id="" button_action="Play">
+								<button type="button" class="btn btn-default displaySectionVerticalButton PlayStopButton ViewerOptionsButton {% if ksu.is_jg %}hidden{% endif %}" id="ksu_timer_button" button_action="Play">
 									<span id="PlayStopGlyphicon" class="glyphicon glyphicon-play" style="margin-top: -1px;"></span></button>
 							</div>
 						{% else %}
@@ -176,7 +176,7 @@
 				
 			{% if viewer_mode == 'Mission' %}
 				{% if ksu.ksu_type in ['KeyA', 'BOKA', 'ImPe', 'OTOA', 'KAS2'] %}
-					<div class="row" id="ExpectedImpactRow" style="margin-bottom: 5px">
+					<div class="row {% if ksu.is_jg %}hidden{% endif %}" id="ExpectedImpactRow" style="margin-bottom: 5px">
 
 						<form>
 						<div class="col-xs-4">
@@ -193,8 +193,10 @@
 								<input type="radio" name="effort_denominator" value="5" class="QuickAttributeUpdate" {% if ksu.effort_denominator == 5 %} checked="checked" {% endif %}> Low </label></div>
 						</form>			
 					</div>
-				{% elif ksu.ksu_type == 'EVPo' %}
-					<div class="row" id="JGSizeRow" style="margin-bottom: 5px">
+				{% endif %}
+
+				{% if ksu.ksu_type == 'EVPo' or ksu.ksu_subtype == 'KAS2' %}
+					<div class="row {% if not ksu.is_jg %}hidden{% endif %}" id="JGSizeRow" style="margin-bottom: 5px">
 						<form>
 						<div class="col-xs-4">
 							<b>Generator size:</b>
@@ -494,14 +496,8 @@
 							</div>
 							{% endif %}	
 														
-							<div {% if viewer_mode == 'Mission' %} class="col-xs-4 col-sm-2"  style="padding-left:0px;"{% else %} class="col-xs-4 col-sm-3" {% endif %}>
-								<div class="checkbox"> 
-									<label> <input type="checkbox" class="QuickAttributeUpdate MiniObjectiveCheckbox" id="is_mini_o" name="is_mini_o" {% if ksu.is_mini_o %}checked{% endif %}> <b> Mini Objective </b> </label> 
-								</div>	
-							</div>
 
-
-							<div class=" {% if viewer_mode == 'Mission' %} col-xs-12 col-sm-6 {% else %} col-xs-8 col-sm-9 {% endif %}">
+							<div class=" {% if viewer_mode == 'Mission' %} col-xs-12 col-sm-8 {% else %} col-xs-8 col-sm-9 {% endif %}">
 								<label> Targeted Dream or Objective </label>
 								<select class="form-control QuickAttributeUpdate" name="parent_id" id="parent_id">
 									<option value="None"> -- None -- </option>
@@ -525,6 +521,19 @@
 									</optgroup>
 								</select>	
 							</div>	
+
+							<div class="col-xs-4">
+								<div class="checkbox"> 
+									<label> <input type="checkbox" class="QuickAttributeUpdate MiniObjectiveCheckbox" id="is_mini_o" name="is_mini_o" {% if ksu.is_mini_o %}checked{% endif %}> <b> Mini Objective </b> </label> 
+								</div>	
+							</div>
+							
+							<div class="col-xs-4">
+								<div class="checkbox"> 
+									<label> <input type="checkbox" class="QuickAttributeUpdate JoyGeneratorCheckbox" id="is_jg" name="is_jg" {% if ksu.is_jg %}checked{% endif %}> <b> Joy Generator </b> </label> 
+								</div>	
+							</div>
+
 
 
 						</div>

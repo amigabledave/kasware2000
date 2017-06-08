@@ -1142,7 +1142,7 @@ class EventHandler(Handler):
 				game['piggy_bank'] += score
 				game['points_today'] += score
 
-			elif kpts_type == 'SmartEffort':
+			elif kpts_type in ['SmartEffort', 'EndValue']:
 				# game['points_to_goal'] += score
 				game['points_today'] -= score			
 			
@@ -1238,6 +1238,9 @@ class EventHandler(Handler):
 				event.kpts_type = 'SmartEffort'
 				event.score = float(event_details['kpts_value'])
 				
+				if ksu_subtype == 'EVPo' or ksu.is_jg:
+					event.kpts_type = 'EndValue'
+
 				if ksu_subtype == 'KAS2':
 					if ksu.is_mini_o:
 						# print 'Si se dio cuenta de que es un MiniO'
@@ -1249,9 +1252,8 @@ class EventHandler(Handler):
 
 				update_next_event(self, user_action, {}, ksu)
 
-				if ksu_subtype in ['EVPo']:
-					event.quality = event_details['event_quality']
-
+				# if ksu_subtype in ['EVPo']:
+				# 	event.quality = event_details['event_quality']
 
 				ksu.timer['hours'] =  0
 				ksu.timer['minutes'] =  0
@@ -1312,11 +1314,6 @@ class EventHandler(Handler):
 					
 		ksu.put()
 		
-
-		# print
-		# print 'Este fue el evento que se creo: '
-		# print event
-
 		game = self.game
 
 		event_id = None
@@ -1366,7 +1363,7 @@ class EventHandler(Handler):
 		# if event.kpts_type == 'Stupidity':
 		# 	game['points_to_goal'] += event.score
 		
-		if event.kpts_type == 'SmartEffort':
+		if event.kpts_type in ['SmartEffort', 'EndValue']:
 			game['points_today'] += event.score
 
 		elif event.kpts_type == 'Stupidity':
@@ -1426,7 +1423,7 @@ class EventHandler(Handler):
 			setattr(ksu, attr_key, int(attr_value))	
 			updated_value = int(attr_value)
 
-		elif attr_key in ['is_critical', 'is_private', 'is_active', 'is_mini_o']:
+		elif attr_key in ['is_critical', 'is_private', 'is_active', 'is_mini_o', 'is_jg']:
 			if attr_value == 'on':
 				attr_value = True
 			setattr(ksu, attr_key, attr_value)
@@ -1675,21 +1672,21 @@ class PopulateRandomTheory(Handler):
 		print today
 
 		theory_parameters = [
-			[3, {'ksu_type':'BigO', 'ksu_subtype':'BigO'}],
-			[3, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
-			[3, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_event':today, 'kpts_value':1, 'frequency':7}],
-			[3, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_event':today, 'kpts_value':0.25, 'frequency':30}],
-			[3, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
-			[3, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
+			[1, {'ksu_type':'BigO', 'ksu_subtype':'BigO'}],
+			[1, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
+			[1, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_event':today, 'kpts_value':1, 'frequency':7}],
+			[1, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_event':today, 'kpts_value':0.25, 'frequency':30}],
+			[1, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
+			[1, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
 			[1, {'ksu_type':'Diary', 'ksu_subtype':'Diary', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[1, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[1, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
 			[1, {'ksu_type':'ImIn', 'ksu_subtype':'TernaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],			
 			[0, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],			
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3'}],
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4'}],
-			[3, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
-			[3, {'ksu_type':'OTOA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
+			[1, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3'}],
+			[1, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4'}],
+			[1, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
+			[1, {'ksu_type':'OTOA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
 
 		]
 
@@ -2053,7 +2050,7 @@ def prepareInputForSaving(theory, ksu, post_details):
 	if ksu.ksu_subtype == 'MiniO':
 		ksu.ksu_type = 'BigO'
 
-	if ksu.ksu_subtype == 'EVPo':
+	if ksu.ksu_subtype == 'EVPo' or ksu.is_jg:
 		ksu.kpts_value = ksu.effort_denominator
 
 	print

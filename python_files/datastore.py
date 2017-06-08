@@ -90,6 +90,7 @@ class KSU(ndb.Model):
 	pretty_best_time = ndb.StringProperty()
 
 	is_mini_o = ndb.BooleanProperty(default=False)
+	is_jg = ndb.BooleanProperty(default=False)
 	target = ndb.JsonProperty() # For ksus that generate kpts and indicators target min, target max, reverse target etc
 	birthday = ndb.DateProperty()
 	

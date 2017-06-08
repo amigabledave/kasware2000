@@ -59,7 +59,8 @@ d_attributeType = {
 	'money_cost': 'dict_cost',
 	'days_cost': 'dict_cost',
 	'hours_cost': 'dict_cost',
-	'is_mini_o': 'checkbox'
+	'is_mini_o': 'checkbox',
+	'is_jg': 'checkbox'
 	}
 
 default_ksu = {}

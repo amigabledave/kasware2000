@@ -70,24 +70,25 @@
 
 		<div class="hidden" id="QuickKsuSubtypeDetails">
 
-			
-			<div class="row hidden" id="ExpectedImpactRow" style="margin-bottom: 5px">
+			<div class="row hidden" id="JGSizeRow" style="margin-bottom: 5px">
 				<hr class="hr-1px-gray" style="margin-top:0px; margin-bottom:5px;">
+				<form>
 				<div class="col-xs-4">
-					<b>Expected impact:</b>
+					<b>Generator size:</b>
 				</div>
 				<div class="col-xs-2">
 					<label class="radio-inline" style="margin-left:2px;">
-						<input type="radio" name="effort_denominator" value="2"> Huge </label></div>
+						<input type="radio" name="jg_size" value="8"> Large </label></div>
 				<div class="col-xs-2">
 					<label class="radio-inline">
-						<input type="radio" name="effort_denominator" value="3" checked="checked"> High </label></div>
+						<input type="radio" name="jg_size" value="5" checked="checked"> Medium </label></div>
 				<div class="col-xs-2">
 					<label class="radio-inline">
-						<input type="radio" name="effort_denominator" value="5" > Low </label></div>
+						<input type="radio" name="jg_size" value="3"> Small </label></div>
+				</form>			
 			</div>
 
-
+			
 			<hr class="hr-1px-gray" style="margin-top:5px; margin-bottom:5px;">
 			<div class="row" style="margin-bottom:8px;">
 				
@@ -101,13 +102,7 @@
 				{% endif %}
 				</div>	
 
-				<div class="col-xs-6 col-sm-2" style="padding-left:0px;">
-					<div class="checkbox"> 
-						<label> <input type="checkbox" id="is_mini_o" class="MiniObjectiveCheckbox"> <b> Mini Objective </b> </label> 
-					</div>	
-				</div>
-
-				<div class="col-xs-12 col-sm-6">
+				<div class="col-xs-12 col-sm-8">
 					<label> Targeted Objective </label>
 					<select class="form-control DummyInput" ksuattr="parent_id" id="OTOA_parent_id">
 						<option value="None"> -- None -- </option>
@@ -116,6 +111,19 @@
 						{% endfor %}									
 					</select>	
 				</div>
+
+				<div class="col-xs-6 col-sm-4">
+					<div class="checkbox"> 
+						<label> <input type="checkbox" id="is_mini_o" class="MiniObjectiveCheckbox"> <b> Mini Objective </b> </label> 
+					</div>	
+				</div>
+
+				<div class="col-xs-6 col-sm-4">
+					<div class="checkbox"> 
+						<label> <input type="checkbox" id="is_jg" class="JoyGeneratorCheckbox"> <b> Joy Generator </b> </label> 
+					</div>	
+				</div>
+
 
 			</div>
 
@@ -292,13 +300,13 @@
 					</div>
 					<div class="col-xs-2">
 						<label class="radio-inline" style="margin-left:2px;">
-							<input type="radio" name="effort_denominator" value="8"> Big </label></div>
+							<input type="radio" name="jg_size" value="8"> Big </label></div>
 					<div class="col-xs-2">
 						<label class="radio-inline">
-							<input type="radio" name="effort_denominator" value="5" checked="checked"> Medium </label></div>
+							<input type="radio" name="jg_size" value="5" checked="checked"> Medium </label></div>
 					<div class="col-xs-2">
 						<label class="radio-inline">
-							<input type="radio" name="effort_denominator" value="3" > Small </label></div>
+							<input type="radio" name="jg_size" value="3" > Small </label></div>
 				</div>
 			</div>
 	

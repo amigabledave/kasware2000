@@ -149,7 +149,14 @@ $('.SaveNewKSUButton').on('click', function(){
 	if (parent_id == undefined){
 		parent_id = ksu.find('#parent_id option:selected').val();
 	};
-	var effort_denominator = ksu.find('input:radio[name=effort_denominator]:checked').val();
+
+	var is_jg = ksu.find('#is_jg').is(':checked');
+	var effort_denominator = 3;
+	console.log(ksu_type)
+	if (is_jg || ksu_type == 'EVPo'){
+		effort_denominator = ksu.find('input:radio[name=jg_size]:checked').val();
+	}
+	console.log(effort_denominator)
 	var wish_type = ksu.find('#wish_type option:selected').val();
 
 	var description = ksu.find('#description').val();
@@ -241,7 +248,8 @@ $('.SaveNewKSUButton').on('click', function(){
 			'days_cost':days_cost,
 			'hours_cost':hours_cost,
 			'birthday':birthday,
-			'is_mini_o':is_mini_o
+			'is_mini_o':is_mini_o,
+			'is_jg': is_jg
 
 		})
 	})
@@ -356,6 +364,7 @@ $('.SaveNewKSUButton').on('click', function(){
 		new_ksu.find('#days_cost').val(days_cost);
 		new_ksu.find('#birthday').val(birthday);
 		new_ksu.find('#is_mini_o').prop('checked', is_mini_o);
+		new_ksu.find('#is_jg').prop('checked', is_jg);
 
 		new_ksu.find('#frequency').val(frequency);
 		new_ksu.find('#comments').val(comments);
@@ -380,6 +389,12 @@ $('.SaveNewKSUButton').on('click', function(){
 			ksu.find('#secondary_description').addClass('hidden');
 		};
 
+		if(is_jg){
+			new_ksu.find('#ExpectedImpactRow').toggleClass('hidden');
+			new_ksu.find('#JGSizeRow').toggleClass('hidden');
+			new_ksu.find('#ksu_timer').toggleClass('hidden');
+			new_ksu.find('#ksu_timer_button').toggleClass('hidden');
+		}
 
 		$('#TagsAndImportanceRow').addClass('hidden');	
 		$('#QuickKsuSecondaryDescription').addClass('hidden');
@@ -680,6 +695,22 @@ $('.MiniObjectiveCheckbox').on('change',function(){
 	
 	ksu.find('#secondary_description').toggleClass('hidden');
 });
+
+
+
+$('.JoyGeneratorCheckbox').on('change',function(){
+	var ksu = $(this).closest('#NewKSU');
+	if (ksu.attr("value") != 'NewKSU'){
+		ksu = $(this).closest('#MissionKSU')
+	};
+
+	ksu.find('#ExpectedImpactRow').toggleClass('hidden');
+	ksu.find('#JGSizeRow').toggleClass('hidden');
+	ksu.find('#ksu_timer').toggleClass('hidden');
+	ksu.find('#ksu_timer_button').toggleClass('hidden');	
+});
+
+
 
 $('.DummyInput').on('change',function(){
 	console.log(this.value)
