@@ -180,7 +180,7 @@
 
 						<form>
 						<div class="col-xs-4">
-							<b>Effort quality:</b>
+							<b>Effort intensity:</b>
 						</div>
 						<div class="col-xs-2">
 							<label class="radio-inline" style="margin-left:2px;">
@@ -190,13 +190,13 @@
 								<input type="radio" name="effort_denominator" value="3" class="QuickAttributeUpdate" {% if ksu.effort_denominator == 3 %} checked="checked" {% endif %}> High </label></div>
 						<div class="col-xs-2">
 							<label class="radio-inline">
-								<input type="radio" name="effort_denominator" value="5" class="QuickAttributeUpdate" {% if ksu.effort_denominator == 5 %} checked="checked" {% endif %}> Low </label></div>
+								<input type="radio" name="effort_denominator" value="6" class="QuickAttributeUpdate" {% if ksu.effort_denominator == 6 %} checked="checked" {% endif %}> Low </label></div>
 						</form>			
 					</div>
 				{% endif %}
 
 				{% if ksu.ksu_type == 'EVPo' or ksu.ksu_subtype == 'KAS2' %}
-					<div class="row {% if not ksu.is_jg %}hidden{% endif %}" id="JGSizeRow" style="margin-bottom: 5px">
+					<div class="row {% if not ksu.is_jg and not ksu.ksu_type == 'EVPo' %}hidden{% endif %}" id="JGSizeRow" style="margin-bottom: 5px">
 						<form>
 						<div class="col-xs-4">
 							<b>Generator size:</b>
@@ -244,7 +244,7 @@
 
 						<form>
 						<div class="col-xs-4">
-							<b>Effort quality:</b>
+							<b>Effort intensity:</b>
 						</div>
 						<div class="col-xs-2">
 							<label class="radio-inline" style="margin-left:2px;">
@@ -254,10 +254,10 @@
 								<input type="radio" name="effort_denominator" value="3" class="QuickAttributeUpdate" {% if ksu.effort_denominator == 3 %} checked="checked" {% endif %}> High </label></div>
 						<div class="col-xs-2">
 							<label class="radio-inline">
-								<input type="radio" name="effort_denominator" value="5" class="QuickAttributeUpdate" {% if ksu.effort_denominator == 5 %} checked="checked" {% endif %}> Low </label></div>
+								<input type="radio" name="effort_denominator" value="6" class="QuickAttributeUpdate" {% if ksu.effort_denominator == 6 %} checked="checked" {% endif %}> Low </label></div>
 						</form>			
 					</div>
-				{% elif ksu.ksu_type == 'EVPo' %}
+				{% elif ksu.ksu_subtype == 'EVPo' %}
 					<div class="row" id="JGSizeRow" style="margin-bottom: 5px">
 						<form>
 						<div class="col-xs-4">

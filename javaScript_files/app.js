@@ -419,7 +419,6 @@ $('.SaveNewKSUButton').on('click', function(){
 });
 
 
-
 $('#NewDiaryEntryButton').on('click', function(){
 	// console.log('Si esta detectando que se aprieta el boton');
 	var ksu = $('#NewDiaryEntry');
@@ -509,7 +508,6 @@ $('#LogInButton').on('click', function(){
 });
 
 
-
 $('#SignUpButton').on('click', function(){
 	console.log('ya se dio cuenta que quiero hacer sign up')
 	var first_name = $('#first_name').val()
@@ -545,7 +543,6 @@ $('#SignUpButton').on('click', function(){
 		};
 	})		
 });
-
 
 
 $('#PasswordResetButton').on('click', function(){
@@ -1184,8 +1181,22 @@ function secondsToHms(segundos_timer, effort_denominator, starting_seconds) {
 	var m = Math.floor(d % 3600 / 60);
 	var s = Math.floor(d % 3600 % 60);
 
+	// console.log('effort_denominator: ')
+	// console.log(effort_denominator)
+
+	var base_values = {'2':2, '3':1, '6':0};
+	var base_value = base_values[String(effort_denominator)]
+
 	effort_denominator = 60 * effort_denominator
-	var new_kpts_value = Math.floor(d  / effort_denominator) + 1
+	var new_kpts_value;
+	
+	// console.log(base_value)
+
+	new_kpts_value = Math.floor(d  / effort_denominator) + base_value
+	// new_kpts_value = Math.floor(d  / effort_denominator) + 1
+	
+	// console.log('new_kpts_value: ')
+	// console.log(new_kpts_value)
 
 	return [h, m, s, new_kpts_value]
 }
@@ -1286,7 +1297,7 @@ $(document).on('click', '.PlayStopButton', function(){
 	GlaphiconDiv.toggleClass('glyphicon-stop');	
 });
 
-
+// #xx
 $('input[type=radio][name=effort_denominator]').on('change',function(){
 	var ksu = $(this).closest('#MissionKSU');
 	var effort_denominator = $(this).val()
