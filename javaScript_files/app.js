@@ -146,9 +146,13 @@ $('.SaveNewKSUButton').on('click', function(){
 	var ksu_type = ksu.attr("ksutype");
 	var ksu_subtype = ksu.attr("ksusubtype");
 	var parent_id = ksu.find('#parent_id').val();
+	console.log('This is the first current parent id:')
+	console.log(parent_id)
 	if (parent_id == undefined){
 		parent_id = ksu.find('#parent_id option:selected').val();
 	};
+	console.log('This is the second current parent id:')
+	console.log(parent_id)
 
 	var is_jg = ksu.find('#is_jg').is(':checked');
 	var effort_denominator = 3;
@@ -341,6 +345,7 @@ $('.SaveNewKSUButton').on('click', function(){
 		new_ksu.attr("id", "MissionKSU");
 		new_ksu.attr("value",data['ksu_id']);
 		new_ksu.find('#ksu_id').attr("value",data['ksu_id']);
+		new_ksu.find('#parent_id').val(parent_id);
 
 		new_ksu.find('#description').val(description);
 		new_ksu.find('#secondary_description').val(secondary_description);
@@ -708,11 +713,13 @@ $('.JoyGeneratorCheckbox').on('change',function(){
 });
 
 
-
+// xx
 $('.DummyInput').on('change',function(){
-	console.log(this.value)
+	var ksu = $(this).closest('#NewKSU');
 	var ksu_attr = $(this).attr("ksuattr");
- 
+ 	console.log(ksu_attr)
+	console.log(this.value)
+
 	if (ksu_attr == 'mission_view'){
 		$('#mission_view').val(this.value);
 	};
@@ -742,7 +749,7 @@ $('.DummyInput').on('change',function(){
 	};
 
 	if (ksu_attr == 'parent_id'){
-		$('#parent_id').val(this.value);
+		ksu.find('#parent_id').val(this.value);
 	};
 
 	if (ksu_attr == 'tags_value'){
