@@ -1749,6 +1749,13 @@ class UpdateTheoryStructure(Handler):
 
 
 
+class KASware3(Handler):
+	
+	@super_user_bouncer
+	def get(self):
+		self.print_html('KASware3.html', constants=constants)
+
+
 
 #--- Essential Helper Functions ----------
 def get_post_details(self):
@@ -2296,6 +2303,7 @@ app = webapp2.WSGIApplication([
 						
 							    ('/EventHandler',EventHandler),
 							    ('/HistoryViewer', HistoryViewer),
+							    ('/KASware3', KASware3),
 
 							    ('/PopulateRandomTheory',PopulateRandomTheory),
 							    ('/UpdateTheoryStructure', UpdateTheoryStructure),
