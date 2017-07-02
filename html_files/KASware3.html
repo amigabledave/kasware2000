@@ -1,13 +1,113 @@
-<div class="row">
-	<div class="col-xs-10"> 
-		<div class="SectionTitle"> 
-			KASware3 Workbench
-		</div>	
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+	<link type="text/css" rel="stylesheet" href="/bootstrap/css/KASware3main.css">
+	<link href="https://fonts.googleapis.com/css?family=Rationale" rel="stylesheet">
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="https://rawgit.com/RubaXa/Sortable/master/Sortable.js"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" charset="UTF-8">
+	<title> KASware </title>
+</head>
+
+<body class="BaseBackground">
+
+	<div class="TopBackground"> 
+		<div class="container">		
+			<div class="row NavigationTopBar">
+
+				<div class="col-xs-4 col-sm-2 col-md-1 col-lg-1" style="padding-left:0px;"> 
+					<div class="NavigationTopBarBlock">
+						<span class="NavigationKASwareTitleText" style=" font-family: 'Rationale'"> KASware</span><span class="NagivationMiniTopTitle">α</span>
+					</div>
+				</div>
+			
+				<div class="hidden-xs col-sm-5 col-md-5 col-lg-5 text-right">
+					<form class="form-horizontal" method="post">
+						<div class="form-group" style="margin:10px; text-align: left;">
+							<div class="col-xs-10" style="padding-left: 0px; padding-right: 0px;">
+								<input type="text" style="height: 25px;" name="new_lookup_string" class="form-control" placeholder="Search your theory">	
+							</div>
+							<div class="col-xs-2" style="padding-left: 2px;">
+								<button type="submit" class="btn btn-default btn-xs" style="height: 25px; width: 40px; background-color: #E8E8E8;" aria-label="Left Align" name="action_description" value="SearchTheory">
+  									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<div class="col-xs-2 hidden-sm hidden-md hidden-lg">						
+					<button type="button" class="btn btn-default" style="background-color:transparent;border:1px; padding-top:3px; padding-bottom:0px;margin-left:-40px; color:white; margin-top: 5px;" id="MobileTheorySearchButton"><span class="glyphicon glyphicon-search" style="font-size:20px;"></span></button>						
+				</div>
+
+				<div class="col-xs-2 col-sm-1 col-md-1 col-lg-1 text-left" style="padding-left:0px;">
+					<div style="margin-top: 12px; color: white;"><a href="/HistoryViewer" style="color:white;">
+						<span class="glyphicon glyphicon-flag"> </span><span id="PointsToday"> {{game['points_today']|round|int}}</span></a>			
+					</div>
+				</div>
+
+
+				<div class="col-xs-2 col-sm-1 col-md-1 col-lg-1 text-left" style="padding-left:0px;">
+					<div style="margin-top: 12px; color: white;">
+						<span class="glyphicon glyphicon-piggy-bank"> </span><span id="EffortReserve"> {{game['piggy_bank']|round|int}}</span>
+					</div>
+				</div>
+
+				<div class="hidden-xs col-sm-1 col-md-1 col-lg-1 text-left" style="padding-left:0px;">
+					<div style="margin-top: 12px; color: white;">
+						<span class="glyphicon glyphicon-fire"> </span><span id="Streak"> {{game['streak']}}</span>   
+					</div>
+				</div>
+
+				
+				<div class="hidden-xs col-sm-1 col-md-1 col-lg-1 text-left">
+					<form method="post">
+					<button type="Submit" class="btn btn-primary btn-xs" style="height: 25px; width: 60px; margin-top:10px; background-color:#00CCFF; color:white;" aria-label="Left Align"  name="action_description" value="NewKSU" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> KSU </button>
+					</form>
+				</div>
+							
+				<div class="hidden-xs col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
+					<div style="margin-top: 12px; color: white; white-space: pre;"> <a href="/Settings" style="color: white;">{{theory.first_name}}'s theory</a>   |  <a href="/LogOut" style="color: white;"> Log out</a> </div>
+				</div>
+				<div class="hidden col-xs-12 hidden-sm hidden-md hidden-lg text-right" id="MobileSearchBar">
+					<form class="form-horizontal" method="post">
+						<div class="form-group" style="margin:10px; text-align: left;">
+							<div class="col-xs-10" style="padding-left: 0px; padding-right: 0px;">
+								<input type="text" style="height: 25px;" name="new_lookup_string" class="form-control" placeholder="Search your theory">	
+							</div>
+							<div class="col-xs-2" style="padding-left: 2px;">
+								<button type="submit" class="btn btn-default btn-xs" style="height: 25px; width: 40px; background-color: #E8E8E8;" aria-label="Left Align" name="action_description" value="SearchTheory">
+  									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>					
+			</div>
+		</div>
 	</div>
+	
+	<div class="container" style="position: relative;">
 
-	<div class="col-xs-2" style="padding:0;">
-		
-	</div>
-</div>
+		<div class="row">
+			<div class="col-xs-10"> 
+				<div class="SectionTitle"> 
+					KASware3 Workbench
+				</div>	
+			</div>
 
+			<div class="col-xs-2" style="padding:0;">
+				
+			</div>
+		</div>
 
+	</div>	
+
+</body>
+<!-- <script src="/javaScript_files/jquery.min.js"></script> -->
+<script src="/javaScript_files/app.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+</html>
