@@ -6,9 +6,17 @@ $(document).on('click', '.ShowDetailButton', function(){
 	var DetailDiv = ksu.find('#DetailDiv');
 	DetailDiv.toggleClass('hidden');
 
+	// if(DetailDiv.is(":visible")){
+	// 	ksu.css({'border-radius': '25px'});
+	// } else {
+	// 	ksu.css({'border-radius': ''});
+	// }
+
 	var GlaphiconDiv = ksu.find('#PlusMinusGlyphicon');
 	GlaphiconDiv.toggleClass('glyphicon-minus');
 	GlaphiconDiv.toggleClass('glyphicon-plus');	
+
+	
 });
 
 

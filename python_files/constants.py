@@ -126,10 +126,19 @@ d_KsuSubtypes = {
 	'TernaryPerception': 'Ternary Perception Indicator',
 	'FibonacciPerception': 'Fibonacci Perception Indicator'} 
 
-d_repeats = {'R001':'Daily',
+
+d_KASware3 = {
+	'Actions':['Proactive', 'Reactive', 'Negative']
+}
+
+
+d_repeats = {'R999':'Never',	
+			 'R999':'Always',
+			 'R001':'Daily',
 			 'R007':'Weekly',
 			 'R030':'Monthly',
 			 'R365':'Yearly'}
+
 l_repeats = sorted(d_repeats.items())
 
 d_Days = {'None':'None',
@@ -1104,7 +1113,8 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 'd_HistoryViewer':d_HistoryViewer,
 
 			 'ksu_for_template': ksu_for_template,
-			 'type_to_subtypes':type_to_subtypes}
+			 'type_to_subtypes':type_to_subtypes,
+			 'd_KASware3': d_KASware3}
 
 
 

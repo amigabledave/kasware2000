@@ -38,27 +38,51 @@
 
 .KSUdisplaySection {
    
-  background: #fff;
-  /*background-color: #3b4047;*/
-  
+  background: #fff;  
   border: 1px #ddd;
-  border-radius: 50px;
+
+  /*border-radius: 25px;*/
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px; 
+
   border-style: solid;  
   border-color: white;
   
-/*  margin-top: 0px;
-  margin-bottom:8px;
-  margin-right:5px;
-  margin-left:5px;
-*/
   padding:5px;
-
   font-size: 13px;
 
   -webkit-box-shadow: 0.5px 2px 2px 0.5px rgba(0,0,0,0.25);
   -moz-box-shadow: 0.5px 2px 2px 0.5px rgba(0,0,0,0.25);
   /*box-shadow: 0.5px 2px 2px 0.5px rgba(0,0,0,0.25);*/
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+.TimeRuler{
+   
+  background: #fff;
+  color: white;
+  background-color: #342042;
+  
+  height: 20px;
+
+  border: 1px #ddd;
+  /*border-radius: 50px;*/
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px; 
+  border-style: solid;  
+  border-color: white;
+  
+  padding:0px;
+  font-size: 13px;
+
+  -webkit-box-shadow: 0.5px 2px 2px 0.5px rgba(0,0,0,0.25);
+  -moz-box-shadow: 0.5px 2px 2px 0.5px rgba(0,0,0,0.25);
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+.KSUinput{
+    border: none;
+    padding: 0;
 }
 
 .ksu-circle-btn {
@@ -76,6 +100,22 @@
   height: 36px;
   width: 18px;
 }
+
+.inKSUhr{
+    border: none;
+    height: 1px;
+    color: #D8D8D8;
+    background-color: #D8D8D8;
+    margin:5px; 
+    margin-top:10px; 
+    margin-bottom: 10px;
+}
+
+.inKSUhrDiv{
+    padding-right: 10px; 
+    padding-left: 10px
+}
+
 
 /*Validated for use in kasware2000*/
 

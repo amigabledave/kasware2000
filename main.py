@@ -1753,7 +1753,7 @@ class KASware3(Handler):
 	
 	# @super_user_bouncer
 	def get(self):
-		self.print_html('KASware3.html')
+		self.print_html('KASware3.html', constants=constants)
 
 
 
