@@ -132,12 +132,15 @@ d_KASware3 = {
 }
 
 
-d_repeats = {'R999':'Never',	
-			 'R999':'Always',
-			 'R001':'Daily',
+d_repeats = {'R000':'Never',
+			 'R001':'Always',
+			 'R002':'Daily',
 			 'R007':'Weekly',
 			 'R030':'Monthly',
 			 'R365':'Yearly'}
+
+
+l_repeatdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 l_repeats = sorted(d_repeats.items())
 
@@ -1105,6 +1108,7 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 'd_repeats': d_repeats,
 			 'l_repeats':l_repeats,
 
+			 'l_repeatdays': l_repeatdays,
 			 'l_Days':l_Days,
 			 'd_repeats_legend':d_repeats_legend,
 			 

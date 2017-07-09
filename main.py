@@ -1750,7 +1750,9 @@ class UpdateTheoryStructure(Handler):
 
 
 class KASware3(Handler):
-	
+
+	logging.info('Dias de la semana')
+	logging.info(constants['l_repeatdays'])
 	# @super_user_bouncer
 	def get(self):
 		self.print_html('KASware3.html', constants=constants)

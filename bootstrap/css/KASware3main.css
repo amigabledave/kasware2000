@@ -7,6 +7,12 @@
     background-color: #342042;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
 
 .SectionTitle{
     color: white; 
@@ -116,6 +122,11 @@
     padding-left: 10px
 }
 
+.BarButton{
+/*    padding-left: 11px;
+    padding-right: 11px;*/
+    width: 40px;
+}
 
 /*Validated for use in kasware2000*/
 
