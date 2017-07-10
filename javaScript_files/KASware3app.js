@@ -40,8 +40,7 @@ $(document).on('click', '.SaveNewKSUButton', function(){
 
 
 function ShowDetail(ksu){
-	ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
-
+	
 	var GlaphiconDiv = ksu.find('#PlusMinusGlyphicon');
 	GlaphiconDiv.toggleClass('glyphicon-minus');
 	GlaphiconDiv.toggleClass('glyphicon-plus');	
@@ -51,15 +50,6 @@ function ShowDetail(ksu){
 
 	var best_time = ksu.find('#best_time').val()
 
-	if(DetailDiv.is(":visible")){
-		ksu.find('.TimeRuler').removeClass('hidden');
-
-	} else {
-		if( best_time == ''){
-			ksu.find('.TimeRuler').addClass('hidden');	
-			ksu.find('.KSUdisplaySection').addClass('TopRoundBorders');
-		} 
-	}
 };
 
 
@@ -68,6 +58,20 @@ $(document).on('click', '.ShowDetailButton', function(){
 	ShowDetail(ksu);
 });
 
+
+$(document).on('click', '.TimeBarButton',function(){
+	var ksu = $(this).closest('#KSU');
+	var TimeRuler = ksu.find('#TimeRuler');
+
+	if(TimeRuler.is(":visible")){
+		TimeRuler.addClass('hidden');
+		ksu.find('.KSUdisplaySection').addClass('TopRoundBorders');
+
+	} else {
+		TimeRuler.removeClass('hidden');
+		ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
+	}
+})
 
 var select_toBeHidden = {
 	'repeats': ['#repeats_Xdays_col', '#repeats_day_col', '#repeats_month_col', '#repeats_week_col'],
