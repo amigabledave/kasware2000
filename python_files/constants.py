@@ -1,5 +1,44 @@
 import operator
 
+### Validated for KASware3
+
+d_repeats = {'R000':'Never',
+			 'R001':'Always',
+			 'R002':'X days',
+			 'R007':'Week',
+			 'R030':'Month',
+			 'R365':'Year'}
+
+l_months = [ 
+	[1, 'January'], 
+	[2, 'February'],
+	[3, 'March'],
+	[4, 'April'],
+	[5, 'May'],
+	[6, 'June'],
+	[7, 'July'],
+	[8, 'August'],
+	[9, 'September'],
+	[10, 'October'],
+	[11, 'November'],
+	[12, 'December']
+]
+
+d_KASware3 = {
+	'Actions':[
+		['Proactive', 'Proactive action'], 
+		['Reactive', 'Reactive action'], 
+		['Negative', 'Negative action']
+	]
+}
+
+
+l_repeatdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+
+
+
+
+#########
 def removeNumbers(tupleList, start):
 	result = []
 	for e in tupleList:
@@ -127,20 +166,9 @@ d_KsuSubtypes = {
 	'FibonacciPerception': 'Fibonacci Perception Indicator'} 
 
 
-d_KASware3 = {
-	'Actions':['Proactive', 'Reactive', 'Negative']
-}
 
 
-d_repeats = {'R000':'Never',
-			 'R001':'Always',
-			 'R002':'Daily',
-			 'R007':'Weekly',
-			 'R030':'Monthly',
-			 'R365':'Yearly'}
 
-
-l_repeatdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 l_repeats = sorted(d_repeats.items())
 
@@ -1107,6 +1135,7 @@ constants = {'l_Fibonacci':l_Fibonacci,
 
 			 'd_repeats': d_repeats,
 			 'l_repeats':l_repeats,
+			 'l_months':l_months,
 
 			 'l_repeatdays': l_repeatdays,
 			 'l_Days':l_Days,

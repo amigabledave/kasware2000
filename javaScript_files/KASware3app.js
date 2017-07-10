@@ -2,22 +2,90 @@
 $(document).on('click', '.ShowDetailButton', function(){
 
 	var ksu = $(this).closest('#KSU');
-	
-	var DetailDiv = ksu.find('#DetailDiv');
-	DetailDiv.toggleClass('hidden');
-
-	// if(DetailDiv.is(":visible")){
-	// 	ksu.css({'border-radius': '25px'});
-	// } else {
-	// 	ksu.css({'border-radius': ''});
-	// }
+	ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
 
 	var GlaphiconDiv = ksu.find('#PlusMinusGlyphicon');
 	GlaphiconDiv.toggleClass('glyphicon-minus');
 	GlaphiconDiv.toggleClass('glyphicon-plus');	
-
 	
+	var DetailDiv = ksu.find('#DetailDiv');
+	DetailDiv.toggleClass('hidden');
+
+	var best_time = ksu.find('#best_time').val()
+
+	if(DetailDiv.is(":visible")){
+		ksu.find('.TimeRuler').removeClass('hidden');
+
+	} else {
+		if( best_time == ''){
+			ksu.find('.TimeRuler').addClass('hidden');	
+			ksu.find('.KSUdisplaySection').addClass('TopRoundBorders');
+		} 
+	}	
 });
+
+
+
+var select_toBeHidden = {
+	'repeats': ['#repeats_Xdays_col', '#repeats_day_col', '#repeats_month_col', '#repeats_week_col'],
+	'ksu_subtype':['#trigger', '#ExceptionsRow']
+}
+
+
+var select_toBeShown = {
+	'repeats':{
+		'R000':[],
+		'R001':[],
+		'R002':['#repeats_Xdays_col'],
+		'R007':['#repeats_week_col'],
+		'R030':['#repeats_day_col'],
+		'R365':['#repeats_day_col', '#repeats_month_col']
+	},
+	'ksu_subtype':{
+		'Proactive': [],
+		'Reactive': ['#trigger'],
+		'Negative': ['#ExceptionsRow']
+	}
+}
+
+var select_toBeToggled = {
+
+	'ksu_subtype':{
+		'Proactive': [['#DoneButton','btn-success','btn-danger']],
+		'Reactive': [['#DoneButton','btn-success','btn-danger']],
+		'Negative': [['#DoneButton','btn-danger','btn-success']]}
+}
+
+function unhide_group(lista_ids){
+  for( miembro in lista_ids){
+    $(lista_ids[miembro]).removeClass('hidden') 
+  }
+};
+
+
+function hide_group(lista_ids){
+  for( miembro in lista_ids){
+    $(lista_ids[miembro]).addClass('hidden') 
+  }
+};
+
+
+$('.ShowHideSelect').on('change', function(){
+
+  var select = $(this).attr('name');
+  var option = $(this).val();
+  
+  hide_group(select_toBeHidden[select]);
+  unhide_group(select_toBeShown[select][option]);
+
+  if(select == 'ksu_subtype'){
+  	var format_target = select_toBeToggled[select][option][0];
+  	$(format_target[0]).addClass(format_target[1]);
+  	$(format_target[0]).removeClass(format_target[2]);
+  };
+
+});
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////
