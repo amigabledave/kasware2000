@@ -12,6 +12,7 @@ constants = constants.constants
 
 Theory = datastore.Theory
 KSU = datastore.KSU
+KSU3 = datastore.KSU3
 Event = datastore.Event
 os_ksus = kasware_os.os_ksus
 
@@ -1087,7 +1088,7 @@ class TheoryViewer(Handler):
 
 
 class EventHandler(Handler):
-	
+# xx	
 	@super_user_bouncer
 	def post(self):
 			
@@ -1747,15 +1748,36 @@ class UpdateTheoryStructure(Handler):
 		theory.size = theory_size
 		theory.put()
 
-
-
+# xx
 class KASware3(Handler):
 
-	logging.info('Dias de la semana')
-	logging.info(constants['l_repeatdays'])
-	# @super_user_bouncer
+	@super_user_bouncer
 	def get(self):
 		self.print_html('KASware3.html', constants=constants)
+
+	@super_user_bouncer
+	def post(self):
+		event_details = json.loads(self.request.body);
+
+		print
+		print 'Si llego el AJAX Request. User action: ' +  event_details['user_action'] + '. Event details: ' +  str(event_details)
+		print
+
+		user_action = event_details['user_action']
+		
+		if user_action == 'SaveNewKSU':			
+			ksu = KSU3(
+				theory=self.theory.key,
+				description=event_details['description'])
+
+			ksu.put()
+
+			self.response.out.write(json.dumps({
+				'mensaje':'KSU3 creado y guardado desde el viewer!',
+				'ksu_id': ksu.key.id(),
+				'description': ksu.description,
+				}))
+		return
 
 
 

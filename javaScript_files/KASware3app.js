@@ -13,7 +13,6 @@ $('#CreateNewKSU').on('click',function(){
 $(document).on('click', '.SaveNewKSUButton', function(){
 
 	function SaveNewKSU(ksu){
-		console.log('Se estaria mandando el AJAX request')
 		ksu.attr("value","xxx")
 
 		var attributes_dic = {};
@@ -27,10 +26,18 @@ $(document).on('click', '.SaveNewKSUButton', function(){
 		attributes_dic['size'] = ksu.find('input:radio[name=size]:checked').val();
 
 		console.log(attributes_dic)
-		return attributes_dic
+		
+		attributes_dic['user_action'] = 'SaveNewKSU';
+
+		$.ajax({
+			type: "POST",
+			url: "/KASware3",
+			dataType: 'json',
+			data: JSON.stringify(attributes_dic)
+		}).done(function(data){console.log(data)});
+	
 	};
 
-	console.log('Se dio cuenta de que quiero guardar')
 	var ksu = $(this).closest('#KSU');
 	SaveNewKSU(ksu);
 	ksu.find('#ShowDetailButton').removeClass('hidden');
@@ -49,7 +56,6 @@ function ShowDetail(ksu){
 	DetailDiv.toggleClass('hidden');
 
 	var best_time = ksu.find('#best_time').val()
-
 };
 
 
@@ -130,7 +136,6 @@ $(document).on('change','.ShowHideSelect', function(){
   	$(format_target[0]).removeClass(format_target[2]);
   };
 });
-
 
 
 

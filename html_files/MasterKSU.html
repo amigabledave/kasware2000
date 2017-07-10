@@ -3,7 +3,7 @@
 	<div class="row TimeRuler hidden" id="TimeRuler">
 		<div class="col-xs-3">
 			<!-- <label> Preferred Time </label> -->
-			<input style="padding: 0px; border: 0px; height: 16px; background-color: #342042" type="time" class="KsuAttr QuickAttributeUpdate" name="best_time" id="best_time" value="">	
+			<input style="padding: 0px; border: 0px; height: 16px; background-color: #342042" type="time" class="KsuAttr" name="best_time" id="best_time" value="">	
 		</div>
 		<div class="col-xs-9"></div>
 	</div>
@@ -15,8 +15,8 @@
 			</div>
 			
 			<div class="col-xs-9">
-				<textarea style="width:100%; border:0; font-weight: bold; font-style: italic;" class="QuickAttributeUpdate KsuAttr autoExpand hidden" rows="1" data-min-rows='1' name="trigger" id="trigger" placeholder="Trigger circumstance"></textarea>
-				<textarea style="width:100%; border:0;" class="KsuAttr QuickAttributeUpdate autoExpand" rows="1" data-min-rows='1' name="description" id="description" placeholder="Action description"></textarea>
+				<textarea style="width:100%; border:0; font-weight: bold; font-style: italic;" class="KsuAttr autoExpand hidden" rows="1" data-min-rows='1' name="trigger" id="trigger" placeholder="Trigger circumstance"></textarea>
+				<textarea style="width:100%; border:0;" class="KsuAttr autoExpand" rows="1" data-min-rows='1' name="description" id="description" placeholder="Action description"></textarea>
 			</div>
 			
 			<div class="col-xs-1">
@@ -42,7 +42,7 @@
 					
 					<div class="col-xs-4">
 						<!-- <label> Action type </label> -->
-						<select id="ksu_subtype" class="KsuAttr KSUinput QuickAttributeUpdate ShowHideSelect" name="ksu_subtype" style=" color:purple">
+						<select id="ksu_subtype" class="KsuAttr KSUinput ShowHideSelect" name="ksu_subtype" style=" color:purple">
 							{% for ksu_subtype in constants['d_KASware3']['Actions'] %}
 								<option value="{{ksu_subtype[0]}}"> {{ksu_subtype[1]}} </option>							
 							{% endfor %}
@@ -50,7 +50,7 @@
 					</div>
 
 					<div class="col-xs-8">
-						<textarea style="width:100%; border:0; font-style: italic;" class="KsuAttr QuickAttributeUpdate" rows="1" data-min-rows='1' name="reason" id="reason" placeholder="Target reason"></textarea>	
+						<textarea style="width:100%; border:0; font-style: italic;" class="KsuAttr" rows="1" data-min-rows='1' name="reason" id="reason" placeholder="Target reason"></textarea>	
 					</div>
 				</div>
 				<div class="row" id="SizeRow">
@@ -60,13 +60,13 @@
 						<b>Effort intensity:</b>
 					  <form>
 					    <label class="radio-inline">
-					      <input type="radio" name="size" value="2" class="KsuAttr QuickAttributeUpdate">High
+					      <input type="radio" name="size" value="2" class="KsuAttr">High
 					    </label>
 					    <label class="radio-inline">
-					      <input type="radio" name="size" value="3" class="KsuAttr QuickAttributeUpdate" checked="checked"> Moderate
+					      <input type="radio" name="size" value="3" class="KsuAttr" checked="checked"> Moderate
 					    </label>
 					    <label class="radio-inline">
-					      <input type="radio" name="size" value="6" class="KsuAttr QuickAttributeUpdate"> Low 
+					      <input type="radio" name="size" value="6" class="KsuAttr"> Low 
 					    </label>
 					  </form>
 					</div>
@@ -85,7 +85,7 @@
 					<div class="inKSUhrDiv"><hr class="inKSUhr"></div>
 					<div class="col-xs-12">
 						<label>Valid exceptions</label>
-						<textarea style="width:100%; border:0;" class="KsuAttr QuickAttributeUpdate" rows="1" data-min-rows='1' name="exceptions" id="exceptions" placeholder="Exceptions"></textarea>	
+						<textarea style="width:100%; border:0;" class="KsuAttr" rows="1" data-min-rows='1' name="exceptions" id="exceptions" placeholder="Exceptions"></textarea>	
 					</div>
 				</div>
 
@@ -94,12 +94,12 @@
 
 					<div class="col-xs-3" style="">
 						<label> Next Event </label>
-						<input type="date" class="KsuAttr form-control QuickAttributeUpdate" style="padding-right:3px; margin-bottom:7px; padding-left: 4px;" name="next_event" id="next_event" value="">
+						<input type="date" class="KsuAttr form-control" style="padding-right:3px; margin-bottom:7px; padding-left: 4px;" name="next_event" id="next_event" value="">
 					</div>	
 					
 					<div class="col-xs-3">
 						<label> Repeats every </label>
-						<select id="repeats" class="KsuAttr form-control QuickAttributeUpdate ShowHideSelect" name="repeats" style="margin-bottom:7px;">
+						<select id="repeats" class="KsuAttr form-control ShowHideSelect" name="repeats" style="margin-bottom:7px;">
 							{% for f in constants['l_repeats'] %}
 								<option value="{{f[0]}}"> {{f[1]}} </option>							
 							{% endfor %}
@@ -108,12 +108,12 @@
 				
 					<div class="col-xs-2 hidden" id="repeats_Xdays_col">
 						<label style="font-style: italic;"> X value </label>
-						<input type="number" min="1" class="KsuAttr form-control QuickAttributeUpdate" style="padding-right:3px; margin-bottom:7px;" name="repeats_Xdays" id="repeats_Xdays" placeholder="e.g. 1" value="1"> 		
+						<input type="number" min="1" class="KsuAttr form-control" style="padding-right:3px; margin-bottom:7px;" name="repeats_Xdays" id="repeats_Xdays" placeholder="e.g. 1" value="1"> 		
 					</div>
 
 					<div class="col-xs-2 hidden" id="repeats_day_col">
 						<label  style="font-style: italic;"> on the: </label>
-						<select id="repeats_day" class="KsuAttr form-control QuickAttributeUpdate" name="repeats_day" style="margin-bottom:7px;">
+						<select id="repeats_day" class="KsuAttr form-control" name="repeats_day" style="margin-bottom:7px;">
 							{% for day in range(1,32) %}
 								<option value="{{day}}"> {{day}} </option>							
 							{% endfor %}
@@ -123,7 +123,7 @@
 					<div class="col-xs-3 hidden" id="repeats_month_col">
 						<label style="font-style: italic;"> of: </label>
 						
-						<select id="repeats_month" class="KsuAttr form-control QuickAttributeUpdate" name="repeats_month" style="margin-bottom:7px;">
+						<select id="repeats_month" class="KsuAttr form-control" name="repeats_month" style="margin-bottom:7px;">
 							{% for month in constants['l_months'] %}
 								<option value="{{month[0]}}"> {{month[1]}} </option>							
 							{% endfor %}
@@ -134,7 +134,7 @@
 					<div class="col-xs-6 hidden" id="repeats_week_col">
 						<div class="row">
 							{% for day in constants['l_repeatdays'] %}
-							<div class="col-xs-1" style="margin-right:8px;"><label class="checkbox-inline" style="display:table-row;"><b>{{day}}<input type="checkbox" class="KsuAttr QuickAttributeUpdate" name="repeats_on_{{day}}" style="display:table-row; width:100%; margin-left: 2px"></b></label></div>
+							<div class="col-xs-1" style="margin-right:8px;"><label class="checkbox-inline" style="display:table-row;"><b>{{day}}<input type="checkbox" class="KsuAttr" name="repeats_on_{{day}}" style="display:table-row; width:100%; margin-left: 2px"></b></label></div>
 							{% endfor %}	
 						</div>
 					</div>
@@ -143,20 +143,20 @@
 				<div class="row" id="BooleanRow">
 					<div class="inKSUhrDiv"><hr class="inKSUhr"></div>
 					<div class="col-xs-8">
-						<label class="checkbox-inline"><input type="checkbox" id="is_active" class="KsuAttr QuickAttributeUpdate" name="is_active"><b>Active</b></label>
-						<label class="checkbox-inline"><input type="checkbox" class="KsuAttr QuickAttributeUpdate" id="is_critical" name="is_critical"><b>Critical</b></label>
-						<label class="checkbox-inline"><input type="checkbox" id="is_private" name="is_private" class="KsuAttr QuickAttributeUpdate"><b>Private</b></label>
-						<label class="checkbox-inline"><input type="checkbox" id="any_any" name="any_any" class="KsuAttr QuickAttributeUpdate"><b>Anywhere</b></label>
+						<label class="checkbox-inline"><input type="checkbox" id="is_active" class="KsuAttr" name="is_active"><b>Active</b></label>
+						<label class="checkbox-inline"><input type="checkbox" class="KsuAttr" id="is_critical" name="is_critical"><b>Critical</b></label>
+						<label class="checkbox-inline"><input type="checkbox" id="is_private" name="is_private" class="KsuAttr"><b>Private</b></label>
+						<label class="checkbox-inline"><input type="checkbox" id="any_any" name="any_any" class="KsuAttr"><b>Anywhere</b></label>
 					</div>
 					<div class="col-xs-4">
-						<input class="KsuAttr QuickAttributeUpdate" style="color:purple; border:0; width:170px; text-align:center; margin-left:-10px; font-style: italic;" type="text" list="tags" name="tags" id="tags" value="" placeholder="Tag">		
+						<input class="KsuAttr" style="color:purple; border:0; width:170px; text-align:center; margin-left:-10px; font-style: italic;" type="text" list="tags" name="tags" id="tags" value="" placeholder="Tag">		
 					</div>
 
 				</div>
 
 				<div class="row" id="CommentsRow">
 					<div class="col-xs-12">
-						<textarea style="width:100%; border:0; margin-top: 10px" class="KsuAttr QuickAttributeUpdate" rows="2" data-min-rows='2' name="comments" id="comments" placeholder="Comments"></textarea>	
+						<textarea style="width:100%; border:0; margin-top: 10px" class="KsuAttr" rows="2" data-min-rows='2' name="comments" id="comments" placeholder="Comments"></textarea>	
 					</div>
 				</div>							
 			</div>

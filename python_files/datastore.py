@@ -53,6 +53,40 @@ class Theory(ndb.Model):
 			return theory
 
 
+class KSU3(ndb.Model):
+	theory = ndb.KeyProperty(kind=Theory, required=True)	
+	created = ndb.DateTimeProperty(auto_now_add=True)
+	ksu_type = ndb.StringProperty()
+	ksu_subtype = ndb.StringProperty()
+	parent_id = ndb.KeyProperty()
+
+	description = ndb.StringProperty(required=True)	
+	pic_key = ndb.BlobKeyProperty() #
+	
+	size = ndb.IntegerProperty(default=3) #Indicates the size of a LifePiece or Objective. In a fibonacci scale 1, 2, 3, 5, 8. Also works as effor denominator for Actions
+	timer = ndb.IntegerProperty(default=0) #Total minutes invested
+	event_date = ndb.DateProperty()
+
+	is_realized = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' is either a wish or a RTBG. And if an objective is acomplished or not.
+	is_active = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' is still part of my life situation
+	is_critical = ndb.BooleanProperty(default=False)
+	is_any_any = ndb.BooleanProperty(default=False)	
+
+	is_visible = ndb.BooleanProperty(default=True)
+	is_private = ndb.BooleanProperty(default=False)
+	in_graveyard = ndb.BooleanProperty(default=False)
+
+	comments = ndb.TextProperty()
+	tag = ndb.StringProperty()
+	details = ndb.JsonProperty() # Subtype details. E.g. Birthday for a person, or exceptions for KAS4, Triggers for KAS3, cost for stuff	
+	# best_time = ndb.TimeProperty()
+	# frequency = ndb.JsonProperty() #Now this will include the repeats and repeats_on attributes
+	# target = ndb.JsonProperty()
+	# cost = ndb.JsonProperty(default={'money_cost':0, 'days_cost':0, 'hours_cost':0})
+	# ImIn_details = ndb.JsonProperty(default={'positive_label':'Delighted', 'neutral_label':'Satisfied', 'negative_label':'Dissapointed', 'units':'Units'})	
+
+
+
 class KSU(ndb.Model):
 
 	theory = ndb.KeyProperty(kind=Theory, required=True)	
