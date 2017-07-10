@@ -1,7 +1,45 @@
 // Validated for KASware3
-$(document).on('click', '.ShowDetailButton', function(){
+$('#CreateNewKSU').on('click',function(){
+	var new_ksu = $('[ksu_type="Action"][value="KSUTemplate"]').clone();
+	new_ksu.attr("value", '');
+	new_ksu.find('#ShowDetailButton').addClass('hidden');
+	new_ksu.find('#SaveNewKSUButton').removeClass('hidden');
+	new_ksu.prependTo('#TheoryHolder');
+	new_ksu.removeClass('hidden');
+	ShowDetail(new_ksu);
+});
 
+
+$(document).on('click', '.SaveNewKSUButton', function(){
+
+	function SaveNewKSU(ksu){
+		console.log('Se estaria mandando el AJAX request')
+		ksu.attr("value","xxx")
+
+		var attributes_dic = {};
+		var ksu_attrributes = ksu.find('.KsuAttr');
+
+		for (var i = ksu_attrributes.length - 1; i >= 0; i--) {
+			var KsuAttr = $(ksu_attrributes[i])
+			attributes_dic[KsuAttr.attr("name")] = KsuAttr.val();
+		} 
+
+		attributes_dic['size'] = ksu.find('input:radio[name=size]:checked').val();
+
+		console.log(attributes_dic)
+		return attributes_dic
+	};
+
+	console.log('Se dio cuenta de que quiero guardar')
 	var ksu = $(this).closest('#KSU');
+	SaveNewKSU(ksu);
+	ksu.find('#ShowDetailButton').removeClass('hidden');
+	ksu.find('#SaveNewKSUButton').addClass('hidden');
+	ShowDetail(ksu);	
+});
+
+
+function ShowDetail(ksu){
 	ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
 
 	var GlaphiconDiv = ksu.find('#PlusMinusGlyphicon');
@@ -21,16 +59,20 @@ $(document).on('click', '.ShowDetailButton', function(){
 			ksu.find('.TimeRuler').addClass('hidden');	
 			ksu.find('.KSUdisplaySection').addClass('TopRoundBorders');
 		} 
-	}	
-});
+	}
+};
 
+
+$(document).on('click', '.ShowDetailButton', function(){
+	var ksu = $(this).closest('#KSU');
+	ShowDetail(ksu);
+});
 
 
 var select_toBeHidden = {
 	'repeats': ['#repeats_Xdays_col', '#repeats_day_col', '#repeats_month_col', '#repeats_week_col'],
 	'ksu_subtype':['#trigger', '#ExceptionsRow']
 }
-
 
 var select_toBeShown = {
 	'repeats':{
@@ -70,7 +112,7 @@ function hide_group(lista_ids){
 };
 
 
-$('.ShowHideSelect').on('change', function(){
+$(document).on('change','.ShowHideSelect', function(){
 
   var select = $(this).attr('name');
   var option = $(this).val();
@@ -83,8 +125,10 @@ $('.ShowHideSelect').on('change', function(){
   	$(format_target[0]).addClass(format_target[1]);
   	$(format_target[0]).removeClass(format_target[2]);
   };
-
 });
+
+
+
 
 
 
@@ -407,7 +451,7 @@ $('.SaveNewKSUButton').on('click', function(){
 			ksu_subtype = ksu_type
 		};
 
-
+// xx
 		var Templates = {
 			'KeyA': $('#NewKSUTemplate_KeyA').clone(),
 			'KAS1': $('#NewKSUTemplate_KAS1').clone(),

@@ -61,14 +61,10 @@
 						<span class="glyphicon glyphicon-fire"> </span><span id="Streak"> {{game['streak']}}</span>   
 					</div>
 				</div>
-
-				
-				<div class="hidden-xs col-sm-1 col-md-1 col-lg-1 text-left">
-					<form method="post">
-					<button type="Submit" class="btn btn-primary btn-xs" style="height: 25px; width: 60px; margin-top:10px; background-color:#00CCFF; color:white;" aria-label="Left Align"  name="action_description" value="NewKSU" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> KSU </button>
-					</form>
+				<div class="hidden-xs col-sm-1 col-md-1 col-lg-1 text-left">						
+					<button  class="btn btn-success btn-xs" style="height: 25px; width: 60px; margin-top:10px;" aria-label="Left Align" id="CreateNewKSU"  name="action_description" value="NewKSU"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> KSU </button>
 				</div>
-							
+											
 				<div class="hidden-xs col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
 					<div style="margin-top: 12px; color: white; white-space: pre;"> <a href="/Settings" style="color: white;">{{theory.first_name}}'s theory</a>   |  <a href="/LogOut" style="color: white;"> Log out</a> </div>
 				</div>
@@ -106,7 +102,11 @@
 		<div class="row">
 			<div class="col-xs-3"></div>
 			<div class="col-xs-6">
+				<div id="TheoryHolder" class="sortable">
+				
 				{% include "MasterKSU.html" %}
+				
+				</div>
 			</div>
 		</div>
 	</div>	
