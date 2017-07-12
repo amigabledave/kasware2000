@@ -8,22 +8,24 @@ from google.appengine.ext import ndb
 
 
 ksu_types = {
-	'LifePiece': [ #Attributes: Pa empezar un switch que indique si es algo que esta en tu vida o no.. osea deseo o rtbg
-		'Experience', 
-		'Meaning', #Achievement
+	
+	'EndValue':[],
+
+	'LifePiece': [ #Attributes: Pa empezar un switch que indique si es algo que esta en tu vida o no.. osea deseo o rtbg 
 		
 		'Body', #Health and vitality
 		'Mind', #Knowledge and skills
 		'Soul', #Connciousness and inner peace
 		
-		'People',
 		'Joy', #Joy Generators
-		
-		'Environment', #Stuff & Other order and peace
-		'Power', #Money & Power
+		'Love', #Important People. Love & Friendship
+		'Achievement', #Achievement. Meaning and direction
+				
+		'Stuff', #Environment & Stuff. Stuff & Other order and peace
+		'Power', #Money & Power		
 	],
 
-	'Objective': ['Objective'],
+	'Objective': [],
 
 	'Action': [
 		'Proactive',
@@ -31,7 +33,7 @@ ksu_types = {
 		'Negative'
 	],
 	
-	'Wisdom':['Wisdom'] #Your personal constitution #If the idea has a parent then is not a principle. BRILIANT!
+	'Wisdom':[] #Your personal constitution #If the idea has a parent then is not a principle. BRILIANT!
 
 	'Indicator': [
 		'RealitySnapshot',
@@ -39,7 +41,7 @@ ksu_types = {
 	]
 }
 
-class KSU(ndb.Model):
+class KSU3(ndb.Model):
 	theory = ndb.KeyProperty(kind=Theory, required=True)	
 	created = ndb.DateTimeProperty(auto_now_add=True)
 	ksu_type = ndb.StringProperty()
@@ -48,27 +50,27 @@ class KSU(ndb.Model):
 
 	description = ndb.StringProperty(required=True)	
 	pic_key = ndb.BlobKeyProperty() #
-	comments = ndb.TextProperty()
-	details = ndb.JsonProperty() # Subtype details. E.g. Birthday for a person, or exceptions for KAS4, Triggers for KAS3, cost for stuff	
-	# cost = ndb.JsonProperty(default={'money_cost':0, 'days_cost':0, 'hours_cost':0})
-	# ImIn_details = ndb.JsonProperty(default={'positive_label':'Delighted', 'neutral_label':'Satisfied', 'negative_label':'Dissapointed', 'units':'Units'})
-
+	
 	size = ndb.IntegerProperty(default=3) #Indicates the size of a LifePiece or Objective. In a fibonacci scale 1, 2, 3, 5, 8. Also works as effor denominator for Actions
-	timer = ndb.IntegerProperty(default=0) #Total seconds invested
-	target = ndb.JsonProperty()
+	timer = ndb.IntegerProperty(default=0) #Total minutes invested
+	event_date = ndb.DateProperty()
 
 	is_realized = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' is either a wish or a RTBG. And if an objective is acomplished or not.
 	is_active = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' is still part of my life situation
 	is_critical = ndb.BooleanProperty(default=False)
-		
+	is_any_any = ndb.BooleanProperty(default=False)	
+
 	is_visible = ndb.BooleanProperty(default=True)
 	is_private = ndb.BooleanProperty(default=False)
-	in_graveyard = ndb.BooleanProperty(default=False)	
+	in_graveyard = ndb.BooleanProperty(default=False)
 
-	next_event = ndb.DateProperty()
-	frequency = ndb.JsonProperty() #Now this will include the repeats and repeats_on attributes
-	best_time = ndb.TimeProperty()
-	any_any = ndb.BooleanProperty(default=False)
+	comments = ndb.TextProperty()
+	details = ndb.JsonProperty() # Subtype details. E.g. Birthday for a person, or exceptions for KAS4, Triggers for KAS3, cost for stuff	
+	# best_time = ndb.TimeProperty()
+	# frequency = ndb.JsonProperty() #Now this will include the repeats and repeats_on attributes
+	# target = ndb.JsonProperty()
+	# cost = ndb.JsonProperty(default={'money_cost':0, 'days_cost':0, 'hours_cost':0})
+	# ImIn_details = ndb.JsonProperty(default={'positive_label':'Delighted', 'neutral_label':'Satisfied', 'negative_label':'Dissapointed', 'units':'Units'})	
 
 
 

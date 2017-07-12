@@ -1088,7 +1088,7 @@ class TheoryViewer(Handler):
 
 
 class EventHandler(Handler):
-# xx	
+
 	@super_user_bouncer
 	def post(self):
 			
@@ -1748,7 +1748,7 @@ class UpdateTheoryStructure(Handler):
 		theory.size = theory_size
 		theory.put()
 
-# xx
+# ---- KASware3 ---- xx
 class KASware3(Handler):
 
 	@super_user_bouncer
@@ -1759,17 +1759,24 @@ class KASware3(Handler):
 	def post(self):
 		event_details = json.loads(self.request.body);
 
-		print
-		print 'Si llego el AJAX Request. User action: ' +  event_details['user_action'] + '. Event details: ' +  str(event_details)
-		print
-
 		user_action = event_details['user_action']
-		
-		if user_action == 'SaveNewKSU':			
-			ksu = KSU3(
-				theory=self.theory.key,
-				description=event_details['description'])
 
+		if user_action == 'RetrieveTheory':
+			ksu_set = KSU3.query(KSU.theory == self.theory.key).fetch()
+			output = []
+			for ksu in ksu_set:
+				output.append(self.ksu_to_dic(ksu))
+			self.response.out.write(json.dumps({
+				'mensaje':'Esta es la teoria del usuario:',
+				'ksu_set': output,
+				}))
+
+		if user_action == 'SaveNewKSU':			
+			ksu = KSU3(theory=self.theory.key)
+			attributes = ['ksu_type', 'ksu_subtype', 'description', 'comments']	
+			for attribute in attributes:
+				self.update_ksu_attribute(ksu, attribute, event_details[attribute])
+				
 			ksu.put()
 
 			self.response.out.write(json.dumps({
@@ -1778,6 +1785,27 @@ class KASware3(Handler):
 				'description': ksu.description,
 				}))
 		return
+
+	def update_ksu_attribute(self, ksu, attr_key, attr_value):
+		attr_value = self.fix_ksu_attribute(attr_key, attr_value)
+		setattr(ksu, attr_key, attr_value)		
+		return ksu
+
+	def fix_ksu_attribute(self, attr_key, attr_value):
+		fixed_value = attr_value
+		if attr_key in ['description', 'comments']:
+			fixed_value = attr_value.encode('utf-8')
+		return fixed_value
+
+	def ksu_to_dic(self, ksu):
+		ksu_dic = {
+			'ksu_id': ksu.key.id(),
+			'ksu_type': ksu.ksu_type,
+			'ksu_subtype': ksu.ksu_subtype, 
+			'description': ksu.description,
+			'comments': ksu.comments
+		}
+		return ksu_dic
 
 
 

@@ -13,8 +13,7 @@ $('#CreateNewKSU').on('click',function(){
 $(document).on('click', '.SaveNewKSUButton', function(){
 
 	function SaveNewKSU(ksu){
-		ksu.attr("value","xxx")
-
+		ksu.attr("value","")
 		var attributes_dic = {};
 		var ksu_attrributes = ksu.find('.KsuAttr');
 
@@ -34,8 +33,8 @@ $(document).on('click', '.SaveNewKSUButton', function(){
 			url: "/KASware3",
 			dataType: 'json',
 			data: JSON.stringify(attributes_dic)
-		}).done(function(data){console.log(data)});
-	
+		}).done(function(data){console.log(data); ksu.attr("value",data['ksu_id'])});
+
 	};
 
 	var ksu = $(this).closest('#KSU');
@@ -121,12 +120,24 @@ function hide_group(lista_ids){
   }
 };
 
+function HideUnhideKsuProperties(ksu, targets, action){
+	if (action == 'Hide'){
+		for( miembro in lista_ids){
+			ksu.find(lista_ids[miembro]).addClass('hidden') 
+		}		
+	}
+	// xxxx Aqui nos quedamos
+	if (action == 'Show'){
+		for( miembro in lista_ids){
+			ksu.find(lista_ids[miembro]).removeClass('hidden') 
+		}		
+	}
+}
 
-$(document).on('change','.ShowHideSelect', function(){
 
-  var select = $(this).attr('name');
-  var option = $(this).val();
-  
+function ShowHideSelect(select, option){
+  var ksu = $(this).closest('#KSU');
+
   hide_group(select_toBeHidden[select]);
   unhide_group(select_toBeShown[select][option]);
 
@@ -134,12 +145,71 @@ $(document).on('change','.ShowHideSelect', function(){
   	var format_target = select_toBeToggled[select][option][0];
   	$(format_target[0]).addClass(format_target[1]);
   	$(format_target[0]).removeClass(format_target[2]);
-  };
+  };	
+}
+
+$(document).on('change','.ShowHideSelect', function(){
+
+  var select = $(this).attr('name');
+  var option = $(this).val();
+  
+  ShowHideSelect(select, option);
+
 });
 
 
+$(document).ready(function(){
+	$.ajax({
+		type: "POST",
+		url: "/KASware3",
+		dataType: 'json',
+		data: JSON.stringify({
+			'user_action': 'RetrieveTheory'
+		})
+	})
+	.done(function(data){
+		console.log(data);
+		var ksu_set = data['ksu_set']
+		for (var i = ksu_set.length - 1; i >= 0; i--) {
+			render_ksu(ksu_set[i])
+		}
+	})	
+});
+
+var attrbutes_type = {
+	'description': 'textarea',
+	'comments': 'textarea',
+	'ksu_subtype': 'select'
+}
+
+var ksu_attrributes = {
+	'Base': ['description', 'comments', 'ksu_subtype'],
+	'Action': []
+}
 
 
+
+function render_ksu(ksu_dic){
+	var ksu = $('[ksu_type="Action"][value="KSUTemplate"]').clone();
+	ksu.attr("value", ksu_dic['ksu_id']);
+	
+	var attributes = ksu_attrributes['Base'].concat(ksu_attrributes[ksu_dic['ksu_type']]);
+	
+	for (var i = attributes.length - 1; i >= 0; i--) {
+		var attribute = attributes[i];		
+		var attr_type = attrbutes_type[attribute];
+		if (attr_type == 'textarea'){
+			ksu.find('#'+attribute).val(ksu_dic[attribute])
+		} else if (attr_type == 'select'){
+			console.log(ksu_dic[attribute]);
+			ksu.find('#'+attribute).val(ksu_dic[attribute]).prop('selected', true);
+			ShowHideSelect(attribute, ksu_dic[attribute]);
+		}		
+	}
+	
+	ksu.prependTo('#TheoryHolder');
+	ksu.removeClass('hidden');
+}
 
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -460,7 +530,7 @@ $('.SaveNewKSUButton').on('click', function(){
 			ksu_subtype = ksu_type
 		};
 
-// xx
+
 		var Templates = {
 			'KeyA': $('#NewKSUTemplate_KeyA').clone(),
 			'KAS1': $('#NewKSUTemplate_KAS1').clone(),
@@ -859,7 +929,7 @@ $('.JoyGeneratorCheckbox').on('change',function(){
 });
 
 
-// xx
+
 $('.DummyInput').on('change',function(){
 	var ksu = $(this).closest('#NewKSU');
 	var ksu_attr = $(this).attr("ksuattr");
@@ -1437,7 +1507,7 @@ $(document).on('click', '.PlayStopButton', function(){
 	GlaphiconDiv.toggleClass('glyphicon-stop');	
 });
 
-// #xx
+
 $('input[type=radio][name=effort_denominator]').on('change',function(){
 	var ksu = $(this).closest('#MissionKSU');
 	var effort_denominator = $(this).val()
