@@ -1773,7 +1773,7 @@ class KASware3(Handler):
 
 		if user_action == 'SaveNewKSU':			
 			ksu = KSU3(theory=self.theory.key)
-			attributes = ['ksu_type', 'ksu_subtype', 'description', 'comments']	
+			attributes = ['ksu_type', 'ksu_subtype', 'description', 'comments', 'repeats']	
 			for attribute in attributes:
 				self.update_ksu_attribute(ksu, attribute, event_details[attribute])
 				
@@ -1784,18 +1784,37 @@ class KASware3(Handler):
 				'ksu_id': ksu.key.id(),
 				'description': ksu.description,
 				}))
+		
+		if user_action == 'DeleteKSU':
+			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
+			ksu.key.delete()
+			self.response.out.write(json.dumps({
+				'mensaje':'KSU Borrado',
+				'ksu_id': ksu.key.id(),
+				'description': ksu.description,
+				}))
 		return
 
-	def update_ksu_attribute(self, ksu, attr_key, attr_value):
-		attr_value = self.fix_ksu_attribute(attr_key, attr_value)
-		setattr(ksu, attr_key, attr_value)		
-		return ksu
+	# def update_ksu_attribute(self, ksu, attr_key, attr_value):
+	# 	attr_key, attr_value = self.fix_ksu_attribute(ksu, attr_key, attr_value)
+	# 	setattr(ksu, attr_key, attr_value)		
+	# 	return ksu
 
-	def fix_ksu_attribute(self, attr_key, attr_value):
+	def update_ksu_attribute(self, ksu, attr_key, attr_value):
+		fixed_key = attr_key
 		fixed_value = attr_value
+		
 		if attr_key in ['description', 'comments']:
 			fixed_value = attr_value.encode('utf-8')
-		return fixed_value
+		
+		if attr_key in ['repeats']:
+			fixed_key = 'details'
+			details_dic = ksu.details
+			details_dic[attr_key] = fixed_value
+			
+		setattr(ksu, attr_key, attr_value)
+
+		return ksu
 
 	def ksu_to_dic(self, ksu):
 		ksu_dic = {
@@ -1803,6 +1822,7 @@ class KASware3(Handler):
 			'ksu_type': ksu.ksu_type,
 			'ksu_subtype': ksu.ksu_subtype, 
 			'description': ksu.description,
+			'repeats': ksu.details['repeats'],
 			'comments': ksu.comments
 		}
 		return ksu_dic

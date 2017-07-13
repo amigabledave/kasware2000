@@ -9,21 +9,55 @@ from google.appengine.ext import ndb
 
 ksu_types = {
 	
-	'EndValue':[],
 
-	'LifePiece': [ #Attributes: Pa empezar un switch que indique si es algo que esta en tu vida o no.. osea deseo o rtbg 
-		
-		'Body', #Health and vitality
-		'Mind', #Knowledge and skills
-		'Soul', #Connciousness and inner peace
-		
-		'Joy', #Joy Generators
-		'Love', #Important People. Love & Friendship
-		'Achievement', #Achievement. Meaning and direction
-				
-		'Stuff', #Environment & Stuff. Stuff & Other order and peace
-		'Power', #Money & Power		
+	# Result 
+	'Experience':[
+		'EndValue',
+		'Growth'
 	],
+	
+	'Indicator': [
+		'RealitySnapshot',
+		'BinaryPerception',
+	]
+
+
+	#Life Pieces
+	'Meaning':[
+		'GreaterGood', #Impact the life of others
+		'SelfFocus' #Proof something mainly to your self. Achievement.
+	],
+
+	'Being':[
+		'KnowledgeOrSkill', #'Mind', #Knowledge and skills
+		'Attitude', #'Soul', #Connciousness and inner peace
+		'PhisicalAttribute', #'Body', #Health and vitality
+		'JoyGenerator'	
+	],
+	
+	'Environment':[#'Stuff', #Environment & Stuff. Stuff & Other order and peace
+		'Stuff',
+		'Surroundings'
+	],
+
+	'Person':[ #'Love', #Important People. Love & Friendship
+		'Friend',
+		'Partner',
+		'Child',
+		'Family',
+		'Pet',
+		'Network',
+	],
+					
+	'Power':[ #Money & Power
+		'Money',
+		'Status'
+	], 		
+
+	
+	#Actions
+	
+	'Wisdom':[] #Your personal constitution #If the idea has a parent then is not a principle. BRILIANT!
 
 	'Objective': [],
 
@@ -33,12 +67,6 @@ ksu_types = {
 		'Negative'
 	],
 	
-	'Wisdom':[] #Your personal constitution #If the idea has a parent then is not a principle. BRILIANT!
-
-	'Indicator': [
-		'RealitySnapshot',
-		'BinaryPerception',
-	]
 }
 
 class KSU3(ndb.Model):

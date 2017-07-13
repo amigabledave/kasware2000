@@ -2,7 +2,7 @@
 $('#CreateNewKSU').on('click',function(){
 	var new_ksu = $('[ksu_type="Action"][value="KSUTemplate"]').clone();
 	new_ksu.attr("value", '');
-	new_ksu.find('#ShowDetailButton').addClass('hidden');
+	new_ksu.find('#DoneButton').addClass('hidden');
 	new_ksu.find('#SaveNewKSUButton').removeClass('hidden');
 	new_ksu.prependTo('#TheoryHolder');
 	new_ksu.removeClass('hidden');
@@ -10,7 +10,16 @@ $('#CreateNewKSU').on('click',function(){
 });
 
 
-$(document).on('click', '.SaveNewKSUButton', function(){
+$(document).on('click', '.KsuActionButton', function(){
+	var ksu = $(this).closest('#KSU');
+	var action = $(this).attr('value');
+	// console.log(action)
+
+	var actions_menu = {
+		'SaveNewKSU': SaveNewKSU,
+		'DeleteKSU': DeleteKSU,
+	}
+	actions_menu[action](ksu);
 
 	function SaveNewKSU(ksu){
 		ksu.attr("value","")
@@ -23,9 +32,7 @@ $(document).on('click', '.SaveNewKSUButton', function(){
 		} 
 
 		attributes_dic['size'] = ksu.find('input:radio[name=size]:checked').val();
-
-		console.log(attributes_dic)
-		
+		// console.log(attributes_dic)
 		attributes_dic['user_action'] = 'SaveNewKSU';
 
 		$.ajax({
@@ -33,16 +40,77 @@ $(document).on('click', '.SaveNewKSUButton', function(){
 			url: "/KASware3",
 			dataType: 'json',
 			data: JSON.stringify(attributes_dic)
-		}).done(function(data){console.log(data); ksu.attr("value",data['ksu_id'])});
-
+		}).done(function(data){
+			console.log(data); 
+			ksu.attr("value",data['ksu_id']);
+			ksu.find('#DoneButton').removeClass('hidden');
+			ksu.find('#SaveNewKSUButton').addClass('hidden');
+			ShowDetail(ksu);
+		});	
 	};
 
-	var ksu = $(this).closest('#KSU');
-	SaveNewKSU(ksu);
-	ksu.find('#ShowDetailButton').removeClass('hidden');
-	ksu.find('#SaveNewKSUButton').addClass('hidden');
-	ShowDetail(ksu);	
+	function DeleteKSU(ksu){
+		if(ksu.attr("value")==""){
+			ksu.remove()
+		} else {
+			$.ajax({
+				type: "POST",
+				url: "/KASware3",
+				dataType: 'json',
+				data: JSON.stringify({
+					'user_action': 'DeleteKSU',
+					'ksu_id': ksu.attr('value')
+				})
+			}).done(function(data){
+				console.log(data);
+				ksu.fadeOut("slow", function(){
+					$(this).remove()
+				})
+			});
+		}		
+	
+	}	
 });
+
+
+// $(document).on('click', '.SaveNewKSUButton', function(){
+
+// 	function SaveNewKSU(ksu){
+// 		ksu.attr("value","")
+// 		var attributes_dic = {};
+// 		var ksu_attrributes = ksu.find('.KsuAttr');
+
+// 		for (var i = ksu_attrributes.length - 1; i >= 0; i--) {
+// 			var KsuAttr = $(ksu_attrributes[i])
+// 			attributes_dic[KsuAttr.attr("name")] = KsuAttr.val();
+// 		} 
+
+// 		attributes_dic['size'] = ksu.find('input:radio[name=size]:checked').val();
+
+// 		console.log(attributes_dic)
+		
+// 		attributes_dic['user_action'] = 'SaveNewKSU';
+
+// 		$.ajax({
+// 			type: "POST",
+// 			url: "/KASware3",
+// 			dataType: 'json',
+// 			data: JSON.stringify(attributes_dic)
+// 		}).done(function(data){
+// 			console.log(data); 
+// 			ksu.attr("value",data['ksu_id']);
+// 			ksu.find('#DoneButton').removeClass('hidden');
+// 			ksu.find('#SaveNewKSUButton').addClass('hidden');
+// 			ShowDetail(ksu);
+// 		});	
+// 	};
+
+// 	var ksu = $(this).closest('#KSU');
+// 	SaveNewKSU(ksu);
+// 	ksu.find('#DoneButton').removeClass('hidden');
+// 	ksu.find('#SaveNewKSUButton').addClass('hidden');
+// 	ShowDetail(ksu);	
+// });
 
 
 function ShowDetail(ksu){
@@ -121,40 +189,40 @@ function hide_group(lista_ids){
 };
 
 function HideUnhideKsuProperties(ksu, targets, action){
+	
 	if (action == 'Hide'){
-		for( miembro in lista_ids){
-			ksu.find(lista_ids[miembro]).addClass('hidden') 
-		}		
+		for( t in targets){
+			ksu.find(targets[t]).addClass('hidden') 
+		}
 	}
 	// xxxx Aqui nos quedamos
 	if (action == 'Show'){
-		for( miembro in lista_ids){
-			ksu.find(lista_ids[miembro]).removeClass('hidden') 
+		for( t in targets){
+			ksu.find(targets[t]).removeClass('hidden') 
 		}		
 	}
 }
 
 
-function ShowHideSelect(select, option){
-  var ksu = $(this).closest('#KSU');
-
-  hide_group(select_toBeHidden[select]);
-  unhide_group(select_toBeShown[select][option]);
-
+function ShowHideSelect(ksu, select, option){
+  
+  HideUnhideKsuProperties(ksu, select_toBeHidden[select], 'Hide');
+  HideUnhideKsuProperties(ksu, select_toBeShown[select][option], 'Show');
+  
   if(select == 'ksu_subtype'){
   	var format_target = select_toBeToggled[select][option][0];
-  	$(format_target[0]).addClass(format_target[1]);
-  	$(format_target[0]).removeClass(format_target[2]);
+  	ksu.find(format_target[0]).addClass(format_target[1]);
+  	ksu.find(format_target[0]).removeClass(format_target[2]);
   };	
 }
 
 $(document).on('change','.ShowHideSelect', function(){
-
+  
+  var ksu = $(this).closest('#KSU');
   var select = $(this).attr('name');
   var option = $(this).val();
   
-  ShowHideSelect(select, option);
-
+  ShowHideSelect(ksu, select, option);
 });
 
 
@@ -167,8 +235,7 @@ $(document).ready(function(){
 			'user_action': 'RetrieveTheory'
 		})
 	})
-	.done(function(data){
-		console.log(data);
+	.done(function(data){		
 		var ksu_set = data['ksu_set']
 		for (var i = ksu_set.length - 1; i >= 0; i--) {
 			render_ksu(ksu_set[i])
@@ -179,14 +246,14 @@ $(document).ready(function(){
 var attrbutes_type = {
 	'description': 'textarea',
 	'comments': 'textarea',
-	'ksu_subtype': 'select'
+	'ksu_subtype': 'select',
+	'repeats':'select'
 }
 
 var ksu_attrributes = {
 	'Base': ['description', 'comments', 'ksu_subtype'],
-	'Action': []
+	'Action': ['repeats']
 }
-
 
 
 function render_ksu(ksu_dic){
@@ -200,10 +267,9 @@ function render_ksu(ksu_dic){
 		var attr_type = attrbutes_type[attribute];
 		if (attr_type == 'textarea'){
 			ksu.find('#'+attribute).val(ksu_dic[attribute])
-		} else if (attr_type == 'select'){
-			console.log(ksu_dic[attribute]);
+		} else if (attr_type == 'select'){			
 			ksu.find('#'+attribute).val(ksu_dic[attribute]).prop('selected', true);
-			ShowHideSelect(attribute, ksu_dic[attribute]);
+			ShowHideSelect(ksu, attribute, ksu_dic[attribute]);
 		}		
 	}
 	
