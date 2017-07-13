@@ -4,6 +4,7 @@ $('#CreateNewKSU').on('click',function(){
 	new_ksu.attr("value", '');
 	new_ksu.find('#DoneButton').addClass('hidden');
 	new_ksu.find('#SaveNewKSUButton').removeClass('hidden');
+	new_ksu = add_reason_select_to_ksu(new_ksu);
 	new_ksu.prependTo('#TheoryHolder');
 	new_ksu.removeClass('hidden');
 	ShowDetail(new_ksu);
@@ -278,13 +279,24 @@ function render_ksu(ksu_dic){
 
     // $('.ReasonSelect').selectToAutocomplete();
 	// console.log(ksu.find('#reason_holder'))
-	ksu.find('#reason_holder').append($('#reasons_select').clone());
-	ksu.find('#reasons_select').attr('id', 'reason')
-	ksu.find('#reason').selectize();
+
+	// ksu.find('#reason_holder').append($('#reasons_select').clone());
+	// ksu.find('#reasons_select').attr('id', 'reason')
+	// ksu.find('#reason').selectize();
+	ksu = add_reason_select_to_ksu(ksu);
+
 	// ksu.find('#ksu_subtype').selectize();
 
 	ksu.prependTo('#TheoryHolder');
 	ksu.removeClass('hidden');
+}
+
+
+function add_reason_select_to_ksu(ksu){
+	ksu.find('#reason_holder').append($('#reasons_select').clone());
+	ksu.find('#reasons_select').attr('id', 'reason')
+	ksu.find('#reason').selectize();
+	return ksu
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
