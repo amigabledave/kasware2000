@@ -10,7 +10,7 @@ from google.appengine.ext import ndb
 ksu_types = {
 	
 
-	# Result 
+	# Results 
 	'Experience':[
 		'EndValue',
 		'Growth'
@@ -19,8 +19,8 @@ ksu_types = {
 	'Indicator': [
 		'RealitySnapshot',
 		'BinaryPerception',
+		'TernaryPerception',
 	]
-
 
 	#Life Pieces
 	'Meaning':[
@@ -55,8 +55,7 @@ ksu_types = {
 	], 		
 
 	
-	#Actions
-	
+	#Actions	
 	'Wisdom':[] #Your personal constitution #If the idea has a parent then is not a principle. BRILIANT!
 
 	'Objective': [],

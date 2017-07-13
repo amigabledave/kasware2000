@@ -30,10 +30,9 @@ $(document).on('click', '.KsuActionButton', function(){
 			var KsuAttr = $(ksu_attrributes[i])
 			attributes_dic[KsuAttr.attr("name")] = KsuAttr.val();
 		} 
-
 		attributes_dic['size'] = ksu.find('input:radio[name=size]:checked').val();
-		// console.log(attributes_dic)
 		attributes_dic['user_action'] = 'SaveNewKSU';
+		// console.log(attributes_dic)
 
 		$.ajax({
 			type: "POST",
@@ -68,8 +67,7 @@ $(document).on('click', '.KsuActionButton', function(){
 				})
 			});
 		}		
-	
-	}	
+	};	
 });
 
 
@@ -247,19 +245,21 @@ var attrbutes_type = {
 	'description': 'textarea',
 	'comments': 'textarea',
 	'ksu_subtype': 'select',
-	'repeats':'select'
+	'repeats':'select',
+	'trigger':'textarea',
+	'timer':'textarea'
 }
 
 var ksu_attrributes = {
 	'Base': ['description', 'comments', 'ksu_subtype'],
-	'Action': ['repeats']
+	'Action': ['repeats', 'trigger', 'timer']
 }
 
 
 function render_ksu(ksu_dic){
 	var ksu = $('[ksu_type="Action"][value="KSUTemplate"]').clone();
 	ksu.attr("value", ksu_dic['ksu_id']);
-	
+	// console.log(ksu_dic);
 	var attributes = ksu_attrributes['Base'].concat(ksu_attrributes[ksu_dic['ksu_type']]);
 	
 	for (var i = attributes.length - 1; i >= 0; i--) {
@@ -272,7 +272,17 @@ function render_ksu(ksu_dic){
 			ShowHideSelect(ksu, attribute, ksu_dic[attribute]);
 		}		
 	}
-	
+
+	// var reasons_dropdown = $('#reasons_select').clone();
+	// $('#reasons_select').selectize()
+
+    // $('.ReasonSelect').selectToAutocomplete();
+	// console.log(ksu.find('#reason_holder'))
+	ksu.find('#reason_holder').append($('#reasons_select').clone());
+	ksu.find('#reasons_select').attr('id', 'reason')
+	ksu.find('#reason').selectize();
+	// ksu.find('#ksu_subtype').selectize();
+
 	ksu.prependTo('#TheoryHolder');
 	ksu.removeClass('hidden');
 }
@@ -1692,6 +1702,7 @@ function MakeSortable(){
 
 $(document).ready(function(){
 	MakeSortable()
+ 	$('.ParentSelector').selectToAutocomplete();
 	// new Sortable(document.getElementsByClassName('sortable')[0]);
 });
 

@@ -1773,7 +1773,7 @@ class KASware3(Handler):
 
 		if user_action == 'SaveNewKSU':			
 			ksu = KSU3(theory=self.theory.key)
-			attributes = ['ksu_type', 'ksu_subtype', 'description', 'comments', 'repeats']	
+			attributes = ['ksu_type', 'ksu_subtype', 'description', 'comments', 'timer', 'repeats', 'trigger']	
 			for attribute in attributes:
 				self.update_ksu_attribute(ksu, attribute, event_details[attribute])
 				
@@ -1795,11 +1795,6 @@ class KASware3(Handler):
 				}))
 		return
 
-	# def update_ksu_attribute(self, ksu, attr_key, attr_value):
-	# 	attr_key, attr_value = self.fix_ksu_attribute(ksu, attr_key, attr_value)
-	# 	setattr(ksu, attr_key, attr_value)		
-	# 	return ksu
-
 	def update_ksu_attribute(self, ksu, attr_key, attr_value):
 		fixed_key = attr_key
 		fixed_value = attr_value
@@ -1807,13 +1802,16 @@ class KASware3(Handler):
 		if attr_key in ['description', 'comments']:
 			fixed_value = attr_value.encode('utf-8')
 		
-		if attr_key in ['repeats']:
+		if attr_key in ['timer']:
+			fixed_value = int(attr_value)	
+
+		if attr_key in ['repeats', 'trigger']:
 			fixed_key = 'details'
 			details_dic = ksu.details
 			details_dic[attr_key] = fixed_value
+			fixed_value = details_dic
 			
-		setattr(ksu, attr_key, attr_value)
-
+		setattr(ksu, fixed_key, fixed_value)
 		return ksu
 
 	def ksu_to_dic(self, ksu):
@@ -1822,9 +1820,16 @@ class KASware3(Handler):
 			'ksu_type': ksu.ksu_type,
 			'ksu_subtype': ksu.ksu_subtype, 
 			'description': ksu.description,
-			'repeats': ksu.details['repeats'],
-			'comments': ksu.comments
+			'comments': ksu.comments,
+			'timer': ksu.timer,
 		}
+
+		details_attributes = ['trigger', 'repeats']
+		details_dic = ksu.details
+		for attr in details_attributes:
+			if attr in details_dic:
+				ksu_dic[attr] = details_dic[attr]
+
 		return ksu_dic
 
 

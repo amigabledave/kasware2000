@@ -1,4 +1,4 @@
-<div id="KSU" ksu_type="Action" value="KSUTemplate" class="hidden">
+<div id="KSU" ksu_type="Action" value="KSUTemplate" class="hidden">	
 	<input type="text" name="ksu_type" value="Action" class="KsuAttr hidden">
 	<div class="row TimeRuler hidden" id="TimeRuler">
 		<div class="col-xs-3">
@@ -16,7 +16,7 @@
 			</div>
 			
 			<div class="col-xs-9">
-				<textarea style="width:100%; border:0; font-weight: bold; font-style: italic;" class="KsuAttr autoExpand hidden" rows="1" data-min-rows='1' name="trigger" id="trigger" placeholder="Trigger circumstance"></textarea>
+				<textarea style="width:100%; border:0; font-style: italic; padding-bottom: 0px; margin-bottom: -3px;" class="KsuAttr autoExpand hidden" rows="1" data-min-rows='1' name="trigger" id="trigger" placeholder="Trigger circumstance"></textarea>
 				<textarea style="width:100%; border:0;" class="KsuAttr autoExpand" rows="1" data-min-rows='1' name="description" id="description" placeholder="Action description"></textarea>
 			</div>
 			
@@ -49,8 +49,9 @@
 						</select> 
 					</div>
 
-					<div class="col-xs-8">
-						<textarea style="width:100%; border:0; font-style: italic;" class="KsuAttr" rows="1" data-min-rows='1' name="reason" id="reason" placeholder="Target reason"></textarea>	
+					<div class="col-xs-8" id="reason_holder">
+						
+						<!-- <textarea style="width:100%; border:0; font-style: italic;" class="KsuAttr" rows="1" data-min-rows='1' name="reason" id="reason" placeholder="Target reason"></textarea> -->	
 					</div>
 				</div>
 				<div class="row" id="SizeRow">
