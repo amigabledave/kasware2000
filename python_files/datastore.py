@@ -58,7 +58,7 @@ class KSU3(ndb.Model):
 	created = ndb.DateTimeProperty(auto_now_add=True)
 	ksu_type = ndb.StringProperty()
 	ksu_subtype = ndb.StringProperty()
-	parent_id = ndb.KeyProperty()
+	reason_id = ndb.KeyProperty()
 
 	description = ndb.StringProperty(required=True)	
 	pic_key = ndb.BlobKeyProperty() #

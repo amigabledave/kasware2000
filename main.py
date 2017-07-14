@@ -1764,16 +1764,19 @@ class KASware3(Handler):
 		if user_action == 'RetrieveTheory':
 			ksu_set = KSU3.query(KSU.theory == self.theory.key).fetch()
 			output = []
+			reasons_index = []
 			for ksu in ksu_set:
 				output.append(self.ksu_to_dic(ksu))
+				reasons_index.append([ksu.key.id(), ksu.description])
 			self.response.out.write(json.dumps({
 				'mensaje':'Esta es la teoria del usuario:',
 				'ksu_set': output,
+				'reasons_index':reasons_index,
 				}))
 
 		if user_action == 'SaveNewKSU':			
 			ksu = KSU3(theory=self.theory.key)
-			attributes = ['ksu_type', 'ksu_subtype', 'description', 'comments', 'timer', 'repeats', 'trigger']	
+			attributes = ['ksu_type', 'ksu_subtype', 'reason_id', 'description', 'comments', 'timer', 'repeats', 'trigger']	
 			for attribute in attributes:
 				self.update_ksu_attribute(ksu, attribute, event_details[attribute])
 				
@@ -1810,7 +1813,13 @@ class KASware3(Handler):
 			details_dic = ksu.details
 			details_dic[attr_key] = fixed_value
 			fixed_value = details_dic
-			
+		
+		if attr_key == 'reason_id':
+			if attr_value == '':
+				return
+			else:
+				fixed_value = KSU3.get_by_id(int(attr_value)).key
+
 		setattr(ksu, fixed_key, fixed_value)
 		return ksu
 
@@ -1819,10 +1828,15 @@ class KASware3(Handler):
 			'ksu_id': ksu.key.id(),
 			'ksu_type': ksu.ksu_type,
 			'ksu_subtype': ksu.ksu_subtype, 
+			
 			'description': ksu.description,
 			'comments': ksu.comments,
 			'timer': ksu.timer,
 		}
+
+		ksu_dic['reason_id'] = 0
+		if ksu.reason_id:
+			ksu_dic['reason_id'] = ksu.reason_id.id(),
 
 		details_attributes = ['trigger', 'repeats']
 		details_dic = ksu.details

@@ -1,10 +1,29 @@
 // Validated for KASware3
+$(document).ready(function(){
+	$.ajax({
+		type: "POST",
+		url: "/KASware3",
+		dataType: 'json',
+		data: JSON.stringify({
+			'user_action': 'RetrieveTheory'
+		})
+	})
+	.done(function(data){		
+		RenderReasonsIndex(data['reasons_index'])
+		var ksu_set = data['ksu_set']
+		for (var i = ksu_set.length - 1; i >= 0; i--) {
+			render_ksu(ksu_set[i])
+		}		
+	})	
+});
+
+
 $('#CreateNewKSU').on('click',function(){
 	var new_ksu = $('[ksu_type="Action"][value="KSUTemplate"]').clone();
 	new_ksu.attr("value", '');
 	new_ksu.find('#DoneButton').addClass('hidden');
 	new_ksu.find('#SaveNewKSUButton').removeClass('hidden');
-	new_ksu = add_reason_select_to_ksu(new_ksu);
+	new_ksu = add_reason_select_to_ksu(new_ksu, false);
 	new_ksu.prependTo('#TheoryHolder');
 	new_ksu.removeClass('hidden');
 	ShowDetail(new_ksu);
@@ -46,6 +65,8 @@ $(document).on('click', '.KsuActionButton', function(){
 			ksu.find('#DoneButton').removeClass('hidden');
 			ksu.find('#SaveNewKSUButton').addClass('hidden');
 			ShowDetail(ksu);
+			AddReasonToSelect(data['ksu_id'], ksu.find('#description').val())
+			UpdateResonSelects()
 		});	
 	};
 
@@ -70,46 +91,6 @@ $(document).on('click', '.KsuActionButton', function(){
 		}		
 	};	
 });
-
-
-// $(document).on('click', '.SaveNewKSUButton', function(){
-
-// 	function SaveNewKSU(ksu){
-// 		ksu.attr("value","")
-// 		var attributes_dic = {};
-// 		var ksu_attrributes = ksu.find('.KsuAttr');
-
-// 		for (var i = ksu_attrributes.length - 1; i >= 0; i--) {
-// 			var KsuAttr = $(ksu_attrributes[i])
-// 			attributes_dic[KsuAttr.attr("name")] = KsuAttr.val();
-// 		} 
-
-// 		attributes_dic['size'] = ksu.find('input:radio[name=size]:checked').val();
-
-// 		console.log(attributes_dic)
-		
-// 		attributes_dic['user_action'] = 'SaveNewKSU';
-
-// 		$.ajax({
-// 			type: "POST",
-// 			url: "/KASware3",
-// 			dataType: 'json',
-// 			data: JSON.stringify(attributes_dic)
-// 		}).done(function(data){
-// 			console.log(data); 
-// 			ksu.attr("value",data['ksu_id']);
-// 			ksu.find('#DoneButton').removeClass('hidden');
-// 			ksu.find('#SaveNewKSUButton').addClass('hidden');
-// 			ShowDetail(ksu);
-// 		});	
-// 	};
-
-// 	var ksu = $(this).closest('#KSU');
-// 	SaveNewKSU(ksu);
-// 	ksu.find('#DoneButton').removeClass('hidden');
-// 	ksu.find('#SaveNewKSUButton').addClass('hidden');
-// 	ShowDetail(ksu);	
-// });
 
 
 function ShowDetail(ksu){
@@ -225,23 +206,6 @@ $(document).on('change','.ShowHideSelect', function(){
 });
 
 
-$(document).ready(function(){
-	$.ajax({
-		type: "POST",
-		url: "/KASware3",
-		dataType: 'json',
-		data: JSON.stringify({
-			'user_action': 'RetrieveTheory'
-		})
-	})
-	.done(function(data){		
-		var ksu_set = data['ksu_set']
-		for (var i = ksu_set.length - 1; i >= 0; i--) {
-			render_ksu(ksu_set[i])
-		}
-	})	
-});
-
 var attrbutes_type = {
 	'description': 'textarea',
 	'comments': 'textarea',
@@ -274,30 +238,53 @@ function render_ksu(ksu_dic){
 		}		
 	}
 
-	// var reasons_dropdown = $('#reasons_select').clone();
-	// $('#reasons_select').selectize()
-
-    // $('.ReasonSelect').selectToAutocomplete();
-	// console.log(ksu.find('#reason_holder'))
-
-	// ksu.find('#reason_holder').append($('#reasons_select').clone());
-	// ksu.find('#reasons_select').attr('id', 'reason')
-	// ksu.find('#reason').selectize();
-	ksu = add_reason_select_to_ksu(ksu);
-
-	// ksu.find('#ksu_subtype').selectize();
-
+	ksu = add_reason_select_to_ksu(ksu, ksu_dic['reason_id']);
 	ksu.prependTo('#TheoryHolder');
 	ksu.removeClass('hidden');
 }
 
 
-function add_reason_select_to_ksu(ksu){
+function RenderReasonsIndex(reasons_list){
+	for (var i = reasons_list.length - 1; i >= 0; i--) {
+		var reason = reasons_list[i]
+		AddReasonToSelect(reason[0], reason[1])
+	}
+}
+
+function AddReasonToSelect(ksu_id, description){
+	$('#reasons_select').append($('<option>', {value:ksu_id, text:description}));
+}
+
+function add_reason_select_to_ksu(ksu, reason_id){
+	// var selected_option = ksu.find('#reason').val()
+	ksu.find('#reason_holder').empty()
 	ksu.find('#reason_holder').append($('#reasons_select').clone());
-	ksu.find('#reasons_select').attr('id', 'reason')
-	ksu.find('#reason').selectize();
+	ksu.find('#reasons_select').removeClass('hidden');
+	ksu.find('#reasons_select').attr('id', 'reason_id')
+	var $select = ksu.find('#reason_id').selectize();
+	if(reason_id){
+		var selectize = $select[0].selectize
+		// selectize.setValue(selected_option, false);
+		selectize.setValue(reason_id, false);
+	}
+	
 	return ksu
 }
+
+
+function UpdateResonSelects(){
+	var ksu_set = $('.KSUdisplaySection')
+
+	for (var i = ksu_set.length - 1; i >= 0; i--) {
+		var ksu = $(ksu_set[i])
+		var reason_id = ksu.find('#reason_id').val();
+		// if( reason_id == ""){
+		// 	reason_id = false
+		// }
+		add_reason_select_to_ksu(ksu, reason_id)
+	}
+
+};
 
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -1714,8 +1701,7 @@ function MakeSortable(){
 
 $(document).ready(function(){
 	MakeSortable()
- 	$('.ParentSelector').selectToAutocomplete();
-	// new Sortable(document.getElementsByClassName('sortable')[0]);
+
 });
 
 
