@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import webapp2, jinja2, os, re, random, string, hashlib, json, logging, math 
 
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta, time, date
 from google.appengine.ext import ndb
 from google.appengine.api import mail
 from python_files import datastore, randomUser, constants, kasware_os
@@ -1776,7 +1776,19 @@ class KASware3(Handler):
 
 		if user_action == 'SaveNewKSU':			
 			ksu = KSU3(theory=self.theory.key)
-			attributes = ['ksu_type', 'ksu_subtype', 'reason_id', 'description', 'comments', 'timer', 'repeats', 'trigger']	
+			attributes = [
+				'ksu_type', 
+				'ksu_subtype', 
+				'reason_id', 
+				'description', 
+				'comments', 
+				'timer', 
+				'repeats', 
+				'trigger', 
+				'best_time', 
+				'size',
+				'event_date',
+				]	
 			for attribute in attributes:
 				self.update_ksu_attribute(ksu, attribute, event_details[attribute])
 				
@@ -1805,21 +1817,25 @@ class KASware3(Handler):
 		if attr_key in ['description', 'comments']:
 			fixed_value = attr_value.encode('utf-8')
 		
-		if attr_key in ['timer']:
+		elif attr_key in ['timer', 'size']:
 			fixed_value = int(attr_value)	
 
-		if attr_key in ['repeats', 'trigger']:
+		elif attr_key in ['repeats', 'trigger', 'best_time']:
 			fixed_key = 'details'
 			details_dic = ksu.details
 			details_dic[attr_key] = fixed_value
 			fixed_value = details_dic
 		
-		if attr_key == 'reason_id':
-			if attr_value == '':
-				return
-			else:
+		elif attr_key == 'reason_id':
+			fixed_value = None
+			if attr_value != '':
 				fixed_value = KSU3.get_by_id(int(attr_value)).key
 
+		elif attr_key == 'event_date':
+			fixed_value = None
+			if attr_value != '':
+				fixed_value = datetime.strptime(attr_value, '%Y-%m-%d')		
+	
 		setattr(ksu, fixed_key, fixed_value)
 		return ksu
 
@@ -1832,13 +1848,16 @@ class KASware3(Handler):
 			'description': ksu.description,
 			'comments': ksu.comments,
 			'timer': ksu.timer,
+			'size': ksu.size,
+			'event_date': ksu.event_date.strftime('%Y-%m-%d'),
+
 		}
 
 		ksu_dic['reason_id'] = 0
 		if ksu.reason_id:
 			ksu_dic['reason_id'] = ksu.reason_id.id(),
 
-		details_attributes = ['trigger', 'repeats']
+		details_attributes = ['trigger', 'repeats', 'best_time']
 		details_dic = ksu.details
 		for attr in details_attributes:
 			if attr in details_dic:

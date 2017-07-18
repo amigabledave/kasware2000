@@ -65,7 +65,8 @@ class KSU3(ndb.Model):
 	
 	size = ndb.IntegerProperty(default=3) #Indicates the size of a LifePiece or Objective. In a fibonacci scale 1, 2, 3, 5, 8. Also works as effor denominator for Actions
 	timer = ndb.IntegerProperty(default=0) #Total minutes invested
-	event_date = ndb.DateProperty()
+	# event_date = ndb.DateProperty()
+	event_date = ndb.DateTimeProperty()
 
 	is_realized = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' is either a wish or a RTBG. And if an objective is acomplished or not.
 	is_active = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' is still part of my life situation

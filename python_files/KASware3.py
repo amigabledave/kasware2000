@@ -7,32 +7,34 @@ from google.appengine.ext import ndb
 #Code it in a way it supports something...
 
 
+event_types = {
+	'EndValue', #Joy generators can create these type o	
+	'WishRealized',# Generado por Achievements, Being, Environment, Stuff, People, Power
+	'Effort', #Generado por acciones
+	
+	'ObjectiveAcomplished', #Generado por objetivos #Needs to be shorter
+	'Learning', # Tal vez el nombre lo cambie a 'Consequence' Needs some work. #Generado por los principios... #el punnto es que esto es un ejemplo del principio encarnado
+	'IndicatorMeasurement'
+}
+
+
 ksu_types = {
 	
-
-	# Results 
-	'Experience':[
-		'EndValue',
-		'Growth'
-	],
-	
-	'Indicator': [
-		'RealitySnapshot',
-		'BinaryPerception',
-		'TernaryPerception',
-	]
-
 	#Life Pieces
-	'Meaning':[
-		'GreaterGood', #Impact the life of others
+	'JoyGenerator':[
+		'JoyType', #Needs some work. E.g. Jugar el juego de aventura en turno
+		'GeneratorInstance' #E.g. Jugar Zelda breath of the wild
+	]
+	
+	'Achievement':[#Meaning
+		'GreaterGood', #Impact the life of others		
 		'SelfFocus' #Proof something mainly to your self. Achievement.
 	],
 
 	'Being':[
 		'KnowledgeOrSkill', #'Mind', #Knowledge and skills
 		'Attitude', #'Soul', #Connciousness and inner peace
-		'PhisicalAttribute', #'Body', #Health and vitality
-		'JoyGenerator'	
+		'PhisicalAttribute', #'Body', #Health and vitality			
 	],
 	
 	'Environment':[#'Stuff', #Environment & Stuff. Stuff & Other order and peace
@@ -40,32 +42,43 @@ ksu_types = {
 		'Surroundings'
 	],
 
-	'Person':[ #'Love', #Important People. Love & Friendship
-		'Friend',
-		'Partner',
-		'Child',
-		'Family',
-		'Pet',
-		'Network',
+	'People':[ #'Love', #Important People. Love & Friendship
+		'Person',
+		'Group'
 	],
 					
 	'Power':[ #Money & Power
-		'Money',
-		'Status'
+		'Money', #Includes money and things that haev a clear monetary value
+		'Status', #Aqui entrarían los trabajos. A final de cuentas tienes titulo en una empresa
+		'OtherAsset', 
 	], 		
 
 	
 	#Actions	
-	'Wisdom':[] #Your personal constitution #If the idea has a parent then is not a principle. BRILIANT!
+	'Wisdom':[ #Needs  some work
+		'Principle', #Sirve para organizar y auditar
+		'Idea', #Your personal constitution #If the idea has a parent then is not a principle. BRILIANT!
+	], 
 
-	'Objective': [],
+
+	'Objective': [ #Group actions
+		'Objective',
+		'Milestone' #If the parent is another objective
+	], 
+
 
 	'Action': [
 		'Proactive',
 		'Reactive',
 		'Negative'
 	],
-	
+
+	#Results The concreate metrics you pick to measure success
+	'UserIndicator': [
+		'RealitySnapshot',
+		'BinaryPerception',
+		'TernaryPerception',
+	],
 }
 
 class KSU3(ndb.Model):

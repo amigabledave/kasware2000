@@ -52,7 +52,7 @@ $(document).on('click', '.KsuActionButton', function(){
 		} 
 		attributes_dic['size'] = ksu.find('input:radio[name=size]:checked').val();
 		attributes_dic['user_action'] = 'SaveNewKSU';
-		// console.log(attributes_dic)
+		console.log(attributes_dic)
 
 		$.ajax({
 			type: "POST",
@@ -175,7 +175,7 @@ function HideUnhideKsuProperties(ksu, targets, action){
 			ksu.find(targets[t]).addClass('hidden') 
 		}
 	}
-	// xxxx Aqui nos quedamos
+	
 	if (action == 'Show'){
 		for( t in targets){
 			ksu.find(targets[t]).removeClass('hidden') 
@@ -207,40 +207,53 @@ $(document).on('change','.ShowHideSelect', function(){
 
 
 var attrbutes_type = {
-	'description': 'textarea',
-	'comments': 'textarea',
+	'description': 'standard',
+	'comments': 'standard',
 	'ksu_subtype': 'select',
 	'repeats':'select',
-	'trigger':'textarea',
-	'timer':'textarea'
+	'trigger':'standard',
+	'timer':'standard',
+	'best_time':'standard',
+	'size': 'radio',
+	'event_date':'standard',
 }
 
 var ksu_attrributes = {
 	'Base': ['description', 'comments', 'ksu_subtype'],
-	'Action': ['repeats', 'trigger', 'timer']
+	'Action': ['repeats', 'trigger', 'timer', 'best_time', 'size', 'event_date']
 }
 
 
 function render_ksu(ksu_dic){
 	var ksu = $('[ksu_type="Action"][value="KSUTemplate"]').clone();
 	ksu.attr("value", ksu_dic['ksu_id']);
-	// console.log(ksu_dic);
+	console.log(ksu_dic);
 	var attributes = ksu_attrributes['Base'].concat(ksu_attrributes[ksu_dic['ksu_type']]);
 	
 	for (var i = attributes.length - 1; i >= 0; i--) {
 		var attribute = attributes[i];		
 		var attr_type = attrbutes_type[attribute];
-		if (attr_type == 'textarea'){
+		if (attr_type == 'standard'){
 			ksu.find('#'+attribute).val(ksu_dic[attribute])
+		
 		} else if (attr_type == 'select'){			
 			ksu.find('#'+attribute).val(ksu_dic[attribute]).prop('selected', true);
 			ShowHideSelect(ksu, attribute, ksu_dic[attribute]);
-		}		
+		} else if (attr_type == 'radio'){
+			ksu.find('input:radio[name=size][value='+ ksu_dic[attribute] +']').prop("checked",true);
+		}	
+	
 	}
 
 	ksu = add_reason_select_to_ksu(ksu, ksu_dic['reason_id']);
 	ksu.prependTo('#TheoryHolder');
 	ksu.removeClass('hidden');
+
+	if('best_time' in ksu_dic && ksu_dic['best_time'] != ''){
+		ksu.find('#TimeRuler').removeClass('hidden');
+		ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
+	}
+
 }
 
 
@@ -283,7 +296,6 @@ function UpdateResonSelects(){
 		// }
 		add_reason_select_to_ksu(ksu, reason_id)
 	}
-
 };
 
 /////////////////////////////////////////////////////////////////////////////////////
