@@ -586,24 +586,26 @@ class Home(Handler):
 			if attr_value != '':
 				fixed_value = KSU3.get_by_id(int(attr_value)).key
 
-		elif attr_type == 'DateTime':
+		elif attr_type == 'DateTime':#xx
 			fixed_value = None
 			if attr_value != '':
 				fixed_value = datetime.strptime(attr_value, '%Y-%m-%d')		
 	
+
 		elif attr_type == 'BlobKey':
 			fixed_value = None
 			#Queda pendiente decirle que hacer con el blobkey
-		
-		# elif attr_type == 'Boolean':	
-			# fixed_value = False
-			# if attr_value == 'true':
-			# 	fixed_value = True
+
 
 		setattr(ksu, fixed_key, fixed_value)
 		return ksu
 
 	def ksu_to_dic(self, ksu):
+		# logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+		# logging.info('')
+		# logging.info()
+		# logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')	
+
 		ksu_dic = {
 			'ksu_id': ksu.key.id(),
 			'ksu_type': ksu.ksu_type,
@@ -632,13 +634,12 @@ class Home(Handler):
 
 		ksu_dic['event_date'] = ''
 		if ksu.event_date:
-			ksu.event_date.strftime('%Y-%m-%d'),
+			ksu_dic['event_date'] = ksu.event_date.strftime('%Y-%m-%d'),
 
-		#xx Aqui nos quedamos!
-		ksu_dic['reason_id'] = ''
+		ksu_dic['reason_id'] = ''	
 		if ksu.reason_id:
-			ksu_dic['reason_id'] = ksu.reason_id.id(),
-
+			ksu_dic['reason_id'] = ksu.reason_id.id()
+						
 		details_attributes = KASware3.ksu_type_attributes[ksu.ksu_type]
 		details_dic = ksu.details
 		for attr in details_attributes:
@@ -1794,21 +1795,21 @@ class PopulateRandomTheory(Handler):
 		print today
 
 		theory_parameters = [
-			[1, {'ksu_type':'BigO', 'ksu_subtype':'BigO'}],
-			[1, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
-			[1, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_event':today, 'kpts_value':1, 'frequency':7}],
-			[1, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_event':today, 'kpts_value':0.25, 'frequency':30}],
-			[1, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
-			[1, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
-			[1, {'ksu_type':'Diary', 'ksu_subtype':'Diary', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
-			[1, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
-			[1, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
-			[1, {'ksu_type':'ImIn', 'ksu_subtype':'TernaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],			
+			[0, {'ksu_type':'BigO', 'ksu_subtype':'BigO'}],
+			[0, {'ksu_type':'Wish', 'ksu_subtype':'Wish'}],
+			[0, {'ksu_type':'EVPo', 'ksu_subtype':'EVPo', 'next_event':today, 'kpts_value':1, 'frequency':7}],
+			[0, {'ksu_type':'ImPe', 'ksu_subtype':'ImPe', 'next_event':today, 'kpts_value':0.25, 'frequency':30}],
+			[0, {'ksu_type':'Idea', 'ksu_subtype':'Idea'}],
+			[0, {'ksu_type':'RTBG', 'ksu_subtype':'RTBG'}],
+			[0, {'ksu_type':'Diary', 'ksu_subtype':'Diary', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[0, {'ksu_type':'ImIn', 'ksu_subtype':'RealitySnapshot', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[0, {'ksu_type':'ImIn', 'ksu_subtype':'BinaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],
+			[0, {'ksu_type':'ImIn', 'ksu_subtype':'TernaryPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],			
 			[0, {'ksu_type':'ImIn', 'ksu_subtype':'FibonacciPerception', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'frequency':1}],			
-			[1, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3'}],
-			[1, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4'}],
-			[1, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
-			[1, {'ksu_type':'OTOA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
+			[0, {'ksu_type':'KeyA', 'ksu_subtype':'KAS3'}],
+			[0, {'ksu_type':'KeyA', 'ksu_subtype':'KAS4'}],
+			[0, {'ksu_type':'KeyA', 'ksu_subtype':'KAS1', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':2, 'frequency':1, 'repeats':'R001'}],
+			[0, {'ksu_type':'OTOA', 'ksu_subtype':'KAS2', 'next_event':today, 'pretty_next_event':today.strftime('%a, %b %d, %Y'), 'kpts_value':3}],
 
 		]
 

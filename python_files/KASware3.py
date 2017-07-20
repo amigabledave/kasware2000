@@ -1,3 +1,5 @@
+# Meter attributo nuevo en {MasterKSU.html:[], KASware3.py: [ksu_type_attributes, attributes_guide], KASware3app.js: [ksu_type_attributes, attributes_guide],}
+
 
 ksu_types = {
 		
@@ -95,7 +97,26 @@ ksu_type_attributes = {
 		'tag',
 	],
 
-	'Action': ['best_time', 'repeats', 'trigger']
+	'Action': [
+		'best_time', 
+		'trigger',
+		'exceptions',
+		
+		'repeats',
+		'every_x_days',
+		'on_the_day', 
+		'of_month',
+
+		'every_mon',
+		'every_tue', 
+		'every_wed', 
+		'every_thu', 
+		'every_fri', 
+		'every_sat', 
+		'every_sun',
+
+
+	]
 }
 
 
@@ -130,7 +151,20 @@ attributes_guide = {
 	
 	'details': 'Json' ,
 	
+	'best_time': 'Details',
 	'trigger': 'Details', 
+	'exceptions': 'Details',
+	
 	'repeats': 'Details', 
-	'best_time': 'Details',	
+	'every_x_days': 'Details',
+	'on_the_day': 'Details', 
+	'of_month': 'Details',
+
+	'every_mon': 'Details',
+	'every_tue': 'Details', 
+	'every_wed': 'Details', 
+	'every_thu': 'Details', 
+	'every_fri': 'Details', 
+	'every_sat': 'Details', 
+	'every_sun': 'Details',
 } 

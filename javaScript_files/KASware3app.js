@@ -1,4 +1,6 @@
 // Validated for KASware3
+
+// ------- Triggers ----
 $(document).ready(function(){
 	$.ajax({
 		type: "POST",
@@ -106,17 +108,14 @@ $(document).on('click', '.KsuActionButton', function(){
 });
 
 
-function ShowDetail(ksu){
-	
-	var GlaphiconDiv = ksu.find('#PlusMinusGlyphicon');
-	GlaphiconDiv.toggleClass('glyphicon-minus');
-	GlaphiconDiv.toggleClass('glyphicon-plus');	
-	
-	var DetailDiv = ksu.find('#DetailDiv');
-	DetailDiv.toggleClass('hidden');
-
-	var best_time = ksu.find('#best_time').val()
-};
+$(document).on('change','.ShowHideSelect', function(){
+  
+  var ksu = $(this).closest('#KSU');
+  var select = $(this).attr('name');
+  var option = $(this).val();
+  
+  ShowHideSelect(ksu, select, option);
+});
 
 
 $(document).on('click', '.ShowDetailButton', function(){
@@ -139,47 +138,57 @@ $(document).on('click', '.TimeBarButton',function(){
 	}
 })
 
-var select_toBeHidden = {
-	'repeats': ['#repeats_Xdays_col', '#repeats_day_col', '#repeats_month_col', '#repeats_week_col'],
-	'ksu_subtype':['#trigger', '#ExceptionsRow']
-}
 
-var select_toBeShown = {
-	'repeats':{
-		'R000':[],
-		'R001':[],
-		'R002':['#repeats_Xdays_col'],
-		'R007':['#repeats_week_col'],
-		'R030':['#repeats_day_col'],
-		'R365':['#repeats_day_col', '#repeats_month_col']
-	},
-	'ksu_subtype':{
-		'Proactive': [],
-		'Reactive': ['#trigger'],
-		'Negative': ['#ExceptionsRow']
+function render_ksu(ksu_dic){
+	var ksu = $('[ksu_type="Action"][value="KSUTemplate"]').clone();
+	ksu.attr("value", ksu_dic['ksu_id']);
+	console.log(ksu_dic);
+	var attributes = ksu_type_attrributes['Base'].concat(ksu_type_attrributes[ksu_dic['ksu_type']]);
+	
+	for (var i = attributes.length - 1; i >= 0; i--) {
+		var attribute = attributes[i];		
+		var attr_type = attrbutes_guide[attribute];
+		
+		if (attr_type == 'Standard'){
+			ksu.find('#'+attribute).val(ksu_dic[attribute])
+		
+		} else if (attr_type == 'Select' && attribute != 'reason_id'){			
+			ksu.find('#'+attribute).val(ksu_dic[attribute]).prop('selected', true);
+			if(ksu.find('#'+attribute).hasClass('ShowHideSelect')){
+				ShowHideSelect(ksu, attribute, ksu_dic[attribute]);	
+			}
+		
+		} else if (attr_type == 'Radio'){
+			ksu.find('input:radio[name=size][value='+ ksu_dic[attribute] +']').prop("checked",true);
+		
+		} else if (attr_type == 'Checkbox'){			
+			ksu.find('#'+attribute).prop("checked", ksu_dic[attribute]);
+		}
+	}
+
+	ksu = add_reason_select_to_ksu(ksu, ksu_dic['reason_id']);
+	ksu.prependTo('#TheoryHolder');
+	ksu.removeClass('hidden');
+
+	if('best_time' in ksu_dic && ksu_dic['best_time'] != ''){
+		ksu.find('#TimeRuler').removeClass('hidden');
+		ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
 	}
 }
 
-var select_toBeToggled = {
 
-	'ksu_subtype':{
-		'Proactive': [['#DoneButton','btn-success','btn-danger']],
-		'Reactive': [['#DoneButton','btn-success','btn-danger']],
-		'Negative': [['#DoneButton','btn-danger','btn-success']]}
-}
+function ShowDetail(ksu){
+	
+	var GlaphiconDiv = ksu.find('#PlusMinusGlyphicon');
+	GlaphiconDiv.toggleClass('glyphicon-minus');
+	GlaphiconDiv.toggleClass('glyphicon-plus');	
+	
+	var DetailDiv = ksu.find('#DetailDiv');
+	DetailDiv.toggleClass('hidden');
 
-function unhide_group(lista_ids){
-  for( miembro in lista_ids){
-    $(lista_ids[miembro]).removeClass('hidden') 
-  }
+	var best_time = ksu.find('#best_time').val()
 };
 
-
-function hide_group(lista_ids){
-  for( miembro in lista_ids){
-    $(lista_ids[miembro]).addClass('hidden') 
-  }
-};
 
 function HideUnhideKsuProperties(ksu, targets, action){
 	
@@ -207,116 +216,6 @@ function ShowHideSelect(ksu, select, option){
   	ksu.find(format_target[0]).addClass(format_target[1]);
   	ksu.find(format_target[0]).removeClass(format_target[2]);
   };	
-}
-
-$(document).on('change','.ShowHideSelect', function(){
-  
-  var ksu = $(this).closest('#KSU');
-  var select = $(this).attr('name');
-  var option = $(this).val();
-  
-  ShowHideSelect(ksu, select, option);
-});
-
-
-var attrbutes_guide = {
-	
-	'ksu_type': 'Standard', 
-	'ksu_subtype': 'Select',
-	'reason_id': 'Select',
-
-	'description': 'Standard',	
-	'pic_key': 'Standard',
-	'pic_url': 'Standard' ,
-	
-	'size':  'Radio',
-	'timer': 'Standard',
-	'event_date': 'Standard',
-
-	'is_realized': 'Checkbox',
-	'needs_mtnc': 'Checkbox',
-	
-	'is_active': 'Checkbox', 
-	'is_critical': 'Checkbox',
-	'is_private': 'Checkbox',
-	'at_anytime': 'Checkbox', 
-
-	'is_visible': 'Checkbox',  
-	'in_graveyard': 'Checkbox',
-
-	'comments': 'Standard',
-	'tag': 'Standard',
-		
-	'trigger': 'Standard', 
-	'repeats': 'Select', 
-	'best_time': 'Standard',	
-}
-
-var ksu_type_attrributes = {
-	'Base': [
-		'ksu_type', 
-		'ksu_subtype', 
-		'reason_id',
-		
-		'description', 
-		'pic_key',
-			
-		'size',
-		'timer',
-		'event_date',
-
-		'is_realized',
-		'needs_mtnc',
-
-		'is_active', 
-		'is_critical',
-		'is_private',
-		'at_anytime', 
-
-		'is_visible', 		 
-		'in_graveyard',
-
-		'comments',
-		'tag',
-	],
-
-	'Action': ['repeats', 'trigger', 'best_time']
-}
-
-
-function render_ksu(ksu_dic){
-	var ksu = $('[ksu_type="Action"][value="KSUTemplate"]').clone();
-	ksu.attr("value", ksu_dic['ksu_id']);
-	console.log(ksu_dic);
-	var attributes = ksu_type_attrributes['Base'].concat(ksu_type_attrributes[ksu_dic['ksu_type']]);
-	
-	for (var i = attributes.length - 1; i >= 0; i--) {
-		var attribute = attributes[i];		
-		var attr_type = attrbutes_guide[attribute];
-		
-		if (attr_type == 'Standard'){
-			ksu.find('#'+attribute).val(ksu_dic[attribute])
-		
-		} else if (attr_type == 'Select' && ksu_dic[attribute] != ''){			
-			ksu.find('#'+attribute).val(ksu_dic[attribute]).prop('selected', true);
-			ShowHideSelect(ksu, attribute, ksu_dic[attribute]);
-		
-		} else if (attr_type == 'Radio'){
-			ksu.find('input:radio[name=size][value='+ ksu_dic[attribute] +']').prop("checked",true);
-		
-		} else if (attr_type == 'Checkbox'){			
-			ksu.find('#'+attribute).prop("checked", ksu_dic[attribute]);
-		}
-	}
-
-	ksu = add_reason_select_to_ksu(ksu, ksu_dic['reason_id']);
-	ksu.prependTo('#TheoryHolder');
-	ksu.removeClass('hidden');
-
-	if('best_time' in ksu_dic && ksu_dic['best_time'] != ''){
-		ksu.find('#TimeRuler').removeClass('hidden');
-		ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
-	}
 }
 
 
@@ -359,6 +258,137 @@ function UpdateResonSelects(){
 		add_reason_select_to_ksu(ksu, reason_id)
 	}
 };
+
+
+// ------------ Constants -------------------
+
+
+var select_toBeHidden = {
+	'repeats': ['#repeats_Xdays_col', '#repeats_day_col', '#repeats_month_col', '#repeats_week_col'],
+	'ksu_subtype':['#trigger', '#ExceptionsRow']
+}
+
+
+var select_toBeShown = {
+	'repeats':{
+		'R000':[],
+		'R001':[],
+		'R002':['#repeats_Xdays_col'],
+		'R007':['#repeats_week_col'],
+		'R030':['#repeats_day_col'],
+		'R365':['#repeats_day_col', '#repeats_month_col']
+	},
+	'ksu_subtype':{
+		'Proactive': [],
+		'Reactive': ['#trigger'],
+		'Negative': ['#ExceptionsRow']
+	}
+}
+
+
+var select_toBeToggled = {
+
+	'ksu_subtype':{
+		'Proactive': [['#DoneButton','btn-success','btn-danger']],
+		'Reactive': [['#DoneButton','btn-success','btn-danger']],
+		'Negative': [['#DoneButton','btn-danger','btn-success']]}
+}
+
+
+var attrbutes_guide = {
+	
+	'ksu_type': 'Standard', 
+	'ksu_subtype': 'Select',
+	'reason_id': 'Select',
+
+	'description': 'Standard',	
+	'pic_key': 'Standard',
+	'pic_url': 'Standard' ,
+	
+	'size':  'Radio',
+	'timer': 'Standard',
+	'event_date': 'Standard',
+
+	'is_realized': 'Checkbox',
+	'needs_mtnc': 'Checkbox',
+	
+	'is_active': 'Checkbox', 
+	'is_critical': 'Checkbox',
+	'is_private': 'Checkbox',
+	'at_anytime': 'Checkbox', 
+
+	'is_visible': 'Checkbox',  
+	'in_graveyard': 'Checkbox',
+
+	'comments': 'Standard',
+	'tag': 'Standard',
+		
+	'best_time': 'Standard',
+	'trigger': 'Standard', 
+	'repeats': 'Select', 
+	'exceptions': 'Standard',
+	'every_x_days': 'Standard',
+	'every_mon': 'Checkbox',
+	'every_tue': 'Checkbox', 
+	'every_wed': 'Checkbox', 
+	'every_thu': 'Checkbox', 
+	'every_fri': 'Checkbox', 
+	'every_sat': 'Checkbox', 
+	'every_sun': 'Checkbox',
+	'on_the_day': 'Select', 
+	'of_month': 'Select',
+}
+
+
+var ksu_type_attrributes = {
+	'Base': [
+		'ksu_type', 
+		'ksu_subtype', 
+		'reason_id',
+		
+		'description', 
+		'pic_key',
+			
+		'size',
+		'timer',
+		'event_date',
+
+		'is_realized',
+		'needs_mtnc',
+
+		'is_active', 
+		'is_critical',
+		'is_private',
+		'at_anytime', 
+
+		'is_visible', 		 
+		'in_graveyard',
+
+		'comments',
+		'tag',
+	],
+
+	'Action': [
+		'trigger', 
+		'best_time', 
+		'exceptions',
+		
+		'repeats', 
+		'every_x_days',
+		'on_the_day',
+		'of_month',
+
+		'every_mon',
+		'every_tue', 
+		'every_wed', 
+		'every_thu', 
+		'every_fri', 
+		'every_sat', 
+		'every_sun',
+	]
+}
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////
 

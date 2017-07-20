@@ -32,6 +32,15 @@ d_KASware3 = {
 	]
 }
 
+l_weekdays = [
+	['mon', 'Mon'], 
+	['tue', 'Tue'], 
+	['wed', 'Wed'], 
+	['thu', 'Thu'], 
+	['fri', 'Fri'], 
+	['sat', 'Sat'], 
+	['sun', 'Sun'],
+]
 
 l_repeatdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
@@ -1138,6 +1147,7 @@ constants = {'l_Fibonacci':l_Fibonacci,
 			 'l_months':l_months,
 
 			 'l_repeatdays': l_repeatdays,
+			 'l_weekdays': l_weekdays,
 			 'l_Days':l_Days,
 			 'd_repeats_legend':d_repeats_legend,
 			 
