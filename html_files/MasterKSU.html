@@ -1,5 +1,11 @@
 <div id="KSU" ksu_type="Action" value="KSUTemplate" class="hidden">	
 	<input type="text" name="ksu_type" value="Action" class="KsuAttr hidden">
+	<input type="text" name="pic_key" value="" class="KsuAttr hidden">
+	<input type="checkbox" id="is_realized" name="is_realized" class="KsuAttr hidden">
+	<input type="checkbox" id="needs_mtnc" name="needs_mtnc" class="KsuAttr hidden">
+	<input type="checkbox" id="is_visible" name="is_visible" class="KsuAttr hidden">
+	<input type="checkbox" id="in_graveyard" name="in_graveyard" class="KsuAttr hidden">
+
 	<div class="row TimeRuler hidden" id="TimeRuler">
 		<div class="col-xs-3">
 			<!-- <label> Preferred Time </label> -->
@@ -142,13 +148,13 @@
 				<div class="row" id="BooleanRow">
 					<div class="inKSUhrDiv"><hr class="inKSUhr"></div>
 					<div class="col-xs-8">
-						<label class="checkbox-inline"><input type="checkbox" id="is_active" class="KsuAttr" name="is_active"><b>Active</b></label>
-						<label class="checkbox-inline"><input type="checkbox" class="KsuAttr" id="is_critical" name="is_critical"><b>Critical</b></label>
+						<label class="checkbox-inline"><input type="checkbox" id="is_active" name="is_active" class="KsuAttr"><b>Active</b></label>
+						<label class="checkbox-inline"><input type="checkbox" id="is_critical" name="is_critical" class="KsuAttr" ><b>Critical</b></label>
 						<label class="checkbox-inline"><input type="checkbox" id="is_private" name="is_private" class="KsuAttr"><b>Private</b></label>
-						<label class="checkbox-inline"><input type="checkbox" id="any_any" name="any_any" class="KsuAttr"><b>Anywhere</b></label>
+						<label class="checkbox-inline"><input type="checkbox" id="at_anytime" name="at_anytime" class="KsuAttr"><b>Anywhere</b></label>
 					</div>
 					<div class="col-xs-4">
-						<input class="KsuAttr" style="color:purple; border:0; width:170px; text-align:center; margin-left:-10px; font-style: italic;" type="text" list="tags" name="tags" id="tags" value="" placeholder="Tag">		
+						<input class="KsuAttr" style="color:purple; border:0; width:170px; text-align:center; margin-left:-10px; font-style: italic;" type="text" list="tags" name="tag" id="tag" value="" placeholder="Tag">		
 					</div>
 
 				</div>

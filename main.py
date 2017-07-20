@@ -5,8 +5,7 @@ import webapp2, jinja2, os, re, random, string, hashlib, json, logging, math
 from datetime import datetime, timedelta, time, date
 from google.appengine.ext import ndb
 from google.appengine.api import mail
-from python_files import datastore, randomUser, constants, kasware_os
-
+from python_files import datastore, randomUser, constants, kasware_os, KASware3
 
 constants = constants.constants
 
@@ -514,14 +513,140 @@ class KsuEditor(Handler):
 		self.redirect(return_to)
 		return
 
-
+# ---- KASware3 ---- xx
 class Home(Handler):
-	
+
 	@super_user_bouncer
 	def get(self):
-		theory = self.theory
-		message = 'Welcome to KASware ' + theory.first_name + ' ' + theory.last_name
-		self.write(message)
+		self.print_html('KASware3.html', constants=constants)
+
+	@super_user_bouncer
+	def post(self):
+		event_details = json.loads(self.request.body);
+		user_action = event_details['user_action']
+
+		if user_action == 'RetrieveTheory':
+			ksu_set = KSU3.query(KSU3.theory_id == self.theory.key).fetch()
+			output = []
+			reasons_index = []
+			for ksu in ksu_set:
+				output.append(self.ksu_to_dic(ksu))
+				reasons_index.append([ksu.key.id(), ksu.description])
+			self.response.out.write(json.dumps({
+				'mensaje':'Esta es la teoria del usuario:',
+				'ksu_set': output,
+				'reasons_index':reasons_index,
+				}))
+			return
+
+		if user_action == 'SaveNewKSU':
+			ksu = KSU3(theory_id=self.theory.key)
+			attributes = KASware3.ksu_type_attributes['Base'] + KASware3.ksu_type_attributes[event_details['ksu_type']]		
+			for attribute in attributes:
+				self.update_ksu_attribute(ksu, attribute, event_details[attribute])
+				
+			ksu.put()
+
+			ksu_dic = self.ksu_to_dic(ksu)
+			ksu_dic['mensaje'] = 'KSU3 creado y guardado desde el viewer!'
+			self.response.out.write(json.dumps(ksu_dic))
+			return
+
+		if user_action == 'DeleteKSU':
+			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
+			ksu.key.delete()
+			self.response.out.write(json.dumps({
+				'mensaje':'KSU Borrado',
+				'ksu_id': ksu.key.id(),
+				'description': ksu.description,
+				}))
+			return
+		
+		return
+
+	def update_ksu_attribute(self, ksu, attr_key, attr_value):
+		attr_type = KASware3.attributes_guide[attr_key]
+		fixed_key = attr_key
+		fixed_value = attr_value
+		
+		if attr_type in ['String', 'Text']:
+			fixed_value = attr_value.encode('utf-8')
+		
+		elif attr_type == 'Integer':
+			fixed_value = int(attr_value)	
+
+		elif attr_type == 'Details':
+			fixed_key = 'details'
+			details_dic = ksu.details
+			details_dic[attr_key] = fixed_value
+			fixed_value = details_dic
+		
+		elif attr_type == 'Key':
+			fixed_value = None
+			if attr_value != '':
+				fixed_value = KSU3.get_by_id(int(attr_value)).key
+
+		elif attr_type == 'DateTime':
+			fixed_value = None
+			if attr_value != '':
+				fixed_value = datetime.strptime(attr_value, '%Y-%m-%d')		
+	
+		elif attr_type == 'BlobKey':
+			fixed_value = None
+			#Queda pendiente decirle que hacer con el blobkey
+		
+		# elif attr_type == 'Boolean':	
+			# fixed_value = False
+			# if attr_value == 'true':
+			# 	fixed_value = True
+
+		setattr(ksu, fixed_key, fixed_value)
+		return ksu
+
+	def ksu_to_dic(self, ksu):
+		ksu_dic = {
+			'ksu_id': ksu.key.id(),
+			'ksu_type': ksu.ksu_type,
+			'ksu_subtype': ksu.ksu_subtype, 
+			
+			'description': ksu.description,
+			'pic_url': ksu.pic_url,
+
+			'comments': ksu.comments,
+			'timer': ksu.timer,
+			'size': ksu.size,
+			
+			'is_realized': ksu.is_realized,
+			'needs_mtnc': ksu.needs_mtnc,
+
+			'is_active': ksu.is_active, 
+			'is_critical': ksu.is_critical,						
+
+			'at_anytime': ksu.at_anytime, 
+			'is_visible': ksu.is_visible, 
+			'is_private': ksu.is_private, 
+			
+			'comments': ksu.comments,
+			'tag':ksu.tag,
+		}
+
+		ksu_dic['event_date'] = ''
+		if ksu.event_date:
+			ksu.event_date.strftime('%Y-%m-%d'),
+
+		#xx Aqui nos quedamos!
+		ksu_dic['reason_id'] = ''
+		if ksu.reason_id:
+			ksu_dic['reason_id'] = ksu.reason_id.id(),
+
+		details_attributes = KASware3.ksu_type_attributes[ksu.ksu_type]
+		details_dic = ksu.details
+		for attr in details_attributes:
+			if attr in details_dic:
+				ksu_dic[attr] = details_dic[attr]
+
+		return ksu_dic
+
 
 			
 class SetViewer(Handler):
@@ -1017,7 +1142,6 @@ class TheoryViewer(Handler):
 			# 	objectives.append((ksu.key.id(), ksu.description))
 		return big_objectives #,objectives
 
-
 	def remove_inactive_child_objectives(self, objectives):
 		result = []
 		for ksu in objectives:
@@ -1026,7 +1150,6 @@ class TheoryViewer(Handler):
 			elif ksu.is_active:
 				result.append(ksu)
 		return result
-
 	
 	def get_set_tags(self, ksu_set, set_name):
 		set_tags = []
@@ -1083,8 +1206,6 @@ class TheoryViewer(Handler):
 
 
 		return ksu_set, tags_tuples, wish_type_definitions 
-
-
 
 
 class EventHandler(Handler):
@@ -1748,123 +1869,6 @@ class UpdateTheoryStructure(Handler):
 		theory.size = theory_size
 		theory.put()
 
-# ---- KASware3 ---- xx
-class KASware3(Handler):
-
-	@super_user_bouncer
-	def get(self):
-		self.print_html('KASware3.html', constants=constants)
-
-	@super_user_bouncer
-	def post(self):
-		event_details = json.loads(self.request.body);
-
-		user_action = event_details['user_action']
-
-		if user_action == 'RetrieveTheory':
-			ksu_set = KSU3.query(KSU.theory == self.theory.key).fetch()
-			output = []
-			reasons_index = []
-			for ksu in ksu_set:
-				output.append(self.ksu_to_dic(ksu))
-				reasons_index.append([ksu.key.id(), ksu.description])
-			self.response.out.write(json.dumps({
-				'mensaje':'Esta es la teoria del usuario:',
-				'ksu_set': output,
-				'reasons_index':reasons_index,
-				}))
-
-		if user_action == 'SaveNewKSU':			
-			ksu = KSU3(theory=self.theory.key)
-			attributes = [
-				'ksu_type', 
-				'ksu_subtype', 
-				'reason_id', 
-				'description', 
-				'comments', 
-				'timer', 
-				'repeats', 
-				'trigger', 
-				'best_time', 
-				'size',
-				'event_date',
-				]	
-			for attribute in attributes:
-				self.update_ksu_attribute(ksu, attribute, event_details[attribute])
-				
-			ksu.put()
-
-			self.response.out.write(json.dumps({
-				'mensaje':'KSU3 creado y guardado desde el viewer!',
-				'ksu_id': ksu.key.id(),
-				'description': ksu.description,
-				}))
-		
-		if user_action == 'DeleteKSU':
-			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
-			ksu.key.delete()
-			self.response.out.write(json.dumps({
-				'mensaje':'KSU Borrado',
-				'ksu_id': ksu.key.id(),
-				'description': ksu.description,
-				}))
-		return
-
-	def update_ksu_attribute(self, ksu, attr_key, attr_value):
-		fixed_key = attr_key
-		fixed_value = attr_value
-		
-		if attr_key in ['description', 'comments']:
-			fixed_value = attr_value.encode('utf-8')
-		
-		elif attr_key in ['timer', 'size']:
-			fixed_value = int(attr_value)	
-
-		elif attr_key in ['repeats', 'trigger', 'best_time']:
-			fixed_key = 'details'
-			details_dic = ksu.details
-			details_dic[attr_key] = fixed_value
-			fixed_value = details_dic
-		
-		elif attr_key == 'reason_id':
-			fixed_value = None
-			if attr_value != '':
-				fixed_value = KSU3.get_by_id(int(attr_value)).key
-
-		elif attr_key == 'event_date':
-			fixed_value = None
-			if attr_value != '':
-				fixed_value = datetime.strptime(attr_value, '%Y-%m-%d')		
-	
-		setattr(ksu, fixed_key, fixed_value)
-		return ksu
-
-	def ksu_to_dic(self, ksu):
-		ksu_dic = {
-			'ksu_id': ksu.key.id(),
-			'ksu_type': ksu.ksu_type,
-			'ksu_subtype': ksu.ksu_subtype, 
-			
-			'description': ksu.description,
-			'comments': ksu.comments,
-			'timer': ksu.timer,
-			'size': ksu.size,
-			'event_date': ksu.event_date.strftime('%Y-%m-%d'),
-
-		}
-
-		ksu_dic['reason_id'] = 0
-		if ksu.reason_id:
-			ksu_dic['reason_id'] = ksu.reason_id.id(),
-
-		details_attributes = ['trigger', 'repeats', 'best_time']
-		details_dic = ksu.details
-		for attr in details_attributes:
-			if attr in details_dic:
-				ksu_dic[attr] = details_dic[attr]
-
-		return ksu_dic
-
 
 
 #--- Essential Helper Functions ----------
@@ -2400,7 +2404,9 @@ class UpdateTheories(Handler):
 
 #--- Request index
 app = webapp2.WSGIApplication([
-							    ('/', SetViewer),
+							    ('/', Home),
+							    ('/KASware3', Home),
+
 							    ('/SignUpLogIn', SignUpLogIn),
 							    ('/Accounts', Accounts),
 							    ('/LogOut', LogOut),
@@ -2413,8 +2419,7 @@ app = webapp2.WSGIApplication([
 						
 							    ('/EventHandler',EventHandler),
 							    ('/HistoryViewer', HistoryViewer),
-							    ('/KASware3', KASware3),
-
+							    
 							    ('/PopulateRandomTheory',PopulateRandomTheory),
 							    ('/UpdateTheoryStructure', UpdateTheoryStructure),
 							    # ('/UpdateTheories', UpdateTheories)

@@ -2,14 +2,17 @@
 $(document).ready(function(){
 	$.ajax({
 		type: "POST",
-		url: "/KASware3",
+		url: "/",
 		dataType: 'json',
 		data: JSON.stringify({
 			'user_action': 'RetrieveTheory'
 		})
 	})
 	.done(function(data){		
+		// console.log('Asi se ve la teoria')
+		// console.log(data)
 		RenderReasonsIndex(data['reasons_index'])
+		
 		var ksu_set = data['ksu_set']
 		for (var i = ksu_set.length - 1; i >= 0; i--) {
 			render_ksu(ksu_set[i])
@@ -47,10 +50,20 @@ $(document).on('click', '.KsuActionButton', function(){
 		var ksu_attrributes = ksu.find('.KsuAttr');
 
 		for (var i = ksu_attrributes.length - 1; i >= 0; i--) {
-			var KsuAttr = $(ksu_attrributes[i])
-			attributes_dic[KsuAttr.attr("name")] = KsuAttr.val();
+			var KsuAttr = $(ksu_attrributes[i]);
+			var attr_type = attrbutes_guide[KsuAttr.attr("name")];
+
+			if (attr_type == 'Standard' || attr_type == 'Select'){
+				attributes_dic[KsuAttr.attr("name")] = KsuAttr.val()
+
+			} else if (attr_type == 'Radio'){
+				attributes_dic[KsuAttr.attr("name")] = ksu.find('input:radio[name=' + KsuAttr.attr("name") + ']:checked').val();
+			
+			} else if (attr_type == 'Checkbox'){
+				attributes_dic[KsuAttr.attr("name")] = KsuAttr.is(':checked')
+			}
 		} 
-		attributes_dic['size'] = ksu.find('input:radio[name=size]:checked').val();
+		
 		attributes_dic['user_action'] = 'SaveNewKSU';
 		console.log(attributes_dic)
 
@@ -206,21 +219,68 @@ $(document).on('change','.ShowHideSelect', function(){
 });
 
 
-var attrbutes_type = {
-	'description': 'standard',
-	'comments': 'standard',
-	'ksu_subtype': 'select',
-	'repeats':'select',
-	'trigger':'standard',
-	'timer':'standard',
-	'best_time':'standard',
-	'size': 'radio',
-	'event_date':'standard',
+var attrbutes_guide = {
+	
+	'ksu_type': 'Standard', 
+	'ksu_subtype': 'Select',
+	'reason_id': 'Select',
+
+	'description': 'Standard',	
+	'pic_key': 'Standard',
+	'pic_url': 'Standard' ,
+	
+	'size':  'Radio',
+	'timer': 'Standard',
+	'event_date': 'Standard',
+
+	'is_realized': 'Checkbox',
+	'needs_mtnc': 'Checkbox',
+	
+	'is_active': 'Checkbox', 
+	'is_critical': 'Checkbox',
+	'is_private': 'Checkbox',
+	'at_anytime': 'Checkbox', 
+
+	'is_visible': 'Checkbox',  
+	'in_graveyard': 'Checkbox',
+
+	'comments': 'Standard',
+	'tag': 'Standard',
+		
+	'trigger': 'Standard', 
+	'repeats': 'Select', 
+	'best_time': 'Standard',	
 }
 
-var ksu_attrributes = {
-	'Base': ['description', 'comments', 'ksu_subtype'],
-	'Action': ['repeats', 'trigger', 'timer', 'best_time', 'size', 'event_date']
+var ksu_type_attrributes = {
+	'Base': [
+		'ksu_type', 
+		'ksu_subtype', 
+		'reason_id',
+		
+		'description', 
+		'pic_key',
+			
+		'size',
+		'timer',
+		'event_date',
+
+		'is_realized',
+		'needs_mtnc',
+
+		'is_active', 
+		'is_critical',
+		'is_private',
+		'at_anytime', 
+
+		'is_visible', 		 
+		'in_graveyard',
+
+		'comments',
+		'tag',
+	],
+
+	'Action': ['repeats', 'trigger', 'best_time']
 }
 
 
@@ -228,21 +288,25 @@ function render_ksu(ksu_dic){
 	var ksu = $('[ksu_type="Action"][value="KSUTemplate"]').clone();
 	ksu.attr("value", ksu_dic['ksu_id']);
 	console.log(ksu_dic);
-	var attributes = ksu_attrributes['Base'].concat(ksu_attrributes[ksu_dic['ksu_type']]);
+	var attributes = ksu_type_attrributes['Base'].concat(ksu_type_attrributes[ksu_dic['ksu_type']]);
 	
 	for (var i = attributes.length - 1; i >= 0; i--) {
 		var attribute = attributes[i];		
-		var attr_type = attrbutes_type[attribute];
-		if (attr_type == 'standard'){
+		var attr_type = attrbutes_guide[attribute];
+		
+		if (attr_type == 'Standard'){
 			ksu.find('#'+attribute).val(ksu_dic[attribute])
 		
-		} else if (attr_type == 'select'){			
+		} else if (attr_type == 'Select' && ksu_dic[attribute] != ''){			
 			ksu.find('#'+attribute).val(ksu_dic[attribute]).prop('selected', true);
 			ShowHideSelect(ksu, attribute, ksu_dic[attribute]);
-		} else if (attr_type == 'radio'){
+		
+		} else if (attr_type == 'Radio'){
 			ksu.find('input:radio[name=size][value='+ ksu_dic[attribute] +']').prop("checked",true);
-		}	
-	
+		
+		} else if (attr_type == 'Checkbox'){			
+			ksu.find('#'+attribute).prop("checked", ksu_dic[attribute]);
+		}
 	}
 
 	ksu = add_reason_select_to_ksu(ksu, ksu_dic['reason_id']);
@@ -253,7 +317,6 @@ function render_ksu(ksu_dic){
 		ksu.find('#TimeRuler').removeClass('hidden');
 		ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
 	}
-
 }
 
 
@@ -283,7 +346,6 @@ function add_reason_select_to_ksu(ksu, reason_id){
 	
 	return ksu
 }
-
 
 function UpdateResonSelects(){
 	var ksu_set = $('.KSUdisplaySection')
@@ -524,7 +586,6 @@ $('.SaveNewKSUButton').on('click', function(){
 
 			'effort_denominator':effort_denominator,
 			'wish_type': wish_type,
-
 
 			'description':description,
 			'secondary_description':secondary_description,

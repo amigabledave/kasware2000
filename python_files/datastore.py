@@ -54,7 +54,7 @@ class Theory(ndb.Model):
 
 
 class KSU3(ndb.Model):
-	theory = ndb.KeyProperty(kind=Theory, required=True)	
+	theory_id = ndb.KeyProperty(kind=Theory, required=True)	
 	created = ndb.DateTimeProperty(auto_now_add=True)
 	ksu_type = ndb.StringProperty()
 	ksu_subtype = ndb.StringProperty()
@@ -62,19 +62,22 @@ class KSU3(ndb.Model):
 
 	description = ndb.StringProperty(required=True)	
 	pic_key = ndb.BlobKeyProperty() #
-	
+	pic_url = ndb.StringProperty()
+
 	size = ndb.IntegerProperty(default=3) #Indicates the size of a LifePiece or Objective. In a fibonacci scale 1, 2, 3, 5, 8. Also works as effor denominator for Actions
 	timer = ndb.IntegerProperty(default=0) #Total minutes invested
 	# event_date = ndb.DateProperty()
 	event_date = ndb.DateTimeProperty()
 
 	is_realized = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' is either a wish or a RTBG. And if an objective is acomplished or not.
+	needs_mtnc = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' requires additional effort to be preserved on a realized state 
+
 	is_active = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' is still part of my life situation
-	is_critical = ndb.BooleanProperty(default=False)
-	is_any_any = ndb.BooleanProperty(default=False)	
+	is_critical = ndb.BooleanProperty(default=False)	
+	is_private = ndb.BooleanProperty(default=False)
+	at_anytime = ndb.BooleanProperty(default=False)
 
 	is_visible = ndb.BooleanProperty(default=True)
-	is_private = ndb.BooleanProperty(default=False)
 	in_graveyard = ndb.BooleanProperty(default=False)
 
 	comments = ndb.TextProperty()
