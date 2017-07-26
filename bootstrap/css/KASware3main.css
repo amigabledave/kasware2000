@@ -45,9 +45,22 @@ input::-webkit-inner-spin-button {
     max-width: 250px;
 }
 
-.SectionSelectionBarButton{
+.SectionButton{
     height: 45px;
-    margin-bottom: 5px;     
+    margin-bottom: 5px;
+    font-family: 'Rationale', sans-serif; 
+    font-size: 18px;
+    text-align: left;    
+}
+
+.SetIcon{
+    margin-right: 10px; 
+    margin-top: 5px;
+}
+
+.PressedSectionButton{
+    background-color: #3e3838;
+    color: white;
 }
 
 .my-btn {
