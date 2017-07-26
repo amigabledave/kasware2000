@@ -90,38 +90,42 @@
 			</div>
 		</div>
 	</div>
-	
-	<div class="container" style="position: relative;">
 
+	<div class="container NoSideMarginOrPadding" style="position: relative;">
 		<div class="row">
-			<div class="col-xs-10"> 
-				<div class="SectionTitle"> 
-					KASware3 Workbench
+			<div class="col-xs-3 SectionSelectionBar">			
+				<div class="btn-group-vertical" style="width: 100%">
+				  <button type="button" class="btn SectionSelectionBarButton">Apple</button>
+				  <button type="button" class="btn SectionSelectionBarButton btn-inverse">Samsung</button>
+				  <button type="button" class="btn SectionSelectionBarButton">Sony</button>
+				</div>				
+			</div>
+			<div class="col-xs-7" style="padding-left: 50px;">
+				<div id="SectionTitle">
+					<div class="row">
+						<div class="col-xs-12"> 
+							<div class="SectionTitle"> 
+								KASware3 Workbench
+							</div>	
+						</div>
+					</div>
 				</div>	
-			</div>
 
-			<div class="col-xs-2" style="padding:0;">
-				
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-3"></div>
-			<div class="col-xs-6">
 				<div id="ReasonsHolder">
 					<div class="row">
 						<select name="reason_id" id="reasons_select" class="ReasonSelect hidden KsuAttr" style="margin-bottom: -5px;">
-							<option value="" selected="selected">Select your reason</option>						
+							<option value="" selected="selected">Select your reason</option>				
 						</select>
 					</div>
 				</div>
-				<div id="TheoryHolder" class="sortable">
-				
-				{% include "MasterKSU.html" %}
-				
+
+
+				<div id="TheoryHolder" class="sortable col-xs-12">
+					{% include "MasterKSU.html" %}
 				</div>
 			</div>
+			<div class="col-xs-2"></div>
 		</div>
-
 	</div>	
 
 </body>
