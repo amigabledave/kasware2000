@@ -552,7 +552,7 @@ class Home(Handler):
 			self.response.out.write(json.dumps(ksu_dic))
 			return
 
-		if user_action == 'DeleteKSU':
+		elif user_action == 'DeleteKSU':
 			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
 			ksu.key.delete()
 			self.response.out.write(json.dumps({
@@ -561,7 +561,15 @@ class Home(Handler):
 				'description': ksu.description,
 				}))
 			return
-		
+
+		elif user_action == 'UpdateKsuAttribute':
+			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
+			self.update_ksu_attribute(ksu, event_details['attr_key'], event_details['attr_value'])
+			ksu.put()
+			self.response.out.write(json.dumps({
+				'mensaje':'Attributo actualizado',
+				}))
+			return
 		return
 
 	def update_ksu_attribute(self, ksu, attr_key, attr_value):
@@ -1741,7 +1749,7 @@ class PopulateRandomTheory(Handler):
 	
 	def get(self):
 		self.populateRandomTheory()
-		self.redirect('/MissionViewer?time_frame=Today')
+		self.redirect('/')
 
 	def populateRandomTheory(self):
 

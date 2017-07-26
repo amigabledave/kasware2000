@@ -53,29 +53,19 @@ $(document).on('click', '.KsuActionButton', function(){
 
 		for (var i = ksu_attrributes.length - 1; i >= 0; i--) {
 			var KsuAttr = $(ksu_attrributes[i]);
-			var attr_type = attrbutes_guide[KsuAttr.attr("name")];
-
-			if (attr_type == 'Standard' || attr_type == 'Select'){
-				attributes_dic[KsuAttr.attr("name")] = KsuAttr.val()
-
-			} else if (attr_type == 'Radio'){
-				attributes_dic[KsuAttr.attr("name")] = ksu.find('input:radio[name=' + KsuAttr.attr("name") + ']:checked').val();
-			
-			} else if (attr_type == 'Checkbox'){
-				attributes_dic[KsuAttr.attr("name")] = KsuAttr.is(':checked')
-			}
+			attributes_dic[KsuAttr.attr("name")] = get_ksu_attr_value(ksu, KsuAttr)
 		} 
 		
 		attributes_dic['user_action'] = 'SaveNewKSU';
-		console.log(attributes_dic)
+		// console.log(attributes_dic)
 
 		$.ajax({
 			type: "POST",
-			url: "/KASware3",
+			url: "/",
 			dataType: 'json',
 			data: JSON.stringify(attributes_dic)
 		}).done(function(data){
-			console.log(data); 
+			// console.log(data); 
 			ksu.attr("value",data['ksu_id']);
 			ksu.find('#DoneButton').removeClass('hidden');
 			ksu.find('#SaveNewKSUButton').addClass('hidden');
@@ -105,6 +95,45 @@ $(document).on('click', '.KsuActionButton', function(){
 			});
 		}		
 	};	
+});
+
+
+//xx
+$(document).on('focusin', '.KsuAttr', function(){
+	
+	var ksu = $(this).closest('#KSU');
+	var KsuAttr = $(this)
+	var initial_attr_value = get_ksu_attr_value(ksu, $(this));
+
+	$(this).on('focusout', function(){
+		
+		var attr_value = get_ksu_attr_value(ksu, $(this));
+		
+		if(initial_attr_value != attr_value){
+			
+			var ksu_id = ksu.attr("value");
+			var attr_key = $(this).attr("name");
+			
+			console.log(attr_key);
+			console.log(attr_value);
+
+			$.ajax({
+				type: "POST",
+				url: "/",
+				dataType: 'json',
+				data: JSON.stringify({
+					'ksu_id': ksu_id,					
+					'user_action': 'UpdateKsuAttribute',
+					'attr_key':attr_key,
+					'attr_value':attr_value,
+				})
+			})
+			
+			.done(function(data){
+				console.log(data['mensaje']);
+			})
+		};
+	})
 });
 
 
@@ -139,31 +168,35 @@ $(document).on('click', '.TimeBarButton',function(){
 })
 
 
+function get_ksu_attr_value(ksu, KsuAttr){
+
+	var attr_type = attrbutes_guide[KsuAttr.attr("name")];
+
+	if (attr_type == 'Standard' || attr_type == 'Select'){
+		return KsuAttr.val();
+
+	} else if (attr_type == 'Radio'){
+		return ksu.find('input:radio[name=' + KsuAttr.attr("name") + ']:checked').val();
+	
+	} else if (attr_type == 'Checkbox'){
+		return KsuAttr.is(':checked');
+	}
+}
+
+
 function render_ksu(ksu_dic){
 	var ksu = $('[ksu_type="Action"][value="KSUTemplate"]').clone();
 	ksu.attr("value", ksu_dic['ksu_id']);
-	console.log(ksu_dic);
+	// console.log(ksu_dic);
 	var attributes = ksu_type_attrributes['Base'].concat(ksu_type_attrributes[ksu_dic['ksu_type']]);
 	
 	for (var i = attributes.length - 1; i >= 0; i--) {
+		
 		var attribute = attributes[i];		
 		var attr_type = attrbutes_guide[attribute];
-		
-		if (attr_type == 'Standard'){
-			ksu.find('#'+attribute).val(ksu_dic[attribute])
-		
-		} else if (attr_type == 'Select' && attribute != 'reason_id'){			
-			ksu.find('#'+attribute).val(ksu_dic[attribute]).prop('selected', true);
-			if(ksu.find('#'+attribute).hasClass('ShowHideSelect')){
-				ShowHideSelect(ksu, attribute, ksu_dic[attribute]);	
-			}
-		
-		} else if (attr_type == 'Radio'){
-			ksu.find('input:radio[name=size][value='+ ksu_dic[attribute] +']').prop("checked",true);
-		
-		} else if (attr_type == 'Checkbox'){			
-			ksu.find('#'+attribute).prop("checked", ksu_dic[attribute]);
-		}
+		var attr_value = ksu_dic[attribute]
+
+		set_ksu_attr_value(ksu, attribute, attr_value)
 	}
 
 	ksu = add_reason_select_to_ksu(ksu, ksu_dic['reason_id']);
@@ -175,6 +208,30 @@ function render_ksu(ksu_dic){
 		ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
 	}
 }
+
+
+function set_ksu_attr_value(ksu, attribute, attr_value){
+	var attr_type = attrbutes_guide[attribute];
+	
+	if (attr_type == 'Standard'){
+		ksu.find('#'+attribute).val(attr_value)
+	
+	} else if (attr_type == 'Select' && attribute != 'reason_id'){			
+		ksu.find('#' + attribute).val(attr_value).prop('selected', true);
+		if(ksu.find('#' + attribute).hasClass('ShowHideSelect')){
+			ShowHideSelect(ksu, attribute, attr_value);	
+		}
+	
+	} else if (attr_type == 'Radio'){
+		ksu.find('input:radio[name=' + attribute + '][value='+ attr_value +']').prop("checked",true);
+	
+	} else if (attr_type == 'Checkbox'){			
+		ksu.find('#' + attribute).prop("checked", attr_value);
+	}
+}
+
+
+
 
 
 function ShowDetail(ksu){
@@ -1513,7 +1570,6 @@ $(document).on('focusin', '.QuickAttributeUpdate', function(){
 			})
 		};
 	})
-	
 });
 
 

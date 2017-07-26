@@ -4,15 +4,18 @@
 ksu_types = {
 		
 	#Life Pieces
-	'JoyGenerator':[#What do you want to be doing? 
-		'JoyGenerator' #If the parent is other joy generator, then its a generator instance: E.g. Estar jugando el juego de aventura en turno >> #E.g. Estar jugando Zelda breath of the wild
+	'JoyGenerator':[#What do you want to be doing? #'Surroundings = Aqui entra estar viviendo en Canada
+		'JoyGenerator' #If the parent is other joy generator, then its a generator instance: E.g. Estar jugando el juego de aventura en turno >> #E.g. Estar jugando Zelda breath of the wild	
+	],
+
+	'Purpose':[ #Whats the impact you want to have in others peoples life and the envieronment? Antes Meaning GreaterGood
+		'Purpose' #  #Personal achievement. Antes estaba en self 'GreaterGood', #'Social', 'Environment',		
 	],
 	
-	'Self':[#Who is the best person you could be?
+	'Being':[# Antes Self. #Who is the best person you could be? 'Antes tenia Achievemnt pero ahora queda en meaning',
 		'MindSkill', #Knowledge and skills
 		'SoulSkill', #'Attitude', #Connciousness and inner peace
 		'BodyAttribute', #PhisicalAttribute, Health and vitality
-		'Achievement', #Personal achievement
 	],
 
 	'Person':[ #Who you want in your life 'Love', #Important People. Love & Friendship
@@ -22,18 +25,10 @@ ksu_types = {
 	'Possesion':[ #What you want to have
 		'Stuff', #For personal use
 		'Status', #Aqui entrarian los trabajos o cualquier asset que viva en las mentes de otras personas.
-		'MoneyOrAsset', #Dinero o assets tangibles
+		'Asset', #Dinero o assets tangibles. MoneyOrAsset
+		'Order', #No estoy seguro si la voy a dejar o no. "Clean room, email inbox... etc"
 	],	
 
-	'Surroundings':[#What are the characteristics of the place where you want to live, #Environment & Stuff. Stuff & Other order and peace
-		'PersonalSpace', #The wording needs work
-		'CollectiveSpace',
-	],
-
-	'GreaterGood':[ #Whats the impact you want to have in others peoples life and the envieronment?
-		'Social',
-		'Environment',
-	],
 
 	#Actions	
 	'Action': [
@@ -62,6 +57,7 @@ ksu_types = {
 
 event_types = {
 	'EndValue', #Generado por Joy Generatos 
+	'Proof', # Generado Being, Purpose, Idea... (ejemplos de tu siendo la persona que quieres ser) #Necesita pulirse
 	'WishRealized',# Generado por Life Pieces al cambiar de status
 	'Progress', #Generado por objetivos
 	'Effort', #Generado por acciones al ser ejecutadas
