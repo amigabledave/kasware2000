@@ -92,29 +92,38 @@
 	</div>
 
 	<div class="container NoSideMarginOrPadding" style="position: relative;">
-		<div class="row">
+		<div class="row" style="width: 100%">
 			<div class="col-xs-3 SectionSelectionBar">			
 				<div class="btn-group-vertical" style="width: 100%">
-				  <button type="button" class="btn SectionButton btn-default PressedSectionButton">Today's Mission</button>
+				  <button type="button" class="btn SectionButton btn-default SelectedSection" value="mission"><span class="glyphicon glyphicon-flag SetIcon" aria-hidden="true"></span>Today's Mission</button>
 
-				  <button type="button" class="btn SectionButton btn-default"><span class="glyphicon glyphicon-tower SetIcon" aria-hidden="true"></span>Key Actions Set</button>
+				  <button type="button" class="btn SectionButton btn-default" value="kas"><span class="glyphicon glyphicon-tower SetIcon" aria-hidden="true"></span>Key Actions Set</button>
 
-				  <button type="button" class="btn SectionButton btn-default"><span class="glyphicon glyphicon-road SetIcon" aria-hidden="true"></span> Objectives </button>
+				  <button type="button" class="btn SectionButton btn-default" value="objectives"><span class="glyphicon glyphicon-road SetIcon" aria-hidden="true"></span> Objectives </button>
 				
+				  <button type="button" class="btn SectionButton btn-default" value="principles"><span class="glyphicon glyphicon-tree-deciduous SetIcon" aria-hidden="true"></span> Principles </button>
+
 				</div>
 				
-				<div class="btn-group-vertical" style="width: 100%; margin-top: 30px">
-				  <button type="button" class="btn SectionButton btn-default"><span class="glyphicon glyphicon-gift SetIcon" aria-hidden="true"></span>Joy Generators</button>
+				<div class="btn-group-vertical" style="width: 100%; margin-top: 20px">
+				  <button type="button" class="btn SectionButton btn-default" value="joy_generators"><span class="glyphicon glyphicon-gift SetIcon" aria-hidden="true"></span>Joy Generators</button>
 				  
-				  <button type="button" class="btn SectionButton btn-default"><span class="glyphicon glyphicon-globe SetIcon" aria-hidden="true"></span>Purpose</button>
+				  <button type="button" class="btn SectionButton btn-default" value="purpose"><span class="glyphicon glyphicon-globe SetIcon" aria-hidden="true"></span>Purpose</button>
 
-				  <button type="button" class="btn SectionButton btn-default"><span class="glyphicon glyphicon-user SetIcon " aria-hidden="true"></span>Best Self</button>
+				  <button type="button" class="btn SectionButton btn-default" value="awesome_self"><span class="glyphicon glyphicon-user SetIcon " aria-hidden="true"></span>Awesome Self</button>
 
-				  <button type="button" class="btn SectionButton btn-default"><span class="glyphicon glyphicon-heart SetIcon" aria-hidden="true"></span>Important people</button>
+				  <button type="button" class="btn SectionButton btn-default" value="people"><span class="glyphicon glyphicon-heart SetIcon" aria-hidden="true"></span>Important People</button>
 
-				  <button type="button" class="btn SectionButton btn-default"><span class="glyphicon glyphicon-sunglasses SetIcon" aria-hidden="true"></span> Worthy Possesions </button>
+				  <button type="button" class="btn SectionButton btn-default" value="possesions"><span class="glyphicon glyphicon-usd SetIcon" aria-hidden="true"></span> Possesions </button>
 
 				</div>
+
+				<div class="btn-group-vertical" style="width: 100%; margin-top: 20px">
+				  <button type="button" class="btn SectionButton btn-default" value="indicators"><span class="glyphicon glyphicon-scale SetIcon" aria-hidden="true"></span>Indicators</button>
+				  
+				  <button type="button" class="btn SectionButton btn-default" value="dashboard"><span class="glyphicon glyphicon-dashboard SetIcon" aria-hidden="true"></span>Dashboard</button>
+				</div>
+
 
 			</div>
 			<div class="col-xs-7" style="padding-left: 50px;">

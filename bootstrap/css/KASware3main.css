@@ -40,25 +40,34 @@ input::-webkit-inner-spin-button {
 
     background-color: #828d95; 
     padding: 45px;
+    padding-top: 20px;
     padding-right: 35px;
     min-height: 550px;
     max-width: 250px;
 }
 
 .SectionButton{
-    height: 45px;
+    height: 40px;
     margin-bottom: 5px;
     font-family: 'Rationale', sans-serif; 
     font-size: 18px;
-    text-align: left;    
+    text-align: left;
+    -webkit-user-select: none;    
 }
+
+.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open>.dropdown-toggle.btn-default {
+    color: white;
+    background-color: #3e3838;
+    border-color: white; /*set the color you want here*/
+}
+
 
 .SetIcon{
     margin-right: 10px; 
     margin-top: 5px;
 }
 
-.PressedSectionButton{
+.SelectedSection{
     background-color: #3e3838;
     color: white;
 }

@@ -23,7 +23,22 @@ $(document).ready(function(){
 });
 
 
+$('.SectionButton').on('click', function(){
+	var section = $(this).attr('value');
+
+	$('.SelectedSection').removeClass('SelectedSection')
+	$(this).addClass('SelectedSection').blur()
+});
+
+
+	
+
+	
+
 $('#CreateNewKSU').on('click',function(){
+	var selected_section = $('.SelectedSection').first().attr('value');
+	console.log('This is the current selected section:');
+	console.log(selected_section);
 	var new_ksu = $('[ksu_type="Action"][value="KSUTemplate"]').clone();
 	new_ksu.attr("value", '');
 	new_ksu.find('#DoneButton').addClass('hidden');
@@ -98,7 +113,6 @@ $(document).on('click', '.KsuActionButton', function(){
 });
 
 
-//xx
 $(document).on('focusin', '.KsuAttr', function(){
 	
 	var ksu = $(this).closest('#KSU');
