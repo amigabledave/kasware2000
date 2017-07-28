@@ -391,7 +391,9 @@ var select_toBeShown = {
 	'ksu_subtype':{
 		'Proactive': [],
 		'Reactive': ['#trigger'],
-		'Negative': ['#ExceptionsRow']
+		'Negative': ['#ExceptionsRow'],
+
+		'Objective':[],
 	}
 }
 
@@ -401,7 +403,9 @@ var select_toBeToggled = {
 	'ksu_subtype':{
 		'Proactive': [['#DoneButton','btn-success','btn-danger']],
 		'Reactive': [['#DoneButton','btn-success','btn-danger']],
-		'Negative': [['#DoneButton','btn-danger','btn-success']]}
+		'Negative': [['#DoneButton','btn-danger','btn-success']],
+		'Objective': [[]],
+	}
 }
 
 

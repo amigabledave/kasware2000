@@ -78,10 +78,6 @@ ksu_type_attributes = {
 		'description', 
 		'pic_key',
 			
-		'size',
-		'timer',
-		'event_date',
-
 		'is_realized',
 		'needs_mtnc',
 
@@ -102,6 +98,10 @@ ksu_type_attributes = {
 		'trigger',
 		'exceptions',
 		
+		'size',
+		'timer',
+		'event_date',
+		
 		'repeats',
 		'every_x_days',
 		'on_the_day', 
@@ -114,9 +114,23 @@ ksu_type_attributes = {
 		'every_fri', 
 		'every_sat', 
 		'every_sun',
+	],
 
+	'Objective': [],
+	
+	'Wisdom': [], 
 
-	]
+	'JoyGenerator': [], 
+
+	'Purpose': [], 
+
+	'SelfAttribute': [], 
+
+	'Person': [], 
+
+	'Possesion': [], 
+
+	'UserIndicator': []
 }
 
 
