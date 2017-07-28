@@ -40,7 +40,8 @@ $('#CreateNewKSU').on('click',function(){
 	new_ksu.attr('id', 'KSU');
 	new_ksu.attr('ksu_type', ksu_type)
 	new_ksu.find('#ksu_type').attr('value', ksu_type);
-	new_ksu.find('#DoneButton').addClass('hidden');
+	
+	new_ksu.find('#ShowDetailButton').addClass('hidden');
 	new_ksu.find('#SaveNewKSUButton').removeClass('hidden');
 	
 	new_ksu = add_reason_select_to_ksu(new_ksu, false);
@@ -82,7 +83,8 @@ $(document).on('click', '.KsuActionButton', function(){
 		}).done(function(data){
 			// console.log(data); 
 			ksu.attr("value",data['ksu_id']);
-			ksu.find('#DoneButton').removeClass('hidden');
+			
+			ksu.find('#ShowDetailButton').removeClass('hidden');
 			ksu.find('#SaveNewKSUButton').addClass('hidden');
 			ShowDetail(ksu);
 			AddReasonToSelect(data['ksu_id'], ksu.find('#description').val())
@@ -116,6 +118,8 @@ $(document).on('click', '.KsuActionButton', function(){
 $(document).on('focusin', '.KsuAttr', function(){
 	
 	var ksu = $(this).closest('#KSU');
+	if (ksu.attr("value") == ''){return};
+
 	var KsuAttr = $(this)
 	var initial_attr_value = get_ksu_attr_value(ksu, $(this));
 
@@ -394,6 +398,30 @@ var select_toBeShown = {
 		'Negative': ['#ExceptionsRow'],
 
 		'Objective':[],
+
+		'Idea': [],
+		'Principle': [],
+		
+		'Moment': [], 
+		'JoyMine': [], 
+		'Chapter': [], 
+		
+		'Purpose': [], 
+		
+		'Attitude': [], 
+		'KnowledgeOrSkill': [], 
+		'BodyFeature': [], 
+		
+		'Individual': [], 
+		'Group': [],
+		
+		'Stuff': [],
+		'Status': [],
+		'Asset': [],
+		'Order': [],
+		
+		'Reality': [], 
+		'Perception': [],
 	}
 }
 
@@ -404,7 +432,32 @@ var select_toBeToggled = {
 		'Proactive': [['#DoneButton','btn-success','btn-danger']],
 		'Reactive': [['#DoneButton','btn-success','btn-danger']],
 		'Negative': [['#DoneButton','btn-danger','btn-success']],
+		
 		'Objective': [[]],
+		
+		'Idea': [[]],
+		'Principle': [[]],
+		
+		'Moment': [[]], 
+		'JoyMine': [[]], 
+		'Chapter': [[]], 
+		
+		'Purpose': [[]], 
+		
+		'Attitude': [[]], 
+		'KnowledgeOrSkill': [[]], 
+		'BodyFeature': [[]], 
+		
+		'Individual': [[]], 
+		'Group': [[]],
+		
+		'Stuff': [[]],
+		'Status': [[]],
+		'Asset': [[]],
+		'Order': [[]],
+		
+		'Reality': [[]], 
+		'Perception': [[]],
 	}
 }
 
