@@ -1,58 +1,62 @@
 # Meter attributo nuevo en {MasterKSU.html:[], KASware3.py: [ksu_type_attributes, attributes_guide], KASware3app.js: [ksu_type_attributes, attributes_guide],}
 
 
-ksu_types = {
-		
-	#Life Pieces
-	'JoyGenerator':[#What do you want to be doing? #'Surroundings = Aqui entra estar viviendo en Canada
-		'JoyGenerator' #If the parent is other joy generator, then its a generator instance: E.g. Estar jugando el juego de aventura en turno >> #E.g. Estar jugando Zelda breath of the wild	
-	],
-
-	'Purpose':[ #Whats the impact you want to have in others peoples life and the envieronment? Antes Meaning GreaterGood
-		'Purpose' #  #Personal achievement. Antes estaba en self 'GreaterGood', #'Social', 'Environment',		
-	],
-	
-	'Being':[# Antes Self. #Who is the best person you could be? 'Antes tenia Achievemnt pero ahora queda en meaning',
-		'MindSkill', #Knowledge and skills
-		'SoulSkill', #'Attitude', #Connciousness and inner peace
-		'BodyAttribute', #PhisicalAttribute, Health and vitality
-	],
-
-	'Person':[ #Who you want in your life 'Love', #Important People. Love & Friendship
-		'Person', #If the parent is another person, then the parent is a group of people #'Group',		
-	],
-
-	'Possesion':[ #What you want to have
-		'Stuff', #For personal use
-		'Status', #Aqui entrarian los trabajos o cualquier asset que viva en las mentes de otras personas.
-		'Asset', #Dinero o assets tangibles. MoneyOrAsset
-		'Order', #No estoy seguro si la voy a dejar o no. "Clean room, email inbox... etc"
-	],	
-
+ksu_types = [
 
 	#Actions	
-	'Action': [
-		'Proactive',
-		'Reactive',
-		'Negative'
-	],	
+	[['Action', 'Action'], [
+		['Proactive', 'Proactive'],
+		['Reactive', 'Reactive'],
+		['Negative', 'Negative']
+	]],	
 
-	'Objective': [ #Group actions or other milestones
-		'Objective', #If the parent is another objective then its a milestone#'Milestone',
-	],
-
+	[['Objective', 'Objective'], [ #Group actions or other milestones
+		['Objective', 'Objective'], #If the parent is another objective then its a milestone#'Milestone',
+	]],
 	
-	'Idea':[ #Your personal constitution. Non actionable knowledge that you believe should guide your behaviour.
-		'Idea', #If the idea has a parent then is not a principle. BRILIANT! #'Principle', #Sirve para organizar y auditar
-	], 
+	[['Wisdom', 'Wisdome'], [#Idea #Your personal constitution. Non actionable knowledge that you believe should guide your behaviour.
+		['Idea', 'Idea'], #If the idea has a parent then is not a principle. BRILIANT!
+		['Principle', 'Principle'], #Sirve para organizar y auditar
+	]], 
+		
+	#Life Pieces
+	[['JoyGenerator', 'Joy Generator'], [#What do you want to be doing? #'Surroundings = Aqui entra estar viviendo en Canada
+		['Moment', 'Moment'], #Whaterver < Nice < Memorable < Epic < Legendary
+		['JoyMine', 'Joy Mine'], #Algo concreto que genera momentos del mismo tipo... E.g. Estar jugando Zelda breath of the wild
+		['Chapter', 'Chapter'], #Agrupa varios momentos, pero no es un momento en si por lo que no tiene importancia. El padre puede ser otro chapter .E.g. Estar jugando el juego de aventura en turno >> #E.g. Estar jugando Zelda breath of the wild
+		#'JoyGenerator' #If the parent is other joy generator, then its a generator instance: E.g. Estar jugando el juego de aventura en turno >> #E.g. Estar jugando Zelda breath of the wild	
+	]],
+
+	[['Purpose', 'Purpose'], [ #Whats the impact you want to have in others peoples life and the envieronment? Antes Meaning GreaterGood
+		['Purpose', 'Purpose'] #  #Personal achievement. Antes estaba en self 'GreaterGood', #'Social', 'Environment',		
+	]],
+	
+	[['SelfAttribute', 'Attribute'], [# Antes Self. #Who is the best person you could be? 'Antes tenia Achievemnt pero ahora queda en meaning',
+		['Attitude', 'Attitude'], #'SoulSkill', #Connciousness and inner peace
+		['KnowledgeOrSkill', 'Skill or Knowledge'], #MindSkill Knowledge and skills		
+		['BodyFeature', 'Body Feature'], #PhisicalAttribute, Health and vitality
+	]],
+
+	[['Person', 'Person'], [ #Who you want in your life 'Love', #Important People. Love & Friendship
+		['Individual', 'Individual'], #Person #If the parent is another person, then the parent is a group of people #'Group',
+		['Group', 'Group'],
+	]],
+
+	[['Possesion', 'Possesion'], [ #What you want to have
+		['Stuff', 'Stuff'], #For personal use
+		['Status', 'Status'], #Aqui entrarian los trabajos o cualquier asset que viva en las mentes de otras personas.
+		['Asset', 'Asset'], #Dinero o assets tangibles. MoneyOrAsset
+		['Order', 'Order'], #No estoy seguro si la voy a dejar o no. "Clean room, email inbox... etc"
+	]],	
+
 
 	#Indicator Results The concreate metrics you pick to measure success
-	'UserIndicator': [
-		'RealitySnapshot',
-		'BinaryPerception',
-		'TernaryPerception',
-	],
-}
+	[['UserIndicator', 'Indicator'], [
+		['RealitySnapshot', 'Reality'],
+		['BinaryPerception', 'Perception'],
+		# ['TernaryPerception', ],
+	]],
+]
 
 
 event_types = {

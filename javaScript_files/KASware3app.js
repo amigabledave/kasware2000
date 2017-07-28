@@ -31,18 +31,18 @@ $('.SectionButton').on('click', function(){
 });
 
 
-	
-
-	
-
 $('#CreateNewKSU').on('click',function(){
 	var selected_section = $('.SelectedSection').first().attr('value');
-	console.log('This is the current selected section:');
-	console.log(selected_section);
-	var new_ksu = $('[ksu_type="Action"][value="KSUTemplate"]').clone();
-	new_ksu.attr("value", '');
+	var ksu_type = section_details[selected_section]['new_ksu_type'];
+	var new_ksu = $('#KSUTemplate').clone();
+	
+	new_ksu = FixTemplateBasedOnKsuType(new_ksu, ksu_type)
+	new_ksu.attr('id', 'KSU');
+	new_ksu.attr('ksu_type', ksu_type)
+	new_ksu.find('#ksu_type').attr('value', ksu_type);
 	new_ksu.find('#DoneButton').addClass('hidden');
 	new_ksu.find('#SaveNewKSUButton').removeClass('hidden');
+	
 	new_ksu = add_reason_select_to_ksu(new_ksu, false);
 	new_ksu.prependTo('#TheoryHolder');
 	new_ksu.removeClass('hidden');
@@ -199,7 +199,9 @@ function get_ksu_attr_value(ksu, KsuAttr){
 
 
 function render_ksu(ksu_dic){
-	var ksu = $('[ksu_type="Action"][value="KSUTemplate"]').clone();
+	var ksu = $('#KSUTemplate').clone();
+	ksu = FixTemplateBasedOnKsuType(ksu, ksu_dic['ksu_type']);
+	ksu.attr("id", 'KSU');
 	ksu.attr("value", ksu_dic['ksu_id']);
 	// console.log(ksu_dic);
 	var attributes = ksu_type_attrributes['Base'].concat(ksu_type_attrributes[ksu_dic['ksu_type']]);
@@ -243,9 +245,6 @@ function set_ksu_attr_value(ksu, attribute, attr_value){
 		ksu.find('#' + attribute).prop("checked", attr_value);
 	}
 }
-
-
-
 
 
 function ShowDetail(ksu){
@@ -330,8 +329,48 @@ function UpdateResonSelects(){
 	}
 };
 
+//xx
+function FixTemplateBasedOnKsuType(template, ksu_type){
+	var type_spefic_sections = template.find('.TypeSpecific')
+
+	for (var i = type_spefic_sections.length - 1; i >= 0; i--) {
+		var section = $(type_spefic_sections[i]);
+		if( section.attr('target_type') != ksu_type){
+			section.remove()	
+		}
+	} 
+
+	return template
+}
+
+
+
 
 // ------------ Constants -------------------
+
+
+var section_details = {
+	'mission':{'title': "Today's Mission", 'new_ksu_type': 'Action'}, 
+	'kas': {'title': 'Key Action Set', 'new_ksu_type': 'Action'}, 
+	'objectives': {'title': 'Objectives', 'new_ksu_type': 'Objective'}, 
+	'purpose': {'title': 'Purpose', 'new_ksu_type': 'Purpose'}, 
+	'joy_generators': {'title': 'Joy Generators', 'new_ksu_type': 'JoyGenerator'}, 
+	'mybestself': {'title': 'Mybestself', 'new_ksu_type': 'SelfAttribute'}, 
+	'people': {'title': 'People', 'new_ksu_type': 'Person'}, 
+	'possesions': {'title': 'Possesions', 'new_ksu_type': 'Possesion'}, 
+	'principles': {'title': 'Principles', 'new_ksu_type': 'Principle'}, 
+	'indicators': {'title': 'Indicators', 'new_ksu_type': 'Indicator'}, 
+	'dashboard': {'title': 'Dashboard', 'new_ksu_type': 'Indicator'},
+}
+
+
+var attributes_toBeShown = {
+
+}
+
+var classes_toBeRemoved = {
+
+}
 
 
 var select_toBeHidden = {

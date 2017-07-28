@@ -518,6 +518,7 @@ class Home(Handler):
 
 	@super_user_bouncer
 	def get(self):
+		constants['ksu_types'] = KASware3.ksu_types
 		self.print_html('KASware3.html', constants=constants)
 
 	@super_user_bouncer
