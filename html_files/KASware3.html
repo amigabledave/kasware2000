@@ -94,7 +94,7 @@
 
 	<div class="container NoSideMarginOrPadding" style="position: relative;">
 		<div class="row" style="width: 100%">
-			<div class="col-xs-3 SectionSelectionBar">			
+			<div class="col-xs-3 SectionSelectionBar">
 				<div class="btn-group-vertical" style="width: 100%">
 				  <button type="button" class="btn SectionButton btn-default SelectedSection" value="mission"><span class="glyphicon glyphicon-flag SetIcon" aria-hidden="true"></span>Today's Mission</button>
 
@@ -125,14 +125,12 @@
 				  
 				  <button type="button" class="btn SectionButton btn-default" value="dashboard"><span class="glyphicon glyphicon-dashboard SetIcon" aria-hidden="true"></span>Dashboard</button>
 				</div>
-
-
 			</div>
 			<div class="col-xs-7" style="padding-left: 50px;">
 				<div id="SectionTitle">
 					<div class="row">
 						<div class="col-xs-12"> 
-							<div class="SectionTitle"> 
+							<div class="SectionTitle" id="SectionTitle"> 
 								KASware3 Workbench
 							</div>	
 						</div>
@@ -147,10 +145,14 @@
 					</div>
 				</div>
 
-
-				<div id="TheoryHolder" class="sortable col-xs-12">
-					{% include "MasterKSU.html" %}
+				<div id="AverQuePedo">
+					<div class="row" >
+						<div id="TheoryHolder" class="col-xs-12 sortable">
+							{% include "MasterKSU.html" %}
+						</div>
+					</div>
 				</div>
+
 			</div>
 			<div class="col-xs-2"></div>
 		</div>

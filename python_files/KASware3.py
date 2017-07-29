@@ -21,7 +21,7 @@ ksu_types = [
 		
 	#Life Pieces
 	[['JoyGenerator', 'Joy Generator'], [#What do you want to be doing? #'Surroundings = Aqui entra estar viviendo en Canada
-		['Moment', 'Moment'], #Whaterver < Nice < Memorable < Epic < Legendary
+		['Moment', 'Moment'], # Whaterver < Nice < Very nice < Memorable < Epic < Legendary
 		['JoyMine', 'Joy Mine'], #Algo concreto que genera momentos del mismo tipo... E.g. Estar jugando Zelda breath of the wild
 		['Chapter', 'Chapter'], #Agrupa varios momentos, pero no es un momento en si por lo que no tiene importancia. El padre puede ser otro chapter .E.g. Estar jugando el juego de aventura en turno >> #E.g. Estar jugando Zelda breath of the wild
 		#'JoyGenerator' #If the parent is other joy generator, then its a generator instance: E.g. Estar jugando el juego de aventura en turno >> #E.g. Estar jugando Zelda breath of the wild	
@@ -52,8 +52,8 @@ ksu_types = [
 
 	#Indicator Results The concreate metrics you pick to measure success
 	[['UserIndicator', 'Indicator'], [
-		['RealitySnapshot', 'Reality'],
-		['BinaryPerception', 'Perception'],
+		['Reality', 'Reality'],
+		['Perception', 'Perception'],
 		# ['TernaryPerception', ],
 	]],
 ]
@@ -101,7 +101,7 @@ ksu_type_attributes = {
 		'size',
 		'timer',
 		'event_date',
-		
+
 		'repeats',
 		'every_x_days',
 		'on_the_day', 

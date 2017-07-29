@@ -343,9 +343,19 @@ function FixTemplateBasedOnKsuType(template, ksu_type){
 			section.remove()	
 		}
 	} 
+	
+	if (ksu_type == 'Action'){		
+		template.find('#KSUdisplaySection').addClass('ActionBorders');
+		template.find('#ShowDetailButton').addClass('ksu-circle-btn');
+	} else {
+		template.find('#KSUdisplaySection').addClass('LifePieceBorder');
+		template.find('#ShowDetailButton').addClass('LifePiceShowDetailBtn');
+	}
 
 	return template
 }
+
+
 
 
 

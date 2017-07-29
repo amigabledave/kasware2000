@@ -1,5 +1,4 @@
-<div id="KSUTemplate" ksu_type="" value="" class="row hidden"><div class="col-xs-12">
-	
+<div id="KSUTemplate" ksu_type="" value="" class="row hidden"><div class="col-xs-12"><div class="KSUdisplaySection" id="KSUdisplaySection">
 	<div class="row TimeRuler hidden TypeSpecific" id="TimeRuler" target_type='Action'>
 		<div class="col-xs-3">
 			<input style="padding: 0px; border: 0px; height: 16px; background-color: #342042" type="time" class="KsuAttr" name="best_time" id="best_time" value="">	
@@ -7,12 +6,12 @@
 		<div class="col-xs-9"></div>
 	</div>
 
-	<div class="row KSUdisplaySection TopRoundBorders" style="border-bottom-left-radius: 5px; border-top-left-radius: 5px;">
-		<div class="col-xs-12" style=" padding-left: 10px; padding-right: 10px;">
+	<div class="row" id="MainSection">
+		<div class="col-xs-12" style="">
 			<div class="row" id="PreviewDiv">
 				
-				<div class="col-xs-3 TypeSpecific" target_type="JoyGenerator">
-					<img src="http://via.placeholder.com/107x60" style="border-radius: 5px;">
+				<div class="col-xs-2 TypeSpecific" target_type="JoyGenerator" style="padding-right: 0px;">
+					<img src="http://via.placeholder.com/84x47" style="border-radius: 5px;">
 				</div>	
 
 				<div class="col-xs-1 TypeSpecific" target_type='Action'>
@@ -20,7 +19,7 @@
 					<span style="font-weight: bold;">1</span></button>
 				</div>
 				
-				<div class="col-xs-8">
+				<div class="col-xs-9">
 					<textarea style="width:100%; border:0; font-style: italic; padding-bottom: 0px; margin-bottom: -3px;" class="KsuAttr autoExpand hidden" rows="1" data-min-rows='1' name="trigger" id="trigger" placeholder="Trigger circumstance"></textarea>
 					<textarea style="width:100%; border:0;" class="KsuAttr autoExpand" rows="1" data-min-rows='1' name="description" id="description" placeholder="Action description"></textarea>
 				</div>
@@ -37,7 +36,7 @@
 				<div class="col-xs-1" style="padding-left: 0px">
 					<button type="button" class="btn btn-primary ksu-circle-btn hidden KsuActionButton pull-right" id='SaveNewKSUButton' value="SaveNewKSU" style="margin-left: -5px"><span style="margin-left:2px;" class="glyphicon glyphicon-floppy-disk"></span></button>
 
-					<button type="button" class="btn ksu-circle-btn ShowDetailButton pull-right" name="action_description" value='ActionDone' id="ShowDetailButton" style="margin-left: -5px; height: 60px;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px; margin-top: -1px;"></span></button>
+					<button type="button" class="btn ShowDetailButton pull-right" name="action_description" value='ActionDone' id="ShowDetailButton" style="margin-left: -5px;"><span id="PlusMinusGlyphicon" class="glyphicon glyphicon-plus" style="margin-left:2px; margin-top: -1px;"></span></button>
 				</div>
 			</div>
 
@@ -190,4 +189,4 @@
 		<input type="checkbox" id="is_visible" name="is_visible" class="KsuAttr hidden">
 		<input type="checkbox" id="in_graveyard" name="in_graveyard" class="KsuAttr hidden">
 	</div>
-</div></div>
+</div></div></div>

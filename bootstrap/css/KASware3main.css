@@ -93,24 +93,16 @@ input::-webkit-inner-spin-button {
 }
 
 
-.TopRoundBorders {
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;  
-}
 
 .KSUdisplaySection {
    
   background: #fff;  
   border: 1px #ddd;
 
-  /*border-radius: 25px;*/
-  border-bottom-left-radius: 25px;
-  border-bottom-right-radius: 25px; 
-
   border-style: solid;  
   border-color: white;
   
-  padding:5px;
+  padding:10px;
   font-size: 13px;
   max-width: 600px;
 
@@ -122,6 +114,17 @@ input::-webkit-inner-spin-button {
   margin-bottom: 6px;
 }
 
+
+.ActionBorders{
+  border-radius: 25px;
+}
+
+
+.LifePieceBorder{
+    border-radius: 8px;
+}
+
+
 .TimeRuler{
    
   background: #fff;
@@ -131,9 +134,6 @@ input::-webkit-inner-spin-button {
   height: 20px;
 
   border: 1px #ddd;
-  /*border-radius: 50px;*/
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px; 
   border-style: solid;  
   border-color: white;
   
@@ -149,6 +149,15 @@ input::-webkit-inner-spin-button {
     border: none;
     padding: 0;
     max-width: 100%;
+}
+
+.LifePiceShowDetailBtn {
+    height: 47px;
+    width: 38px;
+    padding: 6px;
+    font-size: 14px;
+    line-height: 1.33;
+    border-radius: 8px;
 }
 
 .ksu-circle-btn {
