@@ -228,7 +228,7 @@ function render_ksu(ksu_dic){
 		ksu.find('#TimeRuler').removeClass('hidden');
 		ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
 	}
-	$zoom = $('.zoom').magnify();
+	ksu.find('#ksu_pic').magnify();
 }
 
 
