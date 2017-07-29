@@ -5,7 +5,7 @@ import webapp2, jinja2, os, re, random, string, hashlib, json, logging, math
 from datetime import datetime, timedelta, time, date
 from google.appengine.ext import ndb
 from google.appengine.api import mail
-from python_files import datastore, randomUser, constants, kasware_os, KASware3
+from python import datastore, randomUser, constants, kasware_os, KASware3
 
 constants = constants.constants
 
@@ -16,7 +16,7 @@ Event = datastore.Event
 os_ksus = kasware_os.os_ksus
 
 
-template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
+template_dir = os.path.join(os.path.dirname(__file__), 'html')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
 
 

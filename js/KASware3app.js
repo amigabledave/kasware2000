@@ -1,6 +1,7 @@
 // Validated for KASware3
 
 // ------- Triggers ----
+var $zoom;
 $(document).ready(function(){
 	$.ajax({
 		type: "POST",
@@ -19,7 +20,7 @@ $(document).ready(function(){
 		for (var i = ksu_set.length - 1; i >= 0; i--) {
 			render_ksu(ksu_set[i])
 		}		
-	})	
+	})
 });
 
 
@@ -227,6 +228,7 @@ function render_ksu(ksu_dic){
 		ksu.find('#TimeRuler').removeClass('hidden');
 		ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
 	}
+	$zoom = $('.zoom').magnify();
 }
 
 

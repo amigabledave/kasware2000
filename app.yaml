@@ -18,9 +18,9 @@ handlers:
 - url: /css
   static_dir: css
 
-- url: /javaScript_files
-  static_dir: javaScript_files
-
+- url: /js
+  static_dir: js
+  
 - url: /csv_files
   static_dir: csv_files
   application_readable: True
