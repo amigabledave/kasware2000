@@ -349,9 +349,11 @@ function FixTemplateBasedOnKsuType(template, ksu_type){
 	if (ksu_type == 'Action'){		
 		template.find('#KSUdisplaySection').addClass('ActionBorders');
 		template.find('#ShowDetailButton').addClass('ksu-circle-btn');
+		template.find('#DescriptionHolder').addClass('col-xs-9');
 	} else {
 		template.find('#KSUdisplaySection').addClass('LifePieceBorder');
 		template.find('#ShowDetailButton').addClass('LifePiceShowDetailBtn');
+		template.find('#DescriptionHolder').addClass('col-xs-10');
 	}
 
 	return template

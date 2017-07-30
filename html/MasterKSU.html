@@ -10,8 +10,10 @@
 		<div class="col-xs-12" style="">
 			<div class="row" id="PreviewDiv">
 				
-				<div class="col-xs-2 TypeSpecific" target_type="JoyGenerator" style="padding-right: 0px;">
-					<img src="images/BreathoftheWildFinalCover.jpg" id="ksu_pic" data-magnify-src="images/BreathoftheWildFinalCover.jpg" class="zoom" style="border-radius: 5px; height: 47px;">
+				<div class="col-xs-1 TypeSpecific" target_type="JoyGenerator" style="padding-right: 0px; max-height: 38px; text-align:center;">
+					<!-- <div id="img_holder"><img style="height: 38px; margin-top: -3px; margin-left: 3px;" class="img-circle" src="images/ic_extension_black_48dp_2x.png"></div> -->
+					
+					<img src="images/BreathoftheWildFinalCover.jpg" id="ksu_pic" data-magnify-src="images/BreathoftheWildFinalCover.jpg" class="zoom" style="border-radius: 5px; height: 38px;">
 				</div>	
 
 				<div class="col-xs-1 TypeSpecific" target_type='Action'>
@@ -19,7 +21,7 @@
 					<span style="font-weight: bold;">1</span></button>
 				</div>
 				
-				<div class="col-xs-9">
+				<div class="" id="DescriptionHolder">
 					<textarea style="width:100%; border:0; font-style: italic; padding-bottom: 0px; margin-bottom: -3px;" class="KsuAttr autoExpand hidden" rows="1" data-min-rows='1' name="trigger" id="trigger" placeholder="Trigger circumstance"></textarea>
 					<textarea style="width:100%; border:0;" class="KsuAttr autoExpand" rows="1" data-min-rows='1' name="description" id="description" placeholder="Action description"></textarea>
 				</div>
@@ -93,6 +95,8 @@
 								
 								<button type="button" class="btn btn-default UserActionButton BarButton TypeSpecific" target_type='Action' name="action_description" value='MissionSkip'><span class="glyphicon glyphicon-remove""></button>
 								
+								<button type="button" class="btn btn-default UserActionButton BarButton TypeSpecific" target_type='JoyGenerator' name="action_description" value=''><span class="glyphicon glyphicon-picture"></button>
+
 								<button type="button" class="btn btn-danger BarButton KsuActionButton" name="action_description" value='DeleteKSU'><span class="glyphicon glyphicon-trash"></span></button>
 							</div>
 						</div>
