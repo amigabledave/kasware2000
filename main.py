@@ -667,9 +667,10 @@ class PicuteUploadHandler(blobstore_handlers.BlobstoreUploadHandler): #xx
 	def post(self):		
 		
 		ksu_id = self.request.get('ksu_id')
+		
 		# logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-		# logging.info('KSU id')
-		# logging.info(ksu_id)
+		# logging.info('Event details')
+		# logging.info(event_details)
 		# logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')	
 
 		ksu = KSU3.get_by_id(int(ksu_id))
@@ -680,7 +681,7 @@ class PicuteUploadHandler(blobstore_handlers.BlobstoreUploadHandler): #xx
 		ksu.put()
 
 		self.response.out.write(json.dumps({
-				'message':'imagen guardada!!!',
+				'message':'imagen guardada!!!'
 			}))	
 		
 

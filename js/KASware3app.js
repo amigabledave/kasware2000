@@ -167,12 +167,17 @@ $(document).on('change','.ShowHideSelect', function(){
 
 
 $(document).on('change', '.pic_input', function(){
-    var ksu = $(this).closest('#KSU');
-    console.log('Si se dio cuenta de que quiero subir un archivo')
+    var ksu = $(this).closest('#KSU');    
     readURL(ksu, this);
     ksu.find('#ksu_pic').magnify();
+    ksu.find('#SavePic').removeClass('hidden');
 });
 
+$(document).on('click', '.SavePicure', function(){
+	console.log('Si se dio cuenta de que quiero gurdar la foto')
+	var ksu = $(this).closest('#KSU');
+	ksu.find('#SavePic').addClass('hidden');
+});
 
 
 $(document).on('click', '.ShowDetailButton', function(){
@@ -195,21 +200,6 @@ $(document).on('click', '.TimeBarButton',function(){
 	}
 })
 
-
-$(document).ready(function(){
-   var $form = $('form');
-   $form.submit(function(){
-      $.post($(this).attr('action'), $(this).serialize(), function(response){
-           console.log('Se envio si sacarte de la pagina!') // do something here on success
-      },'json');
-      return false;
-   });
-});
-
-
-$("#prospects_form").submit(function(e) {
-    e.preventDefault();
-});
 
 
 
@@ -255,14 +245,29 @@ function render_ksu(ksu_dic){
 		ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
 	}
 	
-	var original_action = ksu.find('#pic_form').attr('action');
-	var new_action = original_action.concat('?ksu_id='.concat(ksu.attr('value')))
-	ksu.find('#pic_form').attr('action', new_action)
+	var pic_form = ksu.find('#pic_form');
+	var original_action = pic_form.attr('action');
+	var new_action = original_action.concat('?ksu_id='.concat(ksu.attr('value')))	
+	pic_form.attr('action', new_action)
+
+	// pic_form.submit(function(){
+ //      $.post($(this).attr('action'), $(this).serialize(), function(response){
+ //           console.log('Se envio si sacarte de la pagina!') // do something here on success
+ //      },'json');
+ //      return false;
+ //   	});
+
 
 	if(ksu_dic['pic_url']){
 		SetKsuImage(ksu, ksu_dic['pic_url'])
 	} 
 }
+
+
+
+function PreparePictureInput(ksu){
+	return
+};
 
 
 function SetKsuImage(ksu, pic_url){
