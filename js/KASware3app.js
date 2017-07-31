@@ -166,6 +166,15 @@ $(document).on('change','.ShowHideSelect', function(){
 });
 
 
+$(document).on('change', '.pic_input', function(){
+    var ksu = $(this).closest('#KSU');
+    console.log('Si se dio cuenta de que quiero subir un archivo')
+    readURL(ksu, this);
+    ksu.find('#ksu_pic').magnify();
+});
+
+
+
 $(document).on('click', '.ShowDetailButton', function(){
 	var ksu = $(this).closest('#KSU');
 	ShowDetail(ksu);
@@ -185,6 +194,23 @@ $(document).on('click', '.TimeBarButton',function(){
 		ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
 	}
 })
+
+
+$(document).ready(function(){
+   var $form = $('form');
+   $form.submit(function(){
+      $.post($(this).attr('action'), $(this).serialize(), function(response){
+           console.log('Se envio si sacarte de la pagina!') // do something here on success
+      },'json');
+      return false;
+   });
+});
+
+
+$("#prospects_form").submit(function(e) {
+    e.preventDefault();
+});
+
 
 
 function get_ksu_attr_value(ksu, KsuAttr){
@@ -228,7 +254,23 @@ function render_ksu(ksu_dic){
 		ksu.find('#TimeRuler').removeClass('hidden');
 		ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
 	}
-	ksu.find('#ksu_pic').magnify();
+	
+	var original_action = ksu.find('#pic_form').attr('action');
+	var new_action = original_action.concat('?ksu_id='.concat(ksu.attr('value')))
+	ksu.find('#pic_form').attr('action', new_action)
+
+	if(ksu_dic['pic_url']){
+		SetKsuImage(ksu, ksu_dic['pic_url'])
+	} 
+}
+
+
+function SetKsuImage(ksu, pic_url){
+	ksu.find('#ksu_pic').attr('src', pic_url);
+	ksu.find('#ksu_pic').attr('data-magnify-src', pic_url);
+	ksu.find('#img_holder').addClass('hidden');
+	ksu.find('#ksu_pic').removeClass('hidden');
+	ksu.find('#ksu_pic').magnify();  
 }
 
 
@@ -251,6 +293,7 @@ function set_ksu_attr_value(ksu, attribute, attr_value){
 		ksu.find('#' + attribute).prop("checked", attr_value);
 	}
 }
+
 
 
 function ShowDetail(ksu){
@@ -335,7 +378,7 @@ function UpdateResonSelects(){
 	}
 };
 
-//xx
+
 function FixTemplateBasedOnKsuType(template, ksu_type){
 	var type_spefic_sections = template.find('.TypeSpecific')
 
@@ -360,9 +403,20 @@ function FixTemplateBasedOnKsuType(template, ksu_type){
 }
 
 
+function readURL(ksu, input) {
 
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
 
+        reader.onload = function (e) {
+            ksu.find('#ksu_pic').attr('src', e.target.result);
+        }
 
+        reader.readAsDataURL(input.files[0]);
+        ksu.find('#img_holder').addClass('hidden');
+        ksu.find('#ksu_pic').removeClass('hidden');        
+    }
+}
 
 // ------------ Constants -------------------
 

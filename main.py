@@ -7,6 +7,10 @@ from google.appengine.ext import ndb
 from google.appengine.api import mail
 from python import datastore, randomUser, constants, kasware_os, KASware3
 
+from google.appengine.ext import blobstore
+from google.appengine.ext.webapp import blobstore_handlers
+from google.appengine.api import images
+
 constants = constants.constants
 
 Theory = datastore.Theory
@@ -519,7 +523,10 @@ class Home(Handler):
 	@super_user_bouncer
 	def get(self):
 		constants['ksu_types'] = KASware3.ksu_types
-		self.print_html('KASware3.html', constants=constants)
+		new_pic_input = "{0}".format(blobstore.create_upload_url('/upload_pic'))
+		self.print_html('KASware3.html', constants=constants, new_pic_input=new_pic_input)
+
+
 
 	@super_user_bouncer
 	def post(self):
@@ -595,7 +602,7 @@ class Home(Handler):
 			if attr_value != '':
 				fixed_value = KSU3.get_by_id(int(attr_value)).key
 
-		elif attr_type == 'DateTime':#xx
+		elif attr_type == 'DateTime':
 			fixed_value = None
 			if attr_value != '':
 				fixed_value = datetime.strptime(attr_value, '%Y-%m-%d')		
@@ -610,10 +617,6 @@ class Home(Handler):
 		return ksu
 
 	def ksu_to_dic(self, ksu):
-		# logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-		# logging.info('')
-		# logging.info()
-		# logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')	
 
 		ksu_dic = {
 			'ksu_id': ksu.key.id(),
@@ -658,7 +661,29 @@ class Home(Handler):
 		return ksu_dic
 
 
-			
+	
+class PicuteUploadHandler(blobstore_handlers.BlobstoreUploadHandler): #xx
+	# @super_civilian_bouncer
+	def post(self):		
+		
+		ksu_id = self.request.get('ksu_id')
+		# logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+		# logging.info('KSU id')
+		# logging.info(ksu_id)
+		# logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')	
+
+		ksu = KSU3.get_by_id(int(ksu_id))
+		upload = self.get_uploads()[0]
+		
+		ksu.pic_key = upload.key();
+		ksu.pic_url = images.get_serving_url(blob_key=upload.key())
+		ksu.put()
+
+		self.response.out.write(json.dumps({
+				'message':'imagen guardada!!!',
+			}))	
+		
+
 class SetViewer(Handler):
 
 	@super_user_bouncer
@@ -2416,6 +2441,7 @@ class UpdateTheories(Handler):
 app = webapp2.WSGIApplication([
 							    ('/', Home),
 							    ('/KASware3', Home),
+							    ('/upload_pic', PicuteUploadHandler),
 
 							    ('/SignUpLogIn', SignUpLogIn),
 							    ('/Accounts', Accounts),
