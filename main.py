@@ -523,8 +523,8 @@ class Home(Handler):
 	@super_user_bouncer
 	def get(self):
 		constants['ksu_types'] = KASware3.ksu_types
-		new_pic_input = "{0}".format(blobstore.create_upload_url('/upload_pic'))
-		self.print_html('KASware3.html', constants=constants, new_pic_input=new_pic_input)
+		new_pic_input_action = "{0}".format(blobstore.create_upload_url('/upload_pic'))
+		self.print_html('KASware3.html', constants=constants, new_pic_input_action=new_pic_input_action)
 
 
 
@@ -578,6 +578,13 @@ class Home(Handler):
 				'mensaje':'Attributo actualizado',
 				}))
 			return
+		
+		elif user_action == 'RequestNewPicInputAction':
+			new_pic_input_action = "{0}".format(blobstore.create_upload_url('/upload_pic'))
+			self.response.out.write(json.dumps({
+					'new_pic_input_action': new_pic_input_action,
+					'mensaje':'Nueva accion enviada',
+					}))
 		return
 
 	def update_ksu_attribute(self, ksu, attr_key, attr_value):

@@ -90,6 +90,12 @@ $(document).on('click', '.KsuActionButton', function(){
 			ShowDetail(ksu);
 			AddReasonToSelect(data['ksu_id'], ksu.find('#description').val())
 			UpdateResonSelects()
+
+			if(ksu.hasClass('PictureOnStandBy')){
+				AddKsu_idToPicInput(ksu);
+				ksu.removeClass('PictureOnStandBy');
+				ksu.find('#SavePic').trigger('click');
+			}	
 		});	
 	};
 
@@ -166,17 +172,35 @@ $(document).on('change','.ShowHideSelect', function(){
 });
 
 
-$(document).on('change', '.pic_input', function(){
+$(document).on('change', '.pic_input', function(){ //xx
     var ksu = $(this).closest('#KSU');    
     readURL(ksu, this);
+    AddKsu_idToPicInput(ksu);
     ksu.find('#ksu_pic').magnify();
-    ksu.find('#SavePic').removeClass('hidden');
+    
+    if(ksu.attr('value') != ''){
+    	ksu.find('#SavePic').removeClass('hidden');
+    } else {
+    	ksu.addClass('PictureOnStandBy')
+    } 
 });
+
 
 $(document).on('click', '.SavePicure', function(){
 	console.log('Si se dio cuenta de que quiero gurdar la foto')
 	var ksu = $(this).closest('#KSU');
 	ksu.find('#SavePic').addClass('hidden');
+	
+	$.ajax({
+		type: "POST",
+		url: "/",
+		dataType: 'json',
+		data: JSON.stringify({'user_action': 'RequestNewPicInputAction'})
+	}).done(function(data){
+
+		$('#new_pic_input_action').attr('action', data['new_pic_input_action']);
+		console.log(data['mensaje'])
+	});
 });
 
 
@@ -199,8 +223,6 @@ $(document).on('click', '.TimeBarButton',function(){
 		ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
 	}
 })
-
-
 
 
 function get_ksu_attr_value(ksu, KsuAttr){
@@ -244,25 +266,20 @@ function render_ksu(ksu_dic){
 		ksu.find('#TimeRuler').removeClass('hidden');
 		ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
 	}
-	
-	var pic_form = ksu.find('#pic_form');
-	var original_action = pic_form.attr('action');
-	var new_action = original_action.concat('?ksu_id='.concat(ksu.attr('value')))	
-	pic_form.attr('action', new_action)
-
-	// pic_form.submit(function(){
- //      $.post($(this).attr('action'), $(this).serialize(), function(response){
- //           console.log('Se envio si sacarte de la pagina!') // do something here on success
- //      },'json');
- //      return false;
- //   	});
-
-
+	 
 	if(ksu_dic['pic_url']){
 		SetKsuImage(ksu, ksu_dic['pic_url'])
 	} 
 }
 
+
+function AddKsu_idToPicInput(ksu){
+	var new_pic_input_action = $('#new_pic_input_action').attr('action');
+	var pic_form = ksu.find('#pic_form');
+	var new_action = new_pic_input_action.concat('?ksu_id='.concat(ksu.attr('value')))	
+	pic_form.attr('action', new_action)
+	return
+}
 
 
 function PreparePictureInput(ksu){
