@@ -89,7 +89,7 @@ $(document).on('click', '.KsuActionButton', function(){
 			ksu.find('#SaveNewKSUButton').addClass('hidden');
 			ShowDetail(ksu);
 			AddReasonToSelect(data['ksu_id'], ksu.find('#description').val())
-			UpdateResonSelects()
+			// UpdateResonSelects()
 
 			if(ksu.hasClass('PictureOnStandBy')){
 				AddKsu_idToPicInput(ksu);
@@ -127,8 +127,9 @@ $(document).on('focusin', '.KsuAttr', function(){
 	var ksu = $(this).closest('#KSU');
 	if (ksu.attr("value") == ''){return};
 
-	var KsuAttr = $(this)
+	// var KsuAttr = $(this)
 	var initial_attr_value = get_ksu_attr_value(ksu, $(this));
+	console.log('Se reconocio que se esta acutalizando un attributo')	
 
 	$(this).on('focusout', function(){
 		
@@ -139,27 +140,47 @@ $(document).on('focusin', '.KsuAttr', function(){
 			var ksu_id = ksu.attr("value");
 			var attr_key = $(this).attr("name");
 			
-			console.log(attr_key);
-			console.log(attr_value);
+			UpdateKsuAttribute(ksu_id, attr_key, attr_value)
 
-			$.ajax({
-				type: "POST",
-				url: "/",
-				dataType: 'json',
-				data: JSON.stringify({
-					'ksu_id': ksu_id,					
-					'user_action': 'UpdateKsuAttribute',
-					'attr_key':attr_key,
-					'attr_value':attr_value,
-				})
-			})
-			
-			.done(function(data){
-				console.log(data['mensaje']);
-			})
 		};
 	})
 });
+
+
+$(document).on('change', '.ReasonSelect', function(){
+	
+	var ksu = $(this).closest('#KSU');
+	var attr_value = get_ksu_attr_value(ksu, $(this));
+	ksu.find('#reason_holder').attr('reason_id', attr_value)
+
+	if (ksu.attr("value") == ''){return};
+	
+	var ksu_id = ksu.attr("value");
+	UpdateKsuAttribute(ksu_id, 'reason_id', attr_value)
+});
+
+
+function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
+	
+	console.log(attr_key);
+	console.log(attr_value);
+
+	$.ajax({
+		type: "POST",
+		url: "/",
+		dataType: 'json',
+		data: JSON.stringify({
+			'ksu_id': ksu_id,					
+			'user_action': 'UpdateKsuAttribute',
+			'attr_key':attr_key,
+			'attr_value':attr_value,
+		})
+	})
+	
+	.done(function(data){
+		console.log(data['mensaje']);
+	})
+};
 
 
 $(document).on('change','.ShowHideSelect', function(){
@@ -258,7 +279,10 @@ function render_ksu(ksu_dic){
 		set_ksu_attr_value(ksu, attribute, attr_value)
 	}
 
-	ksu = add_reason_select_to_ksu(ksu, ksu_dic['reason_id']);
+	// ksu = add_reason_select_to_ksu(ksu, ksu_dic['reason_id']);
+	ksu.find('#reason_holder').attr('reason_id', ksu_dic['reason_id'])
+
+
 	ksu.prependTo('#TheoryHolder');
 	ksu.removeClass('hidden');
 
@@ -280,11 +304,6 @@ function AddKsu_idToPicInput(ksu){
 	pic_form.attr('action', new_action)
 	return
 }
-
-
-function PreparePictureInput(ksu){
-	return
-};
 
 
 function SetKsuImage(ksu, pic_url){
@@ -317,7 +336,6 @@ function set_ksu_attr_value(ksu, attribute, attr_value){
 }
 
 
-
 function ShowDetail(ksu){
 	
 	var GlaphiconDiv = ksu.find('#PlusMinusGlyphicon');
@@ -328,6 +346,15 @@ function ShowDetail(ksu){
 	DetailDiv.toggleClass('hidden');
 
 	var best_time = ksu.find('#best_time').val()
+
+	if(ksu.find('#DetailDiv').is(":visible")){
+		var reason_id = ksu.find('#reason_holder').attr('reason_id')
+		console.log(reason_id)
+		add_reason_select_to_ksu(ksu, reason_id );
+	} else {
+		remove_reason_select_from_ksu(ksu)
+	}
+
 };
 
 
@@ -387,18 +414,24 @@ function add_reason_select_to_ksu(ksu, reason_id){
 	return ksu
 }
 
-function UpdateResonSelects(){
-	var ksu_set = $('.KSUdisplaySection')
 
-	for (var i = ksu_set.length - 1; i >= 0; i--) {
-		var ksu = $(ksu_set[i])
-		var reason_id = ksu.find('#reason_id').val();
-		// if( reason_id == ""){
-		// 	reason_id = false
-		// }
-		add_reason_select_to_ksu(ksu, reason_id)
-	}
-};
+function remove_reason_select_from_ksu(ksu){	
+	ksu.find('#reason_holder').empty()
+}
+
+
+// function UpdateResonSelects(){
+// 	var ksu_set = $('.KSUdisplaySection')
+
+// 	for (var i = ksu_set.length - 1; i >= 0; i--) {
+// 		var ksu = $(ksu_set[i])
+// 		var reason_id = ksu.find('#reason_id').val();
+// 		// if( reason_id == ""){
+// 		// 	reason_id = false
+// 		// }
+// 		add_reason_select_to_ksu(ksu, reason_id)
+// 	}
+// };
 
 
 function FixTemplateBasedOnKsuType(template, ksu_type){
