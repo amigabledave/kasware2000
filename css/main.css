@@ -115,6 +115,13 @@ input::-webkit-inner-spin-button {
 }
 
 
+
+.IsRealized {
+    border-color: #a58a2a;
+    /*color: #a58a2a;*/
+    background-color: #f5e5b3;
+}
+
 .ActionBorders{
   border-radius: 25px;
 }
@@ -185,6 +192,9 @@ input::-webkit-inner-spin-button {
     margin-top:10px; 
     margin-bottom: 7px;
 }
+
+
+
 
 .inKSUhrDiv{
     padding-right: 10px; 

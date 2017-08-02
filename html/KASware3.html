@@ -131,36 +131,31 @@
 				</div>
 			</div>
 			<div class="col-xs-7" style="padding-left: 50px;">
-				<div id="SectionTitle">
-					<div class="row">
-						<div class="col-xs-12"> 
-							<div class="SectionTitle" id="SectionTitle"> 
-								KASware3 Workbench
-							</div>	
-						</div>
-					</div>
-
-				</div>	
-
-				<div id="ReasonsHolder">
-					<div class="row">
-						<select name="reason_id" id="reasons_select" class="ReasonSelect hidden KsuAttr" style="margin-bottom: -5px;">
-							<option value="" selected="">Select your reason</option>				
-						</select>
-					</div>
-					<div class="row">
-						<div action="{{new_pic_input_action|safe}}" class="hidden" id="new_pic_input_action"></div>  
+				
+				<div class="row">
+					<div class="col-xs-12"> 
+						<div class="SectionTitle" id="SectionTitle"> 
+							KASware3 Workbench
+						</div>	
 					</div>
 				</div>
-
-				<div id="">
-					<div class="row" >
-						<div id="TheoryHolder" class="col-xs-12 sortable">
-							{% include "MasterKSU.html" %}
-						</div>
+			
+				<div class="row" id="ReasonsHolder">
+					<select name="reason_id" id="reasons_select" class="ReasonSelect hidden KsuAttr" style="margin-bottom: -5px;">
+						<option value="" selected="">Select your reason</option>				
+					</select>
+				</div>
+				
+				<div class="row">
+					<div action="{{new_pic_input_action|safe}}" class="hidden" id="new_pic_input_action"></div>  
+				</div>
+				
+				<div class="row">
+					<div id="TheoryHolder" class="col-xs-12 sortable">
+						{% include "MasterKSU.html" %}
 					</div>
 				</div>
-
+				
 			</div>
 			<div class="col-xs-2"></div>
 		</div>

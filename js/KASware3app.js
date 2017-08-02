@@ -26,9 +26,10 @@ $(document).ready(function(){
 
 $('.SectionButton').on('click', function(){
 	var section = $(this).attr('value');
-
 	$('.SelectedSection').removeClass('SelectedSection')
 	$(this).addClass('SelectedSection').blur()
+	
+	$('#SectionTitle').text(section_details[section]['title']);
 });
 
 
@@ -60,6 +61,7 @@ $(document).on('click', '.KsuActionButton', function(){
 	var actions_menu = {
 		'SaveNewKSU': SaveNewKSU,
 		'DeleteKSU': DeleteKSU,
+		'KSURealized': KSURealized,
 	}
 	actions_menu[action](ksu);
 
@@ -118,8 +120,25 @@ $(document).on('click', '.KsuActionButton', function(){
 				})
 			});
 		}		
-	};	
+	};
+
+	function KSURealized(ksu){
+		ToggleRealized(ksu)
+		
+		var attr_key = 'is_realized';
+		var attr_value = ksu.find('#KSUdisplaySection').hasClass('IsRealized');
+
+		set_ksu_attr_value(ksu, attr_key, attr_value)
+		UpdateKsuAttribute(ksu.attr('value'), attr_key, attr_value)
+	}	
 });
+
+
+function ToggleRealized(ksu){
+	ksu.find('#KSUdisplaySection').toggleClass('IsRealized');
+	ksu.find('#RealizedButton').toggleClass('IsRealized');
+	ksu.find('#RealizedButton').toggleClass('btn-default');
+}
 
 
 $(document).on('focusin', '.KsuAttr', function(){
@@ -160,28 +179,6 @@ $(document).on('change', '.ReasonSelect', function(){
 });
 
 
-function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
-	
-	console.log(attr_key);
-	console.log(attr_value);
-
-	$.ajax({
-		type: "POST",
-		url: "/",
-		dataType: 'json',
-		data: JSON.stringify({
-			'ksu_id': ksu_id,					
-			'user_action': 'UpdateKsuAttribute',
-			'attr_key':attr_key,
-			'attr_value':attr_value,
-		})
-	})
-	
-	.done(function(data){
-		console.log(data['mensaje']);
-	})
-};
-
 
 $(document).on('change','.ShowHideSelect', function(){
   
@@ -193,7 +190,7 @@ $(document).on('change','.ShowHideSelect', function(){
 });
 
 
-$(document).on('change', '.pic_input', function(){ //xx
+$(document).on('change', '.pic_input', function(){
     var ksu = $(this).closest('#KSU');    
     readURL(ksu, this);
     AddKsu_idToPicInput(ksu);
@@ -266,6 +263,7 @@ function render_ksu(ksu_dic){
 	var ksu = $('#KSUTemplate').clone();
 	ksu = FixTemplateBasedOnKsuType(ksu, ksu_dic['ksu_type']);
 	ksu.attr("id", 'KSU');
+	ksu.attr('ksutype', ksu_dic['ksu_type']);
 	ksu.attr("value", ksu_dic['ksu_id']);
 	// console.log(ksu_dic);
 	var attributes = ksu_type_attrributes['Base'].concat(ksu_type_attrributes[ksu_dic['ksu_type']]);
@@ -279,9 +277,7 @@ function render_ksu(ksu_dic){
 		set_ksu_attr_value(ksu, attribute, attr_value)
 	}
 
-	// ksu = add_reason_select_to_ksu(ksu, ksu_dic['reason_id']);
 	ksu.find('#reason_holder').attr('reason_id', ksu_dic['reason_id'])
-
 
 	ksu.prependTo('#TheoryHolder');
 	ksu.removeClass('hidden');
@@ -294,6 +290,10 @@ function render_ksu(ksu_dic){
 	if(ksu_dic['pic_url']){
 		SetKsuImage(ksu, ksu_dic['pic_url'])
 	} 
+
+	if(ksu_dic['is_realized']){
+		ToggleRealized(ksu)
+	}
 }
 
 
@@ -354,7 +354,6 @@ function ShowDetail(ksu){
 	} else {
 		remove_reason_select_from_ksu(ksu)
 	}
-
 };
 
 
@@ -420,26 +419,12 @@ function remove_reason_select_from_ksu(ksu){
 }
 
 
-// function UpdateResonSelects(){
-// 	var ksu_set = $('.KSUdisplaySection')
-
-// 	for (var i = ksu_set.length - 1; i >= 0; i--) {
-// 		var ksu = $(ksu_set[i])
-// 		var reason_id = ksu.find('#reason_id').val();
-// 		// if( reason_id == ""){
-// 		// 	reason_id = false
-// 		// }
-// 		add_reason_select_to_ksu(ksu, reason_id)
-// 	}
-// };
-
-
 function FixTemplateBasedOnKsuType(template, ksu_type){
 	var type_spefic_sections = template.find('.TypeSpecific')
 
 	for (var i = type_spefic_sections.length - 1; i >= 0; i--) {
 		var section = $(type_spefic_sections[i]);
-		if( section.attr('target_type') != ksu_type){
+		if( !section.attr('target_type').includes(ksu_type)){
 			section.remove()	
 		}
 	} 
@@ -452,6 +437,13 @@ function FixTemplateBasedOnKsuType(template, ksu_type){
 		template.find('#KSUdisplaySection').addClass('LifePieceBorder');
 		template.find('#ShowDetailButton').addClass('LifePiceShowDetailBtn');
 		template.find('#DescriptionHolder').addClass('col-xs-10');
+	}
+
+	var attrs_to_be_fixed = ksu_type_attr_details[ksu_type]
+
+	for (var i = attrs_to_be_fixed.length - 1; i >= 0; i--) {
+		var target_attr = attrs_to_be_fixed[i]
+		fixTemplateDivAttr(template, target_attr[0], target_attr[1], target_attr[2])
 	}
 
 	return template
@@ -473,30 +465,69 @@ function readURL(ksu, input) {
     }
 }
 
+
+function fixTemplateDivAttr(template, div_id, attr_key, attr_value){
+	template.find('#'.concat(div_id)).attr(attr_key, attr_value)
+}
+
+
+function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
+	
+	console.log(attr_key);
+	console.log(attr_value);
+
+	$.ajax({
+		type: "POST",
+		url: "/",
+		dataType: 'json',
+		data: JSON.stringify({
+			'ksu_id': ksu_id,					
+			'user_action': 'UpdateKsuAttribute',
+			'attr_key':attr_key,
+			'attr_value':attr_value,
+		})
+	})
+	
+	.done(function(data){
+		console.log(data['mensaje']);
+	})
+};
+
+
 // ------------ Constants -------------------
+var ksu_type_attr_details = {
+	'Action': [['description', 'placeholder', 'What is your key action?']], 
+	'Objective': [['description', 'placeholder', 'What is the objective? How would you define success?']], 
+	'Purpose': [['description', 'placeholder', "Whats is your purupose? Why are you in this planet for?"]], 
+	'JoyGenerator': [['description', 'placeholder', 'What activity would you give you joy?']], 
+	'SelfAttribute': [['description', 'placeholder', 'What attribute has the best person you could be?']], 
+	'Person': [['description', 'placeholder', 'Who is important to you?']], 
+	'Possesion': [['description', 'placeholder', 'What is a possesion that makes sense for you to care about?']], 
+	'Principle': [['description', 'placeholder', 'What pice of knowledge could help you live a better life?']], 
+	'Indicator': [['description', 'placeholder', 'Indicator place holder']], 
+	'Indicator': [['description', 'placeholder','Indicator place holder']],
+}
 
 
 var section_details = {
-	'mission':{'title': "Today's Mission", 'new_ksu_type': 'Action'}, 
-	'kas': {'title': 'Key Action Set', 'new_ksu_type': 'Action'}, 
-	'objectives': {'title': 'Objectives', 'new_ksu_type': 'Objective'}, 
-	'purpose': {'title': 'Purpose', 'new_ksu_type': 'Purpose'}, 
-	'joy_generators': {'title': 'Joy Generators', 'new_ksu_type': 'JoyGenerator'}, 
-	'mybestself': {'title': 'Mybestself', 'new_ksu_type': 'SelfAttribute'}, 
-	'people': {'title': 'People', 'new_ksu_type': 'Person'}, 
-	'possesions': {'title': 'Possesions', 'new_ksu_type': 'Possesion'}, 
-	'principles': {'title': 'Principles', 'new_ksu_type': 'Principle'}, 
-	'indicators': {'title': 'Indicators', 'new_ksu_type': 'Indicator'}, 
-	'dashboard': {'title': 'Dashboard', 'new_ksu_type': 'Indicator'},
+	'mission':{'title': "Today's Mission", 'new_ksu_type': 'Action', 'placeholder': 'What key action do you need to take today?'}, 
+	'kas': {'title': 'Key Action Set', 'new_ksu_type': 'Action', 'placeholder': 'What is your key action'}, 
+	'objectives': {'title': 'Objectives', 'new_ksu_type': 'Objective', 'placeholder': 'What is the objective? How would you define success?'}, 
+	'purpose': {'title': 'Purpose', 'new_ksu_type': 'Purpose', 'placeholder': "Whats is your purupose? Why are you in this planet for?"}, 
+	'joy_generators': {'title': 'Joy Generators', 'new_ksu_type': 'JoyGenerator', 'placeholder': 'What activity would you give you joy?'}, 
+	'mybestself': {'title': 'Mybestself', 'new_ksu_type': 'SelfAttribute', 'placeholder': 'What attribute has the best person you could be?'}, 
+	'people': {'title': 'People', 'new_ksu_type': 'Person', 'placeholder': 'Who is important to you?'}, 
+	'possesions': {'title': 'Possesions', 'new_ksu_type': 'Possesion', 'placeholder': 'What is a possesion that makes sense for you to care about?'}, 
+	'principles': {'title': 'Principles', 'new_ksu_type': 'Principle', 'placeholder': 'What pice of knowledge could help you live a better life?'}, 
+	'indicators': {'title': 'Indicators', 'new_ksu_type': 'Indicator', 'placeholder': 'Indicator place holder'}, 
+	'dashboard': {'title': 'Dashboard', 'new_ksu_type': 'Indicator', 'placeholder': 'Indicator place holder'},
 }
 
 
 var attributes_toBeShown = {
-
 }
 
 var classes_toBeRemoved = {
-
 }
 
 
