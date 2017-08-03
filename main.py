@@ -259,7 +259,7 @@ class SignUpLogIn(Handler):
 		print post_details
 		
 		if user_action == 'Random_SignUp':
-			post_details.update(randomUser.createRandomUser()) ## Creates a random user for testing purposes
+			post_details.update(randomUser.createRandomUser()) ## Creates a random user for testing Contributions
 		
 		if user_action == 'SignUp' or user_action == 'Random_SignUp':
 			input_error = user_input_error(post_details)
@@ -517,6 +517,7 @@ class KsuEditor(Handler):
 		self.redirect(return_to)
 		return
 
+
 # ---- KASware3 ---- xx
 class Home(Handler):
 
@@ -525,7 +526,6 @@ class Home(Handler):
 		constants['ksu_types'] = KASware3.ksu_types
 		new_pic_input_action = "{0}".format(blobstore.create_upload_url('/upload_pic'))
 		self.print_html('KASware3.html', constants=constants, new_pic_input_action=new_pic_input_action)
-
 
 
 	@super_user_bouncer
@@ -1791,7 +1791,7 @@ class PopulateRandomTheory(Handler):
 		user_action = 'Random_SignUp'
 
 		if user_action == 'Random_SignUp':
-			post_details.update(randomUser.createRandomUser()) ## Creates a random user for testing purposes
+			post_details.update(randomUser.createRandomUser()) ## Creates a random user for testing Contributions
 		
 		if user_action == 'SignUp' or user_action == 'Random_SignUp':
 			input_error = user_input_error(post_details)

@@ -127,9 +127,11 @@ $(document).on('click', '.KsuActionButton', function(){
 		
 		var attr_key = 'is_realized';
 		var attr_value = ksu.find('#KSUdisplaySection').hasClass('IsRealized');
+		var ksu_id = ksu.attr('value');
 
 		set_ksu_attr_value(ksu, attr_key, attr_value)
-		UpdateKsuAttribute(ksu.attr('value'), attr_key, attr_value)
+		
+		if (ksu_id != ''){UpdateKsuAttribute(ksu_id, attr_key, attr_value)}		
 	}	
 });
 
@@ -163,6 +165,13 @@ $(document).on('focusin', '.KsuAttr', function(){
 
 		};
 	})
+});
+
+
+$(document).on('change', '.SubtypeSelect', function(){
+	var ksu = $(this).closest('#KSU');
+	var ksu_subtype =  ksu.find('#ksu_subtype').val()
+	FixTemplateBasedOnKsuSubtype(ksu, ksu_subtype)
 });
 
 
@@ -262,6 +271,7 @@ function get_ksu_attr_value(ksu, KsuAttr){
 function render_ksu(ksu_dic){
 	var ksu = $('#KSUTemplate').clone();
 	ksu = FixTemplateBasedOnKsuType(ksu, ksu_dic['ksu_type']);
+	ksu = FixTemplateBasedOnKsuSubtype(ksu, ksu_dic['ksu_subtype']);
 	ksu.attr("id", 'KSU');
 	ksu.attr('ksutype', ksu_dic['ksu_type']);
 	ksu.attr("value", ksu_dic['ksu_id']);
@@ -374,15 +384,8 @@ function HideUnhideKsuProperties(ksu, targets, action){
 
 
 function ShowHideSelect(ksu, select, option){
-  
   HideUnhideKsuProperties(ksu, select_toBeHidden[select], 'Hide');
   HideUnhideKsuProperties(ksu, select_toBeShown[select][option], 'Show');
-  
-  if(select == 'ksu_subtype'){
-  	var format_target = select_toBeToggled[select][option][0];
-  	ksu.find(format_target[0]).addClass(format_target[1]);
-  	ksu.find(format_target[0]).removeClass(format_target[2]);
-  };	
 }
 
 
@@ -420,8 +423,8 @@ function remove_reason_select_from_ksu(ksu){
 
 
 function FixTemplateBasedOnKsuType(template, ksu_type){
+	
 	var type_spefic_sections = template.find('.TypeSpecific')
-
 	for (var i = type_spefic_sections.length - 1; i >= 0; i--) {
 		var section = $(type_spefic_sections[i]);
 		if( !section.attr('target_type').includes(ksu_type)){
@@ -448,6 +451,21 @@ function FixTemplateBasedOnKsuType(template, ksu_type){
 
 	return template
 }
+
+
+function FixTemplateBasedOnKsuSubtype(template, ksu_subtype){
+	var subtype_spefic_sections = template.find('.SubtypeSpecific')
+	for (var i = subtype_spefic_sections.length - 1; i >= 0; i--) {
+		var section = $(subtype_spefic_sections[i]);
+		if ( !section.attr('target_subtype').includes(ksu_subtype)){
+			section.addClass('hidden')	
+		} else {
+			section.removeClass('hidden')
+		}
+	}
+	return template 
+}
+
 
 
 function readURL(ksu, input) {
@@ -498,8 +516,8 @@ function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
 var ksu_type_attr_details = {
 	'Action': [['description', 'placeholder', 'What is your key action?']], 
 	'Objective': [['description', 'placeholder', 'What is the objective? How would you define success?']], 
-	'Purpose': [['description', 'placeholder', "Whats is your purupose? Why are you in this planet for?"]], 
-	'JoyGenerator': [['description', 'placeholder', 'What activity would you give you joy?']], 
+	'Contribution': [['description', 'placeholder', "Whats is your purupose? Why are you in this planet for?"]], 
+	'Experience': [['description', 'placeholder', 'What activity would you give you joy?']], 
 	'SelfAttribute': [['description', 'placeholder', 'What attribute has the best person you could be?']], 
 	'Person': [['description', 'placeholder', 'Who is important to you?']], 
 	'Possesion': [['description', 'placeholder', 'What is a possesion that makes sense for you to care about?']], 
@@ -513,10 +531,10 @@ var section_details = {
 	'mission':{'title': "Today's Mission", 'new_ksu_type': 'Action', 'placeholder': 'What key action do you need to take today?'}, 
 	'kas': {'title': 'Key Action Set', 'new_ksu_type': 'Action', 'placeholder': 'What is your key action'}, 
 	'objectives': {'title': 'Objectives', 'new_ksu_type': 'Objective', 'placeholder': 'What is the objective? How would you define success?'}, 
-	'purpose': {'title': 'Purpose', 'new_ksu_type': 'Purpose', 'placeholder': "Whats is your purupose? Why are you in this planet for?"}, 
-	'joy_generators': {'title': 'Joy Generators', 'new_ksu_type': 'JoyGenerator', 'placeholder': 'What activity would you give you joy?'}, 
+	'contributions': {'title': 'Contributions', 'new_ksu_type': 'Contribution', 'placeholder': "Whats is your purupose? Why are you in this planet for?"}, 
+	'experiences': {'title': 'Experiences', 'new_ksu_type': 'Experience', 'placeholder': 'What activity would you give you joy?'}, 
 	'mybestself': {'title': 'Mybestself', 'new_ksu_type': 'SelfAttribute', 'placeholder': 'What attribute has the best person you could be?'}, 
-	'people': {'title': 'People', 'new_ksu_type': 'Person', 'placeholder': 'Who is important to you?'}, 
+	'people': {'title': 'Important People', 'new_ksu_type': 'Person', 'placeholder': 'Who is important to you?'}, 
 	'possesions': {'title': 'Possesions', 'new_ksu_type': 'Possesion', 'placeholder': 'What is a possesion that makes sense for you to care about?'}, 
 	'principles': {'title': 'Principles', 'new_ksu_type': 'Principle', 'placeholder': 'What pice of knowledge could help you live a better life?'}, 
 	'indicators': {'title': 'Indicators', 'new_ksu_type': 'Indicator', 'placeholder': 'Indicator place holder'}, 
@@ -524,18 +542,10 @@ var section_details = {
 }
 
 
-var attributes_toBeShown = {
-}
-
-var classes_toBeRemoved = {
-}
-
 
 var select_toBeHidden = {
 	'repeats': ['#repeats_Xdays_col', '#repeats_day_col', '#repeats_month_col', '#repeats_week_col'],
-	'ksu_subtype':['#trigger', '#ExceptionsRow']
 }
-
 
 var select_toBeShown = {
 	'repeats':{
@@ -546,73 +556,6 @@ var select_toBeShown = {
 		'R030':['#repeats_day_col'],
 		'R365':['#repeats_day_col', '#repeats_month_col']
 	},
-	'ksu_subtype':{
-		'Proactive': [],
-		'Reactive': ['#trigger'],
-		'Negative': ['#ExceptionsRow'],
-
-		'Objective':[],
-
-		'Idea': [],
-		'Principle': [],
-		
-		'Moment': [], 
-		'JoyMine': [], 
-		'Chapter': [], 
-		
-		'Purpose': [], 
-		
-		'Attitude': [], 
-		'KnowledgeOrSkill': [], 
-		'BodyFeature': [], 
-		
-		'Individual': [], 
-		'Group': [],
-		
-		'Stuff': [],
-		'Status': [],
-		'Asset': [],
-		'Order': [],
-		
-		'Reality': [], 
-		'Perception': [],
-	}
-}
-
-
-var select_toBeToggled = {
-
-	'ksu_subtype':{
-		'Proactive': [['#DoneButton','btn-success','btn-danger']],
-		'Reactive': [['#DoneButton','btn-success','btn-danger']],
-		'Negative': [['#DoneButton','btn-danger','btn-success']],
-		
-		'Objective': [[]],
-		
-		'Idea': [[]],
-		'Principle': [[]],
-		
-		'Moment': [[]], 
-		'JoyMine': [[]], 
-		'Chapter': [[]], 
-		
-		'Purpose': [[]], 
-		
-		'Attitude': [[]], 
-		'KnowledgeOrSkill': [[]], 
-		'BodyFeature': [[]], 
-		
-		'Individual': [[]], 
-		'Group': [[]],
-		
-		'Stuff': [[]],
-		'Status': [[]],
-		'Asset': [[]],
-		'Order': [[]],
-		
-		'Reality': [[]], 
-		'Perception': [[]],
-	}
 }
 
 
@@ -1415,7 +1358,7 @@ $('.MiniObjectiveCheckbox').on('change',function(){
 
 
 
-$('.JoyGeneratorCheckbox').on('change',function(){
+$('.ExperienceCheckbox').on('change',function(){
 	var ksu = $(this).closest('#NewKSU');
 	if (ksu.attr("value") != 'NewKSU'){
 		ksu = $(this).closest('#MissionKSU')
