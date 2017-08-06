@@ -19,7 +19,9 @@ $(document).ready(function(){
 		var ksu_set = data['ksu_set']
 		for (var i = ksu_set.length - 1; i >= 0; i--) {
 			render_ksu(ksu_set[i])
-		}		
+		}
+
+		FixTheoryView()		
 	})
 });
 
@@ -30,6 +32,7 @@ $('.SectionButton').on('click', function(){
 	$(this).addClass('SelectedSection').blur()
 	
 	$('#SectionTitle').text(section_details[section]['title']);
+	FixTheoryView()
 });
 
 
@@ -125,7 +128,7 @@ $(document).on('click', '.KsuActionButton', function(){
 	
 });
 
-//xx
+
 function FormatBasedOnStatus(ksu, status){
 	var display_section = ksu.find('#KSUdisplaySection');
 	display_section.removeClass('IsRealized');
@@ -511,6 +514,22 @@ function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
 	.done(function(data){
 		console.log(data['mensaje']);
 	})
+};
+
+//xx
+function FixTheoryView(){
+	var selected_section = $('.SelectedSection').first().attr('value');
+	var section_ksu_type = section_details[selected_section]['new_ksu_type'];
+	var ksu_set = $('.KSU');
+
+	for (var i = ksu_set.length - 1; i >= 0; i--) {
+		var ksu = $(ksu_set[i]);
+		if(ksu.attr('ksutype') == section_ksu_type){
+			ksu.show()
+		} else {
+			ksu.hide()
+		}
+	} 
 };
 
 
