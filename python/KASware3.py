@@ -5,58 +5,59 @@ ksu_types = [
 
 	#Actions	
 	[['Action', 'Action'], [
-		['Proactive', 'Proactive'],
-		['Reactive', 'Reactive'],
-		['Negative', 'Negative']
+		['Proactive', 'Proactive', True],
+		['Reactive', 'Reactive', ''],
+		['Negative', 'Negative', '']
 	]],	
 
 	[['Objective', 'Objective'], [ #Group actions or other milestones
-		['Objective', 'Objective'], #If the parent is another objective then its a milestone#'Milestone',
+		['Objective', 'Objective', ''], #If the parent is another objective then its a milestone#'Milestone',
 	]],
 	
 	[['Wisdom', 'Wisdom'], [#Idea #Your personal constitution. Non actionable knowledge that you believe should guide your behaviour.
-		['Idea', 'Idea'], #If the idea has a parent then is not a principle. BRILIANT!
-		['Principle', 'Principle'], #Sirve para organizar y auditar
+		['Idea', 'Idea', ''], #If the idea has a parent then is not a principle. BRILIANT!
+		['Principle', 'Principle', ''], #Sirve para organizar y auditar
 	]], 
 		
 	#Life Pieces
 	[['Experience', 'Experience'], [#What do you want to be doing? #'Surroundings = Aqui entra estar viviendo en Canada
-		['Moment', 'Moment'], # Whaterver < Nice < Very nice < Memorable < Epic < Legendary		
-		['JoyMine', 'Joy Mine'], #Algo concreto que genera momentos del mismo tipo... E.g. Estar jugando Zelda breath of the wild
-		['Chapter', 'Chapter'], #Agrupa varios momentos, pero no es un momento en si por lo que no tiene importancia. El padre puede ser otro chapter .E.g. Estar jugando el juego de aventura en turno >> #E.g. Estar jugando Zelda breath of the wild
+		['Moment', 'Moment', True], # Whaterver < Nice < Very nice < Memorable < Epic < Legendary		
+		['JoyMine', 'Joy Mine', ''], #Algo concreto que genera momentos del mismo tipo... E.g. Estar jugando Zelda breath of the wild
+		['Chapter', 'Chapter', ''], #Agrupa varios momentos, pero no es un momento en si por lo que no tiene importancia. El padre puede ser otro chapter .E.g. Estar jugando el juego de aventura en turno >> #E.g. Estar jugando Zelda breath of the wild
 		#'Experience' #If the parent is other joy generator, then its a generator instance: E.g. Estar jugando el juego de aventura en turno >> #E.g. Estar jugando Zelda breath of the wild	
 	]],
 
 	[['Contribution', 'Contribution'], [ #Whats the impact you want to have in others peoples life and the envieronment? Antes Meaning GreaterGood
-		['Contribution', 'Contribution'] #  #'Social', 'Environment',		
+		['Contribution', 'Contribution', ''] #  #'Social', 'Environment',		
 	]],
 	
 	[['SelfAttribute', 'Attribute'], [# Antes Self. #Who is the best person you could be? 'Antes tenia Achievemnt pero ahora queda en meaning',
-		['Attitude', 'Attitude'], #'SoulSkill', #Connciousness and inner peace
-		['KnowledgeOrSkill', 'Skill or Knowledge'], #MindSkill Knowledge and skills		
-		['BodyFeature', 'Body Feature'], #PhisicalAttribute, Health and vitality
-		['Achievement', 'Achievement'] #Personal achievement.
+		['Attitude', 'Attitude', ''], #'SoulSkill', #Connciousness and inner peace
+		['KnowledgeOrSkill', 'Skill or Knowledge', True], #MindSkill Knowledge and skills		
+		['BodyFeature', 'Body Feature', ''], #PhisicalAttribute, Health and vitality
+		['Achievement', 'Achievement', ''] #Personal achievement.
 	]],
 
 	[['Person', 'Person'], [ #Who you want in your life 'Love', #Important People. Love & Friendship
-		['Individual', 'Individual'], #Person #If the parent is another person, then the parent is a group of people #'Group',
-		['Group', 'Group'],
+		['Individual', 'Individual', ''], #Person #If the parent is another person, then the parent is a group of people #'Group',
+		['Group', 'Group', ''],
 	]],
 
 	[['Possesion', 'Possesion'], [ #What you want to have
-		['Stuff', 'Stuff'], #For personal use #Tambien entra orden aqui. e.g. "Tener un cuarto ordenado"		
-		['Asset', 'Asset'], #Dinero o assets tangibles. MoneyOrAsset
-		['Status', 'Status'], #Aqui entrarian los trabajos o cualquier asset que viva en las mentes de otras personas.
+		['Stuff', 'Stuff', ''], #For personal use #Tambien entra orden aqui. e.g. "Tener un cuarto ordenado"		
+		['Asset', 'Asset', ''], #Dinero o assets tangibles. MoneyOrAsset
+		['Status', 'Status', ''], #Aqui entrarian los trabajos o cualquier asset que viva en las mentes de otras personas.
 	]],	
 
 
 	#Indicator Results The concreate metrics you pick to measure success
-	[['UserIndicator', 'Indicator'], [
-		['Reality', 'Reality'],
-		['Perception', 'Perception'],
+	[['UserIndicator', 'Indicator', ''], [
+		['Reality', 'Reality', ''],
+		['Perception', 'Perception', ''],
 		# ['TernaryPerception', ],
 	]],
 ]
+
 
 
 event_types = {
@@ -77,20 +78,16 @@ ksu_type_attributes = {
 		
 		'description', 
 		'pic_key',
-			
-		'is_realized',
-		'needs_mtnc',
-
-		'is_active', 
-		'is_critical',
+						
 		'is_private',
-		'at_anytime', 
-
-		'is_visible', 		 
-		'in_graveyard',
 
 		'comments',
 		'tag',
+	],
+
+	'LifePiece':[
+		'status',
+		'needs_mtnc',
 	],
 
 	'Action': [
@@ -114,6 +111,11 @@ ksu_type_attributes = {
 		'every_fri', 
 		'every_sat', 
 		'every_sun',
+	
+		'is_active', 
+		'is_critical',
+		'at_anytime', 
+
 	],
 
 	'Objective': [],
@@ -149,6 +151,7 @@ attributes_guide = {
 	'timer': 'Integer',
 	'event_date': 'DateTime',
 
+	'status': 'String',
 	'is_realized': 'Boolean',
 	'needs_mtnc': 'Boolean',
 	

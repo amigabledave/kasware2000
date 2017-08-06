@@ -549,7 +549,11 @@ class Home(Handler):
 
 		if user_action == 'SaveNewKSU':
 			ksu = KSU3(theory_id=self.theory.key)
-			attributes = KASware3.ksu_type_attributes['Base'] + KASware3.ksu_type_attributes[event_details['ksu_type']]		
+			ksu_type = event_details['ksu_type']
+			attributes = KASware3.ksu_type_attributes['Base'] + KASware3.ksu_type_attributes[ksu_type]
+			if ksu_type in ['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion']:
+				attributes += KASware3.ksu_type_attributes['LifePiece']
+
 			for attribute in attributes:
 				self.update_ksu_attribute(ksu, attribute, event_details[attribute])
 				
@@ -637,14 +641,13 @@ class Home(Handler):
 			'timer': ksu.timer,
 			'size': ksu.size,
 			
-			'is_realized': ksu.is_realized,
+			'status': ksu.status,
 			'needs_mtnc': ksu.needs_mtnc,
 
 			'is_active': ksu.is_active, 
 			'is_critical': ksu.is_critical,						
 
 			'at_anytime': ksu.at_anytime, 
-			'is_visible': ksu.is_visible, 
 			'is_private': ksu.is_private, 
 			
 			'comments': ksu.comments,

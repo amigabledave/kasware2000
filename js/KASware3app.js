@@ -48,6 +48,8 @@ $('#CreateNewKSU').on('click',function(){
 	
 	new_ksu = add_reason_select_to_ksu(new_ksu, false);
 	new_ksu.prependTo('#TheoryHolder');
+	console.log($('#ksu_subtype').val())
+	new_ksu = FixTemplateBasedOnKsuSubtype(new_ksu, $('#ksu_subtype').val());
 	new_ksu.removeClass('hidden');
 	ShowDetail(new_ksu);
 });
@@ -61,7 +63,6 @@ $(document).on('click', '.KsuActionButton', function(){
 	var actions_menu = {
 		'SaveNewKSU': SaveNewKSU,
 		'DeleteKSU': DeleteKSU,
-		'KSURealized': KSURealized,
 	}
 	actions_menu[action](ksu);
 
@@ -121,25 +122,20 @@ $(document).on('click', '.KsuActionButton', function(){
 			});
 		}		
 	};
-
-	function KSURealized(ksu){
-		ToggleRealized(ksu)
-		
-		var attr_key = 'is_realized';
-		var attr_value = ksu.find('#KSUdisplaySection').hasClass('IsRealized');
-		var ksu_id = ksu.attr('value');
-
-		set_ksu_attr_value(ksu, attr_key, attr_value)
-		
-		if (ksu_id != ''){UpdateKsuAttribute(ksu_id, attr_key, attr_value)}		
-	}	
+	
 });
 
+//xx
+function FormatBasedOnStatus(ksu, status){
+	var display_section = ksu.find('#KSUdisplaySection');
+	display_section.removeClass('IsRealized');
+	display_section.removeClass('IsHistory');
 
-function ToggleRealized(ksu){
-	ksu.find('#KSUdisplaySection').toggleClass('IsRealized');
-	ksu.find('#RealizedButton').toggleClass('IsRealized');
-	ksu.find('#RealizedButton').toggleClass('btn-default');
+	if (status == 'Present'){
+		display_section.addClass('IsRealized');
+	} else if (status == 'Past'){
+		display_section.addClass('IsHistory');
+	}
 }
 
 
@@ -188,6 +184,10 @@ $(document).on('change', '.ReasonSelect', function(){
 });
 
 
+$(document).on('change', '.StatusSelect', function(){
+	var ksu = $(this).closest('#KSU');
+	FormatBasedOnStatus(ksu, $(this).val())
+});
 
 $(document).on('change','.ShowHideSelect', function(){
   
@@ -276,7 +276,11 @@ function render_ksu(ksu_dic){
 	ksu.attr('ksutype', ksu_dic['ksu_type']);
 	ksu.attr("value", ksu_dic['ksu_id']);
 	// console.log(ksu_dic);
-	var attributes = ksu_type_attrributes['Base'].concat(ksu_type_attrributes[ksu_dic['ksu_type']]);
+	var ksu_type = ksu_dic['ksu_type'];
+	var attributes = ksu_type_attrributes['Base'].concat(ksu_type_attrributes[ksu_type]);
+	if (['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion'].indexOf() >= 0){
+		attributes.concat(ksu_type_attrributes['LifePiece'])
+	}
 	
 	for (var i = attributes.length - 1; i >= 0; i--) {
 		
@@ -301,9 +305,7 @@ function render_ksu(ksu_dic){
 		SetKsuImage(ksu, ksu_dic['pic_url'])
 	} 
 
-	if(ksu_dic['is_realized']){
-		ToggleRealized(ksu)
-	}
+	FormatBasedOnStatus(ksu, ksu_dic['status'])
 }
 
 
@@ -547,6 +549,7 @@ var select_toBeHidden = {
 	'repeats': ['#repeats_Xdays_col', '#repeats_day_col', '#repeats_month_col', '#repeats_week_col'],
 }
 
+
 var select_toBeShown = {
 	'repeats':{
 		'R000':[],
@@ -601,6 +604,8 @@ var attrbutes_guide = {
 	'every_sun': 'Checkbox',
 	'on_the_day': 'Select', 
 	'of_month': 'Select',
+
+	'status': 'Select',	
 }
 
 
@@ -617,19 +622,15 @@ var ksu_type_attrributes = {
 		'timer',
 		'event_date',
 
-		'is_realized',
-		'needs_mtnc',
-
-		'is_active', 
-		'is_critical',
 		'is_private',
-		'at_anytime', 
-
-		'is_visible', 		 
-		'in_graveyard',
 
 		'comments',
 		'tag',
+	],
+
+	'LifePiece': [
+		'status',
+		'needs_mtnc',
 	],
 
 	'Action': [
@@ -649,7 +650,16 @@ var ksu_type_attrributes = {
 		'every_fri', 
 		'every_sat', 
 		'every_sun',
-	]
+		
+		'is_active', 
+		'is_critical',
+		'at_anytime',
+
+	],
+
+	'Experience':[],
+
+	'SelfAttribute':[],
 }
 
 

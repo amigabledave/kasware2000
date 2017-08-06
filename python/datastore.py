@@ -61,28 +61,26 @@ class KSU3(ndb.Model):
 	reason_id = ndb.KeyProperty()
 
 	description = ndb.StringProperty(required=True)	
-	pic_key = ndb.BlobKeyProperty() #
+	pic_key = ndb.BlobKeyProperty()
 	pic_url = ndb.StringProperty()
 
 	size = ndb.IntegerProperty(default=3) #Indicates the size of a LifePiece or Objective. In a fibonacci scale 1, 2, 3, 5, 8. Also works as effor denominator for Actions
 	timer = ndb.IntegerProperty(default=0) #Total minutes invested
-	# event_date = ndb.DateProperty()
 	event_date = ndb.DateTimeProperty()
 
-	is_realized = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' is either a wish or a RTBG. And if an objective is acomplished or not.
-	needs_mtnc = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' requires additional effort to be preserved on a realized state 
+	status = ndb.StringProperty() #Wish, Present, Past #Remplaza is_realized e is_active #Indicates if a 'LifePiece' is either a wish or a RTBG or part of my life situation. And if an objective is acomplished or not.
+	is_active = ndb.BooleanProperty(default=True)
 
-	is_active = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' is still part of my life situation
+	needs_mtnc = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' requires additional effort to be preserved on a realized state 
 	is_critical = ndb.BooleanProperty(default=False)	
 	is_private = ndb.BooleanProperty(default=False)
 	at_anytime = ndb.BooleanProperty(default=False)
 
-	is_visible = ndb.BooleanProperty(default=True)
-	in_graveyard = ndb.BooleanProperty(default=False)
-
 	comments = ndb.TextProperty()
 	tag = ndb.StringProperty()
 	details = ndb.JsonProperty(default={}) # Subtype details. E.g. Birthday for a person, or exceptions for KAS4, Triggers for KAS3, cost for stuff	
+	
+	# event_date = ndb.DateProperty()
 	# best_time = ndb.TimeProperty()
 	# frequency = ndb.JsonProperty() #Now this will include the repeats and repeats_on attributes
 	# target = ndb.JsonProperty()

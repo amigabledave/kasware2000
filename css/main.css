@@ -35,6 +35,9 @@ input::-webkit-inner-spin-button {
     font-family: 'Rationale', sans-serif;
 }
 
+.KaswareFont{
+    font-family: 'Rationale', sans-serif;
+}
 
 .SectionSelectionBar{
 
@@ -151,6 +154,15 @@ input::-webkit-inner-spin-button {
   -moz-box-shadow: 0.5px 2px 2px 0.5px rgba(0,0,0,0.25);
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
 }
+
+
+.SexySelect{
+    color:purple; 
+    margin-bottom: 0px; 
+    height: 20px;
+    padding: 0;
+}
+
 
 .KSUinput{
     border: none;
