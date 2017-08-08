@@ -88,6 +88,7 @@ ksu_type_attributes = {
 	'LifePiece':[
 		'status',
 		'needs_mtnc',
+		'money_cost',
 	],
 
 	'Action': [
@@ -120,7 +121,7 @@ ksu_type_attributes = {
 
 	'Objective': [],
 	
-	'Wisdom': [], 
+	'Wisdom': [], #Meter attributo para indicar si es self knowledge o general knowledge
 
 	'Experience': [], 
 
@@ -184,4 +185,6 @@ attributes_guide = {
 	'every_fri': 'Details', 
 	'every_sat': 'Details', 
 	'every_sun': 'Details',
+
+	'money_cost': 'Details',
 } 

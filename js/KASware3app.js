@@ -51,9 +51,10 @@ $('#CreateNewKSU').on('click',function(){
 	
 	new_ksu = add_reason_select_to_ksu(new_ksu, false);
 	new_ksu.prependTo('#TheoryHolder');
-	console.log($('#ksu_subtype').val())
+	// console.log($('#ksu_subtype').val())
 	new_ksu = FixTemplateBasedOnKsuSubtype(new_ksu, $('#ksu_subtype').val());
 	new_ksu.removeClass('hidden');
+	new_ksu.show()
 	ShowDetail(new_ksu);
 });
 
@@ -80,7 +81,7 @@ $(document).on('click', '.KsuActionButton', function(){
 		} 
 		
 		attributes_dic['user_action'] = 'SaveNewKSU';
-		// console.log(attributes_dic)
+		console.log(attributes_dic)
 
 		$.ajax({
 			type: "POST",
@@ -625,6 +626,8 @@ var attrbutes_guide = {
 	'of_month': 'Select',
 
 	'status': 'Select',	
+	'money_cost':'Standard',
+
 }
 
 
@@ -650,6 +653,7 @@ var ksu_type_attrributes = {
 	'LifePiece': [
 		'status',
 		'needs_mtnc',
+		'money_cost',
 	],
 
 	'Action': [
@@ -676,7 +680,8 @@ var ksu_type_attrributes = {
 
 	],
 
-	'Experience':[],
+	'Experience':[		
+	],
 
 	'SelfAttribute':[],
 }
