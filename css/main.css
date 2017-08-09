@@ -164,7 +164,10 @@ input::-webkit-inner-spin-button {
 
 .SexyInput{    
     height: 25px;
-    padding: 0;
+    padding: 3px;
+/*    padding-top: 5;
+    padding-bottom: 5px;
+    padding-right: 3px*/
 }
 
 
@@ -205,8 +208,8 @@ input::-webkit-inner-spin-button {
     color: #D8D8D8;
     background-color: #D8D8D8;
     margin:5px; 
-    margin-top:10px; 
-    margin-bottom: 7px;
+    margin-top:15px; 
+    margin-bottom: 15px;
 }
 
 
