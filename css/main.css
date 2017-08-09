@@ -157,9 +157,13 @@ input::-webkit-inner-spin-button {
 
 
 .SexySelect{
-    color:purple; 
-    margin-bottom: 0px; 
-    height: 20px;
+    color:purple;  
+    height: 25px;
+    padding: 0;
+}
+
+.SexyInput{    
+    height: 25px;
     padding: 0;
 }
 

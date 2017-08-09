@@ -80,6 +80,8 @@ class KSU3(ndb.Model):
 	tag = ndb.StringProperty()
 	details = ndb.JsonProperty(default={}) # Subtype details. E.g. Birthday for a person, or exceptions for KAS4, Triggers for KAS3, cost for stuff	
 	
+	money_cost = ndb.IntegerProperty(default=0)
+
 	# event_date = ndb.DateProperty()
 	# best_time = ndb.TimeProperty()
 	# frequency = ndb.JsonProperty() #Now this will include the repeats and repeats_on attributes

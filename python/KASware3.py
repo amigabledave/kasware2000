@@ -78,17 +78,13 @@ ksu_type_attributes = {
 		
 		'description', 
 		'pic_key',
-						
-		'is_private',
+		'pic_url',
 
+		'is_private',
 		'comments',
 		'tag',
-	],
-
-	'LifePiece':[
-		'status',
-		'needs_mtnc',
 		'money_cost',
+		'cost_frequency',			
 	],
 
 	'Action': [
@@ -115,76 +111,79 @@ ksu_type_attributes = {
 	
 		'is_active', 
 		'is_critical',
-		'at_anytime', 
-
+		'at_anytime',		
 	],
 
 	'Objective': [],
-	
-	'Wisdom': [], #Meter attributo para indicar si es self knowledge o general knowledge
+
+	'LifePiece':[
+		'status',
+		'needs_mtnc',						
+	],
 
 	'Experience': [], 
 
 	'Contribution': [], 
 
-	'SelfAttribute': [], 
+	'Attribute': [], 
 
 	'Person': [], 
 
 	'Possesion': [], 
 
-	'UserIndicator': []
+	'Wisdom': [], #Meter attributo para indicar si es self knowledge o general knowledge
+
+	'Indicator': []
 }
 
 
+
 attributes_guide = {
-	'theory_id': 'Key', 	
-	'created': 'DateTime', 
-	'ksu_type': 'String', 
-	'ksu_subtype': 'String',
-	'reason_id': 'Key',
+	'theory_id': ['Key', ''], 	
+	'created': ['DateTime', ''], 
+	'ksu_type': ['String', 'Standard'],
+	'ksu_subtype': ['String', 'Select'],
+	'reason_id': ['Key', 'Standard'],
 
-	'description': 'String',	
-	'pic_key': 'BlobKey',
-	'pic_url': 'String',
+	'description': ['String', 'Standard'],	
+	'pic_key': ['BlobKey', 'Standard'],
+	'pic_url': ['String', 'Standard'],
 	
-	'size': 'Integer',
-	'timer': 'Integer',
-	'event_date': 'DateTime',
+	'size': ['Integer', 'Radio'],
+	'timer': ['Integer', 'Standard'],
+	'event_date': ['DateTime', 'Standard'],
 
-	'status': 'String',
-	'is_realized': 'Boolean',
-	'needs_mtnc': 'Boolean',
+	'status': ['String', 'Select'],
+	'is_realized': ['Boolean', 'Checkbox'],
+	'needs_mtnc': ['Boolean', 'Checkbox'],
 	
-	'is_active': 'Boolean', 
-	'is_critical': 'Boolean',
-	'is_private': 'Boolean',
-	'at_anytime': 'Boolean', 
+	'is_active': ['Boolean', 'Checkbox'], 
+	'is_critical': ['Boolean', 'Checkbox'],
+	'is_private': ['Boolean', 'Checkbox'],
+	'at_anytime': ['Boolean', 'Checkbox'], 
 
-	'is_visible': 'Boolean',  
-	'in_graveyard': 'Boolean',
-
-	'comments': 'Text',
-	'tag': 'String',
+	'comments': ['Text', 'Standard'],
+	'tag': ['String', 'Standard'],
 	
-	'details': 'Json' ,
+	'details': ['Json', ''] ,
 	
-	'best_time': 'Details',
-	'trigger': 'Details', 
-	'exceptions': 'Details',
+	'best_time': ['Details', 'Standard'],
+	'trigger': ['Details', 'Standard'], 
+	'exceptions': ['Details', 'Standard'],
 	
-	'repeats': 'Details', 
-	'every_x_days': 'Details',
-	'on_the_day': 'Details', 
-	'of_month': 'Details',
+	'repeats': ['Details', 'Select'], 
+	'every_x_days': ['Details', 'Standard'],
+	'on_the_day': ['Details', 'Select'], 
+	'of_month': ['Details', 'Select'],
 
-	'every_mon': 'Details',
-	'every_tue': 'Details', 
-	'every_wed': 'Details', 
-	'every_thu': 'Details', 
-	'every_fri': 'Details', 
-	'every_sat': 'Details', 
-	'every_sun': 'Details',
+	'every_mon': ['Details', 'Checkbox'],
+	'every_tue': ['Details', 'Checkbox'], 
+	'every_wed': ['Details', 'Checkbox'], 
+	'every_thu': ['Details', 'Checkbox'], 
+	'every_fri': ['Details', 'Checkbox'], 
+	'every_sat': ['Details', 'Checkbox'], 
+	'every_sun': ['Details', 'Checkbox'],
 
-	'money_cost': 'Details',
-} 
+	'money_cost': ['Integer', 'Standard'],
+	'cost_frequency': ['Details', 'Select'],
+}

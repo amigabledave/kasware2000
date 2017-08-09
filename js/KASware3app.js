@@ -1,7 +1,8 @@
 // Validated for KASware3
 
 // ------- Triggers ----
-var $zoom;
+var ksu_type_attributes, attributes_guide, $zoom;
+
 $(document).ready(function(){
 	$.ajax({
 		type: "POST",
@@ -14,6 +15,9 @@ $(document).ready(function(){
 	.done(function(data){		
 		// console.log('Asi se ve la teoria')
 		// console.log(data)
+		ksu_type_attributes = data['ksu_type_attributes']
+		attributes_guide = data['attributes_guide']
+		// console.log(ksu_type_attributes)	
 		RenderReasonsIndex(data['reasons_index'])
 		
 		var ksu_set = data['ksu_set']
@@ -73,15 +77,16 @@ $(document).on('click', '.KsuActionButton', function(){
 	function SaveNewKSU(ksu){
 		ksu.attr("value","")
 		var attributes_dic = {};
-		var ksu_attrributes = ksu.find('.KsuAttr');
+		var ksu_attributes = ksu.find('.KsuAttr');
 
-		for (var i = ksu_attrributes.length - 1; i >= 0; i--) {
-			var KsuAttr = $(ksu_attrributes[i]);
+		for (var i = ksu_attributes.length - 1; i >= 0; i--) {
+			var KsuAttr = $(ksu_attributes[i]);
 			attributes_dic[KsuAttr.attr("name")] = get_ksu_attr_value(ksu, KsuAttr)
 		} 
 		
 		attributes_dic['user_action'] = 'SaveNewKSU';
-		console.log(attributes_dic)
+		attributes_dic['reason_id'] = $('#reason_holder').attr('reason_id');
+		// console.log(attributes_dic) #
 
 		$.ajax({
 			type: "POST",
@@ -179,9 +184,11 @@ $(document).on('change', '.ReasonSelect', function(){
 	
 	var ksu = $(this).closest('#KSU');
 	var attr_value = get_ksu_attr_value(ksu, $(this));
+	var old_value = ksu.find('#reason_holder').attr('reason_id');
+	
+	if (attr_value == old_value){return};
 	ksu.find('#reason_holder').attr('reason_id', attr_value)
-
-	if (ksu.attr("value") == ''){return};
+	// if (ksu.attr("value") == ''){return};
 	
 	var ksu_id = ksu.attr("value");
 	UpdateKsuAttribute(ksu_id, 'reason_id', attr_value)
@@ -192,6 +199,7 @@ $(document).on('change', '.StatusSelect', function(){
 	var ksu = $(this).closest('#KSU');
 	FormatBasedOnStatus(ksu, $(this).val())
 });
+
 
 $(document).on('change','.ShowHideSelect', function(){
   
@@ -258,7 +266,7 @@ $(document).on('click', '.TimeBarButton',function(){
 
 function get_ksu_attr_value(ksu, KsuAttr){
 
-	var attr_type = attrbutes_guide[KsuAttr.attr("name")];
+	var attr_type = attributes_guide[KsuAttr.attr("name")][1];
 
 	if (attr_type == 'Standard' || attr_type == 'Select'){
 		return KsuAttr.val();
@@ -279,17 +287,18 @@ function render_ksu(ksu_dic){
 	ksu.attr("id", 'KSU');
 	ksu.attr('ksutype', ksu_dic['ksu_type']);
 	ksu.attr("value", ksu_dic['ksu_id']);
+	
 	// console.log(ksu_dic);
 	var ksu_type = ksu_dic['ksu_type'];
-	var attributes = ksu_type_attrributes['Base'].concat(ksu_type_attrributes[ksu_type]);
-	if (['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion'].indexOf() >= 0){
-		attributes.concat(ksu_type_attrributes['LifePiece'])
+	var attributes = ksu_type_attributes['Base'].concat(ksu_type_attributes[ksu_type]);	
+	if (['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion'].indexOf(ksu_type) >= 0){		
+		attributes = attributes.concat(ksu_type_attributes['LifePiece'])		
 	}
 	
 	for (var i = attributes.length - 1; i >= 0; i--) {
 		
 		var attribute = attributes[i];		
-		var attr_type = attrbutes_guide[attribute];
+		var attr_type = attributes_guide[attribute][1];
 		var attr_value = ksu_dic[attribute]
 
 		set_ksu_attr_value(ksu, attribute, attr_value)
@@ -332,7 +341,7 @@ function SetKsuImage(ksu, pic_url){
 
 
 function set_ksu_attr_value(ksu, attribute, attr_value){
-	var attr_type = attrbutes_guide[attribute];
+	var attr_type = attributes_guide[attribute][1];
 	
 	if (attr_type == 'Standard'){
 		ksu.find('#'+attribute).val(attr_value)
@@ -365,7 +374,7 @@ function ShowDetail(ksu){
 
 	if(ksu.find('#DetailDiv').is(":visible")){
 		var reason_id = ksu.find('#reason_holder').attr('reason_id')
-		console.log(reason_id)
+		// console.log(reason_id)
 		add_reason_select_to_ksu(ksu, reason_id );
 	} else {
 		remove_reason_select_from_ksu(ksu)
@@ -409,8 +418,8 @@ function AddReasonToSelect(ksu_id, description){
 function add_reason_select_to_ksu(ksu, reason_id){
 	// var selected_option = ksu.find('#reason').val()
 	ksu.find('#reason_holder').empty()
-	ksu.find('#reason_holder').append($('#reasons_select').clone());
-	ksu.find('#reasons_select').removeClass('hidden');
+	ksu.find('#reason_holder').append($('#reasons_select_group').clone());
+	ksu.find('#reasons_select_group').removeClass('hidden');
 	ksu.find('#reasons_select').attr('id', 'reason_id')
 	var $select = ksu.find('#reason_id').selectize();
 	if(reason_id){
@@ -517,7 +526,7 @@ function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
 	})
 };
 
-//xx
+
 function FixTheoryView(){
 	var selected_section = $('.SelectedSection').first().attr('value');
 	var section_ksu_type = section_details[selected_section]['new_ksu_type'];
@@ -564,7 +573,6 @@ var section_details = {
 }
 
 
-
 var select_toBeHidden = {
 	'repeats': ['#repeats_Xdays_col', '#repeats_day_col', '#repeats_month_col', '#repeats_week_col'],
 }
@@ -582,109 +590,106 @@ var select_toBeShown = {
 }
 
 
-var attrbutes_guide = {
+// var attributes_guide = {
 	
-	'ksu_type': 'Standard', 
-	'ksu_subtype': 'Select',
-	'reason_id': 'Select',
+// 	'ksu_type': 'Standard', 
+// 	'ksu_subtype': 'Select',
+// 	'reason_id': 'Select',
 
-	'description': 'Standard',	
-	'pic_key': 'Standard',
-	'pic_url': 'Standard' ,
+// 	'description': 'Standard',	
+// 	'pic_key': 'Standard',
+// 	'pic_url': 'Standard' ,
 	
-	'size':  'Radio',
-	'timer': 'Standard',
-	'event_date': 'Standard',
+// 	'size':  'Radio',
+// 	'timer': 'Standard',
+// 	'event_date': 'Standard',
 
-	'is_realized': 'Checkbox',
-	'needs_mtnc': 'Checkbox',
+// 	'is_realized': 'Checkbox',
+// 	'needs_mtnc': 'Checkbox',
 	
-	'is_active': 'Checkbox', 
-	'is_critical': 'Checkbox',
-	'is_private': 'Checkbox',
-	'at_anytime': 'Checkbox', 
+// 	'is_active': 'Checkbox', 
+// 	'is_critical': 'Checkbox',
+// 	'is_private': 'Checkbox',
+// 	'at_anytime': 'Checkbox', 
 
-	'is_visible': 'Checkbox',  
-	'in_graveyard': 'Checkbox',
+// 	'is_visible': 'Checkbox',  
+// 	'in_graveyard': 'Checkbox',
 
-	'comments': 'Standard',
-	'tag': 'Standard',
+// 	'comments': 'Standard',
+// 	'tag': 'Standard',
 		
-	'best_time': 'Standard',
-	'trigger': 'Standard', 
-	'repeats': 'Select', 
-	'exceptions': 'Standard',
-	'every_x_days': 'Standard',
-	'every_mon': 'Checkbox',
-	'every_tue': 'Checkbox', 
-	'every_wed': 'Checkbox', 
-	'every_thu': 'Checkbox', 
-	'every_fri': 'Checkbox', 
-	'every_sat': 'Checkbox', 
-	'every_sun': 'Checkbox',
-	'on_the_day': 'Select', 
-	'of_month': 'Select',
+// 	'best_time': 'Standard',
+// 	'trigger': 'Standard', 
+// 	'repeats': 'Select', 
+// 	'exceptions': 'Standard',
+// 	'every_x_days': 'Standard',
+// 	'every_mon': 'Checkbox',
+// 	'every_tue': 'Checkbox', 
+// 	'every_wed': 'Checkbox', 
+// 	'every_thu': 'Checkbox', 
+// 	'every_fri': 'Checkbox', 
+// 	'every_sat': 'Checkbox', 
+// 	'every_sun': 'Checkbox',
+// 	'on_the_day': 'Select', 
+// 	'of_month': 'Select',
 
-	'status': 'Select',	
-	'money_cost':'Standard',
+// 	'status': 'Select',	
+// 	'money_cost':'Standard',
+// }
 
-}
 
-
-var ksu_type_attrributes = {
-	'Base': [
-		'ksu_type', 
-		'ksu_subtype', 
-		'reason_id',
+// var ksu_type_attributes = {
+// 	'Base': [
+// 		'ksu_type', 
+// 		'ksu_subtype', 
+// 		'reason_id',
 		
-		'description', 
-		'pic_key',
+// 		'description', 
+// 		'pic_key',
 			
-		'size',
-		'timer',
-		'event_date',
+// 		'size',
+// 		'timer',
+// 		'event_date',
 
-		'is_private',
+// 		'is_private',
 
-		'comments',
-		'tag',
-	],
+// 		'comments',
+// 		'tag',
+// 	],
 
-	'LifePiece': [
-		'status',
-		'needs_mtnc',
-		'money_cost',
-	],
+// 	'LifePiece': [
+// 		'status',
+// 		'needs_mtnc',
+// 		'money_cost',
+// 	],
 
-	'Action': [
-		'trigger', 
-		'best_time', 
-		'exceptions',
+// 	'Action': [
+// 		'trigger', 
+// 		'best_time', 
+// 		'exceptions',
 		
-		'repeats', 
-		'every_x_days',
-		'on_the_day',
-		'of_month',
+// 		'repeats', 
+// 		'every_x_days',
+// 		'on_the_day',
+// 		'of_month',
 
-		'every_mon',
-		'every_tue', 
-		'every_wed', 
-		'every_thu', 
-		'every_fri', 
-		'every_sat', 
-		'every_sun',
+// 		'every_mon',
+// 		'every_tue', 
+// 		'every_wed', 
+// 		'every_thu', 
+// 		'every_fri', 
+// 		'every_sat', 
+// 		'every_sun',
 		
-		'is_active', 
-		'is_critical',
-		'at_anytime',
+// 		'is_active', 
+// 		'is_critical',
+// 		'at_anytime',
+// 	],
 
-	],
+// 	'Experience':[],
 
-	'Experience':[		
-	],
-
-	'SelfAttribute':[],
-}
+// 	'SelfAttribute':[],
+// }
 
 
 

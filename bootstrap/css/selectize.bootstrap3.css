@@ -360,7 +360,9 @@
   padding: 6px 12px;
 }
 .selectize-input {
-  min-height: 34px;
+  height: 25px;
+  padding-top: 2px;
+  /*min-height: 34px;*/
 }
 .selectize-input.dropdown-active {
   -webkit-border-radius: 4px;

@@ -101,15 +101,19 @@
 							</form>									
 						</div>
 
-						<div class="col-xs-6 SubtypeSpecific" target_subtype="Moment JoyMine">							
+						<div class="col-xs-6 SubtypeSpecific" target_subtype="Moment JoyMine" style="padding: 0px;">							
 							<b>Moment Quality:</b>
 							<form>
 								<label class="radio-inline">
-									<input type="radio" name="size" value="" class="KsuAttr"> Nice
+									<input type="radio" name="size" value="" class="KsuAttr"> OK
+								</label>
+
+								<label class="radio-inline">
+									<input type="radio" name="size" value="" class="KsuAttr" checked="checked"> Nice
 								</label>
 								
 								<label class="radio-inline">
-									<input type="radio" name="size" value="" class="KsuAttr" checked="checked"> Memorable
+									<input type="radio" name="size" value="" class="KsuAttr"> Memorable
 								</label>
 								
 								<label class="radio-inline">
@@ -127,6 +131,7 @@
 								<label style="margin-bottom:0px"> Status </label>
 								<select id="status" class="KsuAttr form-control SexySelect StatusSelect" name="status">
 									<option value="Wish"> Wish </option>
+									<option value="Pursuit"> In Pursuit </option>
 									<option value="Present"> Present </option>
 									<option value="Past"> Past </option>
 								</select>
@@ -138,22 +143,21 @@
 								<label style="margin-bottom:0px"> Status </label>
 								<select id="status" class="KsuAttr form-control SexySelect StatusSelect" name="status">
 									<option value="Wish"> Wish </option>
+									<option value="Pursuit"> In Pursuit </option>
 									<option value="Present"> Present </option>
 									<option value="Past"> Past </option>
 								</select>
 							</div>
 						</div>
-
-
 					</div>
 
 					<div class="row" name="SubtypeAndReasonRow">
 						<div class="inKSUhrDiv"><hr class="inKSUhr" style=""></div>
 						
-						<div class="col-xs-4">
+						<div class="col-xs-3">
 							{% for ksu_type in constants['ksu_types'] %}
-							<div class="TypeSpecific form-group" target_type='{{ksu_type[0][0]}}' style="margin-bottom: 0px;">	
-								<label  style="margin-bottom: 0px;"> {{ksu_type[0][1]}} type </label>
+							<div class="TypeSpecific form-group" target_type='{{ksu_type[0][0]}}' style="">	
+								<label  style=""> {{ksu_type[0][1]}} type </label>
 								<select id="ksu_subtype" class="KsuAttr SexySelect SubtypeSelect form-control" name="ksu_subtype">
 									{% for ksu_subtype in ksu_type[1] %}
 									<option value="{{ksu_subtype[0]}}" {% if ksu_subtype[2] %} selected="selected" {% endif %}> {{ksu_subtype[1]}} </option>
@@ -162,8 +166,9 @@
 							</div>
 							{% endfor %}
 						</div>
+						
 
-						<div class="col-xs-8 ReasonHolder" id="reason_holder" reason_id="" >					
+						<div class="col-xs-9 ReasonHolder" name="reason_id" id="reason_holder" reason_id="">					
 						</div>
 					</div>
 
@@ -177,11 +182,11 @@
 					</div>
 
 					<div class="row TypeSpecific" id="WhenRow" target_type='Action'>
-						<div class="inKSUhrDiv"><hr class="inKSUhr"></div>
+						<!-- <div class="inKSUhrDiv"><hr class="inKSUhr"></div> -->
 
-						<div class="col-xs-3" style="">
+						<div class="col-xs-3 form-group">
 							<label> Next Event </label>
-							<input type="date" class="KsuAttr form-control" style="padding-right:3px; margin-bottom:7px; padding-left: 4px;" name="event_date" id="event_date" value="">
+							<input type="date" class="KsuAttr form-control SexyInput" style="padding-right:3px; padding-left: 4px;" name="event_date" id="event_date" value="">
 						</div>	
 						
 						<div class="col-xs-3">
@@ -227,12 +232,24 @@
 						</div>
 					</div>
 					
-					<div class="row TypeSpecific" id="MoneyRow" target_type='Experience'>
+					<div class="row" id="MoneyRow" target_type=''>
 						<div class="inKSUhrDiv"><hr class="inKSUhr"></div>
-						<div class="col-xs-4">
+						<div class="col-xs-3">
 							<div class="input-group">
 							  <span class="input-group-addon">$</span>
-							  <input type="number" class="form-control KsuAttr" id="money_cost" name="money_cost" placeholder="Cost">
+							  <input type="number" min="1" step="1" class="form-control KsuAttr" id="money_cost" name="money_cost" placeholder="Cost">
+							</div>
+						</div>
+
+						<div class="col-xs-3">	
+							<div class="form-group" style="margin-bottom:0px">
+								<label style="margin-bottom:0px"> Cost frequency </label>
+								<select id="cost_frequency" class="KsuAttr form-control SexySelect" name="cost_frequency">
+									<option value="0" selected="selected"> One Time </option>
+									<option value="7"> Weekly </option>
+									<option value="30"> Monthly </option>
+									<option value="365"> Yearly </option>
+								</select>
 							</div>
 						</div>
 					</div>

@@ -243,6 +243,203 @@ class Handler(webapp2.RequestHandler):
 
 		return game
 
+
+# ---- KASware3 ---- xx
+class Home(Handler):
+
+	@super_user_bouncer
+	def get(self):
+		constants['ksu_types'] = KASware3.ksu_types		
+		new_pic_input_action = "{0}".format(blobstore.create_upload_url('/upload_pic'))
+		self.print_html('KASware3.html', constants=constants, new_pic_input_action=new_pic_input_action)
+
+
+	@super_user_bouncer
+	def post(self):
+		event_details = json.loads(self.request.body);
+		user_action = event_details['user_action']
+
+		if user_action == 'RetrieveTheory':
+			ksu_set = KSU3.query(KSU3.theory_id == self.theory.key).fetch()
+			output = []
+			reasons_index = []
+			for ksu in ksu_set:
+				output.append(self.ksu_to_dic(ksu))
+				reasons_index.append([ksu.key.id(), ksu.description])
+			self.response.out.write(json.dumps({
+				'mensaje':'Esta es la teoria del usuario:',
+				'ksu_set': output,
+				'reasons_index':reasons_index,
+				'ksu_type_attributes': KASware3.ksu_type_attributes,
+				'attributes_guide': KASware3.attributes_guide,
+				}))
+			return
+
+		if user_action == 'SaveNewKSU':
+			ksu = KSU3(theory_id=self.theory.key)
+			ksu_type = event_details['ksu_type']
+			attributes = KASware3.ksu_type_attributes['Base'] + KASware3.ksu_type_attributes[ksu_type]
+			if ksu_type in ['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion']:
+				attributes += KASware3.ksu_type_attributes['LifePiece']
+
+			for attribute in attributes:
+				self.update_ksu_attribute(ksu, attribute, event_details[attribute])
+				
+			ksu.put()
+
+			ksu_dic = self.ksu_to_dic(ksu)
+			ksu_dic['mensaje'] = 'KSU3 creado y guardado desde el viewer!'
+			self.response.out.write(json.dumps(ksu_dic))
+			return
+
+		elif user_action == 'DeleteKSU':
+			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
+			ksu.key.delete()
+			self.response.out.write(json.dumps({
+				'mensaje':'KSU Borrado',
+				'ksu_id': ksu.key.id(),
+				'description': ksu.description,
+				}))
+			return
+
+		elif user_action == 'UpdateKsuAttribute':
+			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
+			self.update_ksu_attribute(ksu, event_details['attr_key'], event_details['attr_value'])
+			ksu.put()
+			self.response.out.write(json.dumps({
+				'mensaje':'Attributo actualizado',
+				}))
+			return
+		
+		elif user_action == 'RequestNewPicInputAction':
+			new_pic_input_action = "{0}".format(blobstore.create_upload_url('/upload_pic'))
+			self.response.out.write(json.dumps({
+					'new_pic_input_action': new_pic_input_action,
+					'mensaje':'Nueva accion enviada',
+					}))
+		return
+
+	def update_ksu_attribute(self, ksu, attr_key, attr_value):
+		attr_type = KASware3.attributes_guide[attr_key][0]
+		fixed_key = attr_key
+		fixed_value = attr_value
+		
+		if attr_type in ['String', 'Text']:
+			fixed_value = attr_value.encode('utf-8')
+		
+		elif attr_type == 'Integer':
+			if attr_value != '':
+				fixed_value = int(attr_value)
+			else:
+				fixed_value = 0
+					
+		elif attr_type == 'Details':
+			fixed_key = 'details'
+			details_dic = ksu.details
+			details_dic[attr_key] = fixed_value
+			fixed_value = details_dic
+		
+		elif attr_type == 'Key':
+			fixed_value = None
+			if attr_value != '':
+				fixed_value = KSU3.get_by_id(int(attr_value)).key
+
+		elif attr_type == 'DateTime':
+			fixed_value = None
+			if attr_value != '':
+				fixed_value = datetime.strptime(attr_value, '%Y-%m-%d')		
+	
+
+		elif attr_type == 'BlobKey':
+			fixed_value = None
+			#Queda pendiente decirle que hacer con el blobkey
+
+
+		setattr(ksu, fixed_key, fixed_value)
+		return ksu
+
+	# def ksu_to_dic(self, ksu):
+	# 	ksu_dic = {
+	# 		'ksu_id': ksu.key.id(),
+	# 		'ksu_type': ksu.ksu_type,
+	# 		'ksu_subtype': ksu.ksu_subtype, 
+			
+	# 		'description': ksu.description,
+	# 		'pic_url': ksu.pic_url,
+
+	# 		'comments': ksu.comments,
+	# 		'timer': ksu.timer,
+	# 		'size': ksu.size,
+			
+	# 		'status': ksu.status,
+	# 		'needs_mtnc': ksu.needs_mtnc,
+
+	# 		'is_active': ksu.is_active, 
+	# 		'is_critical': ksu.is_critical,						
+
+	# 		'at_anytime': ksu.at_anytime, 
+	# 		'is_private': ksu.is_private, 
+			
+	# 		'comments': ksu.comments,
+	# 		'tag':ksu.tag,
+
+	# 		'money_cost': ksu.money_cost,
+	# 	}
+
+	# 	ksu_dic['event_date'] = ''
+	# 	if ksu.event_date:
+	# 		ksu_dic['event_date'] = ksu.event_date.strftime('%Y-%m-%d'),
+
+	# 	ksu_dic['reason_id'] = ''	
+	# 	if ksu.reason_id:
+	# 		ksu_dic['reason_id'] = ksu.reason_id.id()
+						
+	# 	details_attributes = KASware3.ksu_type_attributes[ksu.ksu_type]
+	# 	if ksu.ksu_type in ['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion']:
+	# 		details_attributes += KASware3.ksu_type_attributes['LifePiece']
+
+	# 	details_dic = ksu.details
+	# 	for attr in details_attributes:
+	# 		if attr in details_dic:
+	# 			ksu_dic[attr] = details_dic[attr]
+
+	# 	return ksu_dic
+	
+	def ksu_to_dic(self, ksu):
+		ksu_dic = {
+			'ksu_id': ksu.key.id(),
+			'event_date': '',
+			'reason_id': '',
+		}
+		
+		ksu_attributes = self.get_ksu_type_attributes(ksu.ksu_type)
+		details_dic = ksu.details
+
+		for attribute in ksu_attributes:
+			attr_type = KASware3.attributes_guide[attribute][0]
+
+			if attr_type in  ['String', 'Text', 'Integer']:
+				ksu_dic[attribute] = getattr(ksu, attribute)
+			elif attr_type == 'Details':
+				if attribute in details_dic:
+					ksu_dic[attribute] = details_dic[attribute]
+
+		if ksu.event_date:
+			ksu_dic['event_date'] = ksu.event_date.strftime('%Y-%m-%d'),
+		
+		if ksu.reason_id:
+			ksu_dic['reason_id'] = ksu.reason_id.id()
+						
+		return ksu_dic
+
+
+	def get_ksu_type_attributes(self, ksu_type):
+		attributes = KASware3.ksu_type_attributes['Base'] + KASware3.ksu_type_attributes[ksu_type] 
+		
+		if ksu_type in ['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion']:
+			attributes += KASware3.ksu_type_attributes['LifePiece']
+
+		return attributes
 		
 class SignUpLogIn(Handler):
 	def get(self):
@@ -516,160 +713,6 @@ class KsuEditor(Handler):
 
 		self.redirect(return_to)
 		return
-
-
-# ---- KASware3 ---- xx
-class Home(Handler):
-
-	@super_user_bouncer
-	def get(self):
-		constants['ksu_types'] = KASware3.ksu_types
-		new_pic_input_action = "{0}".format(blobstore.create_upload_url('/upload_pic'))
-		self.print_html('KASware3.html', constants=constants, new_pic_input_action=new_pic_input_action)
-
-
-	@super_user_bouncer
-	def post(self):
-		event_details = json.loads(self.request.body);
-		user_action = event_details['user_action']
-
-		if user_action == 'RetrieveTheory':
-			ksu_set = KSU3.query(KSU3.theory_id == self.theory.key).fetch()
-			output = []
-			reasons_index = []
-			for ksu in ksu_set:
-				output.append(self.ksu_to_dic(ksu))
-				reasons_index.append([ksu.key.id(), ksu.description])
-			self.response.out.write(json.dumps({
-				'mensaje':'Esta es la teoria del usuario:',
-				'ksu_set': output,
-				'reasons_index':reasons_index,
-				}))
-			return
-
-		if user_action == 'SaveNewKSU':
-			ksu = KSU3(theory_id=self.theory.key)
-			ksu_type = event_details['ksu_type']
-			attributes = KASware3.ksu_type_attributes['Base'] + KASware3.ksu_type_attributes[ksu_type]
-			if ksu_type in ['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion']:
-				attributes += KASware3.ksu_type_attributes['LifePiece']
-
-			for attribute in attributes:
-				self.update_ksu_attribute(ksu, attribute, event_details[attribute])
-				
-			ksu.put()
-
-			ksu_dic = self.ksu_to_dic(ksu)
-			ksu_dic['mensaje'] = 'KSU3 creado y guardado desde el viewer!'
-			self.response.out.write(json.dumps(ksu_dic))
-			return
-
-		elif user_action == 'DeleteKSU':
-			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
-			ksu.key.delete()
-			self.response.out.write(json.dumps({
-				'mensaje':'KSU Borrado',
-				'ksu_id': ksu.key.id(),
-				'description': ksu.description,
-				}))
-			return
-
-		elif user_action == 'UpdateKsuAttribute':
-			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
-			self.update_ksu_attribute(ksu, event_details['attr_key'], event_details['attr_value'])
-			ksu.put()
-			self.response.out.write(json.dumps({
-				'mensaje':'Attributo actualizado',
-				}))
-			return
-		
-		elif user_action == 'RequestNewPicInputAction':
-			new_pic_input_action = "{0}".format(blobstore.create_upload_url('/upload_pic'))
-			self.response.out.write(json.dumps({
-					'new_pic_input_action': new_pic_input_action,
-					'mensaje':'Nueva accion enviada',
-					}))
-		return
-
-	def update_ksu_attribute(self, ksu, attr_key, attr_value):
-		attr_type = KASware3.attributes_guide[attr_key]
-		fixed_key = attr_key
-		fixed_value = attr_value
-		
-		if attr_type in ['String', 'Text']:
-			fixed_value = attr_value.encode('utf-8')
-		
-		elif attr_type == 'Integer':
-			fixed_value = int(attr_value)	
-
-		elif attr_type == 'Details':
-			fixed_key = 'details'
-			details_dic = ksu.details
-			details_dic[attr_key] = fixed_value
-			fixed_value = details_dic
-		
-		elif attr_type == 'Key':
-			fixed_value = None
-			if attr_value != '':
-				fixed_value = KSU3.get_by_id(int(attr_value)).key
-
-		elif attr_type == 'DateTime':
-			fixed_value = None
-			if attr_value != '':
-				fixed_value = datetime.strptime(attr_value, '%Y-%m-%d')		
-	
-
-		elif attr_type == 'BlobKey':
-			fixed_value = None
-			#Queda pendiente decirle que hacer con el blobkey
-
-
-		setattr(ksu, fixed_key, fixed_value)
-		return ksu
-
-	def ksu_to_dic(self, ksu):
-
-		ksu_dic = {
-			'ksu_id': ksu.key.id(),
-			'ksu_type': ksu.ksu_type,
-			'ksu_subtype': ksu.ksu_subtype, 
-			
-			'description': ksu.description,
-			'pic_url': ksu.pic_url,
-
-			'comments': ksu.comments,
-			'timer': ksu.timer,
-			'size': ksu.size,
-			
-			'status': ksu.status,
-			'needs_mtnc': ksu.needs_mtnc,
-
-			'is_active': ksu.is_active, 
-			'is_critical': ksu.is_critical,						
-
-			'at_anytime': ksu.at_anytime, 
-			'is_private': ksu.is_private, 
-			
-			'comments': ksu.comments,
-			'tag':ksu.tag,
-		}
-
-		ksu_dic['event_date'] = ''
-		if ksu.event_date:
-			ksu_dic['event_date'] = ksu.event_date.strftime('%Y-%m-%d'),
-
-		ksu_dic['reason_id'] = ''	
-		if ksu.reason_id:
-			ksu_dic['reason_id'] = ksu.reason_id.id()
-						
-		details_attributes = KASware3.ksu_type_attributes[ksu.ksu_type]
-		details_dic = ksu.details
-		for attr in details_attributes:
-			if attr in details_dic:
-				ksu_dic[attr] = details_dic[attr]
-
-		return ksu_dic
-
 
 	
 class PicuteUploadHandler(blobstore_handlers.BlobstoreUploadHandler): #xx
