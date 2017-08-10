@@ -14,6 +14,26 @@ input::-webkit-inner-spin-button {
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
+
+.CheckboxLabel{
+    display: block;
+    padding-left: 15px;
+    text-indent: -15px;
+}
+
+.CheckboxInput{
+    width: 13px;
+    height: 13px;
+    padding: 0;
+    margin:0;
+    vertical-align: bottom;
+    position: relative;
+    top: -1px;
+    *overflow: hidden
+}
+
+
+
 .NoSideMarginOrPadding {
     margin-left: 0px;
     margin-right: 0px;
@@ -143,6 +163,7 @@ input::-webkit-inner-spin-button {
   
   height: 20px;
 
+  max-width: 600px;
   border: 1px #ddd;
   border-style: solid;  
   border-color: white;
@@ -208,7 +229,7 @@ input::-webkit-inner-spin-button {
     color: #D8D8D8;
     background-color: #D8D8D8;
     margin:5px; 
-    margin-top:15px; 
+    margin-top:5px; 
     margin-bottom: 15px;
 }
 
@@ -217,7 +238,7 @@ input::-webkit-inner-spin-button {
 
 .inKSUhrDiv{
     padding-right: 10px; 
-    padding-left: 10px
+    padding-left: 10px    
 }
 
 .BarButton{
