@@ -10,8 +10,8 @@ ksu_types = [
 		['Negative', 'Negative', '']
 	]],	
 
-	[['Objective', 'Objective'], [ #Group actions or other milestones
-		['Objective', 'Objective', ''], #If the parent is another objective then its a milestone#'Milestone',
+	[['Objective', 'Mile Stone'], [ #Group actions in a well define purpose
+		['Objective', 'Objective', True], #If the parent is another objective then its a milestone#'Milestone',
 	]],
 	
 	[['Wisdom', 'Wisdom'], [#Idea #Your personal constitution. Non actionable knowledge that you believe should guide your behaviour.
@@ -77,7 +77,7 @@ ksu_type_attributes = {
 		'reason_id',
 		
 		'description', 
-		'pic_key',
+		# 'pic_key',
 		'pic_url',
 
 		'is_private',

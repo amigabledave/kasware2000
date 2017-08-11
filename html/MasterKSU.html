@@ -11,7 +11,7 @@
 <div class="row" id="MainSection"><div class="col-xs-12" style="">
 	<div class="row" id="PreviewDiv">
 		
-		<div class="col-xs-1 TypeSpecific" target_type="Experience Contribution SelfAttribute Person Possesion" style="padding-right: 0px; max-height: 38px; text-align:center;">
+		<div class="col-xs-1 TypeSpecific" target_type="Objective Experience Contribution SelfAttribute Person Possesion" style="padding-right: 0px; max-height: 38px; text-align:center;">
 			<div id="img_holder"><img style="height: 38px; margin-top: -3px; margin-left: 3px;" class="img-circle" src="images/ic_extension_black_48dp_2x.png" id="blah"></div>
 			
 			<img src="#" id="ksu_pic" data-magnify-src="" class="zoom hidden" style="border-radius: 5px; height: 38px;">
@@ -19,20 +19,15 @@
 		</div>	
 
 		<div class="col-xs-1 TypeSpecific" target_type='Action'>
-			<button type="button" class="btn btn-success ksu-circle-btn KsuActionButton SubtypeSpecific" target_subtype="Proactive" name="action_description" value='Done' style="margin-left: 3px">
+			<button type="button" class="btn btn-success ksu-circle-btn KsuActionButton SubtypeSpecific" avoid_subtype="Negative" name="action_description" value='Done' style="margin-left: 3px">
 			<span style="font-weight: bold;">1</span></button>
 
-			<button type="button" class="btn btn-success ksu-circle-btn KsuActionButton SubtypeSpecific hidden" target_subtype="Reactive" name="action_description" value='Done' style="margin-left: 3px">
-			<span style="font-weight: bold;">1</span></button>					
-
-			<button type="button" class="btn btn-danger ksu-circle-btn KsuActionButton SubtypeSpecific hidden" target_subtype="Negative" name="action_description" value='Done' style="margin-left: 3px">
+			<button type="button" class="btn btn-danger ksu-circle-btn KsuActionButton SubtypeSpecific hidden" avoid_subtype="Proactive Reactive" name="action_description" value='Done' style="margin-left: 3px">
 			<span style="font-weight: bold;">1</span></button>
-
-
 		</div>
 		
 		<div class="" id="DescriptionHolder">
-			<textarea style="width:100%; border:0; font-style: italic; padding-bottom: 0px; margin-bottom: -3px; background-color: inherit;" class="KsuAttr autoExpand SubtypeSpecific TypeSpecific hidden" target_type="Action" target_subtype="Reactive" rows="1" data-min-rows='1' name="trigger" id="trigger" placeholder="Trigger circumstance"></textarea>
+			<textarea style="width:100%; border:0; font-style: italic; padding-bottom: 0px; background-color: inherit;" class="KsuAttr autoExpand SubtypeSpecific TypeSpecific hidden" target_type="Action" avoid_subtype="Proactive Negative" rows="1" data-min-rows='1' name="trigger" id="trigger" placeholder="Trigger circumstance"></textarea>
 			
 			<textarea style="width:100%; border:0; background-color: inherit;" class="KsuAttr autoExpand" rows="1" data-min-rows='1' name="description" id="description" placeholder="Action description"></textarea>
 		</div>
@@ -86,7 +81,7 @@
 			</div>
 		</div>
 		
-		<div class="row TypeSpecific" name="LifePieceActionsRow" target_type="Experience Contribution SelfAttribute Person Possesion">
+		<div class="row TypeSpecific" name="LifePieceActionsRow" target_type="Objective Experience Contribution SelfAttribute Person Possesion">
 			<div class="inKSUhrDiv"><hr class="inKSUhr" style=""></div>
 			
 			<div class="col-xs-3" id="pic_col">							
@@ -101,7 +96,7 @@
 				</form>									
 			</div>
 
-			<div class="col-xs-6 SubtypeSpecific" target_subtype="Moment JoyMine" style="padding: 0px;">							
+			<div class="col-xs-6 SubtypeSpecific TypeSpecific" target_type="Experience" avoid_subtype="Chapter" style="padding: 0px;">							
 				<b>Moment Quality:</b>
 				<form>
 					<label class="radio-inline">
@@ -122,24 +117,12 @@
 				</form>	
 			</div>
 
-			<div class="col-xs-3 SubtypeSpecific" target_subtype="Moment JoyMine">
+			<div class="col-xs-3 TypeSpecific SubtypeSpecific" target_type="Experience" avoid_subtype="Chapter">
 				<button type="button" style="margin-top: 3px;" class="btn btn-success KsuActionButton pull-right KaswareFont" name="action_description" value='Done'><span>Experienced</span></button>
 			</div>
-							
-			<div class="col-xs-9 SubtypeSpecific TypeSpecific" target_type="Experience" target_subtype="Chapter">	
-				<div class="form-group pull-right" style="margin-bottom:0px">
-					<label style="margin-bottom:0px"> Status </label>
-					<select id="status" class="KsuAttr form-control SexySelect StatusSelect" name="status">
-						<option value="Wish"> Wish </option>
-						<option value="Pursuit"> In Pursuit </option>
-						<option value="Present"> Present </option>
-						<option value="Past"> Past </option>
-					</select>
-				</div>
-			</div>
 
-			<div class="col-xs-9 TypeSpecific" target_type="Contribution SelfAttribute Person Possesion">	
-				<div class="form-group pull-right" style="margin-bottom:0px">	
+			<div class="col-xs-9 SubtypeSpecific TypeSpecific" target_type="Objective Experience Contribution SelfAttribute Person Possesion" avoid_subtype="Moment JoyMine">
+				<div class="form-group pull-right" style="margin-bottom:0px">
 					<label style="margin-bottom:0px"> Status </label>
 					<select id="status" class="KsuAttr form-control SexySelect StatusSelect" name="status">
 						<option value="Wish"> Wish </option>
@@ -173,9 +156,9 @@
 		</div>
 
 		<div class="row" id="TypeSpecificDetailsRow">
-			<div class="col-xs-12 form-group hidden TypeSpecific SubtypeSpecific" id="ExceptionsRow" target_type='Action' target_subtype='Negative'>
+			<div class="col-xs-12 form-group hidden TypeSpecific SubtypeSpecific" id="ExceptionsRow" target_type='Action' avoid_subtype='Proactive Reactive'>
 				<label>Valid exceptions</label>
-				<textarea style="" class="KsuAttr form-control SexyInput" rows="1" data-min-rows='1' name="exceptions" id="exceptions" placeholder="Exceptions"></textarea>	
+				<textarea class="KsuAttr form-control SexyInput" rows="1" data-min-rows='1' name="exceptions" id="exceptions" placeholder="Exceptions" style="padding-left: 10px;"></textarea>	
 			</div>
 
 			<div class="col-xs-3 form-group TypeSpecific" target_type='Action'>
@@ -234,7 +217,7 @@
 				</div>
 			</div>
 
-			<div class="col-xs-3 form-group" id="cost_frequency_col">	
+			<div class="col-xs-3 form-group hidden" id="cost_frequency_col">	
 				
 				<label style=""> Cost frequency </label>
 				<select id="cost_frequency" class="KsuAttr form-control SexySelect" name="cost_frequency">
@@ -275,10 +258,9 @@
 		</div>	
 
 	</div></div>
-</div></div>	
-
+</div></div>
 <div class="row hidden" id="KsuHiddenAttributes">
-	<input type="text" id="ksu_type" name="ksu_type" value="" class="KsuAttr hidden">
-	<input type="text" id="pic_key" name="pic_key" value="" class="KsuAttr hidden">
+	<input type="text" id="ksu_type" name="ksu_type" value="" class="KsuAttr">
+	<input type="text" id="pic_url" name="pic_url" value="" class="KsuAttr">
 </div>
 </div></div></div>

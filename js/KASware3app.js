@@ -78,7 +78,7 @@ $(document).on('click', '.KsuActionButton', function(){
 		ksu.attr("value","")
 		var attributes_dic = {};
 		var ksu_attributes = ksu.find('.KsuAttr');
-
+		console.log(ksu_attributes);
 		for (var i = ksu_attributes.length - 1; i >= 0; i--) {
 			var KsuAttr = $(ksu_attributes[i]);
 			attributes_dic[KsuAttr.attr("name")] = get_ksu_attr_value(ksu, KsuAttr)
@@ -86,7 +86,7 @@ $(document).on('click', '.KsuActionButton', function(){
 		
 		attributes_dic['user_action'] = 'SaveNewKSU';
 		attributes_dic['reason_id'] = $('#reason_holder').attr('reason_id');
-		// console.log(attributes_dic) #
+		console.log(attributes_dic);
 
 		$.ajax({
 			type: "POST",
@@ -155,7 +155,7 @@ $(document).on('focusin', '.KsuAttr', function(){
 
 	// var KsuAttr = $(this)
 	var initial_attr_value = get_ksu_attr_value(ksu, $(this));
-	console.log('Se reconocio que se esta acutalizando un attributo')	
+	// console.log('Se reconocio que se esta acutalizando un attributo')	
 
 	$(this).on('focusout', function(){
 		
@@ -167,7 +167,10 @@ $(document).on('focusin', '.KsuAttr', function(){
 			var attr_key = $(this).attr("name");
 			
 			UpdateKsuAttribute(ksu_id, attr_key, attr_value)
-
+			
+			if( attr_key == 'money_cost'){//xx
+				HideShowCostFrequency(ksu)	
+			}
 		};
 	})
 });
@@ -318,7 +321,18 @@ function render_ksu(ksu_dic){
 		SetKsuImage(ksu, ksu_dic['pic_url'])
 	} 
 
+	HideShowCostFrequency(ksu);
+
 	FormatBasedOnStatus(ksu, ksu_dic['status'])
+}
+
+function HideShowCostFrequency(ksu){
+	var money_cost = get_ksu_attr_value(ksu, ksu.find('#money_cost'));	
+	if(money_cost > 0){
+		ksu.find('#cost_frequency_col').removeClass('hidden')
+	} else {
+		ksu.find('#cost_frequency_col').addClass('hidden')
+	}
 }
 
 
@@ -472,7 +486,7 @@ function FixTemplateBasedOnKsuSubtype(template, ksu_subtype){
 	var subtype_spefic_sections = template.find('.SubtypeSpecific')
 	for (var i = subtype_spefic_sections.length - 1; i >= 0; i--) {
 		var section = $(subtype_spefic_sections[i]);
-		if ( !section.attr('target_subtype').includes(ksu_subtype)){
+		if (section.attr('avoid_subtype').includes(ksu_subtype)){
 			section.addClass('hidden')	
 		} else {
 			section.removeClass('hidden')
@@ -506,8 +520,8 @@ function fixTemplateDivAttr(template, div_id, attr_key, attr_value){
 
 function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
 	
-	console.log(attr_key);
-	console.log(attr_value);
+	// console.log(attr_key);
+	// console.log(attr_value);
 
 	$.ajax({
 		type: "POST",
@@ -561,8 +575,8 @@ var ksu_type_attr_details = {
 var section_details = {
 	'mission':{'title': "Today's Mission", 'new_ksu_type': 'Action', 'placeholder': 'What key action do you need to take today?'}, 
 	'kas': {'title': 'Key Action Set', 'new_ksu_type': 'Action', 'placeholder': 'What is your key action'}, 
-	'objectives': {'title': 'Objectives', 'new_ksu_type': 'Objective', 'placeholder': 'What is the objective? How would you define success?'}, 
-	'contributions': {'title': 'Contributions', 'new_ksu_type': 'Contribution', 'placeholder': "Whats is your purupose? Why are you in this planet for?"}, 
+	'objectives': {'title': 'Mile Stones', 'new_ksu_type': 'Objective', 'placeholder': 'What would you need to achieve to know you are making progress?'}, 
+	'contributions': {'title': 'Contributions', 'new_ksu_type': 'Contribution', 'placeholder': "What impact do you want to have in others peosons lives?"}, 
 	'experiences': {'title': 'Experiences', 'new_ksu_type': 'Experience', 'placeholder': 'What activity would you give you joy?'}, 
 	'mybestself': {'title': 'Mybestself', 'new_ksu_type': 'SelfAttribute', 'placeholder': 'What attribute has the best person you could be?'}, 
 	'people': {'title': 'Important People', 'new_ksu_type': 'Person', 'placeholder': 'Who is important to you?'}, 
