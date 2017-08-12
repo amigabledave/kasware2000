@@ -15,8 +15,9 @@ ksu_types = [
 	]],
 	
 	[['Wisdom', 'Wisdom'], [#Idea #Your personal constitution. Non actionable knowledge that you believe should guide your behaviour.
-		['Idea', 'Idea', ''], #If the idea has a parent then is not a principle. BRILIANT!
+		['Idea', 'Idea', True], #If the idea has a parent then is not a principle. BRILIANT!
 		['Principle', 'Principle', ''], #Sirve para organizar y auditar
+		['Learning', 'Learning', '']
 	]], 
 		
 	#Life Pieces
@@ -28,32 +29,36 @@ ksu_types = [
 	]],
 
 	[['Contribution', 'Contribution'], [ #Whats the impact you want to have in others peoples life and the envieronment? Antes Meaning GreaterGood
-		['Contribution', 'Contribution', ''] #  #'Social', 'Environment',		
+		['Contribution', 'Contribution', True] #  #'Social', 'Environment',		
 	]],
 	
 	[['SelfAttribute', 'Attribute'], [# Antes Self. #Who is the best person you could be? 'Antes tenia Achievemnt pero ahora queda en meaning',
 		['Attitude', 'Attitude', ''], #'SoulSkill', #Connciousness and inner peace
 		['KnowledgeOrSkill', 'Skill or Knowledge', True], #MindSkill Knowledge and skills		
 		['BodyFeature', 'Body Feature', ''], #PhisicalAttribute, Health and vitality
-		['Achievement', 'Achievement', ''] #Personal achievement.
+		# ['Achievement', 'Achievement', ''] #Personal achievement.
 	]],
 
 	[['Person', 'Person'], [ #Who you want in your life 'Love', #Important People. Love & Friendship
-		['Individual', 'Individual', ''], #Person #If the parent is another person, then the parent is a group of people #'Group',
+		['Individual', 'Individual', True], #Person #If the parent is another person, then the parent is a group of people #'Group',
 		['Group', 'Group', ''],
 	]],
 
 	[['Possesion', 'Possesion'], [ #What you want to have
-		['Stuff', 'Stuff', ''], #For personal use #Tambien entra orden aqui. e.g. "Tener un cuarto ordenado"		
+		['Thing', 'Thing', True], #For personal use #Tambien entra orden aqui. e.g. "Tener un cuarto ordenado"		
+		['Service', 'Service Access'],
 		['Asset', 'Asset', ''], #Dinero o assets tangibles. MoneyOrAsset
-		['Status', 'Status', ''], #Aqui entrarian los trabajos o cualquier asset que viva en las mentes de otras personas.
 	]],	
 
+	[['Situation', 'Situation'], [ #Whats the impact you want to have in others peoples life and the envieronment? Antes Meaning GreaterGood
+		['SocialStatus', 'Social Status', True], #Aqui entrarian los trabajos o cualquier cosa que viva en las mentes de otras personas	
+		['Environment', 'Environment', ''], #Aqui entra el lugar donde quieres vivir a nivel pais, hogar o cualquier escala
+	]],
 
 	#Indicator Results The concreate metrics you pick to measure success
-	[['UserIndicator', 'Indicator', ''], [
+	[['Indicator', 'Indicator'], [
 		['Reality', 'Reality', ''],
-		['Perception', 'Perception', ''],
+		['Perception', 'Perception', True],
 		# ['TernaryPerception', ],
 	]],
 ]
@@ -82,12 +87,12 @@ ksu_type_attributes = {
 
 		'is_private',
 		'comments',
-		'tag',
-		'money_cost',
+		'tag',		
 		'cost_frequency',			
 	],
 
 	'Action': [
+		'money_cost',
 		'best_time', 
 		'trigger',
 		'exceptions',
@@ -114,26 +119,42 @@ ksu_type_attributes = {
 		'at_anytime',		
 	],
 
-	'Objective': [],
+	'Objective': [
+		'money_cost',
+		'event_date',
+	],
 
 	'LifePiece':[
+		'money_cost',
 		'status',
 		'needs_mtnc',						
 	],
 
-	'Experience': [], 
+	'Experience': [
+		'frequency',
+		'event_date',
+	], 
 
 	'Contribution': [], 
 
-	'Attribute': [], 
+	'SelfAttribute': [], 
 
-	'Person': [], 
+	'Person': [
+		'frequency',
+		'birthday',
+	],
+
+	'Situation': [], 
 
 	'Possesion': [], 
 
-	'Wisdom': [], #Meter attributo para indicar si es self knowledge o general knowledge
+	'Wisdom': ['source'], #Meter attributo para indicar si es self knowledge o general knowledge
 
-	'Indicator': []
+	'Indicator': [
+		'question',
+		'frequency',
+		'event_date',
+	]
 }
 
 
@@ -186,4 +207,8 @@ attributes_guide = {
 
 	'money_cost': ['Integer', 'Standard'],
 	'cost_frequency': ['Details', 'Select'],
+	'frequency': ['Details', 'Select'],
+	'birthday': ['Details', 'Standard'],
+	'source': ['Details', 'Standard'],
+	'question': ['Details', 'Standard'],
 }

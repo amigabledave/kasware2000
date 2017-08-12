@@ -436,7 +436,7 @@ class Home(Handler):
 	def get_ksu_type_attributes(self, ksu_type):
 		attributes = KASware3.ksu_type_attributes['Base'] + KASware3.ksu_type_attributes[ksu_type] 
 		
-		if ksu_type in ['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion']:
+		if ksu_type in ['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion', 'Situation']:
 			attributes += KASware3.ksu_type_attributes['LifePiece']
 
 		return attributes

@@ -268,7 +268,8 @@ $(document).on('click', '.TimeBarButton',function(){
 
 
 function get_ksu_attr_value(ksu, KsuAttr){
-
+	// console.log(ksu.find('#description').val())
+	// console.log(KsuAttr)
 	var attr_type = attributes_guide[KsuAttr.attr("name")][1];
 
 	if (attr_type == 'Standard' || attr_type == 'Select'){
@@ -294,7 +295,7 @@ function render_ksu(ksu_dic){
 	// console.log(ksu_dic);
 	var ksu_type = ksu_dic['ksu_type'];
 	var attributes = ksu_type_attributes['Base'].concat(ksu_type_attributes[ksu_type]);	
-	if (['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion'].indexOf(ksu_type) >= 0){		
+	if (['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion', 'Situation'].indexOf(ksu_type) >= 0){		
 		attributes = attributes.concat(ksu_type_attributes['LifePiece'])		
 	}
 	
@@ -321,8 +322,11 @@ function render_ksu(ksu_dic){
 		SetKsuImage(ksu, ksu_dic['pic_url'])
 	} 
 
-	HideShowCostFrequency(ksu);
+	if (attributes.indexOf('money_cost') >= 0){		
+		HideShowCostFrequency(ksu);	
+	}
 
+	
 	FormatBasedOnStatus(ksu, ksu_dic['status'])
 }
 
@@ -441,7 +445,7 @@ function add_reason_select_to_ksu(ksu, reason_id){
 		// selectize.setValue(selected_option, false);
 		selectize.setValue(reason_id, false);
 	}
-	
+	ksu.find('.selectize-dropdown').removeClass('SexySelect');
 	return ksu
 }
 
@@ -559,31 +563,32 @@ function FixTheoryView(){
 
 // ------------ Constants -------------------
 var ksu_type_attr_details = {
-	'Action': [['description', 'placeholder', 'What is your key action?']], 
-	'Objective': [['description', 'placeholder', 'What is the objective? How would you define success?']], 
-	'Contribution': [['description', 'placeholder', "Whats is your purupose? Why are you in this planet for?"]], 
-	'Experience': [['description', 'placeholder', 'What activity would you give you joy?']], 
-	'SelfAttribute': [['description', 'placeholder', 'What attribute has the best person you could be?']], 
+	'Action': [['description', 'placeholder', 'What is the key action you need to take?']], 
+	'Objective': [['description', 'placeholder', 'What would you need to acomplish to know you are making progress?']], 
+	'Contribution': [['description', 'placeholder', "What impact do you want to have in others persons lives?"]], 
+	'Experience': [['description', 'placeholder', 'What experience would you give you joy?']], 
+	'SelfAttribute': [['description', 'placeholder', 'What is one of the attributes of the best person you could be?']], 
 	'Person': [['description', 'placeholder', 'Who is important to you?']], 
 	'Possesion': [['description', 'placeholder', 'What is a possesion that makes sense for you to care about?']], 
-	'Principle': [['description', 'placeholder', 'What pice of knowledge could help you live a better life?']], 
+	'Wisdom': [['description', 'placeholder', 'What pice of knowledge could help you live a better life?']], 
 	'Indicator': [['description', 'placeholder', 'Indicator place holder']], 
-	'Indicator': [['description', 'placeholder','Indicator place holder']],
+	'Situation': [['description', 'placeholder', 'What aspect of your life situation is significant to you?']],
 }
 
 
 var section_details = {
-	'mission':{'title': "Today's Mission", 'new_ksu_type': 'Action', 'placeholder': 'What key action do you need to take today?'}, 
-	'kas': {'title': 'Key Action Set', 'new_ksu_type': 'Action', 'placeholder': 'What is your key action'}, 
-	'objectives': {'title': 'Mile Stones', 'new_ksu_type': 'Objective', 'placeholder': 'What would you need to achieve to know you are making progress?'}, 
-	'contributions': {'title': 'Contributions', 'new_ksu_type': 'Contribution', 'placeholder': "What impact do you want to have in others peosons lives?"}, 
-	'experiences': {'title': 'Experiences', 'new_ksu_type': 'Experience', 'placeholder': 'What activity would you give you joy?'}, 
-	'mybestself': {'title': 'Mybestself', 'new_ksu_type': 'SelfAttribute', 'placeholder': 'What attribute has the best person you could be?'}, 
-	'people': {'title': 'Important People', 'new_ksu_type': 'Person', 'placeholder': 'Who is important to you?'}, 
-	'possesions': {'title': 'Possesions', 'new_ksu_type': 'Possesion', 'placeholder': 'What is a possesion that makes sense for you to care about?'}, 
-	'principles': {'title': 'Principles', 'new_ksu_type': 'Principle', 'placeholder': 'What pice of knowledge could help you live a better life?'}, 
-	'indicators': {'title': 'Indicators', 'new_ksu_type': 'Indicator', 'placeholder': 'Indicator place holder'}, 
-	'dashboard': {'title': 'Dashboard', 'new_ksu_type': 'Indicator', 'placeholder': 'Indicator place holder'},
+	'mission':{'title': "Today's Mission", 'new_ksu_type': 'Action'},
+	'kas': {'title': 'Key Action Set', 'new_ksu_type': 'Action'},  
+	'objectives': {'title': 'Mile Stones', 'new_ksu_type': 'Objective'}, 
+	'contributions': {'title': 'Contributions', 'new_ksu_type': 'Contribution'}, 
+	'experiences': {'title': 'Experiences', 'new_ksu_type': 'Experience'},  
+	'mybestself': {'title': 'Mybestself', 'new_ksu_type': 'SelfAttribute'},  
+	'people': {'title': 'Important People', 'new_ksu_type': 'Person'},  
+	'possesions': {'title': 'Possesions', 'new_ksu_type': 'Possesion'},  
+	'situation': {'title': 'Life Situation', 'new_ksu_type': 'Situation'},
+	'wisdom': {'title': 'Wisdom', 'new_ksu_type': 'Wisdom'},  
+	'indicators': {'title': 'Indicators', 'new_ksu_type': 'Indicator'}, 
+	'dashboard': {'title': 'Dashboard', 'new_ksu_type': 'Indicator'},
 }
 
 
@@ -602,109 +607,6 @@ var select_toBeShown = {
 		'R365':['#repeats_day_col', '#repeats_month_col']
 	},
 }
-
-
-// var attributes_guide = {
-	
-// 	'ksu_type': 'Standard', 
-// 	'ksu_subtype': 'Select',
-// 	'reason_id': 'Select',
-
-// 	'description': 'Standard',	
-// 	'pic_key': 'Standard',
-// 	'pic_url': 'Standard' ,
-	
-// 	'size':  'Radio',
-// 	'timer': 'Standard',
-// 	'event_date': 'Standard',
-
-// 	'is_realized': 'Checkbox',
-// 	'needs_mtnc': 'Checkbox',
-	
-// 	'is_active': 'Checkbox', 
-// 	'is_critical': 'Checkbox',
-// 	'is_private': 'Checkbox',
-// 	'at_anytime': 'Checkbox', 
-
-// 	'is_visible': 'Checkbox',  
-// 	'in_graveyard': 'Checkbox',
-
-// 	'comments': 'Standard',
-// 	'tag': 'Standard',
-		
-// 	'best_time': 'Standard',
-// 	'trigger': 'Standard', 
-// 	'repeats': 'Select', 
-// 	'exceptions': 'Standard',
-// 	'every_x_days': 'Standard',
-// 	'every_mon': 'Checkbox',
-// 	'every_tue': 'Checkbox', 
-// 	'every_wed': 'Checkbox', 
-// 	'every_thu': 'Checkbox', 
-// 	'every_fri': 'Checkbox', 
-// 	'every_sat': 'Checkbox', 
-// 	'every_sun': 'Checkbox',
-// 	'on_the_day': 'Select', 
-// 	'of_month': 'Select',
-
-// 	'status': 'Select',	
-// 	'money_cost':'Standard',
-// }
-
-
-// var ksu_type_attributes = {
-// 	'Base': [
-// 		'ksu_type', 
-// 		'ksu_subtype', 
-// 		'reason_id',
-		
-// 		'description', 
-// 		'pic_key',
-			
-// 		'size',
-// 		'timer',
-// 		'event_date',
-
-// 		'is_private',
-
-// 		'comments',
-// 		'tag',
-// 	],
-
-// 	'LifePiece': [
-// 		'status',
-// 		'needs_mtnc',
-// 		'money_cost',
-// 	],
-
-// 	'Action': [
-// 		'trigger', 
-// 		'best_time', 
-// 		'exceptions',
-		
-// 		'repeats', 
-// 		'every_x_days',
-// 		'on_the_day',
-// 		'of_month',
-
-// 		'every_mon',
-// 		'every_tue', 
-// 		'every_wed', 
-// 		'every_thu', 
-// 		'every_fri', 
-// 		'every_sat', 
-// 		'every_sun',
-		
-// 		'is_active', 
-// 		'is_critical',
-// 		'at_anytime',
-// 	],
-
-// 	'Experience':[],
-
-// 	'SelfAttribute':[],
-// }
-
 
 
 /////////////////////////////////////////////////////////////////////////////////////
