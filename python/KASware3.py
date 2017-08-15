@@ -42,6 +42,7 @@ ksu_types = [
 	[['Person', 'Person'], [ #Who you want in your life 'Love', #Important People. Love & Friendship
 		['Individual', 'Individual', True], #Person #If the parent is another person, then the parent is a group of people #'Group',
 		['Group', 'Group', ''],
+		['Role', 'Role'], #En el momento que se ancla a una persona se marca como realized. E.g. Sexual Partner, Someone to Play Magic, Etc...
 	]],
 
 	[['Possesion', 'Possesion'], [ #What you want to have
@@ -66,13 +67,75 @@ ksu_types = [
 
 
 event_types = {
-	'EndValue', #Generado por Joy Generatos 
-	'Proof', # Generado Being, Contribution, Idea... (ejemplos de tu siendo la persona que quieres ser) #Necesita pulirse
-	'WishRealized',# Generado por Life Pieces al cambiar de status
-	'Progress', #Generado por objetivos
+	'EndValue', #Generado por momentos de Joy Generatos
+	
 	'Effort', #Generado por acciones al ser ejecutadas
+	
+	'Stupidity', #Generado por acciones al ser ejecutadas	
+	
+	'Progress', #Generado por objetivos
+	
+	'WishRealized',# Generado por Life Pieces al cambiar de status 	
+
 	'Measurement', #Generaddo por indicadores
 }
+
+
+attributes_guide = {
+	'theory_id': ['Key', ''], 	
+	'created': ['DateTime', ''], 
+	'ksu_type': ['String', 'Standard'],
+	'ksu_subtype': ['String', 'Select'],
+	'reason_id': ['Key', 'Standard'],
+
+	'description': ['String', 'Standard'],	
+	'pic_key': ['BlobKey', 'Standard'],
+	'pic_url': ['String', 'Standard'],
+	
+	'size': ['Integer', 'Radio'],
+	'timer': ['Integer', 'Standard'],
+	'event_date': ['DateTime', 'Standard'],
+
+	'status': ['String', 'Select'],
+	'is_realized': ['Boolean', 'Checkbox'],
+	'needs_mtnc': ['Boolean', 'Checkbox'],
+	
+	'is_active': ['Boolean', 'Checkbox'], 
+	'is_critical': ['Boolean', 'Checkbox'],
+	'is_private': ['Boolean', 'Checkbox'],
+	'at_anytime': ['Boolean', 'Checkbox'], 
+
+	'comments': ['Text', 'Standard'],
+	'tag': ['String', 'Standard'],
+	
+	'details': ['Json', ''] ,
+	
+	'best_time': ['Details', 'Standard'],
+	'trigger': ['Details', 'Standard'], 
+	'exceptions': ['Details', 'Standard'],
+	
+	'repeats': ['Details', 'Select'], 
+	'every_x_days': ['Details', 'Standard'],
+	'on_the_day': ['Details', 'Select'], 
+	'of_month': ['Details', 'Select'],
+
+	'every_mon': ['Details', 'Checkbox'],
+	'every_tue': ['Details', 'Checkbox'], 
+	'every_wed': ['Details', 'Checkbox'], 
+	'every_thu': ['Details', 'Checkbox'], 
+	'every_fri': ['Details', 'Checkbox'], 
+	'every_sat': ['Details', 'Checkbox'], 
+	'every_sun': ['Details', 'Checkbox'],
+
+	'money_cost': ['Integer', 'Standard'],
+	'cost_frequency': ['Details', 'Select'],
+	'frequency': ['Details', 'Select'],
+	'birthday': ['Details', 'Standard'],
+	'source': ['Details', 'Standard'],
+	'question': ['Details', 'Standard'],
+	'chapter_duration': ['Details', 'Standard'],
+}
+
 
 
 ksu_type_attributes = {
@@ -133,6 +196,7 @@ ksu_type_attributes = {
 	'Experience': [
 		'frequency',
 		'event_date',
+		'chapter_duration',
 	], 
 
 	'Contribution': [], 
@@ -157,58 +221,3 @@ ksu_type_attributes = {
 	]
 }
 
-
-
-attributes_guide = {
-	'theory_id': ['Key', ''], 	
-	'created': ['DateTime', ''], 
-	'ksu_type': ['String', 'Standard'],
-	'ksu_subtype': ['String', 'Select'],
-	'reason_id': ['Key', 'Standard'],
-
-	'description': ['String', 'Standard'],	
-	'pic_key': ['BlobKey', 'Standard'],
-	'pic_url': ['String', 'Standard'],
-	
-	'size': ['Integer', 'Radio'],
-	'timer': ['Integer', 'Standard'],
-	'event_date': ['DateTime', 'Standard'],
-
-	'status': ['String', 'Select'],
-	'is_realized': ['Boolean', 'Checkbox'],
-	'needs_mtnc': ['Boolean', 'Checkbox'],
-	
-	'is_active': ['Boolean', 'Checkbox'], 
-	'is_critical': ['Boolean', 'Checkbox'],
-	'is_private': ['Boolean', 'Checkbox'],
-	'at_anytime': ['Boolean', 'Checkbox'], 
-
-	'comments': ['Text', 'Standard'],
-	'tag': ['String', 'Standard'],
-	
-	'details': ['Json', ''] ,
-	
-	'best_time': ['Details', 'Standard'],
-	'trigger': ['Details', 'Standard'], 
-	'exceptions': ['Details', 'Standard'],
-	
-	'repeats': ['Details', 'Select'], 
-	'every_x_days': ['Details', 'Standard'],
-	'on_the_day': ['Details', 'Select'], 
-	'of_month': ['Details', 'Select'],
-
-	'every_mon': ['Details', 'Checkbox'],
-	'every_tue': ['Details', 'Checkbox'], 
-	'every_wed': ['Details', 'Checkbox'], 
-	'every_thu': ['Details', 'Checkbox'], 
-	'every_fri': ['Details', 'Checkbox'], 
-	'every_sat': ['Details', 'Checkbox'], 
-	'every_sun': ['Details', 'Checkbox'],
-
-	'money_cost': ['Integer', 'Standard'],
-	'cost_frequency': ['Details', 'Select'],
-	'frequency': ['Details', 'Select'],
-	'birthday': ['Details', 'Standard'],
-	'source': ['Details', 'Standard'],
-	'question': ['Details', 'Standard'],
-}

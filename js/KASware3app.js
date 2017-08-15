@@ -69,8 +69,11 @@ $(document).on('click', '.KsuActionButton', function(){
 	// console.log(action)
 
 	var actions_menu = {
+		'ShowKsuDetail': ShowKsuDetail,
 		'SaveNewKSU': SaveNewKSU,
 		'DeleteKSU': DeleteKSU,
+		'AddEventComments': AddEventComments,
+
 	}
 	actions_menu[action](ksu);
 
@@ -131,21 +134,50 @@ $(document).on('click', '.KsuActionButton', function(){
 			});
 		}		
 	};
-	
+
+	function AddEventComments(ksu){
+		ksu.find('#event_comments_col').toggleClass('hidden');
+		return
+	};
+
+	function ShowKsuDetail(ksu){
+		ShowDetail(ksu);
+		return
+	};
 });
 
 
-function FormatBasedOnStatus(ksu, status){
-	var display_section = ksu.find('#KSUdisplaySection');
-	display_section.removeClass('IsRealized');
-	display_section.removeClass('IsHistory');
+$(document).on('click', '.SavePicure', function(){
+	console.log('Si se dio cuenta de que quiero gurdar la foto')
+	var ksu = $(this).closest('#KSU');
+	ksu.find('#SavePic').addClass('hidden');
+	
+	$.ajax({
+		type: "POST",
+		url: "/",
+		dataType: 'json',
+		data: JSON.stringify({'user_action': 'RequestNewPicInputAction'})
+	}).done(function(data){
 
-	if (status == 'Present'){
-		display_section.addClass('IsRealized');
-	} else if (status == 'Past'){
-		display_section.addClass('IsHistory');
+		$('#new_pic_input_action').attr('action', data['new_pic_input_action']);
+		console.log(data['mensaje'])
+	});
+});
+
+
+$(document).on('click', '.TimeBarButton',function(){
+	var ksu = $(this).closest('#KSU');
+	var TimeRuler = ksu.find('#TimeRuler');
+
+	if(TimeRuler.is(":visible")){
+		TimeRuler.addClass('hidden');
+		ksu.find('.KSUdisplaySection').addClass('TopRoundBorders');
+
+	} else {
+		TimeRuler.removeClass('hidden');
+		ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
 	}
-}
+})
 
 
 $(document).on('focusin', '.KsuAttr', function(){
@@ -227,44 +259,6 @@ $(document).on('change', '.pic_input', function(){
     } 
 });
 
-
-$(document).on('click', '.SavePicure', function(){
-	console.log('Si se dio cuenta de que quiero gurdar la foto')
-	var ksu = $(this).closest('#KSU');
-	ksu.find('#SavePic').addClass('hidden');
-	
-	$.ajax({
-		type: "POST",
-		url: "/",
-		dataType: 'json',
-		data: JSON.stringify({'user_action': 'RequestNewPicInputAction'})
-	}).done(function(data){
-
-		$('#new_pic_input_action').attr('action', data['new_pic_input_action']);
-		console.log(data['mensaje'])
-	});
-});
-
-
-$(document).on('click', '.ShowDetailButton', function(){
-	var ksu = $(this).closest('#KSU');
-	ShowDetail(ksu);
-});
-
-
-$(document).on('click', '.TimeBarButton',function(){
-	var ksu = $(this).closest('#KSU');
-	var TimeRuler = ksu.find('#TimeRuler');
-
-	if(TimeRuler.is(":visible")){
-		TimeRuler.addClass('hidden');
-		ksu.find('.KSUdisplaySection').addClass('TopRoundBorders');
-
-	} else {
-		TimeRuler.removeClass('hidden');
-		ksu.find('.KSUdisplaySection').removeClass('TopRoundBorders');
-	}
-})
 
 
 function get_ksu_attr_value(ksu, KsuAttr){
@@ -429,9 +423,11 @@ function RenderReasonsIndex(reasons_list){
 	}
 }
 
+
 function AddReasonToSelect(ksu_id, description){
 	$('#reasons_select').append($('<option>', {value:ksu_id, text:description}));
 }
+
 
 function add_reason_select_to_ksu(ksu, reason_id){
 	// var selected_option = ksu.find('#reason').val()
@@ -500,7 +496,6 @@ function FixTemplateBasedOnKsuSubtype(template, ksu_subtype){
 }
 
 
-
 function readURL(ksu, input) {
 
     if (input.files && input.files[0]) {
@@ -561,6 +556,19 @@ function FixTheoryView(){
 };
 
 
+function FormatBasedOnStatus(ksu, status){
+	var display_section = ksu.find('#KSUdisplaySection');
+	display_section.removeClass('IsRealized');
+	display_section.removeClass('IsHistory');
+
+	if (status == 'Present'){
+		display_section.addClass('IsRealized');
+	} else if (status == 'Past'){
+		display_section.addClass('IsHistory');
+	}
+}
+
+
 // ------------ Constants -------------------
 var ksu_type_attr_details = {
 	'Action': [['description', 'placeholder', 'What is the key action you need to take?']], 
@@ -580,14 +588,15 @@ var section_details = {
 	'mission':{'title': "Today's Mission", 'new_ksu_type': 'Action'},
 	'kas': {'title': 'Key Action Set', 'new_ksu_type': 'Action'},  
 	'objectives': {'title': 'Mile Stones', 'new_ksu_type': 'Objective'}, 
+	'purpose':{'title': "Current Purpose", 'new_ksu_type': 'Objective'},
+
 	'contributions': {'title': 'Contributions', 'new_ksu_type': 'Contribution'}, 
 	'experiences': {'title': 'Experiences', 'new_ksu_type': 'Experience'},  
 	'mybestself': {'title': 'Mybestself', 'new_ksu_type': 'SelfAttribute'},  
 	'people': {'title': 'Important People', 'new_ksu_type': 'Person'},  
 	'possesions': {'title': 'Possesions', 'new_ksu_type': 'Possesion'},  
 	'situation': {'title': 'Life Situation', 'new_ksu_type': 'Situation'},
-	'wisdom': {'title': 'Wisdom', 'new_ksu_type': 'Wisdom'},  
-	'indicators': {'title': 'Indicators', 'new_ksu_type': 'Indicator'}, 
+	'wisdom': {'title': 'Wisdom', 'new_ksu_type': 'Wisdom'},
 	'dashboard': {'title': 'Dashboard', 'new_ksu_type': 'Indicator'},
 }
 
