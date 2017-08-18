@@ -244,7 +244,7 @@ class Handler(webapp2.RequestHandler):
 		return game
 
 
-# ---- KASware3 ---- xx
+# ---- KASware3 ----
 class Home(Handler):
 
 	@super_user_bouncer
@@ -259,7 +259,24 @@ class Home(Handler):
 		event_details = json.loads(self.request.body);
 		user_action = event_details['user_action']
 
-		if user_action == 'RetrieveTheory':
+		if user_action in ['Action_Done', 'Action_Pushed']: #xx
+			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
+			ksu = self.update_event_date(ksu, user_action)
+			ksu.put()
+
+			new_event_date = ''
+			if ksu.event_date:
+				new_event_date = ksu.event_date.strftime('%Y-%m-%d')
+
+			self.response.out.write(json.dumps({
+				'mensaje':'Merit Event Created',
+				'ksu_id': ksu.key.id(),
+				'new_event_date': new_event_date,
+				'description': ksu.description,
+				}))
+			return	
+
+		elif user_action == 'RetrieveTheory':
 			ksu_set = KSU3.query(KSU3.theory_id == self.theory.key).fetch()
 			output = []
 			reasons_index = []
@@ -275,7 +292,7 @@ class Home(Handler):
 				}))
 			return
 
-		if user_action == 'SaveNewKSU':
+		elif user_action == 'SaveNewKSU':
 			ksu = KSU3(theory_id=self.theory.key)
 			ksu_type = event_details['ksu_type']
 			attributes = KASware3.ksu_type_attributes['Base'] + KASware3.ksu_type_attributes[ksu_type]
@@ -357,53 +374,6 @@ class Home(Handler):
 
 		setattr(ksu, fixed_key, fixed_value)
 		return ksu
-
-	# def ksu_to_dic(self, ksu):
-	# 	ksu_dic = {
-	# 		'ksu_id': ksu.key.id(),
-	# 		'ksu_type': ksu.ksu_type,
-	# 		'ksu_subtype': ksu.ksu_subtype, 
-			
-	# 		'description': ksu.description,
-	# 		'pic_url': ksu.pic_url,
-
-	# 		'comments': ksu.comments,
-	# 		'timer': ksu.timer,
-	# 		'size': ksu.size,
-			
-	# 		'status': ksu.status,
-	# 		'needs_mtnc': ksu.needs_mtnc,
-
-	# 		'is_active': ksu.is_active, 
-	# 		'is_critical': ksu.is_critical,						
-
-	# 		'at_anytime': ksu.at_anytime, 
-	# 		'is_private': ksu.is_private, 
-			
-	# 		'comments': ksu.comments,
-	# 		'tag':ksu.tag,
-
-	# 		'money_cost': ksu.money_cost,
-	# 	}
-
-	# 	ksu_dic['event_date'] = ''
-	# 	if ksu.event_date:
-	# 		ksu_dic['event_date'] = ksu.event_date.strftime('%Y-%m-%d'),
-
-	# 	ksu_dic['reason_id'] = ''	
-	# 	if ksu.reason_id:
-	# 		ksu_dic['reason_id'] = ksu.reason_id.id()
-						
-	# 	details_attributes = KASware3.ksu_type_attributes[ksu.ksu_type]
-	# 	if ksu.ksu_type in ['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion']:
-	# 		details_attributes += KASware3.ksu_type_attributes['LifePiece']
-
-	# 	details_dic = ksu.details
-	# 	for attr in details_attributes:
-	# 		if attr in details_dic:
-	# 			ksu_dic[attr] = details_dic[attr]
-
-	# 	return ksu_dic
 	
 	def ksu_to_dic(self, ksu):
 		ksu_dic = {
@@ -432,7 +402,6 @@ class Home(Handler):
 						
 		return ksu_dic
 
-
 	def get_ksu_type_attributes(self, ksu_type):
 		attributes = KASware3.ksu_type_attributes['Base'] + KASware3.ksu_type_attributes[ksu_type] 
 		
@@ -440,6 +409,38 @@ class Home(Handler):
 			attributes += KASware3.ksu_type_attributes['LifePiece']
 
 		return attributes
+
+	def update_event_date(self, ksu, user_action):#xx
+		today = (datetime.today()+timedelta(hours=self.theory.timezone))
+		tomorrow = today + timedelta(days=1)
+
+		if user_action == 'Action_Done':
+			repeats = ksu.details['repeats']
+			
+			if repeats in 'Never':
+				ksu.event_date = None
+			
+			elif repeats in 'Always':
+				ksu.event_date = today
+
+			if repeats in 'X_Days':
+				x_days = ksu.details['every_x_days']
+				ksu.event_date = today + timedelta(days=x_days)
+				
+			if repeats in 'Week':
+				return
+
+			if repeats in 'Month':
+				return
+
+			if repeats in 'Year':
+				return
+
+		if user_action == 'Action_Pushed':
+			ksu.event_date = tomorrow
+
+		return ksu
+
 		
 class SignUpLogIn(Handler):
 	def get(self):
@@ -715,7 +716,7 @@ class KsuEditor(Handler):
 		return
 
 	
-class PicuteUploadHandler(blobstore_handlers.BlobstoreUploadHandler): #xx
+class PicuteUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 	# @super_civilian_bouncer
 	def post(self):		
 		
@@ -2054,7 +2055,7 @@ def update_next_event(self, user_action, post_details, ksu):
 	print 'Este es el tipo de KSU que se esta intentado actualizar el evento'
 	print ksu.ksu_subtype
 
-	today =(datetime.today()+timedelta(hours=self.theory.timezone))
+	today = (datetime.today()+timedelta(hours=self.theory.timezone))
 	tomorrow = today + timedelta(days=1)
 	ksu_subtype = ksu.ksu_subtype	
 	

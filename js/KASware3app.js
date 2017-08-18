@@ -67,15 +67,19 @@ $(document).on('click', '.KsuActionButton', function(){
 	var ksu = $(this).closest('#KSU');
 	var action = $(this).attr('value');
 	// console.log(action)
-
+	
+	$(this).prop("disabled",true);
 	var actions_menu = {
 		'ShowKsuDetail': ShowKsuDetail,
 		'SaveNewKSU': SaveNewKSU,
 		'DeleteKSU': DeleteKSU,
 		'AddEventComments': AddEventComments,
-
+		'Action_Done': UpdateEventDate,
+		'Action_Pushed': UpdateEventDate,
 	}
+	
 	actions_menu[action](ksu);
+	$(this).prop("disabled",false);
 
 	function SaveNewKSU(ksu){
 		ksu.attr("value","")
@@ -144,6 +148,25 @@ $(document).on('click', '.KsuActionButton', function(){
 		ShowDetail(ksu);
 		return
 	};
+
+	function UpdateEventDate(ksu){
+		console.log('Update event date...')
+		$.ajax({
+			type: "POST",
+			url: "/",
+			dataType: 'json',
+			data: JSON.stringify({
+				'ksu_id': ksu.attr("value"),
+				'user_action': action
+
+			})
+		}).done(function(data){			
+			console.log(data); 
+			set_ksu_attr_value(ksu, 'event_date', data['new_event_date'])
+				
+		});			
+	};
+
 });
 
 
