@@ -70,6 +70,7 @@ class KSU3(ndb.Model):
 
 	status = ndb.StringProperty() #Wish, Present, Past #Remplaza is_realized e is_active #Indicates if a 'LifePiece' is either a wish or a RTBG or part of my life situation. And if an objective is acomplished or not.
 	is_active = ndb.BooleanProperty(default=True)
+	in_graveyard = ndb.BooleanProperty(default=False) 
 
 	needs_mtnc = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' requires additional effort to be preserved on a realized state 
 	is_critical = ndb.BooleanProperty(default=False)	

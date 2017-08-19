@@ -266,21 +266,26 @@ class Home(Handler):
 		event_details = json.loads(self.request.body);
 		user_action = event_details['user_action']
 		
-		logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-		logging.info('Event details')
-		logging.info(event_details)
-		logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+		# logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+		# logging.info('Event details')
+		# logging.info(event_details)
+		# logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
 
-		if user_action == 'Action_Done':
+		if user_action == 'Action_Done': #xx
 			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
 			event = self.create_event(ksu, user_action, event_details)
 			event.put()
+			
+			ksu = self.update_ksu(ksu, user_action)
+
+			ksu.put()
+
 			self.response.out.write(json.dumps({
 				'mensaje':'Evento Guardado',
 				}))
 			return
 
-		if user_action in ['Action_Skipped', 'Action_Pushed']: #xx
+		elif user_action in ['Action_Skipped', 'Action_Pushed']: 
 			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
 			ksu = self.update_event_date(ksu, user_action)
 			ksu.put()
@@ -298,7 +303,7 @@ class Home(Handler):
 			return	
 
 		elif user_action == 'RetrieveTheory':
-			ksu_set = KSU3.query(KSU3.theory_id == self.theory.key).fetch()
+			ksu_set = KSU3.query(KSU3.theory_id == self.theory.key).filter(KSU3.in_graveyard == False).fetch()
 			output = []
 			reasons_index = []
 			for ksu in ksu_set:
@@ -356,6 +361,15 @@ class Home(Handler):
 					'mensaje':'Nueva accion enviada',
 					}))
 		return
+
+	
+	def update_ksu(self, ksu, user_action): ##xx Aqui nos quedamos
+
+		if user_action == 'Action_Done':
+			ksu = self.update_event_date(ksu, user_action)
+			if ksu.details['repeats'] == 'Never':
+				ksu.in_graveyard = True
+		return ksu
 
 	def update_ksu_attribute(self, ksu, attr_key, attr_value):
 		attr_type = KASware3.attributes_guide[attr_key][0]
