@@ -74,7 +74,8 @@ $(document).on('click', '.KsuActionButton', function(){
 		'SaveNewKSU': SaveNewKSU,
 		'DeleteKSU': DeleteKSU,
 		'AddEventComments': AddEventComments,
-		'Action_Done': UpdateEventDate,
+		'Action_Done': ActionDone,
+		'Action_Skipped': UpdateEventDate,
 		'Action_Pushed': UpdateEventDate,
 	}
 	
@@ -165,6 +166,26 @@ $(document).on('click', '.KsuActionButton', function(){
 			set_ksu_attr_value(ksu, 'event_date', data['new_event_date'])
 				
 		});			
+	};
+
+	function ActionDone(ksu){
+		console.log('Action Done...')
+		var score =	ksu.find('#effort_score').text();
+
+		$.ajax({
+			type: "POST",
+			url: "/",
+			dataType: 'json',
+			data: JSON.stringify({
+				'ksu_id': ksu.attr("value"),
+				'user_action': action,
+				'score': score, //xx
+				'size': get_ksu_attr_value(ksu, ksu.find('#size')),
+				'duration': get_ksu_attr_value(ksu, ksu.find('#timer')),
+			})
+		}).done(function(data){			
+			console.log(data); 
+		});
 	};
 
 });

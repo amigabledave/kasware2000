@@ -90,16 +90,16 @@ class KSU3(ndb.Model):
 	# ImIn_details = ndb.JsonProperty(default={'positive_label':'Delighted', 'neutral_label':'Satisfied', 'negative_label':'Dissapointed', 'units':'Units'})	
 
 
-
 class Event3(ndb.Model):
 	theory_id = ndb.KeyProperty(kind=Theory, required=True)	
-	ksu_id = ndb.KeyProperty(kind=KSU, required=True)
+	ksu_id = ndb.KeyProperty(kind=KSU3, required=True)
 	created = ndb.DateTimeProperty(auto_now_add=True)	
 	event_date = ndb.DateTimeProperty(required=True) #User date
 
 	event_type = ndb.StringProperty(required=True)
-	score = ndb.IntegerProperty(default=1)
-	quality = ndb.StringProperty(required=True)
+	score = ndb.IntegerProperty(default=0)
+	size = ndb.IntegerProperty(default=1)
+	duration = ndb.IntegerProperty(default=0)
 	comments = ndb.StringProperty()
 
 
@@ -155,7 +155,6 @@ class KSU(ndb.Model):
 	wish_type = ndb.StringProperty(default='doing')
 	ImIn_details = ndb.JsonProperty(default={'positive_label':'Delighted', 'neutral_label':'Satisfied', 'negative_label':'Dissapointed', 'units':'Units'})
 	
-
 
 class Event(ndb.Model):
 

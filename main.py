@@ -14,9 +14,13 @@ from google.appengine.api import images
 constants = constants.constants
 
 Theory = datastore.Theory
+
 KSU = datastore.KSU
 KSU3 = datastore.KSU3
+
 Event = datastore.Event
+Event3 = datastore.Event3
+
 os_ksus = kasware_os.os_ksus
 
 
@@ -244,6 +248,9 @@ class Handler(webapp2.RequestHandler):
 		return game
 
 
+
+
+
 # ---- KASware3 ----
 class Home(Handler):
 
@@ -258,8 +265,22 @@ class Home(Handler):
 	def post(self):
 		event_details = json.loads(self.request.body);
 		user_action = event_details['user_action']
+		
+		logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+		logging.info('Event details')
+		logging.info(event_details)
+		logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
 
-		if user_action in ['Action_Done', 'Action_Pushed']: #xx
+		if user_action == 'Action_Done':
+			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
+			event = self.create_event(ksu, user_action, event_details)
+			event.put()
+			self.response.out.write(json.dumps({
+				'mensaje':'Evento Guardado',
+				}))
+			return
+
+		if user_action in ['Action_Skipped', 'Action_Pushed']: #xx
 			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
 			ksu = self.update_event_date(ksu, user_action)
 			ksu.put()
@@ -410,13 +431,13 @@ class Home(Handler):
 
 		return attributes
 
-	def update_event_date(self, ksu, user_action):#xx
+	def update_event_date(self, ksu, user_action):
 		today = (datetime.today()+timedelta(hours=self.theory.timezone))
 		# today = datetime(2017,12,5)
 		tomorrow = today + timedelta(days=1)
 		ksu_details = ksu.details
 
-		if user_action == 'Action_Done':
+		if user_action in ['Action_Done', 'Action_Skipped']:
 			repeats = ksu_details['repeats']
 			
 			if repeats == 'Never':
@@ -444,7 +465,7 @@ class Home(Handler):
 						x_days += 1				
 				ksu.event_date = today + timedelta(days=x_days)
 
-			elif repeats in ['Month', 'Year']:#xx
+			elif repeats in ['Month', 'Year']:
 				next_year = today.year
 				
 				if repeats == 'Month':					
@@ -457,7 +478,7 @@ class Home(Handler):
 					next_month = int(ksu_details['of_month'])
 					next_year += 1
 				
-				max_day = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]#xx
+				max_day = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 				next_day = min(int(ksu_details['on_the_day']), max_day[next_month - 1])
 					
 				ksu.event_date = datetime(next_year, next_month, next_day) 
@@ -468,6 +489,48 @@ class Home(Handler):
 
 		return ksu
 
+	def create_event(self, ksu, user_action, event_details):
+		ksu_subtype = ksu.ksu_subtype
+		
+		if user_action == 'Action_Done':
+			if ksu_subtype in ['Proactive', 'Reactive']:
+				event_type = 'Effort'
+			elif ksu_subtype == 'Negative':
+				event_type = 'Stupidity'
+
+		event_date = (datetime.today() + timedelta(hours=self.theory.timezone))
+		if ksu.event_date:
+			event_date = ksu.event_date
+
+		score = 0
+		if 'score' in event_details:
+			score = int(event_details['score'])
+
+		size = ksu.size
+		if 'size' in event_details:
+			size = int(event_details['size'])	
+
+		duration = 0
+		if 'duration' in event_details:
+			duration = int(event_details['duration'])
+
+		comments = ''
+		if comments in event_details:
+			comments = event_details['comments']
+
+		event = Event3(
+			theory_id = ksu.theory_id,
+			ksu_id = ksu.key,	
+			event_date = event_date, 
+
+			event_type = event_type,
+			score = score,
+			duration = duration,
+			size = size,
+			comments = comments)
+
+		return event
+	
 		
 class SignUpLogIn(Handler):
 	def get(self):
