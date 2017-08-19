@@ -223,10 +223,11 @@ $(document).on('focusin', '.KsuAttr', function(){
 			
 			UpdateKsuAttribute(ksu_id, attr_key, attr_value)
 			
-			if( attr_key == 'money_cost'){//xx
+			if( attr_key == 'money_cost'){
 				HideShowCostFrequency(ksu)	
 			}
 		};
+		$(this).off()
 	})
 });
 
@@ -542,8 +543,8 @@ function fixTemplateDivAttr(template, div_id, attr_key, attr_value){
 
 function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
 	
-	// console.log(attr_key);
-	// console.log(attr_value);
+	console.log(attr_key);
+	console.log(attr_value);
 
 	$.ajax({
 		type: "POST",
@@ -631,12 +632,12 @@ var select_toBeHidden = {
 
 var select_toBeShown = {
 	'repeats':{
-		'R000':[],
-		'R001':[],
-		'R002':['#repeats_Xdays_col'],
-		'R007':['#repeats_week_col'],
-		'R030':['#repeats_day_col'],
-		'R365':['#repeats_day_col', '#repeats_month_col']
+		'Never':[],
+		'Always':[],
+		'X_Days':['#repeats_Xdays_col'],
+		'Week':['#repeats_week_col'],
+		'Month':['#repeats_day_col'],
+		'Year':['#repeats_day_col', '#repeats_month_col']
 	},
 }
 

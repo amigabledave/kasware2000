@@ -412,29 +412,56 @@ class Home(Handler):
 
 	def update_event_date(self, ksu, user_action):#xx
 		today = (datetime.today()+timedelta(hours=self.theory.timezone))
+		# today = datetime(2017,12,5)
 		tomorrow = today + timedelta(days=1)
+		ksu_details = ksu.details
 
 		if user_action == 'Action_Done':
-			repeats = ksu.details['repeats']
+			repeats = ksu_details['repeats']
 			
-			if repeats in 'Never':
+			if repeats == 'Never':
 				ksu.event_date = None
 			
-			elif repeats in 'Always':
+			elif repeats == 'Always':
 				ksu.event_date = today
 
-			if repeats in 'X_Days':
-				x_days = ksu.details['every_x_days']
+			elif repeats == 'X_Days':
+				x_days = int(ksu.details['every_x_days'])
 				ksu.event_date = today + timedelta(days=x_days)
 				
-			if repeats in 'Week':
-				return
+			elif repeats == 'Week':
+				todays_weekday = today.weekday()
+				
+				week = ['every_mon','every_tue','every_wed','every_thu','every_fri','every_sat', 'every_sun']
+				week = week[todays_weekday:] + week[0:todays_weekday]
+				week = week[1:7]
 
-			if repeats in 'Month':
-				return
+				x_days = 1
+				for day in week:
+					if ksu_details[day]:
+						break
+					else:
+						x_days += 1				
+				ksu.event_date = today + timedelta(days=x_days)
 
-			if repeats in 'Year':
-				return
+			elif repeats in ['Month', 'Year']:#xx
+				next_year = today.year
+				
+				if repeats == 'Month':					
+					next_month = today.month + 1
+					if next_month == 13:
+						next_month = 1
+						next_year += 1
+				
+				elif repeats == 'Year':
+					next_month = int(ksu_details['of_month'])
+					next_year += 1
+				
+				max_day = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]#xx
+				next_day = min(int(ksu_details['on_the_day']), max_day[next_month - 1])
+					
+				ksu.event_date = datetime(next_year, next_month, next_day) 
+				
 
 		if user_action == 'Action_Pushed':
 			ksu.event_date = tomorrow
