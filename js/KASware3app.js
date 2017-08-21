@@ -439,7 +439,7 @@ function render_ksu(ksu_dic){
 	ksu.attr('ksu_type', ksu_dic['ksu_type']);
 	ksu.attr("value", ksu_dic['ksu_id']);
 	
-	// console.log(ksu_dic);
+	console.log(ksu_dic);
 	var ksu_type = ksu_dic['ksu_type'];
 	var attributes = ksu_type_attributes['Base'].concat(ksu_type_attributes[ksu_type]);	
 	if (['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion', 'Situation'].indexOf(ksu_type) >= 0){		
@@ -678,8 +678,8 @@ function fixTemplateDivAttr(template, div_id, attr_key, attr_value){
 
 function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
 	
-	// console.log(attr_key);
-	// console.log(attr_value);
+	console.log(attr_key);
+	console.log(attr_value);
 
 	$.ajax({
 		type: "POST",

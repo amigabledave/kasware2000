@@ -96,13 +96,10 @@ attributes_guide = {
 	'event_date': ['DateTime', 'Standard'],
 
 	'status': ['String', 'Select'],
-	'is_realized': ['Boolean', 'Checkbox'],
+
 	'needs_mtnc': ['Boolean', 'Checkbox'],
-	
-	'is_active': ['Boolean', 'Checkbox'], 
-	'is_critical': ['Boolean', 'Checkbox'],
 	'is_private': ['Boolean', 'Checkbox'],
-	'at_anytime': ['Boolean', 'Checkbox'], 
+	'anywhere': ['Boolean', 'Checkbox'], 
 	'is_optional': ['Boolean', 'Checkbox'],
 
 	'comments': ['Text', 'Standard'],
@@ -149,12 +146,12 @@ ksu_type_attributes = {
 
 		'is_private',
 		'comments',
-		'tag',		
-		'cost_frequency',			
+		'tag',							
 	],
 
 	'Action': [
 		'money_cost',
+		'cost_frequency',
 		'best_time', 
 		'trigger',
 		'exceptions',
@@ -176,20 +173,19 @@ ksu_type_attributes = {
 		'every_sat', 
 		'every_sun',
 	
-		'is_active', 
-		'is_critical',
-		'at_anytime',
-		'is_optional',
+		'anywhere',
 		'status',		
 	],
 
 	'Objective': [
 		'money_cost',
+		'cost_frequency',
 		'event_date',
 	],
 
 	'LifePiece':[
 		'money_cost',
+		'cost_frequency',
 		'status',
 		'needs_mtnc',						
 	],

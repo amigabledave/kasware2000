@@ -81,27 +81,18 @@ class KSU3(ndb.Model):
 	event_date = ndb.DateTimeProperty()
 
 	status = ndb.StringProperty() #Wish, Present, Past #Remplaza is_realized e is_active #Indicates if a 'LifePiece' is either a wish or a RTBG or part of my life situation. And if an objective is acomplished or not.
-	is_active = ndb.BooleanProperty(default=True)
+	
 	in_graveyard = ndb.BooleanProperty(default=False) 
-
-	needs_mtnc = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' requires additional effort to be preserved on a realized state 
-	is_critical = ndb.BooleanProperty(default=False)	
+	needs_mtnc = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' requires additional effort to be preserved on a realized state 	
 	is_private = ndb.BooleanProperty(default=False)
-	at_anytime = ndb.BooleanProperty(default=False)
-	is_optional = ndb.BooleanProperty(default=False)
+	anywhere = ndb.BooleanProperty(default=False)
 
 	comments = ndb.TextProperty()
 	tag = ndb.StringProperty()
-	details = ndb.JsonProperty(default={}) # Subtype details. E.g. Birthday for a person, or exceptions for KAS4, Triggers for KAS3, cost for stuff	
 	
 	money_cost = ndb.IntegerProperty(default=0)
-
-	# event_date = ndb.DateProperty()
-	# best_time = ndb.TimeProperty()
-	# frequency = ndb.JsonProperty() #Now this will include the repeats and repeats_on attributes
-	# target = ndb.JsonProperty()
-	# cost = ndb.JsonProperty(default={'money_cost':0, 'days_cost':0, 'hours_cost':0})
-	# ImIn_details = ndb.JsonProperty(default={'positive_label':'Delighted', 'neutral_label':'Satisfied', 'negative_label':'Dissapointed', 'units':'Units'})	
+	details = ndb.JsonProperty(default={}) # Subtype details. E.g. Birthday for a person, or exceptions for KAS4, Triggers for KAS3, cost for stuff	
+	
 
 
 class Event3(ndb.Model):

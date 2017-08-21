@@ -424,8 +424,9 @@ class Home(Handler):
 		for attribute in ksu_attributes:
 			attr_type = KASware3.attributes_guide[attribute][0]
 
-			if attr_type in  ['String', 'Text', 'Integer']:
+			if attr_type in  ['String', 'Text', 'Integer', 'Boolean']:
 				ksu_dic[attribute] = getattr(ksu, attribute)
+			
 			elif attr_type == 'Details':
 				if attribute in details_dic:
 					ksu_dic[attribute] = details_dic[attribute]
