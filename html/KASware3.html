@@ -53,9 +53,9 @@
 				</div>
 
 				<div class="col-xs-2 col-sm-1 col-md-1 col-lg-1 text-left" style="padding-left:0px;">
-					<div style="margin-top: 12px; color: white;"><a href="/HistoryViewer" style="color:white;">
-						<span class="glyphicon glyphicon-flag"> </span><span id="points_today"> {{game['points_today']|round|int}}</span></a>			
-					</div>
+					
+					<button type="button" class="btn SectionButton btn-default" value="history" style="height: 25px; margin-top: 12px; padding-top: 0; font-size: 16px;"><span class="glyphicon glyphicon-flag" aria-hidden="true" style="margin-right: 5px;"></span></span><span id="points_today"> {{game['points_today']|round|int}}</span></button>
+					
 				</div>
 
 
@@ -161,6 +161,11 @@
 						{% include "MasterKSU.html" %}
 					</div>
 				</div>
+
+				<dir class="row hidden" id="HistoryHolder">
+					
+				</dir>
+
 				<br><br>				
 				<div class="row">
 					<div class="col-xs-12 copywright-message"> What Would You Have To Do To Experience The Best Life You Could Live? </div>

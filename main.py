@@ -286,7 +286,7 @@ class Home(Handler):
 			self.response.out.write(json.dumps(game))
 			return
 
-		elif user_action in ['Action_Skipped', 'Action_Pushed']: 
+		elif user_action in ['Action_Skipped', 'Action_Pushed', 'SendToMission']: 
 			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
 			ksu = self.update_event_date(ksu, user_action)
 			ksu.put()
@@ -498,10 +498,14 @@ class Home(Handler):
 				next_day = min(int(ksu_details['on_the_day']), max_day[next_month - 1])
 					
 				ksu.event_date = datetime(next_year, next_month, next_day) 
-				
 
+				
 		if user_action == 'Action_Pushed':
 			ksu.event_date = tomorrow
+
+
+		if user_action == 'SendToMission':
+			ksu.event_date = today
 
 		return ksu
 

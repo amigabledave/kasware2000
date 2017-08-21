@@ -68,7 +68,7 @@ $(document).on('click', '.KsuActionButton', function(){
 	var action = $(this).attr('value');
 	// console.log(action)
 	
-	$(this).prop("disabled",true);
+	$(this).prop("disabled",true);	
 	var actions_menu = {
 		'ShowKsuDetail': ShowKsuDetail,
 		'SaveNewKSU': SaveNewKSU,
@@ -77,8 +77,9 @@ $(document).on('click', '.KsuActionButton', function(){
 		'Action_Done': ActionDone,
 		'Action_Skipped': UpdateEventDate,
 		'Action_Pushed': UpdateEventDate,
+		'SendToMission': UpdateEventDate,
 	}
-	
+
 	actions_menu[action](ksu);
 	$(this).prop("disabled",false);
 
@@ -168,7 +169,7 @@ $(document).on('click', '.KsuActionButton', function(){
 		});			
 	};
 
-	function ActionDone(ksu){//xx
+	function ActionDone(ksu){
 		console.log('Action Done...')
 		
 		var ksu_subtype = get_ksu_attr_value(ksu, 'ksu_subtype');
@@ -197,32 +198,8 @@ $(document).on('click', '.KsuActionButton', function(){
 			$('#points_today').text(' ' + data['points_today']);
 		});
 	};
-
 });
 
-
-
-//xx
-function UpdateMerits(ksu){
-	var merits = 0
-	var ksu_subtype = get_ksu_attr_value(ksu, 'ksu_subtype'); 
-	var size = ksu.find('input:radio[name=size]:checked').val();
-
-	var timer = 0;
-	if ( ksu_subtype == 'Proactive'){
-		timer = $('#timer').val();
-	}
-	
-	var base = {
-		'Proactive': {1:0, 2:1, 3:5, 4:5},
-		'Reactive': {1:1, 2:5, 3:10, 4:10},
-		'Negative': {1:5, 2:20, 3:150, 4:500},
-	};
-
-	merits = Math.floor(size*10*timer/60) + base[ksu_subtype][size]
-
-	ksu.find('#' + ksu_subtype + '_Merits').text(merits)
-}
 
 $(document).on('change', '.ScoreInput', function(){
 	var ksu = $(this).closest('#KSU');
@@ -280,8 +257,7 @@ $(document).on('click', '.PlayStopButton', function(){ //## Aqui nos quedamos --
 		$(this).attr("button_action", "Stop")
 		
 		timer(target_timer, starting_minutes);
-		// timer(target_timer, puntos_ya_agregados, effort_denominator, kpts_value, starting_seconds);				
-
+						
 	} else {
 
 		ksu.find('#EffortDoneButton').removeClass('PlayPulse');
@@ -296,13 +272,13 @@ $(document).on('click', '.PlayStopButton', function(){ //## Aqui nos quedamos --
 
 function add(target_timer, starting_minutes) {	
     
-	var minutes_passed = Math.floor((parseFloat(new Date().valueOf()) - parseFloat(start_time.valueOf()))/1000); //Ya solo falta dividir sobre 60 aqui
-	console.log('Minutes passed: ' + minutes_passed)
+	var minutes_passed = Math.floor((parseFloat(new Date().valueOf()) - parseFloat(start_time.valueOf()))/(1000*60)); //
+	// console.log('Minutes passed: ' + minutes_passed)
 	var minutes_timer = target_timer.val()
 	var total_minutes = starting_minutes + minutes_passed		
-    console.log('Munutes Timer: ' + minutes_timer)
-    console.log('Total Minutes:' + total_minutes)
-    console.log('-----------------------------')
+    // console.log('Munutes Timer: ' + minutes_timer)
+    // console.log('Total Minutes:' + total_minutes)
+    // console.log('-----------------------------')
     if (total_minutes > minutes_timer){
     	var ksu = target_timer.closest('#KSU');
     	UpdateMerits(ksu)
@@ -319,7 +295,7 @@ function add(target_timer, starting_minutes) {
 function timer(target_timer, starting_minutes) {	
     t = setTimeout(function(){
     	add(target_timer, starting_minutes)
-    }, 1000);
+    }, 10000);//Para que cheque cada 10 segundos en lugar de cada segundo
 }
 
 
@@ -439,7 +415,7 @@ function render_ksu(ksu_dic){
 	ksu.attr('ksu_type', ksu_dic['ksu_type']);
 	ksu.attr("value", ksu_dic['ksu_id']);
 	
-	console.log(ksu_dic);
+	// console.log(ksu_dic);
 	var ksu_type = ksu_dic['ksu_type'];
 	var attributes = ksu_type_attributes['Base'].concat(ksu_type_attributes[ksu_type]);	
 	if (['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion', 'Situation'].indexOf(ksu_type) >= 0){		
@@ -496,6 +472,28 @@ function AddKsu_idToPicInput(ksu){
 	var new_action = new_pic_input_action.concat('?ksu_id='.concat(ksu.attr('value')))	
 	pic_form.attr('action', new_action)
 	return
+}
+
+
+function UpdateMerits(ksu){
+	var merits = 0
+	var ksu_subtype = get_ksu_attr_value(ksu, 'ksu_subtype'); 
+	var size = ksu.find('input:radio[name=size]:checked').val();
+
+	var timer = 0;
+	if ( ksu_subtype == 'Proactive'){
+		timer = ksu.find('#timer').val();
+	}
+	
+	var base = {
+		'Proactive': {1:0, 2:1, 3:5, 4:5},
+		'Reactive': {1:1, 2:5, 3:10, 4:10},
+		'Negative': {1:5, 2:20, 3:150, 4:500},
+	};
+
+	merits = Math.floor(size*10*timer/60) + base[ksu_subtype][size]
+
+	ksu.find('#' + ksu_subtype + '_Merits').text(merits)
 }
 
 
@@ -699,19 +697,32 @@ function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
 };
 
 
-function FixTheoryView(){
+function FixTheoryView(){//xx
 	var selected_section = $('.SelectedSection').first().attr('value');
 	var section_ksu_type = section_details[selected_section]['new_ksu_type'];
-	var ksu_set = $('.KSU');
+	var holder = section_details[selected_section]['holder'];
 
-	for (var i = ksu_set.length - 1; i >= 0; i--) {
-		var ksu = $(ksu_set[i]);
-		if(ksu.attr('ksu_type') == section_ksu_type){
-			ksu.show()
-		} else {
-			ksu.hide()
+	var holders = ['TheoryHolder', 'HistoyHolder', 'SettingsHolder']
+	for (var i = holders.length - 1; i >= 0; i--) {
+		$('#' + holders[i]).addClass('hidden')
+	}
+	$('#' + holder).removeClass('hidden')
+
+	if( holder == 'TheoryHolder'){
+		var ksu_set = $('.KSU');
+
+		for (var i = ksu_set.length - 1; i >= 0; i--) {
+			var ksu = $(ksu_set[i]);
+			if(ksu.attr('ksu_type') == section_ksu_type){
+				ksu.show()
+			} else {
+				ksu.hide()
+			}
 		}
 	} 
+	
+	$('#CreateNewKSU').prop("disabled", section_ksu_type == 'disabled')
+
 };
 
 
@@ -739,7 +750,6 @@ function FormatBasedOnStatus(ksu, status){
 		display_section.addClass(StatusFormat[status]);
 	}
 
-
 }
 
 
@@ -759,19 +769,21 @@ var ksu_type_attr_details = {
 
 
 var section_details = {
-	'mission':{'title': "Today's Mission", 'new_ksu_type': 'Action'},
-	'kas': {'title': 'Key Action Set', 'new_ksu_type': 'Action'},  
-	'objectives': {'title': 'Mile Stones', 'new_ksu_type': 'Objective'}, 
-	'purpose':{'title': "Current Purpose", 'new_ksu_type': 'Objective'},
+	'mission':{'title': "Today's Mission", 'new_ksu_type': 'Action', 'holder':'TheoryHolder'},
+	'kas': {'title': 'Key Action Set', 'new_ksu_type': 'Action', 'holder':'TheoryHolder'},  
+	'objectives': {'title': 'Mile Stones', 'new_ksu_type': 'Objective', 'holder':'TheoryHolder'}, 
+	'purpose':{'title': "Current Purpose", 'new_ksu_type': 'disabled', 'holder':'TheoryHolder'},
 
-	'contributions': {'title': 'Contributions', 'new_ksu_type': 'Contribution'}, 
-	'experiences': {'title': 'Experiences', 'new_ksu_type': 'Experience'},  
-	'mybestself': {'title': 'Mybestself', 'new_ksu_type': 'SelfAttribute'},  
-	'people': {'title': 'Important People', 'new_ksu_type': 'Person'},  
-	'possesions': {'title': 'Possesions', 'new_ksu_type': 'Possesion'},  
-	'situation': {'title': 'Life Situation', 'new_ksu_type': 'Situation'},
-	'wisdom': {'title': 'Wisdom', 'new_ksu_type': 'Wisdom'},
-	'dashboard': {'title': 'Dashboard', 'new_ksu_type': 'Indicator'},
+	'contributions': {'title': 'Contributions', 'new_ksu_type': 'Contribution', 'holder':'TheoryHolder'}, 
+	'experiences': {'title': 'Experiences', 'new_ksu_type': 'Experience', 'holder':'TheoryHolder'},  
+	'mybestself': {'title': 'Mybestself', 'new_ksu_type': 'SelfAttribute', 'holder':'TheoryHolder'},  
+	'people': {'title': 'Important People', 'new_ksu_type': 'Person', 'holder':'TheoryHolder'},  
+	'possesions': {'title': 'Possesions', 'new_ksu_type': 'Possesion', 'holder':'TheoryHolder'},  
+	'situation': {'title': 'Life Situation', 'new_ksu_type': 'Situation', 'holder':'TheoryHolder'},
+	'wisdom': {'title': 'Wisdom', 'new_ksu_type': 'Wisdom', 'holder':'TheoryHolder'},
+	'dashboard': {'title': 'Dashboard', 'new_ksu_type': 'Indicator', 'holder':'TheoryHolder'},
+
+	'history':{'title': 'History', 'new_ksu_type': 'disabled', 'holder':'HistoyHolder'},
 }
 
 
