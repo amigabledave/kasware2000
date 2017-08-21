@@ -18,10 +18,12 @@
 		</div>	
 
 		<div class="col-xs-1 TypeSpecific" target_type='Action'>
-			<button type="button" class="btn btn-success ksu-circle-btn KsuActionButton SubtypeSpecific" avoid_subtype="Negative" name="action_description" value='Action_Done' style="margin-left: 3px">
-			<span id="effort_score" style="font-weight: bold;">1</span></button>
+			<button type="button" class="btn btn-success ksu-circle-btn KsuActionButton SubtypeSpecific PlayPulse" avoid_subtype="Negative" name="action_description" value='Action_Done' style="margin-left: 3px">
+			<span class="SubtypeSpecific" avoid_subtype="Reactive" id="Proactive_Merits" style="font-weight: bold;">1</span>
+			<span class="SubtypeSpecific" avoid_subtype="Proactive" id="Reactive_Merits" style="font-weight: bold;">1</span>
+			</button>
 
-			<button type="button" class="btn btn-danger ksu-circle-btn KsuActionButton SubtypeSpecific hidden" avoid_subtype="Proactive Reactive" name="action_description" value='Action_Done' style="margin-left: 3px"><span id="stupidity_score" style="font-weight: bold;">1</span></button>
+			<button type="button" class="btn btn-danger ksu-circle-btn KsuActionButton SubtypeSpecific hidden" avoid_subtype="Proactive Reactive" name="action_description" value='Action_Done' style="margin-left: 3px"><span id="Negative_Merits" style="font-weight: bold;">1</span></button>
 		</div>
 		
 		<div class="" id="DescriptionHolder">
@@ -34,10 +36,11 @@
 		</div>
 		
 		<div class="col-xs-1 TypeSpecific" target_type='Action'>
-			<div class="row">
-				<input type="number" name="timer" class="KsuAttr " id="timer" style="height: 18px; width: 35px; text-align: center; border: 0px;color: purple;" value="0">
+			<div class="row SubtypeSpecific" avoid_subtype="Reactive Negative">
+				<input type="number" name="timer" class="KsuAttr ScoreInput" id="timer" style="height: 18px; width: 35px; text-align: center; border: 0px; color: purple;" value="0">
 			</div>
-			<div class="row">
+
+			<div class="row SubtypeSpecific" avoid_subtype="Reactive Negative">
 				<button type="button" class="btn btn-default displaySectionVerticalButton PlayStopButton ViewerOptionsButton" id="ksu_timer_button" button_action="Play" style="margin-left: 4px"><span id="PlayStopGlyphicon" class="glyphicon glyphicon-play" style="margin-top: -1px;"></span></button>
 			</div>
 		</div>
@@ -52,22 +55,41 @@
 	<div class="row hidden" id="DetailDiv"><div class="col-xs-12" style=" padding-left: 20px; padding-right: 20px;">							
 		<div class="row TypeSpecific" name="ActionActionsRow" target_type='Action'>			
 			<div class="inKSUhrDiv"><hr class="inKSUhr" style=""></div>
-			<div class="col-xs-7 form-group">							
-				<b>Effort intensity:</b>
+			<div class="col-xs-8 form-group">							
+				<b class="SubtypeSpecific" avoid_subtype="Reactive Negative">Effort Intensity:</b>
+				<b class="SubtypeSpecific" avoid_subtype="Proactive Negative">Reaction Difficulty:</b>
+				<b class="SubtypeSpecific" avoid_subtype="Proactive Reactive">Stupidity Severity:</b>
 				<form id="size" name="size">
 					<label class="radio-inline">
-						<input type="radio" name="size" value="30" class="KsuAttr"> Uncomfortable
+						<input type="radio" name="size" value="1" class="KsuAttr ScoreInput">
+						<span class="SubtypeSpecific" avoid_subtype="Reactive Negative"> Relaxed </span>
+						<span class="SubtypeSpecific" avoid_subtype="Proactive Negative"> Easy </span>
+						<span class="SubtypeSpecific" avoid_subtype="Reactive Proactive"> Minor </span> 
 					</label>
+
 					<label class="radio-inline">
-						<input type="radio" name="size" value="20" class="KsuAttr" checked="checked"> Focused
+						<input type="radio" name="size" value="2" class="KsuAttr ScoreInput" checked="checked">
+						<span class="SubtypeSpecific" avoid_subtype="Reactive Negative"> Focused </span> 
+						<span class="SubtypeSpecific" avoid_subtype="Proactive Negative"> Challenging </span>
+						<span class="SubtypeSpecific" avoid_subtype="Reactive Proactive"> Unaceptable </span> 
 					</label>
+
 					<label class="radio-inline">
-						<input type="radio" name="size" value="10" class="KsuAttr"> Relaxed 
+						<input type="radio" name="size" value="3" class="KsuAttr ScoreInput">
+						<span class="SubtypeSpecific" avoid_subtype="Reactive Negative"> Uncomfortable </span>
+						<span class="SubtypeSpecific" avoid_subtype="Proactive Negative"> Heroic </span>
+						<span class="SubtypeSpecific" avoid_subtype="Reactive Proactive"> Despicable </span> 
 					</label>
+			
+					<label class="radio-inline SubtypeSpecific" avoid_subtype="Proactive Reactive">
+						<input type="radio" name="size" value="4" class="KsuAttr ScoreInput">
+						<span> Horrible </span>
+					</label>
+
 				</form>	
 			</div>
 			
-			<div class="col-xs-5">
+			<div class="col-xs-4">
 				<div class="btn-group pull-right form-group" role="group" aria-label="..." style="margin-top: 3px;">
 					
 					<button type="button" class="btn btn-default TimeBarButton BarButton TypeSpecific" target_type='Action' name="" value=''><img style="height: 15px;" class="img-circle" src="images/ic_watch_later_black_24dp_1x.png"></button>

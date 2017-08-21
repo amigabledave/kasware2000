@@ -89,7 +89,7 @@ $(document).on('click', '.KsuActionButton', function(){
 		console.log(ksu_attributes);
 		for (var i = ksu_attributes.length - 1; i >= 0; i--) {
 			var KsuAttr = $(ksu_attributes[i]);
-			attributes_dic[KsuAttr.attr("name")] = get_ksu_attr_value(ksu, KsuAttr)
+			attributes_dic[KsuAttr.attr("name")] = get_ksu_attr_value(ksu, KsuAttr.attr("name"))
 		} 
 		
 		attributes_dic['user_action'] = 'SaveNewKSU';
@@ -168,10 +168,12 @@ $(document).on('click', '.KsuActionButton', function(){
 		});			
 	};
 
-	function ActionDone(ksu){
+	function ActionDone(ksu){//xx
 		console.log('Action Done...')
-		var score =	ksu.find('#effort_score').text();
-
+		
+		var ksu_subtype = get_ksu_attr_value(ksu, 'ksu_subtype');
+		var score =	ksu.find('#'+ ksu_subtype +'_Merits').text();
+		ksu.fadeOut('slow');
 		$.ajax({
 			type: "POST",
 			url: "/",
@@ -179,15 +181,52 @@ $(document).on('click', '.KsuActionButton', function(){
 			data: JSON.stringify({
 				'ksu_id': ksu.attr("value"),
 				'user_action': action,
-				'score': score, //xx
-				'size': get_ksu_attr_value(ksu, ksu.find('#size')),
-				'duration': get_ksu_attr_value(ksu, ksu.find('#timer')),
+				'score': score,
+				'size': get_ksu_attr_value(ksu, 'size'),
+				'duration': get_ksu_attr_value(ksu, 'timer'),
 			})
-		}).done(function(data){			
+		}).done(function(data){
 			console.log(data); 
+			
+			if(!data['in_graveyard']){
+				ksu.fadeIn('slow')
+			} else {
+				ksu.remove()
+			}
+			
+			$('#points_today').text(' ' + data['points_today']);
 		});
 	};
 
+});
+
+
+
+//xx
+function UpdateMerits(ksu){
+	var merits = 0
+	var ksu_subtype = get_ksu_attr_value(ksu, 'ksu_subtype'); 
+	var size = ksu.find('input:radio[name=size]:checked').val();
+
+	var timer = 0;
+	if ( ksu_subtype == 'Proactive'){
+		timer = $('#timer').val();
+	}
+	
+	var base = {
+		'Proactive': {1:0, 2:1, 3:5, 4:5},
+		'Reactive': {1:1, 2:5, 3:10, 4:10},
+		'Negative': {1:5, 2:20, 3:150, 4:500},
+	};
+
+	merits = Math.floor(size*10*timer/60) + base[ksu_subtype][size]
+
+	ksu.find('#' + ksu_subtype + '_Merits').text(merits)
+}
+
+$(document).on('change', '.ScoreInput', function(){
+	var ksu = $(this).closest('#KSU');
+	UpdateMerits(ksu);
 });
 
 
@@ -224,18 +263,46 @@ $(document).on('click', '.TimeBarButton',function(){
 })
 
 
+$(document).on('click', '.PlayStopButton', function(){
+	clearTimeout(t);
+	
+	var ksu = $(this).closest('#KSU');
+	
+	var button_action = $(this).attr("button_action")
+	var GlaphiconDiv = $(this).find('#PlayStopGlyphicon');
+	var target_timer = ksu.find('#timer');
+	
+	var starting_seconds =  parseInt(target_timer.val())*60;
+    
+	if (button_action == 'Play'){
+		start_time = new Date();
+		$(this).attr("button_action", "Stop")
+		
+		timer(target_timer, effort_denominator, kpts_value, starting_seconds);
+		// timer(target_timer, puntos_ya_agregados, effort_denominator, kpts_value, starting_seconds);				
+
+	} else {
+		$(this).attr("button_action", "Play");
+		UpdateKsuAttribute(ksu.attr('value'), 'timer', target_timer.val())
+	}
+
+	GlaphiconDiv.toggleClass('glyphicon-play');
+	GlaphiconDiv.toggleClass('glyphicon-stop');	
+});
+
+
 $(document).on('focusin', '.KsuAttr', function(){
 	
 	var ksu = $(this).closest('#KSU');
 	if (ksu.attr("value") == ''){return};
 
 	// var KsuAttr = $(this)
-	var initial_attr_value = get_ksu_attr_value(ksu, $(this));
+	var initial_attr_value = get_ksu_attr_value(ksu, $(this).attr("name"));
 	// console.log('Se reconocio que se esta acutalizando un attributo')	
 
 	$(this).on('focusout', function(){
 		
-		var attr_value = get_ksu_attr_value(ksu, $(this));
+		var attr_value = get_ksu_attr_value(ksu, $(this).attr("name"));
 		
 		if(initial_attr_value != attr_value){
 			
@@ -257,13 +324,21 @@ $(document).on('change', '.SubtypeSelect', function(){
 	var ksu = $(this).closest('#KSU');
 	var ksu_subtype =  ksu.find('#ksu_subtype').val()
 	FixTemplateBasedOnKsuSubtype(ksu, ksu_subtype)
+	
+	if(ksu.attr('ksu_type') == 'Action'){
+		
+		UpdateMerits(ksu)
+		if( ksu_subtype == 'Reactive' || ksu_subtype == 'Negative'){
+			set_ksu_attr_value(ksu, 'repeats', 'Always')
+		}
+	}
 });
 
 
 $(document).on('change', '.ReasonSelect', function(){
 	
 	var ksu = $(this).closest('#KSU');
-	var attr_value = get_ksu_attr_value(ksu, $(this));
+	var attr_value = get_ksu_attr_value(ksu, $(this).attr("name"));
 	var old_value = ksu.find('#reason_holder').attr('reason_id');
 	
 	if (attr_value == old_value){return};
@@ -306,16 +381,17 @@ $(document).on('change', '.pic_input', function(){
 
 
 
-function get_ksu_attr_value(ksu, KsuAttr){
+function get_ksu_attr_value(ksu, attr_key){
 	// console.log(ksu.find('#description').val())
 	// console.log(KsuAttr)
-	var attr_type = attributes_guide[KsuAttr.attr("name")][1];
+	var KsuAttr = ksu.find('#' + attr_key)
+	var attr_type = attributes_guide[attr_key][1];
 
 	if (attr_type == 'Standard' || attr_type == 'Select'){
 		return KsuAttr.val();
 
 	} else if (attr_type == 'Radio'){
-		return ksu.find('input:radio[name=' + KsuAttr.attr("name") + ']:checked').val();
+		return ksu.find('input:radio[name=' + attr_key + ']:checked').val();
 	
 	} else if (attr_type == 'Checkbox'){
 		return KsuAttr.is(':checked');
@@ -328,7 +404,7 @@ function render_ksu(ksu_dic){
 	ksu = FixTemplateBasedOnKsuType(ksu, ksu_dic['ksu_type']);
 	ksu = FixTemplateBasedOnKsuSubtype(ksu, ksu_dic['ksu_subtype']);
 	ksu.attr("id", 'KSU');
-	ksu.attr('ksutype', ksu_dic['ksu_type']);
+	ksu.attr('ksu_type', ksu_dic['ksu_type']);
 	ksu.attr("value", ksu_dic['ksu_id']);
 	
 	// console.log(ksu_dic);
@@ -365,12 +441,15 @@ function render_ksu(ksu_dic){
 		HideShowCostFrequency(ksu);	
 	}
 
-	
+	if (ksu_type == 'Action'){
+		UpdateMerits(ksu)
+	}
+
 	FormatBasedOnStatus(ksu, ksu_dic['status'])
 }
 
 function HideShowCostFrequency(ksu){
-	var money_cost = get_ksu_attr_value(ksu, ksu.find('#money_cost'));	
+	var money_cost = get_ksu_attr_value(ksu, 'money_cost');	
 	if(money_cost > 0){
 		ksu.find('#cost_frequency_col').removeClass('hidden')
 	} else {
@@ -398,6 +477,7 @@ function SetKsuImage(ksu, pic_url){
 
 
 function set_ksu_attr_value(ksu, attribute, attr_value){
+	// console.log(attr_value)
 	var attr_type = attributes_guide[attribute][1];
 	
 	if (attr_type == 'Standard'){
@@ -537,6 +617,8 @@ function FixTemplateBasedOnKsuSubtype(template, ksu_subtype){
 			section.removeClass('hidden')
 		}
 	}
+	
+
 	return template 
 }
 
@@ -564,8 +646,8 @@ function fixTemplateDivAttr(template, div_id, attr_key, attr_value){
 
 function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
 	
-	console.log(attr_key);
-	console.log(attr_value);
+	// console.log(attr_key);
+	// console.log(attr_value);
 
 	$.ajax({
 		type: "POST",
@@ -592,7 +674,7 @@ function FixTheoryView(){
 
 	for (var i = ksu_set.length - 1; i >= 0; i--) {
 		var ksu = $(ksu_set[i]);
-		if(ksu.attr('ksutype') == section_ksu_type){
+		if(ksu.attr('ksu_type') == section_ksu_type){
 			ksu.show()
 		} else {
 			ksu.hide()
@@ -811,7 +893,7 @@ $(document).on('click', '.UserActionButton', function(){
 
 $('.SaveNewKSUButton').on('click', function(){
 	var ksu = $(this).closest('#NewKSU');
-	var ksu_type = ksu.attr("ksutype");
+	var ksu_type = ksu.attr("ksu_type");
 	var ksu_subtype = ksu.attr("ksusubtype");
 	var parent_id = ksu.find('#parent_id').val();
 	console.log('This is the first current parent id:')
@@ -1901,61 +1983,62 @@ function timer(target_timer, effort_denominator, kpts_value, starting_seconds) {
     }, 1000);
 }
 
-$(document).on('click', '.PlayStopButton', function(){
-	clearTimeout(t);
-	var ksu = $(this).closest('#MissionKSU');
-	var effort_denominator = parseInt(ksu.find('input:radio[name=effort_denominator]:checked').val());
-	var puntos_ya_agregados = 0;
-	var kpts_value = ksu.find('#kpts_value');
 
-	if(kpts_value.val() == ''){
-		kpts_value.val(1)};	
+// $(document).on('click', '.PlayStopButton', function(){
+// 	clearTimeout(t);
+// 	var ksu = $(this).closest('#MissionKSU');
+// 	var effort_denominator = parseInt(ksu.find('input:radio[name=effort_denominator]:checked').val());
+// 	var puntos_ya_agregados = 0;
+// 	var kpts_value = ksu.find('#kpts_value');
 
-	var button_action = $(this).attr("button_action")
-	var GlaphiconDiv = $(this).find('#PlayStopGlyphicon');
-	var target_timer = ksu.find('#ksu_timer');
-	var seconds = target_timer.attr("seconds"), minutes = target_timer.attr("minutes"), hours = target_timer.attr("hours");
+// 	if(kpts_value.val() == ''){
+// 		kpts_value.val(1)};	
 
-	var starting_seconds =  parseInt(target_timer.attr("seconds")) + parseInt(target_timer.attr("minutes"))*60 + parseInt(target_timer.attr("hours"))*3600;
+// 	var button_action = $(this).attr("button_action")
+// 	var GlaphiconDiv = $(this).find('#PlayStopGlyphicon');
+// 	var target_timer = ksu.find('#ksu_timer');
+// 	var seconds = target_timer.attr("seconds"), minutes = target_timer.attr("minutes"), hours = target_timer.attr("hours");
+
+// 	var starting_seconds =  parseInt(target_timer.attr("seconds")) + parseInt(target_timer.attr("minutes"))*60 + parseInt(target_timer.attr("hours"))*3600;
 
     
-	if (button_action == 'Play'){
-		start_time = new Date();
-		$(this).attr("button_action", "Stop")
+// 	if (button_action == 'Play'){
+// 		start_time = new Date();
+// 		$(this).attr("button_action", "Stop")
 
-		if( target_timer.text() == '00:00:00' ){
-			kpts_value.val(1)
-		}
+// 		if( target_timer.text() == '00:00:00' ){
+// 			kpts_value.val(1)
+// 		}
 		
-		timer(target_timer, effort_denominator, kpts_value, starting_seconds);
-		// timer(target_timer, puntos_ya_agregados, effort_denominator, kpts_value, starting_seconds);				
+// 		timer(target_timer, effort_denominator, kpts_value, starting_seconds);
+// 		// timer(target_timer, puntos_ya_agregados, effort_denominator, kpts_value, starting_seconds);				
 
 
-	} else {
-		$(this).attr("button_action", "Play");
-		$.ajax({
-			type: "POST",
-			url: "/EventHandler",
-			dataType: 'json',
-			data: JSON.stringify({
-				'ksu_id': ksu.attr("value"),
-				'content_type':'KSU',
-				'user_action':'TimerStop',
-				// 'user_action': 'UpdateKsuAttribute',
-				'kpts_value':ksu.find('#kpts_value').val(),
-				'timer_value': target_timer.text(),
-				'hours': hours,
-				'minutes': minutes,
-				'seconds': seconds
-				// 'attr_key':'kpts_value',
-				// 'attr_value':ksu.find('#kpts_value').val()
-			})
-		})
-	}
+// 	} else {
+// 		$(this).attr("button_action", "Play");
+// 		$.ajax({
+// 			type: "POST",
+// 			url: "/EventHandler",
+// 			dataType: 'json',
+// 			data: JSON.stringify({
+// 				'ksu_id': ksu.attr("value"),
+// 				'content_type':'KSU',
+// 				'user_action':'TimerStop',
+// 				// 'user_action': 'UpdateKsuAttribute',
+// 				'kpts_value':ksu.find('#kpts_value').val(),
+// 				'timer_value': target_timer.text(),
+// 				'hours': hours,
+// 				'minutes': minutes,
+// 				'seconds': seconds
+// 				// 'attr_key':'kpts_value',
+// 				// 'attr_value':ksu.find('#kpts_value').val()
+// 			})
+// 		})
+// 	}
 
-	GlaphiconDiv.toggleClass('glyphicon-play');
-	GlaphiconDiv.toggleClass('glyphicon-stop');	
-});
+// 	GlaphiconDiv.toggleClass('glyphicon-play');
+// 	GlaphiconDiv.toggleClass('glyphicon-stop');	
+// });
 
 
 $('input[type=radio][name=effort_denominator]').on('change',function(){

@@ -106,10 +106,9 @@ class Handler(webapp2.RequestHandler):
 		webapp2.RequestHandler.initialize(self, *a, **kw)
 		theory_id = self.read_secure_cookie('theory_id')
 		self.theory = theory_id and Theory.get_by_theory_id(int(theory_id)) #if the user exist, 'self.theory' will store the actual theory object
-		self.game = self.theory and self.update_game()
+		self.game = self.theory and self.update_game_log()
 
-
-	def update_game(self):
+	def update_game_log(self):
 
 		def check_and_burn(theory, active_date, time_travel):
 			print
@@ -277,12 +276,14 @@ class Home(Handler):
 			event.put()
 			
 			ksu = self.update_ksu(ksu, user_action)
-
 			ksu.put()
 
-			self.response.out.write(json.dumps({
-				'mensaje':'Evento Guardado',
-				}))
+			game = self.update_game(event)
+
+			game['mensaje'] = 'Evento guardado'
+			game['in_graveyard'] = ksu.in_graveyard
+
+			self.response.out.write(json.dumps(game))
 			return
 
 		elif user_action in ['Action_Skipped', 'Action_Pushed']: 
@@ -509,6 +510,7 @@ class Home(Handler):
 		if user_action == 'Action_Done':
 			if ksu_subtype in ['Proactive', 'Reactive']:
 				event_type = 'Effort'
+			
 			elif ksu_subtype == 'Negative':
 				event_type = 'Stupidity'
 
@@ -544,7 +546,24 @@ class Home(Handler):
 			comments = comments)
 
 		return event
-	
+
+	def update_game(self, event, delete_event=False):
+		theory = self.theory
+		game = self.game
+		event_type = event.event_type
+		score = event.score
+		if delete_event:
+			score = -score
+
+		if event_type == 'Effort':
+			game['points_today'] += score
+		
+		elif event_type == 'Stupidity':
+			game['points_today'] -= score 
+
+		theory.game = game
+		self.theory.put()
+		return game
 		
 class SignUpLogIn(Handler):
 	def get(self):
