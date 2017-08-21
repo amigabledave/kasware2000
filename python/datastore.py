@@ -88,6 +88,7 @@ class KSU3(ndb.Model):
 	is_critical = ndb.BooleanProperty(default=False)	
 	is_private = ndb.BooleanProperty(default=False)
 	at_anytime = ndb.BooleanProperty(default=False)
+	is_optional = ndb.BooleanProperty(default=False)
 
 	comments = ndb.TextProperty()
 	tag = ndb.StringProperty()

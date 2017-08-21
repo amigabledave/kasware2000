@@ -18,7 +18,7 @@
 		</div>	
 
 		<div class="col-xs-1 TypeSpecific" target_type='Action'>
-			<button type="button" class="btn btn-success ksu-circle-btn KsuActionButton SubtypeSpecific PlayPulse" avoid_subtype="Negative" name="action_description" value='Action_Done' style="margin-left: 3px">
+			<button type="button" class="btn btn-success ksu-circle-btn KsuActionButton SubtypeSpecific" avoid_subtype="Negative" name="action_description" value='Action_Done' style="margin-left: 3px" id="EffortDoneButton">
 			<span class="SubtypeSpecific" avoid_subtype="Reactive" id="Proactive_Merits" style="font-weight: bold;">1</span>
 			<span class="SubtypeSpecific" avoid_subtype="Proactive" id="Reactive_Merits" style="font-weight: bold;">1</span>
 			</button>
@@ -359,6 +359,15 @@
 				</div>
 			</div>
 
+			<div class="col-xs-3 form-group TypeSpecific" target_type="Action" id="priotiy_col">					
+				<label> Priority </label>
+				<select id="status" class="KsuAttr form-control SexySelect StatusSelect" name="status">				
+					<option value="Critical" > Critical </option>
+					<option value="Active" selected="selected"> Active </option>
+					<option value="Optional"> Optional </option>
+				</select>			
+			</div>
+
 			<div class="col-xs-3 form-group hidden" id="cost_frequency_col">	
 				
 				<label> Cost frequency </label>
@@ -394,6 +403,10 @@
 				<label class="checkbox-inline TypeSpecific" target_type="Action"><input type="checkbox" id="is_critical" name="is_critical" class="KsuAttr"><b>Critical</b></label>
 				
 				<label class="checkbox-inline TypeSpecific" target_type="Action"><input type="checkbox" id="at_anytime" name="at_anytime" class="KsuAttr"><b>Anywhere</b></label>
+				
+				<label class="checkbox-inline TypeSpecific" target_type="Action"><input type="checkbox" id="is_optional" name="is_optional" class="KsuAttr"><b>Optional</b></label>
+
+
 			</div>
 			<div class="col-xs-4">
 				<input class="KsuAttr" style="color:purple; border:0; width:170px; text-align:left; margin-left:-10px; font-style: italic;" type="text" list="tags" name="tag" id="tag" value="" placeholder="Tag">		

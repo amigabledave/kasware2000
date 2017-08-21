@@ -42,7 +42,7 @@ ksu_types = [
 	[['Person', 'Person'], [ #Who you want in your life 'Love', #Important People. Love & Friendship
 		['Individual', 'Individual', True], #Person #If the parent is another person, then the parent is a group of people #'Group',
 		['Group', 'Group', ''],
-		['Role', 'Role'], #En el momento que se ancla a una persona se marca como realized. E.g. Sexual Partner, Someone to Play Magic, Etc...
+		['Role', 'Role'], #E.g. Sexual Partner, Someone to Play Magic, Etc... El padre solo puede ser una persona y puede tener varios padres
 	]],
 
 	[['Possesion', 'Possesion'], [ #What you want to have
@@ -63,7 +63,6 @@ ksu_types = [
 		# ['TernaryPerception', ],
 	]],
 ]
-
 
 
 event_types = {
@@ -104,6 +103,7 @@ attributes_guide = {
 	'is_critical': ['Boolean', 'Checkbox'],
 	'is_private': ['Boolean', 'Checkbox'],
 	'at_anytime': ['Boolean', 'Checkbox'], 
+	'is_optional': ['Boolean', 'Checkbox'],
 
 	'comments': ['Text', 'Standard'],
 	'tag': ['String', 'Standard'],
@@ -135,7 +135,6 @@ attributes_guide = {
 	'question': ['Details', 'Standard'],
 	'chapter_duration': ['Details', 'Standard'],
 }
-
 
 
 ksu_type_attributes = {
@@ -179,7 +178,9 @@ ksu_type_attributes = {
 	
 		'is_active', 
 		'is_critical',
-		'at_anytime',		
+		'at_anytime',
+		'is_optional',
+		'status',		
 	],
 
 	'Objective': [
@@ -221,3 +222,30 @@ ksu_type_attributes = {
 	]
 }
 
+
+dashboard_template = {
+	
+	'EndValue':{
+		'Score':0,
+		'Legendary':[0,[]], #Event_id inside the []
+		'Epic':[0,[]],
+		'Memorable':[0,[]],
+		'Nice':[0,[]],
+		'Disappointing':[0,[]],
+	}, 
+
+	'KSU':{
+		'ksu_id':['NumberOfEvents', 'TotalScore', ['Events_ids'], ['Childs']],
+	},
+
+	'Effort':{}, #Generado por acciones al ser ejecutadas
+	
+	'Stupidity':{}, #Generado por acciones al ser ejecutadas	
+	
+	'Progress':{}, #Generado por objetivos
+	
+	'WishRealized':{},# Generado por Life Pieces al cambiar de status 	
+
+	'Measurement':{}, #Generaddo por indicadores
+
+}

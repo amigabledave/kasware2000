@@ -1,7 +1,7 @@
 // Validated for KASware3
 
 // ------- Triggers ----
-var ksu_type_attributes, attributes_guide, $zoom;
+var ksu_type_attributes, attributes_guide, $zoom, t, start_time;
 
 $(document).ready(function(){
 	$.ajax({
@@ -263,7 +263,7 @@ $(document).on('click', '.TimeBarButton',function(){
 })
 
 
-$(document).on('click', '.PlayStopButton', function(){
+$(document).on('click', '.PlayStopButton', function(){ //## Aqui nos quedamos -- Entender por que no se estan actualizando los meritos
 	clearTimeout(t);
 	
 	var ksu = $(this).closest('#KSU');
@@ -272,16 +272,19 @@ $(document).on('click', '.PlayStopButton', function(){
 	var GlaphiconDiv = $(this).find('#PlayStopGlyphicon');
 	var target_timer = ksu.find('#timer');
 	
-	var starting_seconds =  parseInt(target_timer.val())*60;
+	var starting_minutes =  parseInt(target_timer.val());
     
 	if (button_action == 'Play'){
+		ksu.find('#EffortDoneButton').addClass('PlayPulse');
 		start_time = new Date();
 		$(this).attr("button_action", "Stop")
 		
-		timer(target_timer, effort_denominator, kpts_value, starting_seconds);
+		timer(target_timer, starting_minutes);
 		// timer(target_timer, puntos_ya_agregados, effort_denominator, kpts_value, starting_seconds);				
 
 	} else {
+
+		ksu.find('#EffortDoneButton').removeClass('PlayPulse');
 		$(this).attr("button_action", "Play");
 		UpdateKsuAttribute(ksu.attr('value'), 'timer', target_timer.val())
 	}
@@ -289,6 +292,35 @@ $(document).on('click', '.PlayStopButton', function(){
 	GlaphiconDiv.toggleClass('glyphicon-play');
 	GlaphiconDiv.toggleClass('glyphicon-stop');	
 });
+
+
+function add(target_timer, starting_minutes) {	
+    
+	var minutes_passed = Math.floor((parseFloat(new Date().valueOf()) - parseFloat(start_time.valueOf()))/1000); //Ya solo falta dividir sobre 60 aqui
+	console.log('Minutes passed: ' + minutes_passed)
+	var minutes_timer = target_timer.val()
+	var total_minutes = starting_minutes + minutes_passed		
+    console.log('Munutes Timer: ' + minutes_timer)
+    console.log('Total Minutes:' + total_minutes)
+    console.log('-----------------------------')
+    if (total_minutes > minutes_timer){
+    	var ksu = target_timer.closest('#KSU');
+    	UpdateMerits(ksu)
+		target_timer.val(total_minutes)    
+    	if(total_minutes % 5 == 0){
+    		UpdateKsuAttribute(ksu.attr('value'), 'timer', total_minutes)
+    	}
+    }
+
+    timer(target_timer, starting_minutes);
+}
+
+
+function timer(target_timer, starting_minutes) {	
+    t = setTimeout(function(){
+    	add(target_timer, starting_minutes)
+    }, 1000);
+}
 
 
 $(document).on('focusin', '.KsuAttr', function(){
@@ -1912,133 +1944,7 @@ $(document).on('focusin.autoExpand', 'textarea.autoExpand', function(){
         this.rows = minRows + rows;
     });
 
-var t;
-var start_time;
 
-
-function secondsToHms(segundos_timer, effort_denominator, starting_seconds) {
-
-	d = segundos_timer + starting_seconds;	
-	var h = Math.floor(d / 3600);
-	var m = Math.floor(d % 3600 / 60);
-	var s = Math.floor(d % 3600 % 60);
-
-	// console.log('effort_denominator: ')
-	// console.log(effort_denominator)
-
-	var base_values = {'2':2, '3':1, '6':0};
-	var base_value = base_values[String(effort_denominator)]
-
-	effort_denominator = 60 * effort_denominator
-	var new_kpts_value;
-	
-	// console.log(base_value)
-
-	new_kpts_value = Math.floor(d  / effort_denominator) + base_value
-	// new_kpts_value = Math.floor(d  / effort_denominator) + 1
-	
-	// console.log('new_kpts_value: ')
-	// console.log(new_kpts_value)
-
-	return [h, m, s, new_kpts_value]
-}
-
-
-function add(target_timer, effort_denominator, kpts_value, starting_seconds) {	
-    
-	var segundos_timer = Math.floor((parseFloat(new Date().valueOf()) - parseFloat(start_time.valueOf()))/1000) ;
-	
-	// var secondsToHms_output =  secondsToHms(segundos_timer, puntos_ya_agregados, effort_denominator, starting_seconds);
-	var secondsToHms_output =  secondsToHms(segundos_timer, effort_denominator, starting_seconds)
-	var hours = secondsToHms_output[0];
-	var minutes = secondsToHms_output[1];
-	var seconds = secondsToHms_output[2];
-	// var puntos_por_agregar = secondsToHms_output[3];
-	var new_kpts_value = secondsToHms_output[3];
-
-    
-    target_timer.text((hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds));
-    // timer(target_timer, puntos_por_agregar + puntos_ya_agregados, effort_denominator, kpts_value, starting_seconds);
-
-    if (new_kpts_value - kpts_value.val() > 0 ){	
-    	kpts_value.val(new_kpts_value)
-
-    }
-
-    timer(target_timer, effort_denominator, kpts_value, starting_seconds);
-    
-    target_timer.attr("seconds", seconds);
-    target_timer.attr("minutes", minutes);
-    target_timer.attr("hours", hours);
-
-    // if (puntos_por_agregar > 0 ){
-    // 	kpts_value.val(parseInt(kpts_value.val())+puntos_por_agregar)
-    // }
-}
-
-
-function timer(target_timer, effort_denominator, kpts_value, starting_seconds) {	
-    t = setTimeout(function(){
-    	add(target_timer, effort_denominator, kpts_value, starting_seconds)
-    }, 1000);
-}
-
-
-// $(document).on('click', '.PlayStopButton', function(){
-// 	clearTimeout(t);
-// 	var ksu = $(this).closest('#MissionKSU');
-// 	var effort_denominator = parseInt(ksu.find('input:radio[name=effort_denominator]:checked').val());
-// 	var puntos_ya_agregados = 0;
-// 	var kpts_value = ksu.find('#kpts_value');
-
-// 	if(kpts_value.val() == ''){
-// 		kpts_value.val(1)};	
-
-// 	var button_action = $(this).attr("button_action")
-// 	var GlaphiconDiv = $(this).find('#PlayStopGlyphicon');
-// 	var target_timer = ksu.find('#ksu_timer');
-// 	var seconds = target_timer.attr("seconds"), minutes = target_timer.attr("minutes"), hours = target_timer.attr("hours");
-
-// 	var starting_seconds =  parseInt(target_timer.attr("seconds")) + parseInt(target_timer.attr("minutes"))*60 + parseInt(target_timer.attr("hours"))*3600;
-
-    
-// 	if (button_action == 'Play'){
-// 		start_time = new Date();
-// 		$(this).attr("button_action", "Stop")
-
-// 		if( target_timer.text() == '00:00:00' ){
-// 			kpts_value.val(1)
-// 		}
-		
-// 		timer(target_timer, effort_denominator, kpts_value, starting_seconds);
-// 		// timer(target_timer, puntos_ya_agregados, effort_denominator, kpts_value, starting_seconds);				
-
-
-// 	} else {
-// 		$(this).attr("button_action", "Play");
-// 		$.ajax({
-// 			type: "POST",
-// 			url: "/EventHandler",
-// 			dataType: 'json',
-// 			data: JSON.stringify({
-// 				'ksu_id': ksu.attr("value"),
-// 				'content_type':'KSU',
-// 				'user_action':'TimerStop',
-// 				// 'user_action': 'UpdateKsuAttribute',
-// 				'kpts_value':ksu.find('#kpts_value').val(),
-// 				'timer_value': target_timer.text(),
-// 				'hours': hours,
-// 				'minutes': minutes,
-// 				'seconds': seconds
-// 				// 'attr_key':'kpts_value',
-// 				// 'attr_value':ksu.find('#kpts_value').val()
-// 			})
-// 		})
-// 	}
-
-// 	GlaphiconDiv.toggleClass('glyphicon-play');
-// 	GlaphiconDiv.toggleClass('glyphicon-stop');	
-// });
 
 
 $('input[type=radio][name=effort_denominator]').on('change',function(){
