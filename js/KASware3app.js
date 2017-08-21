@@ -717,14 +717,29 @@ function FixTheoryView(){
 
 function FormatBasedOnStatus(ksu, status){
 	var display_section = ksu.find('#KSUdisplaySection');
-	display_section.removeClass('IsRealized');
-	display_section.removeClass('IsHistory');
+	var clases_to_be_removed = [
+		'IsRealized',
+		'IsHistory', 
+		'IsCritical',
+		'IsOptional',
+	]
 
-	if (status == 'Present'){
-		display_section.addClass('IsRealized');
-	} else if (status == 'Past'){
-		display_section.addClass('IsHistory');
+	for (var i = clases_to_be_removed.length - 1; i >= 0; i--) {
+		display_section.removeClass(clases_to_be_removed[i]);
 	}
+
+	var StatusFormat = {
+		'Present': 'IsRealized',
+		'Past': 'IsHistory',
+		'Critical': 'IsCritical',
+		'Optional': 'IsOptional',
+	}
+
+	if (status in StatusFormat){
+		display_section.addClass(StatusFormat[status]);
+	}
+
+
 }
 
 

@@ -145,6 +145,18 @@ input::-webkit-inner-spin-button {
     background-color: #f5e5b3;
 }
 
+.IsHistory {
+  background-color: #97cefd;  
+}
+
+.IsCritical {
+    color: red;
+}
+
+.IsOptional {
+    color: green;
+}
+
 .ActionBorders{
   border-radius: 25px;
 }
