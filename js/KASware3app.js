@@ -25,6 +25,11 @@ $(document).ready(function(){
 			render_ksu(ksu_set[i])
 		}
 
+		var history = data['history']
+		for (var i = history.length - 1; i >= 0; i--) {
+			render_event(history[i])
+		}
+
 		FixTheoryView()		
 	})
 });
@@ -193,9 +198,11 @@ $(document).on('click', '.KsuActionButton', function(){
 				ksu.fadeIn('slow')
 			} else {
 				ksu.remove()
-			}
-			
-			$('#points_today').text(' ' + data['points_today']);
+			}			
+			$('#points_today').text(' ' + data['game']['points_today']);
+		
+			render_event(data['event_dic'])
+
 		});
 	};
 });
@@ -252,7 +259,10 @@ $(document).on('click', '.PlayStopButton', function(){ //## Aqui nos quedamos --
 	var starting_minutes =  parseInt(target_timer.val());
     
 	if (button_action == 'Play'){
+		
 		ksu.find('#EffortDoneButton').addClass('PlayPulse');
+		ksu.find('#EffortDoneButton').prop("disabled", true);
+
 		start_time = new Date();
 		$(this).attr("button_action", "Stop")
 		
@@ -261,6 +271,7 @@ $(document).on('click', '.PlayStopButton', function(){ //## Aqui nos quedamos --
 	} else {
 
 		ksu.find('#EffortDoneButton').removeClass('PlayPulse');
+		ksu.find('#EffortDoneButton').prop("disabled", false);
 		$(this).attr("button_action", "Play");
 		UpdateKsuAttribute(ksu.attr('value'), 'timer', target_timer.val())
 	}
@@ -455,6 +466,32 @@ function render_ksu(ksu_dic){
 
 	FormatBasedOnStatus(ksu, ksu_dic['status'])
 }
+
+function render_event(event_dic){
+	var event = $('#EventTemplate').clone();
+	var event_type = event_dic['event_type']
+
+	var type_details = {
+		'Effort': {'type_description': 'Effort Made', 'score_format': 'ScoreHolderEffort'},
+		'Stupidity': {'type_description': 'Stupidity Commited', 'score_format': 'ScoreHolderStupidity'},
+	}
+
+	event.attr("id", 'Event');
+	event.attr('event_type', event_type);
+	event.attr("value", event_dic['event_id']);
+
+	event.find('#ScoreHolder').addClass(type_details[event_type]['score_format'])
+	event.find('#event_type').text(type_details[event_type]['type_description'])
+
+	event.find('#event_score').text(event_dic['score'])
+	event.find('#description').text(event_dic['description'])	
+	event.find('#event_date').text(event_dic['event_date'])
+
+	event.prependTo('#HistoryHolder');
+	event.removeClass('hidden');
+}
+
+
 
 function HideShowCostFrequency(ksu){
 	var money_cost = get_ksu_attr_value(ksu, 'money_cost');	
@@ -702,10 +739,12 @@ function FixTheoryView(){//xx
 	var section_ksu_type = section_details[selected_section]['new_ksu_type'];
 	var holder = section_details[selected_section]['holder'];
 
-	var holders = ['TheoryHolder', 'HistoyHolder', 'SettingsHolder']
+	var holders = ['TheoryHolder', 'HistoryHolder', 'SettingsHolder'];
 	for (var i = holders.length - 1; i >= 0; i--) {
 		$('#' + holders[i]).addClass('hidden')
+		
 	}
+	
 	$('#' + holder).removeClass('hidden')
 
 	if( holder == 'TheoryHolder'){
@@ -783,7 +822,7 @@ var section_details = {
 	'wisdom': {'title': 'Wisdom', 'new_ksu_type': 'Wisdom', 'holder':'TheoryHolder'},
 	'dashboard': {'title': 'Dashboard', 'new_ksu_type': 'Indicator', 'holder':'TheoryHolder'},
 
-	'history':{'title': 'History', 'new_ksu_type': 'disabled', 'holder':'HistoyHolder'},
+	'history':{'title': 'History', 'new_ksu_type': 'disabled', 'holder':'HistoryHolder'},
 }
 
 

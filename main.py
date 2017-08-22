@@ -280,10 +280,15 @@ class Home(Handler):
 
 			game = self.update_game(event)
 
+			event_dic = self.event_to_dic(event)
+
 			game['mensaje'] = 'Evento guardado'
 			game['in_graveyard'] = ksu.in_graveyard
 
-			self.response.out.write(json.dumps(game))
+			self.response.out.write(json.dumps({
+				'game':game,
+				'event_dic':event_dic,
+				}))
 			return
 
 		elif user_action in ['Action_Skipped', 'Action_Pushed', 'SendToMission']: 
@@ -305,14 +310,22 @@ class Home(Handler):
 
 		elif user_action == 'RetrieveTheory':
 			ksu_set = KSU3.query(KSU3.theory_id == self.theory.key).filter(KSU3.in_graveyard == False).fetch()
-			output = []
+			ksu_output = []
 			reasons_index = []
+			
 			for ksu in ksu_set:
-				output.append(self.ksu_to_dic(ksu))
+				ksu_output.append(self.ksu_to_dic(ksu))
 				reasons_index.append([ksu.key.id(), ksu.description])
+			
+			history = Event3.query(Event3.theory_id == self.theory.key).order(-Event3.event_date).fetch()
+			event_output = []
+			for event in history:
+				event_output.append(self.event_to_dic(event))
+				
 			self.response.out.write(json.dumps({
 				'mensaje':'Esta es la teoria del usuario:',
-				'ksu_set': output,
+				'ksu_set': ksu_output,
+				'history': event_output,
 				'reasons_index':reasons_index,
 				'ksu_type_attributes': KASware3.ksu_type_attributes,
 				'attributes_guide': KASware3.attributes_guide,
@@ -439,6 +452,16 @@ class Home(Handler):
 						
 		return ksu_dic
 
+	def event_to_dic(self, event):
+		event_dic = {
+			'event_id': event.key.id(),
+			'event_type': event.event_type,
+			'score':event.score,
+			'description': event.description,
+			'event_date': event.event_date.strftime('%I:%M %p. %a, %b %d, %Y'),
+		}
+		return event_dic
+
 	def get_ksu_type_attributes(self, ksu_type):
 		attributes = KASware3.ksu_type_attributes['Base'] + KASware3.ksu_type_attributes[ksu_type] 
 		
@@ -541,7 +564,8 @@ class Home(Handler):
 
 		event = Event3(
 			theory_id = ksu.theory_id,
-			ksu_id = ksu.key,	
+			ksu_id = ksu.key,
+			description = ksu.description,
 			event_date = event_date, 
 
 			event_type = event_type,

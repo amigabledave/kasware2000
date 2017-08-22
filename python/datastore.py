@@ -98,6 +98,7 @@ class KSU3(ndb.Model):
 class Event3(ndb.Model):
 	theory_id = ndb.KeyProperty(kind=Theory, required=True)	
 	ksu_id = ndb.KeyProperty(kind=KSU3, required=True)
+	description = ndb.StringProperty()
 	created = ndb.DateTimeProperty(auto_now_add=True)	
 	event_date = ndb.DateTimeProperty(required=True) #User date
 

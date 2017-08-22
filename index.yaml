@@ -151,6 +151,17 @@ indexes:
   - name: created
     direction: desc
 
+- kind: Event3
+  properties:
+  - name: theory_id
+  - name: event_date
+
+- kind: Event3
+  properties:
+  - name: theory_id
+  - name: event_date
+    direction: desc
+
 - kind: KAS1
   properties:
   - name: theory

@@ -152,23 +152,25 @@
 					</div>
 				</div>
 				
-				<div class="row">
+				<div class="row" name="PicInputRoe">
 					<div action="{{new_pic_input_action|safe}}" class="hidden" id="new_pic_input_action"></div>  
 				</div>
 				
-				<div class="row">
+				<div class="row" name="TheoryRow">
 					<div id="TheoryHolder" class="col-xs-12 sortable">
 						{% include "MasterKSU.html" %}
 					</div>
 				</div>
 
-				<dir class="row hidden" id="HistoryHolder">
-					
-				</dir>
+				<div class="row" name="HistoryRow">
+					<div id="HistoryHolder" class="col-xs-12">
+						{% include "MasterEvent.html" %}
+					</div>
+				</div>
 
 				<br><br>				
 				<div class="row">
-					<div class="col-xs-12 copywright-message"> What Would You Have To Do To Experience The Best Life You Could Live? </div>
+					<div class="col-xs-12 copywright-message"> What Would You Have To Do To Experience One Of The Best Lives You Could Live? </div>
 				</div>
 				
 				<div class="row">
