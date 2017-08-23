@@ -270,7 +270,7 @@ class Home(Handler):
 		# logging.info(event_details)
 		# logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
 
-		if user_action == 'Action_Done': #xx
+		if user_action == 'Action_Done':
 			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
 			event = self.create_event(ksu, user_action, event_details)
 			event.put()
@@ -391,8 +391,12 @@ class Home(Handler):
 					}))
 			return
 
-		elif user_action == 'RetrieveDashboard':
-			dashboard_sections = self.CalculateDashboardValues()
+		elif user_action == 'RetrieveDashboard': #xx
+			
+			end_date = (datetime.today()+timedelta(hours=self.theory.timezone))
+			start_date = end_date - timedelta(days=7)
+
+			dashboard_sections = self.CalculateDashboardValues(start_date, end_date)
 			self.response.out.write(json.dumps({
 					'dashboard_sections': dashboard_sections,
 					'mensaje':'Dashboard values calculated',
@@ -400,7 +404,7 @@ class Home(Handler):
 		return
 
 	
-	def update_ksu(self, ksu, user_action): ##xx Aqui nos quedamos
+	def update_ksu(self, ksu, user_action):
 
 		if user_action == 'Action_Done':
 			ksu = self.update_event_date(ksu, user_action)
@@ -544,11 +548,9 @@ class Home(Handler):
 				next_day = min(int(ksu_details['on_the_day']), max_day[next_month - 1])
 					
 				ksu.event_date = datetime(next_year, next_month, next_day) 
-
 				
 		if user_action == 'Action_Pushed':
 			ksu.event_date = tomorrow
-
 
 		if user_action == 'SendToMission':
 			ksu.event_date = today
@@ -617,12 +619,20 @@ class Home(Handler):
 		self.theory.put()
 		return game
 
-	def CalculateDashboardValues(self):
+	def CalculateDashboardValues(self, start_date, end_date):
 		game = self.game
 		
-		dashboard_section_attributes = {
-			'base':['type', 'title'],
-			'overall':['personal_best', 'score']}
+		dashboard_base = {
+			'current': {
+				'Merits':{'total':0, 'Effort':0, 'Stupidity':0, 'days':[]}
+			},
+
+			'previous': {
+				'Merits':{'total':0, 'Effort':0, 'Stupidity':0, 'days':[]}
+			}
+		}
+
+		dashboard_base = self.AdjustDashboardBase(dashboard_base, start_date, end_date)
 
 		dashboard_values = [
 			{'type': 'Overall',	
@@ -639,9 +649,50 @@ class Home(Handler):
 			'title': 'Merits Reseve',
 			'score': game['piggy_bank'],
 			'personal_best': game['best_piggy_bank']},
+		
+			{'type': 'Merits',	
+			'title': 'Total',
+			'current': dashboard_base['current']['Merits']['total'],
+			'previous': dashboard_base['previous']['Merits']['total']},
+
+			{'type': 'Merits',	
+			'title': 'Effort Made',
+			'current': dashboard_base['current']['Merits']['Effort'],
+			'previous': dashboard_base['previous']['Merits']['Effort']},
+
+			{'type': 'Merits',	
+			'title': 'Stupidity Commited',
+			'current': dashboard_base['current']['Merits']['Stupidity'],
+			'previous': dashboard_base['previous']['Merits']['Stupidity']},
 		]
 
-		return dashboard_values	
+		return dashboard_values
+
+	def AdjustDashboardBase(self, dashboard_base, start_date, end_date):
+		period_len = end_date.toordinal() - start_date.toordinal() + 1
+		previous_start_date = start_date - timedelta(days=period_len)
+		history = Event3.query(Event3.theory_id == self.theory.key).filter(Event3.event_date >= previous_start_date, Event3.event_date <= end_date).order(-Event3.event_date).fetch()
+
+		for event in history:
+			event_type = event.event_type
+			time_frame = 'current'
+			event_date = event.event_date
+			if event.event_date < start_date:
+				time_frame = 'previous'
+
+			if event_type in ['Effort', 'Stupidity']:
+				dashboard_base[time_frame]['Merits'][event_type] += event.score
+				if event_date.toordinal() not in dashboard_base[time_frame]['Merits']['days']:
+					dashboard_base[time_frame]['Merits']['days'].append(event_date.toordinal())
+
+		for time_frame in ['current', 'previous']:
+			days_in_time_frame = len(dashboard_base[time_frame]['Merits']['days'])
+			if days_in_time_frame > 0:
+				for event_type in ['Effort', 'Stupidity']:
+					dashboard_base[time_frame]['Merits'][event_type] = dashboard_base[time_frame]['Merits'][event_type]/days_in_time_frame					
+			dashboard_base[time_frame]['Merits']['total'] = dashboard_base[time_frame]['Merits']['Effort'] - dashboard_base[time_frame]['Merits']['Stupidity']
+
+		return dashboard_base		
 
 
 		

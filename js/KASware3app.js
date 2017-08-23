@@ -842,22 +842,32 @@ function FormatBasedOnStatus(ksu, status){
 }
 
 
+
+
 function RenderDashboard(dashboard_sections){//xx
+	
+	var section_dic, template, attributes, SectionAttr;
+	
+	$('#Overall_Holder').empty()
+	$('#Merits_Holder').empty()
+
 	for (var i = dashboard_sections.length - 1; i >= 0; i--) {
-		var section_dic = dashboard_sections[i]
-		var template = $('#' + section_dic['type'] + '_Template').clone();
+		
+		section_dic = dashboard_sections[i]
+		template = $('#' + section_dic['type'] + '_Template').clone();
 		template.attr('id', '')
 		
-		var attributes = template.find('.SectionAttr');
-		console.log(attributes);
-		for (var i = attributes.length - 1; i >= 0; i--) {
-			var SectionAttr = $(attributes[i]);
+		attributes = template.find('.SectionAttr');		
+		for (var j = attributes.length - 1; j >= 0; j--) {
+			SectionAttr = $(attributes[j]);
 			SectionAttr.text(section_dic[SectionAttr.attr("name")])
 		} 
 
 		template.removeClass('hidden');
-		template.appendTo('#' + section_dic['type'] + '_Holder');
+		template.prependTo('#' + section_dic['type'] + '_Holder');
 	}
+
+	$('#Merits_Section').removeClass('hidden');
 }
 
 

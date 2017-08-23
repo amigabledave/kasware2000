@@ -184,10 +184,6 @@ input::-webkit-inner-spin-button {
     border-radius: 5px;
 }
 
-.DashboardSectionTitle{
-    font-size: 25px;
-    font-family: 'Rationale', sans-serif;
-}
 
 .ScoreHolderEffort{
     color: #5cb85c;

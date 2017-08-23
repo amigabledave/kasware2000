@@ -1,9 +1,30 @@
-<div id="Overall_Holder" class="row">
+<div name="Dashboard_Templates" class=" row hidden">
 
-	<div class="col-xs-4" id="Overall_Template"><div class="DashboardDisplaySection" style="text-align: center">
-		<div class="row"><div class="col-xs-12"><span class="DashboardSectionTitle SectionAttr" name="title">Indicator Title</span></div></div>
+	<div class="col-xs-4 hidden" id="Overall_Template"><div class="DashboardDisplaySection" style="text-align: center">
+		<div class="row"><div class="col-xs-12"><span class="KaswareFont SectionAttr" style="font-size: 25px; font-weight: bold;" name="title">Indicator Title</span></div></div>
 		<div class="row"><div class="col-xs-12"><span class="SectionAttr" name="score" style="font-size: 50px">69</span></div></div>
 		<div class="row"><div class="col-xs-12"><span>Personal best: </span><span class="SectionAttr" name="personal_best">69</span></div></div>
 	</div></div>
 
+	<div class="col-xs-4 hidden" id="Merits_Template">
+		<div class="row"><div class="col-xs-12"><span class="KaswareFont SectionAttr" style="font-size: 25px;" name="title">Total</span></div></div>
+		<div class="row"><div class="col-xs-12"><span class="SectionAttr" name="current" style="font-size: 50px">100</span></div></div>
+		<div class="row"><div class="col-xs-12"><span>Previous period: </span><span class="SectionAttr" name="previous">50</span></div></div>	
+	</div>
+	
 </div>
+
+
+<div id="Overall_Holder" class="row">
+</div>
+
+
+<div id="Merits_Section" class="row hidden" style="margin-top: 10px;"><div class="col-xs-12"><div class="DashboardDisplaySection" style="text-align: center; padding-bottom:14px;">
+	<div class="row"><div class="col-xs-12" style="text-align: left; padding-left: 25px;">
+		<span class="KaswareFont SectionAttr" style="font-size: 35px; font-weight: bold" name="title">Merits Earned (daily average)</span>
+	</div></div>
+	
+	<div class="row" id="Merits_Holder">
+	</div>
+
+</div></div></div>
