@@ -23,7 +23,7 @@
 
 <body class="BaseBackground">
 
-	<div class="TopBackground"> 
+	<div class="TopBackground navbar-fixed-top"> 
 		<div class="container" style="margin-left: 35px;">		
 			<div class="row NavigationTopBar">
 
@@ -76,7 +76,7 @@
 				</div>
 											
 				<div class="hidden-xs col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
-					<div style="margin-top: 12px; color: white; white-space: pre;"> <a href="/Settings" style="color: white;">{{theory.first_name}}'s theory</a>   |  <a href="/LogOut" style="color: white;"> Log out</a> </div>
+					<div style="margin-top: 12px; color: white; white-space: pre;"><span style="color: white;">{{theory.first_name}}'s theory</span>   |  <a href="/LogOut" style="color: white;"> Log out</a> </div>
 				</div>
 				<div class="hidden col-xs-12 hidden-sm hidden-md hidden-lg text-right" id="MobileSearchBar">
 					<form class="form-horizontal" method="post">
@@ -96,21 +96,24 @@
 		</div>
 	</div>
 
-	<div class="container NoSideMarginOrPadding" style="position: relative;">
+	<div class="container NoSideMarginOrPadding" style="position: relative; margin-top: 50px;">
 		<div class="row" style="width: 100%">
-			<div class="col-xs-3 SectionSelectionBar">
-				<div class="btn-group-vertical" style="width: 100%">
+			<div class="col-xs-3 SectionSelectionBar">								
+				<div class="btn-group-vertical" style="width: 100%;">
 				  <button type="button" class="btn SectionButton btn-default SelectedSection" value="mission"><span class="glyphicon glyphicon-flag SetIcon" aria-hidden="true"></span>Today's Mission</button>
+
+				  <button type="button" class="btn SectionButton btn-default" value="purpose"><span class="glyphicon glyphicon-screenshot SetIcon" aria-hidden="true"></span> Current Purpose </button>
+				</div>
+
+				<div class="btn-group-vertical" style="width: 100%; margin-top: 15px">
 
 				  <button type="button" class="btn SectionButton btn-default" value="kas"><span class="glyphicon glyphicon-tower SetIcon" aria-hidden="true"></span>Key Actions Set</button>
 
 				  <button type="button" class="btn SectionButton btn-default" value="objectives"><span class="glyphicon glyphicon-road SetIcon" aria-hidden="true"></span> Mile Stones </button>
 
-				  <button type="button" class="btn SectionButton btn-default" value="purpose"><span class="glyphicon glyphicon-screenshot SetIcon" aria-hidden="true"></span> Current Purpose </button>
-
 				</div>
-				
-				<div class="btn-group-vertical" style="width: 100%; margin-top: 20px">
+
+				<div class="btn-group-vertical" style="width: 100%; margin-top: 15px">
 								  		  
 					<button type="button" class="btn SectionButton btn-default" value="experiences"><span class="glyphicon glyphicon-gift SetIcon" aria-hidden="true"></span>Joy Experiences</button>
 
@@ -122,21 +125,31 @@
 
 					<button type="button" class="btn SectionButton btn-default" value="situation"><span class="glyphicon glyphicon-align-center SetIcon" aria-hidden="true"></span> Life Situation </button>
 
-					<button type="button" class="btn SectionButton btn-default" value="contributions"><span class="glyphicon glyphicon-globe SetIcon" aria-hidden="true"></span>Contribution</button>
-					
+					<button type="button" class="btn SectionButton btn-default" value="contributions"><span class="glyphicon glyphicon-globe SetIcon" aria-hidden="true"></span>Contribution</button>					
 				</div>
 
-				<div class="btn-group-vertical" style="width: 100%; margin-top: 20px">
+				<div id="more_buttons" class="btn-group-vertical hidden" style="width: 100%; margin-top: 15px">
 				  
 					<button type="button" class="btn SectionButton btn-default" value="wisdom"><span class="glyphicon glyphicon-tree-deciduous SetIcon" aria-hidden="true"></span> Wisdom </button>
 
-				 	<button type="button" class="btn SectionButton btn-default" value="dashboard"><span class="glyphicon glyphicon-dashboard SetIcon" aria-hidden="true"></span>Dashboard</button>
-					
 					<button type="button" class="btn SectionButton btn-default" value="indicators"><span class="glyphicon glyphicon-scale SetIcon" aria-hidden="true"></span>Indicators</button>
 
+				 	<button type="button" class="btn SectionButton btn-default" value="dashboard"><span class="glyphicon glyphicon-dashboard SetIcon" aria-hidden="true"></span>Dashboard</button>
+					
+				 	<button type="button" class="btn SectionButton btn-default" value="settings"><span class="glyphicon glyphicon-cog SetIcon" aria-hidden="true"></span>Settings</button>
+
 				</div>
+
+				<div class="btn-group-vertical" style="width: 100%; margin-top: 15px">				  
+					<button type="button" class="btn SectionButton btn-default" value="more">
+						<span id="ShowMoreSpan"><span class="glyphicon glyphicon-plus SetIcon" aria-hidden="true"></span> Show More </span>
+						<span id="ShowLessSpan" class="hidden"><span class="glyphicon glyphicon-minus SetIcon" aria-hidden="true"></span> Show Less </span>
+					</button>
+				</div>
+
+
 			</div>
-			<div class="col-xs-7" style="padding-left: 50px;">
+			<div class="col-xs-7" style="padding-left: 50px; padding-right: 50px; overflow-y: auto; max-height: 600px;">
 				
 				<div class="row">
 					<div class="col-xs-12"> 
@@ -177,6 +190,12 @@
 					</div>						
 				</div>
 
+				<div class="row" name="SettingsHolder">
+					<div id="SettingsHolder" class="col-xs-12">
+						
+					</div>						
+				</div>
+
 				<br><br>				
 				<div class="row">
 					<div class="col-xs-12 copywright-message"> What Would You Have To Do To Experience One Of The Best Lives You Could Live? </div>
@@ -190,8 +209,6 @@
 			<div class="col-xs-2"></div>
 		</div>
 	</div>	
-
-
 </body>
 
 <script src="/js/jquery.magnify.js"></script>

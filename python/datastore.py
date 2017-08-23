@@ -86,6 +86,7 @@ class KSU3(ndb.Model):
 	needs_mtnc = ndb.BooleanProperty(default=False) #Indicates if a 'LifePiece' requires additional effort to be preserved on a realized state 	
 	is_private = ndb.BooleanProperty(default=False)
 	anywhere = ndb.BooleanProperty(default=False)
+	monitor = ndb.BooleanProperty(default=False)
 
 	comments = ndb.TextProperty()
 	tag = ndb.StringProperty()

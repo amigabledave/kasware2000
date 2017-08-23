@@ -101,6 +101,7 @@ attributes_guide = {
 	'is_private': ['Boolean', 'Checkbox'],
 	'anywhere': ['Boolean', 'Checkbox'], 
 	'is_optional': ['Boolean', 'Checkbox'],
+	'monitor': ['Boolean', 'Checkbox'],
 
 	'comments': ['Text', 'Standard'],
 	'tag': ['String', 'Standard'],
@@ -146,7 +147,8 @@ ksu_type_attributes = {
 
 		'is_private',
 		'comments',
-		'tag',							
+		'tag',
+		'monitor',							
 	],
 
 	'Action': [
@@ -181,6 +183,7 @@ ksu_type_attributes = {
 		'money_cost',
 		'cost_frequency',
 		'event_date',
+		'status',
 	],
 
 	'LifePiece':[
@@ -219,8 +222,9 @@ ksu_type_attributes = {
 }
 
 
+
 dashboard_template = {
-	
+
 	'EndValue':{
 		'Score':0,
 		'Legendary':[0,[]], #Event_id inside the []

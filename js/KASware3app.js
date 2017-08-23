@@ -40,8 +40,16 @@ $('.SectionButton').on('click', function(){
 	$('.SelectedSection').removeClass('SelectedSection')
 	$(this).addClass('SelectedSection').blur()
 	
-	$('#SectionTitle').text(section_details[section]['title']);
-	FixTheoryView()
+	if(section != 'more'){
+		$('#SectionTitle').text(section_details[section]['title']);
+		FixTheoryView()
+		window.scrollTo(0, 0);
+	} else {
+		$('#more_buttons').toggleClass('hidden')
+		$('#ShowMoreSpan').toggleClass('hidden')
+		$('#ShowLessSpan').toggleClass('hidden')
+		window.scrollTo(0, 1000);
+	}
 });
 
 
@@ -842,8 +850,6 @@ function FormatBasedOnStatus(ksu, status){
 }
 
 
-
-
 function RenderDashboard(dashboard_sections){//xx
 	
 	var section_dic, template, attributes, SectionAttr;
@@ -901,6 +907,7 @@ var section_details = {
 	'wisdom': {'title': 'Wisdom', 'new_ksu_type': 'Wisdom', 'holder':'TheoryHolder'},
 	'dashboard': {'title': 'Dashboard', 'new_ksu_type': 'disabled', 'holder':'DashboardHolder'},
 	'indicators': {'title': 'Indicators', 'new_ksu_type': 'Indicator', 'holder':'TheoryHolder'},
+	'settings': {'title': 'Settings', 'new_ksu_type': 'disabled', 'holder':'SettingsHolder'},
 
 	'history':{'title': 'History', 'new_ksu_type': 'disabled', 'holder':'HistoryHolder'},
 }
