@@ -128,9 +128,12 @@
 
 				<div class="btn-group-vertical" style="width: 100%; margin-top: 20px">
 				  
-				  <button type="button" class="btn SectionButton btn-default" value="wisdom"><span class="glyphicon glyphicon-tree-deciduous SetIcon" aria-hidden="true"></span> Wisdom </button>
-				  
-				  <button type="button" class="btn SectionButton btn-default" value="dashboard"><span class="glyphicon glyphicon-dashboard SetIcon" aria-hidden="true"></span>Dashboard</button>
+					<button type="button" class="btn SectionButton btn-default" value="wisdom"><span class="glyphicon glyphicon-tree-deciduous SetIcon" aria-hidden="true"></span> Wisdom </button>
+
+				 	<button type="button" class="btn SectionButton btn-default" value="dashboard"><span class="glyphicon glyphicon-dashboard SetIcon" aria-hidden="true"></span>Dashboard</button>
+					
+					<button type="button" class="btn SectionButton btn-default" value="indicators"><span class="glyphicon glyphicon-scale SetIcon" aria-hidden="true"></span>Indicators</button>
+
 				</div>
 			</div>
 			<div class="col-xs-7" style="padding-left: 50px;">
@@ -166,6 +169,12 @@
 					<div id="HistoryHolder" class="col-xs-12">
 						{% include "MasterEvent.html" %}
 					</div>
+				</div>
+
+				<div class="row" name="DashboardHolder">
+					<div id="DashboardHolder" class="col-xs-12">
+						{% include "Dashboard.html" %}
+					</div>						
 				</div>
 
 				<br><br>				

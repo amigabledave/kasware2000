@@ -198,11 +198,53 @@ $(document).on('click', '.KsuActionButton', function(){
 				ksu.fadeIn('slow')
 			} else {
 				ksu.remove()
-			}			
-			$('#points_today').text(' ' + data['game']['points_today']);
-		
+			}
+
+			AdjustGame(data['game'])			
 			render_event(data['event_dic'])
 
+		});
+	};
+});
+
+
+function AdjustGame(game_data){
+	$('#points_today').text(' ' + game_data['points_today']);
+};
+
+
+$(document).on('click', '.EventActionButton', function(){
+	var event = $(this).closest('#Event');
+	var action = $(this).attr('value');
+
+	$(this).prop("disabled",true);	
+	var actions_menu = {
+		'DeleteEvent': DeleteEvent,
+	}
+	actions_menu[action](event);
+	$(this).prop("disabled",false);
+
+
+	function DeleteEvent(event){
+		console.log('Deleting event...')
+		$.ajax({
+			type: "POST",
+			url: "/KASware3",
+			dataType: 'json',
+			data: JSON.stringify({
+				'user_action': 'DeleteEvent',
+				'event_id': event.attr('value')
+			})
+		}).done(function(data){
+			console.log(data);
+			event.fadeOut("slow", function(){
+				$(this).remove()
+			})
+			
+			AdjustGame(data['game'])
+			if(data['render_ksu']){
+				render_ksu(data['ksu'])	
+			}
 		});
 	};
 });
@@ -491,8 +533,6 @@ function render_event(event_dic){
 	event.removeClass('hidden');
 }
 
-
-
 function HideShowCostFrequency(ksu){
 	var money_cost = get_ksu_attr_value(ksu, 'money_cost');	
 	if(money_cost > 0){
@@ -734,18 +774,19 @@ function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
 };
 
 
-function FixTheoryView(){//xx
+function FixTheoryView(){
 	var selected_section = $('.SelectedSection').first().attr('value');
 	var section_ksu_type = section_details[selected_section]['new_ksu_type'];
 	var holder = section_details[selected_section]['holder'];
 
-	var holders = ['TheoryHolder', 'HistoryHolder', 'SettingsHolder'];
+	var holders = ['TheoryHolder', 'HistoryHolder', 'SettingsHolder', 'DashboardHolder'];
 	for (var i = holders.length - 1; i >= 0; i--) {
 		$('#' + holders[i]).addClass('hidden')
 		
 	}
 	
 	$('#' + holder).removeClass('hidden')
+
 
 	if( holder == 'TheoryHolder'){
 		var ksu_set = $('.KSU');
@@ -759,9 +800,19 @@ function FixTheoryView(){//xx
 			}
 		}
 	} 
+
+	if( holder == 'DashboardHolder'){
+		$.ajax({
+			type: "POST",
+			url: "/",
+			dataType: 'json',
+			data: JSON.stringify({'user_action': 'RetrieveDashboard'})
+		}).done(function(data){
+			RenderDashboard(data['dashboard_sections'])
+		})
+	}
 	
 	$('#CreateNewKSU').prop("disabled", section_ksu_type == 'disabled')
-
 };
 
 
@@ -788,7 +839,25 @@ function FormatBasedOnStatus(ksu, status){
 	if (status in StatusFormat){
 		display_section.addClass(StatusFormat[status]);
 	}
+}
 
+
+function RenderDashboard(dashboard_sections){//xx
+	for (var i = dashboard_sections.length - 1; i >= 0; i--) {
+		var section_dic = dashboard_sections[i]
+		var template = $('#' + section_dic['type'] + '_Template').clone();
+		template.attr('id', '')
+		
+		var attributes = template.find('.SectionAttr');
+		console.log(attributes);
+		for (var i = attributes.length - 1; i >= 0; i--) {
+			var SectionAttr = $(attributes[i]);
+			SectionAttr.text(section_dic[SectionAttr.attr("name")])
+		} 
+
+		template.removeClass('hidden');
+		template.appendTo('#' + section_dic['type'] + '_Holder');
+	}
 }
 
 
@@ -820,7 +889,8 @@ var section_details = {
 	'possesions': {'title': 'Possesions', 'new_ksu_type': 'Possesion', 'holder':'TheoryHolder'},  
 	'situation': {'title': 'Life Situation', 'new_ksu_type': 'Situation', 'holder':'TheoryHolder'},
 	'wisdom': {'title': 'Wisdom', 'new_ksu_type': 'Wisdom', 'holder':'TheoryHolder'},
-	'dashboard': {'title': 'Dashboard', 'new_ksu_type': 'Indicator', 'holder':'TheoryHolder'},
+	'dashboard': {'title': 'Dashboard', 'new_ksu_type': 'disabled', 'holder':'DashboardHolder'},
+	'indicators': {'title': 'Indicators', 'new_ksu_type': 'Indicator', 'holder':'TheoryHolder'},
 
 	'history':{'title': 'History', 'new_ksu_type': 'disabled', 'holder':'HistoryHolder'},
 }

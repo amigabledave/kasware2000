@@ -279,15 +279,13 @@ class Home(Handler):
 			ksu.put()
 
 			game = self.update_game(event)
-
 			event_dic = self.event_to_dic(event)
-
-			game['mensaje'] = 'Evento guardado'
-			game['in_graveyard'] = ksu.in_graveyard
-
+			
 			self.response.out.write(json.dumps({
+				'mensaje': 'Evento guardado',
 				'game':game,
 				'event_dic':event_dic,
+				'in_graveyard': ksu.in_graveyard,
 				}))
 			return
 
@@ -359,6 +357,23 @@ class Home(Handler):
 				}))
 			return
 
+		elif user_action == 'DeleteEvent':
+			event = Event3.get_by_id(int(event_details['event_id']))
+			game = self.update_game(event, delete_event=True)
+			ksu = KSU3.get_by_id(event.ksu_id.id())
+			render_ksu = ksu.in_graveyard
+			ksu.in_graveyard = False
+			ksu.put()
+			event.key.delete()
+			
+			self.response.out.write(json.dumps({
+				'mensaje':'Evento Revertido',
+				'ksu': self.ksu_to_dic(ksu),
+				'game': game,
+				'render_ksu': render_ksu,
+				}))
+			return
+
 		elif user_action == 'UpdateKsuAttribute':
 			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
 			self.update_ksu_attribute(ksu, event_details['attr_key'], event_details['attr_value'])
@@ -373,6 +388,14 @@ class Home(Handler):
 			self.response.out.write(json.dumps({
 					'new_pic_input_action': new_pic_input_action,
 					'mensaje':'Nueva accion enviada',
+					}))
+			return
+
+		elif user_action == 'RetrieveDashboard':
+			dashboard_sections = self.CalculateDashboardValues()
+			self.response.out.write(json.dumps({
+					'dashboard_sections': dashboard_sections,
+					'mensaje':'Dashboard values calculated',
 					}))
 		return
 
@@ -593,6 +616,34 @@ class Home(Handler):
 		theory.game = game
 		self.theory.put()
 		return game
+
+	def CalculateDashboardValues(self):
+		game = self.game
+		
+		dashboard_section_attributes = {
+			'base':['type', 'title'],
+			'overall':['personal_best', 'score']}
+
+		dashboard_values = [
+			{'type': 'Overall',	
+			'title': 'Discipline Lvl.',
+			'score': game['discipline_lvl'],
+			'personal_best': game['best_discipline_lvl']},
+			
+			{'type': 'Overall',	
+			'title': 'Streak (Days)',
+			'score': game['streak'],
+			'personal_best': game['best_streak']},
+
+			{'type': 'Overall',	
+			'title': 'Merits Reseve',
+			'score': game['piggy_bank'],
+			'personal_best': game['best_piggy_bank']},
+		]
+
+		return dashboard_values	
+
+
 		
 class SignUpLogIn(Handler):
 	def get(self):

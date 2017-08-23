@@ -243,5 +243,4 @@ dashboard_template = {
 	'WishRealized':{},# Generado por Life Pieces al cambiar de status 	
 
 	'Measurement':{}, #Generaddo por indicadores
-
 }
