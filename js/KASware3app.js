@@ -435,6 +435,10 @@ $(document).on('change','.ShowHideSelect', function(){
 });
 
 
+$(document).on('change', '.MonitorCheckbox', function(){
+	$(this).closest('#KSU').find('#MonitorDetails').toggleClass('hidden')
+});
+
 $(document).on('change', '.pic_input', function(){
     var ksu = $(this).closest('#KSU');    
     readURL(ksu, this);
@@ -512,6 +516,10 @@ function render_ksu(ksu_dic){
 
 	if (ksu_type == 'Action'){
 		UpdateMerits(ksu)
+	}
+
+	if(ksu_dic['monitor']){
+		ksu.find('#MonitorDetails').removeClass('hidden')
 	}
 
 	FormatBasedOnStatus(ksu, ksu_dic['status'])
@@ -651,6 +659,30 @@ function HideUnhideKsuProperties(ksu, targets, action){
 
 
 function ShowHideSelect(ksu, select, option){
+	var select_toBeHidden = {
+		'repeats': ['#repeats_Xdays_col', '#repeats_day_col', '#repeats_month_col', '#repeats_week_col'],
+		'goal_type':['#goal_period_size_col'],
+	}
+
+
+	var select_toBeShown = {
+		'repeats':{
+			'Never':[],
+			'Always':[],
+			'X_Days':['#repeats_Xdays_col'],
+			'Week':['#repeats_week_col'],
+			'Month':['#repeats_day_col'],
+			'Year':['#repeats_day_col', '#repeats_month_col']
+		},
+
+		'goal_type':{
+			'Total':[],
+			'PeriodBased':['#goal_period_size_col'],
+			'Average':[],
+		}
+	}
+
+
   HideUnhideKsuProperties(ksu, select_toBeHidden[select], 'Hide');
   HideUnhideKsuProperties(ksu, select_toBeShown[select][option], 'Show');
 }
@@ -851,11 +883,12 @@ function FormatBasedOnStatus(ksu, status){
 
 
 function RenderDashboard(dashboard_sections){//xx
-	
+	// console.log(dashboard_sections)
 	var section_dic, template, attributes, SectionAttr;
 	
 	$('#Overall_Holder').empty()
 	$('#Merits_Holder').empty()
+	$('#MonitoredKSU_Holder').empty()
 
 	for (var i = dashboard_sections.length - 1; i >= 0; i--) {
 		
@@ -912,22 +945,6 @@ var section_details = {
 	'history':{'title': 'History', 'new_ksu_type': 'disabled', 'holder':'HistoryHolder'},
 }
 
-
-var select_toBeHidden = {
-	'repeats': ['#repeats_Xdays_col', '#repeats_day_col', '#repeats_month_col', '#repeats_week_col'],
-}
-
-
-var select_toBeShown = {
-	'repeats':{
-		'Never':[],
-		'Always':[],
-		'X_Days':['#repeats_Xdays_col'],
-		'Week':['#repeats_week_col'],
-		'Month':['#repeats_day_col'],
-		'Year':['#repeats_day_col', '#repeats_month_col']
-	},
-}
 
 
 /////////////////////////////////////////////////////////////////////////////////////

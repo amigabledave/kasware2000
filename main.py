@@ -622,6 +622,8 @@ class Home(Handler):
 	def CalculateDashboardValues(self, start_date, end_date):
 		game = self.game
 		
+		weight = {1:1, 2:3, 3:5, 4:8, 5:13} #Peso para ponderar Life Pieces según su importancia/size
+
 		dashboard_base = {
 			'current': {
 				'Merits':{'total':0, 'Effort':0, 'Stupidity':0, 'days':[]}
@@ -632,7 +634,7 @@ class Home(Handler):
 			}
 		}
 
-		dashboard_base = self.AdjustDashboardBase(dashboard_base, start_date, end_date)
+		dashboard_base, monitored_ksus_sections = self.AdjustDashboardBase(dashboard_base, start_date, end_date)
 
 		dashboard_values = [
 			{'type': 'Overall',	
@@ -656,22 +658,28 @@ class Home(Handler):
 			'previous': dashboard_base['previous']['Merits']['total']},
 
 			{'type': 'Merits',	
-			'title': 'Effort Made',
+			'title': 'Effort',
 			'current': dashboard_base['current']['Merits']['Effort'],
 			'previous': dashboard_base['previous']['Merits']['Effort']},
 
 			{'type': 'Merits',	
-			'title': 'Stupidity Commited',
+			'title': 'Stupidity',
 			'current': dashboard_base['current']['Merits']['Stupidity'],
 			'previous': dashboard_base['previous']['Merits']['Stupidity']},
 		]
 
-		return dashboard_values
+		return dashboard_values + monitored_ksus_sections
 
 	def AdjustDashboardBase(self, dashboard_base, start_date, end_date):
 		period_len = end_date.toordinal() - start_date.toordinal() + 1
 		previous_start_date = start_date - timedelta(days=period_len)
 		history = Event3.query(Event3.theory_id == self.theory.key).filter(Event3.event_date >= previous_start_date, Event3.event_date <= end_date).order(-Event3.event_date).fetch()
+
+		monitored_ksus = KSU3.query(KSU3.theory_id == self.theory.key).filter(KSU3.in_graveyard == False).filter(KSU3.monitor == True).fetch()
+		monitored_ksus_sections = []
+		for ksu in monitored_ksus:
+			section = self.ksu_to_dashboard_section(ksu)
+			monitored_ksus_sections.append(section)
 
 		for event in history:
 			event_type = event.event_type
@@ -692,7 +700,16 @@ class Home(Handler):
 					dashboard_base[time_frame]['Merits'][event_type] = dashboard_base[time_frame]['Merits'][event_type]/days_in_time_frame					
 			dashboard_base[time_frame]['Merits']['total'] = dashboard_base[time_frame]['Merits']['Effort'] - dashboard_base[time_frame]['Merits']['Stupidity']
 
-		return dashboard_base		
+		return dashboard_base, monitored_ksus_sections		
+
+	def ksu_to_dashboard_section(self, ksu):
+		section ={
+			'type': 'MonitoredKSU',	
+			'title': 'Results around: ',
+			'ksu_description': ksu.description,
+			}
+
+		return section
 
 
 		

@@ -116,24 +116,23 @@
 				<form>
 
 					<label class="radio-inline">
-						<input type="radio" name="" value="" class=""> Disappointing
-						<!-- <span class="glyphicon glyphicon-thumbs-down"></span> -->
+						<input type="radio" name="experience_quality" value="1" class=""> OK					
 					</label>					
 
 					<label class="radio-inline">
-						<input type="radio" name="" value="" class="" checked="checked"> Nice
+						<input type="radio" name="experience_quality" value="3" class="" checked="checked"> Nice
 					</label>
 
 					<label class="radio-inline">
-						<input type="radio" name="" value="" class=""> Memorable
+						<input type="radio" name="experience_quality" value="5" class=""> Memorable
 					</label>
 					
 					<label class="radio-inline">
-						<input type="radio" name="" value="" class=""> Epic
+						<input type="radio" name="experience_quality" value="8" class=""> Epic
 					</label>
 					
 					<label class="radio-inline">
-						<input type="radio" name="" value="" class=""> Legendary
+						<input type="radio" name="experience_quality" value="13" class=""> Legendary
 					</label>
 				
 				</form>	
@@ -406,7 +405,7 @@
 			<div class="col-xs-8">
 				<label class="checkbox-inline"><input type="checkbox" id="is_private" name="is_private" class="KsuAttr"><b>Private</b></label>
 
-				<label class="checkbox-inline"><input type="checkbox" id="monitor" name="monitor" class="KsuAttr"><b>Monitor</b></label>
+				<label class="checkbox-inline"><input type="checkbox" id="monitor" name="monitor" class="KsuAttr MonitorCheckbox"><b>Monitor</b></label>
 
 				<label class="checkbox-inline TypeSpecific" target_type="Experience Contribution SelfAttribute Person Possesion Situation"><input type="checkbox" id="needs_mtnc" name="needs_mtnc" class="KsuAttr"><b>Needs Maintenace</b></label>
 				
@@ -418,8 +417,38 @@
 			</div>
 		</div>
 
-		<div class="row" id="MonitorGoal">
-			
+		<div class="row hidden" id="MonitorDetails">
+			<div class="inKSUhrDiv"><hr class="inKSUhr"></div>
+			<div class="col-xs-3 form-group" id="merits_goal_col">				
+				<label class="TypeSpecific SubtypeSpecific" target_type="Action" avoid_subtype="Proactive Reactive">Stupidity Limit</label>
+				<label class="SubtypeSpecific" avoid_subtype="Negative">Effort Minimum</label>
+				<input type="number" min="0" step="1" class="form-control KsuAttr SexyInput" id="merits_goal" name="goal_merits" placeholder="Merits Goal">				
+			</div>
+
+			<div class="col-xs-3 form-group" id="merits_goal_col">
+				<label class="SubtypeSpecific" avoid_subtype="Negative">Events Minimum</label>
+				<label class="TypeSpecific SubtypeSpecific" target_type="Action" avoid_subtype="Proactive Reactive">Events Limit</label>				
+				<input type="number" min="0" step="1" class="form-control KsuAttr SexyInput" id="events_goal" name="goal_events" placeholder="Events Goal">			
+			</div>
+
+			<div class="col-xs-3 form-group TypeSpecific SubtypeSpecific" target_type='Action' id="goal_type_col" avoid_subtype="Moment Chapter Group Role">					
+				<label> Goal Type </label>
+				<select id="goal_type" class="KsuAttr form-control SexySelect ShowHideSelect" name="goal_type">
+					<option value="Total"> Total </option>					
+					<option value="PeriodBased"  selected="selected"> Period Based </option>
+					<option value="Average" class="TypeSpecific" target_type="Indicator"> Average </option>
+				</select>				
+			</div>
+
+			<div class="col-xs-3 form-group hidden" target_type='Action' id="goal_period_size_col">
+				<label> Period Size </label>
+				<select id="goal_period_size" class="KsuAttr form-control SexySelect" name="goal_period_size">
+					<option value="1"> Daily </option>										
+					<option value="7"  selected="selected"> Weekly </option>					
+					<option value="30"> Monthly </option>
+					<option value="365"> Yearly </option>
+				</select>				
+			</div>
 		</div>
 
 		<div class="row" id="CommentsRow">
