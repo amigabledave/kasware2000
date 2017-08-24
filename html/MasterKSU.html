@@ -285,14 +285,14 @@
 			</div>	
 				
 			<div class="col-xs-3 form-group TypeSpecific" target_type='Action'>
-				<label> Repeats every </label>
+				<label> Repeats </label>
 				<select id="repeats" class="KsuAttr form-control ShowHideSelect SexyInput" name="repeats" style="margin-bottom:7px;">					
 					<option value="Never" selected="selected"> Never </option>
 					<option value="Always"> Always </option>
-					<option value="X_Days"> X Days </option>
-					<option value="Week"> Week </option>
-					<option value="Month"> Month </option>
-					<option value="Year"> Year </option>
+					<option value="X_Days"> Every X Days </option>
+					<option value="Week"> Weekly </option>
+					<option value="Month"> Monthly </option>
+					<option value="Year"> Yearly </option>
 				</select> 
 			</div>
 			
@@ -418,17 +418,17 @@
 		</div>
 
 		<div class="row hidden" id="MonitorDetails">
-			<div class="inKSUhrDiv"><hr class="inKSUhr"></div>
+			<div class="inKSUhrDiv"><hr class="inKSUhr" style="margin-top: 15px;"></div>
 			<div class="col-xs-3 form-group" id="merits_goal_col">				
 				<label class="TypeSpecific SubtypeSpecific" target_type="Action" avoid_subtype="Proactive Reactive">Stupidity Limit</label>
 				<label class="SubtypeSpecific" avoid_subtype="Negative">Effort Minimum</label>
-				<input type="number" min="0" step="1" class="form-control KsuAttr SexyInput" id="merits_goal" name="goal_merits" placeholder="Merits Goal">				
+				<input type="number" min="0" step="1" class="form-control KsuAttr SexyInput" id="goal_merits" name="goal_merits" placeholder="Merits Goal">				
 			</div>
 
 			<div class="col-xs-3 form-group" id="merits_goal_col">
 				<label class="SubtypeSpecific" avoid_subtype="Negative">Events Minimum</label>
 				<label class="TypeSpecific SubtypeSpecific" target_type="Action" avoid_subtype="Proactive Reactive">Events Limit</label>				
-				<input type="number" min="0" step="1" class="form-control KsuAttr SexyInput" id="events_goal" name="goal_events" placeholder="Events Goal">			
+				<input type="number" min="0" step="1" class="form-control KsuAttr SexyInput" id="goal_events" name="goal_events" placeholder="Events Goal">			
 			</div>
 
 			<div class="col-xs-3 form-group TypeSpecific SubtypeSpecific" target_type='Action' id="goal_type_col" avoid_subtype="Moment Chapter Group Role">					

@@ -101,7 +101,6 @@ attributes_guide = {
 	'is_private': ['Boolean', 'Checkbox'],
 	'anywhere': ['Boolean', 'Checkbox'], 
 	'is_optional': ['Boolean', 'Checkbox'],
-	'monitor': ['Boolean', 'Checkbox'],
 
 	'comments': ['Text', 'Standard'],
 	'tag': ['String', 'Standard'],
@@ -132,6 +131,12 @@ attributes_guide = {
 	'source': ['Details', 'Standard'],
 	'question': ['Details', 'Standard'],
 	'chapter_duration': ['Details', 'Standard'],
+
+	'monitor': ['Boolean', 'Checkbox'],
+	'goal_merits': ['Details', 'Standard'],
+	'goal_events': ['Details', 'Standard'],
+	'goal_type': ['Details', 'Select'],
+	'goal_period_size': ['Details', 'Select'],
 }
 
 
@@ -148,7 +153,12 @@ ksu_type_attributes = {
 		'is_private',
 		'comments',
 		'tag',
-		'monitor',							
+
+		'monitor',				
+		'goal_merits',
+		'goal_events',
+		'goal_type',
+		'goal_period_size',
 	],
 
 	'Action': [

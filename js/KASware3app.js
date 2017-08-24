@@ -367,7 +367,7 @@ $(document).on('focusin', '.KsuAttr', function(){
 
 	// var KsuAttr = $(this)
 	var initial_attr_value = get_ksu_attr_value(ksu, $(this).attr("name"));
-	// console.log('Se reconocio que se esta acutalizando un attributo')	
+	// console.log('Se reconocio que se esta acutalizando un attributo')
 
 	$(this).on('focusout', function(){
 		
