@@ -395,8 +395,10 @@ class Home(Handler):
 			
 			end_date = (datetime.today()+timedelta(hours=self.theory.timezone))
 			start_date = end_date - timedelta(days=7)
+				
+			dashboard_base = self.CreateDashboardBase(start_date, end_date)
+			dashboard_sections = self.CreateDashboardSections(dasboard_base)
 
-			dashboard_sections = self.CalculateDashboardValues(start_date, end_date)
 			self.response.out.write(json.dumps({
 					'dashboard_sections': dashboard_sections,
 					'mensaje':'Dashboard values calculated',
@@ -558,6 +560,7 @@ class Home(Handler):
 		return ksu
 
 	def create_event(self, ksu, user_action, event_details):
+		weight = {1:1, 2:3, 3:5, 4:8, 5:13} #Peso para ponderar Life Pieces según su importancia/size
 		ksu_subtype = ksu.ksu_subtype
 		
 		if user_action == 'Action_Done':
@@ -619,22 +622,85 @@ class Home(Handler):
 		self.theory.put()
 		return game
 
-	def CalculateDashboardValues(self, start_date, end_date):
+	def CreateDashboardBase(self, dashboard_base, start_date, end_date):
+
+		dasboard_base = {'Merits':{}}xx
+			
+		for time_frame in ['current', 'previous']:
+			for event_type in KASware3.event_types:
+				dashboard_base[time_frame][event_type] = make_template('event_type_summary')		
+
+		period_len = end_date.toordinal() - start_date.toordinal() + 1
+		previous_start_date = start_date - timedelta(days=period_len)
+		history = Event3.query(Event3.theory_id == self.theory.key).filter(Event3.event_date >= previous_start_date, Event3.event_date <= end_date).order(-Event3.event_date).fetch()
+
+		monitored_ksus = KSU3.query(KSU3.theory_id == self.theory.key).filter(KSU3.in_graveyard == False).filter(KSU3.monitor == True).fetch()
+		monitored_ksus_sections = []
+		for ksu in monitored_ksus:
+			section = self.ksu_to_dashboard_section(ksu)
+			monitored_ksus_sections.append(section)
+
+		dasboard_base['monitored_ksus_sections'] = monitored_ksus_sections
+
+		for event in history:
+			event_type = event.event_type
+			time_frame = 'current'
+			event_date = event.event_date
+			if event.event_date < start_date:
+				time_frame = 'previous'
+			summary_section = dashboard_base[time_frame][event_type]			
+			
+			summary_section['score'][event.size] += event.score
+			summary_section['score']['total'] += event.score			
+			summary_section['events'][event.size] += 1
+			summary_section['events']['total'] += 1
+
+			if event_date.toordinal() not in summary_section['days']:
+				summary_section['days'].append(event_date.toordinal())
+
+		for event_type in KASware3.event_types:
+			for time_frame in ['current', 'previous']:
+				dashboard_base[time_frame][event_type] = self.add_total_and_average_to_event_type_summary(dashboard_base[time_frame][event_type])
+
+		return dashboard_base	
+
+	def CreateDashboardSections(self, dasboard_base):
 		game = self.game
 		
-		weight = {1:1, 2:3, 3:5, 4:8, 5:13} #Peso para ponderar Life Pieces según su importancia/size
+		dashboard_sections = [
+			{'section_type':'Overall',
+			 'section_title':'',
+			 'sub_sections':[
+				{'title': 'Discipline Lvl.',
+				'score': game['discipline_lvl'],
+				'personal_best': game['best_discipline_lvl']},
 
-		dashboard_base = {
-			'current': {
-				'Merits':{'total':0, 'Effort':0, 'Stupidity':0, 'days':[]}
-			},
+				{'title': 'Streak (Days)',
+				'score': game['streak'],
+				'personal_best': game['best_streak']},
 
-			'previous': {
-				'Merits':{'total':0, 'Effort':0, 'Stupidity':0, 'days':[]}
-			}
-		}
-
-		dashboard_base, monitored_ksus_sections = self.AdjustDashboardBase(dashboard_base, start_date, end_date)
+				{'title': 'Merits Reseve',
+				'score': game['piggy_bank'],
+				'personal_best': game['best_piggy_bank']},
+			 ]},
+		
+			 {'section_type':'Merits'
+			  'section_title': 'Merits [daily average]',			  
+			  'contrast_type': 'time_frame',
+			  'include_total':True,
+			  'sub_sections': [
+				{'title': 'Total',
+				'score': '',
+				'contrast': ''} 
+				
+				{'title': 'Earned'},
+				
+				{'title': 'Loss',
+				'current': dashboard_base['current']['Merits']['Stupidity'],
+				'previous': dashboard_base['previous']['Merits']['Stupidity']},
+			  ]
+			 }.
+		]
 
 		dashboard_values = [
 			{'type': 'Overall',	
@@ -668,39 +734,19 @@ class Home(Handler):
 			'previous': dashboard_base['previous']['Merits']['Stupidity']},
 		]
 
-		return dashboard_values + monitored_ksus_sections
+		return dashboard_values + dasboard_base['monitored_ksus_sections']
 
-	def AdjustDashboardBase(self, dashboard_base, start_date, end_date):
-		period_len = end_date.toordinal() - start_date.toordinal() + 1
-		previous_start_date = start_date - timedelta(days=period_len)
-		history = Event3.query(Event3.theory_id == self.theory.key).filter(Event3.event_date >= previous_start_date, Event3.event_date <= end_date).order(-Event3.event_date).fetch()
+	def add_total_and_average_to_event_type_summary(self, event_type_summary):
+		days = len(event_type_summary['days'])
+		for section in ['score', 'events']:
+			for i in range(1,6):
+				event_type_summary[section]['total'] += event_type_summary[section][i]
+			if days > 0:
+				event_type_summary[section]['average'] = event_type_summary[section]['total']/days
+			else:
+				event_type_summary[section]['average'] = 0
 
-		monitored_ksus = KSU3.query(KSU3.theory_id == self.theory.key).filter(KSU3.in_graveyard == False).filter(KSU3.monitor == True).fetch()
-		monitored_ksus_sections = []
-		for ksu in monitored_ksus:
-			section = self.ksu_to_dashboard_section(ksu)
-			monitored_ksus_sections.append(section)
-
-		for event in history:
-			event_type = event.event_type
-			time_frame = 'current'
-			event_date = event.event_date
-			if event.event_date < start_date:
-				time_frame = 'previous'
-
-			if event_type in ['Effort', 'Stupidity']:
-				dashboard_base[time_frame]['Merits'][event_type] += event.score
-				if event_date.toordinal() not in dashboard_base[time_frame]['Merits']['days']:
-					dashboard_base[time_frame]['Merits']['days'].append(event_date.toordinal())
-
-		for time_frame in ['current', 'previous']:
-			days_in_time_frame = len(dashboard_base[time_frame]['Merits']['days'])
-			if days_in_time_frame > 0:
-				for event_type in ['Effort', 'Stupidity']:
-					dashboard_base[time_frame]['Merits'][event_type] = dashboard_base[time_frame]['Merits'][event_type]/days_in_time_frame					
-			dashboard_base[time_frame]['Merits']['total'] = dashboard_base[time_frame]['Merits']['Effort'] - dashboard_base[time_frame]['Merits']['Stupidity']
-
-		return dashboard_base, monitored_ksus_sections		
+		return event_type_summary
 
 	def ksu_to_dashboard_section(self, ksu):
 		section ={
@@ -712,7 +758,6 @@ class Home(Handler):
 		return section
 
 
-		
 class SignUpLogIn(Handler):
 	def get(self):
 		self.print_html('SignUpLogIn.html', login_error = False)
@@ -2677,9 +2722,16 @@ def get_ksu_to_remember(self):
 		ksu_less_reviewed = {}
 
 	return ksu_less_reviewed, current_objectives
-	
 
-		
+
+#KASWare3	
+def make_template(template_name):
+	templates = {
+		'event_type_summary': {'score':{1:0, 2:0, 3:0, 4:0, 5:0, 'total':0}, 'events':{1:0, 2:0, 3:0, 4:0, 5:0, 'total':0}, 'days':[]}
+	}
+	return templates[template_name]
+
+# xx Aqui nos quedamos... Merits'= {section: {operator: dashboard_base[time_frame]['Effort'] - dashboard_base[time_frame]['Effort']}}
 
 #--- Validation and security functions ----------
 secret = 'elzecreto'

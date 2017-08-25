@@ -65,19 +65,21 @@ ksu_types = [
 ]
 
 
-event_types = {
-	'EndValue', #Generado por momentos de Joy Generatos
+# event_types = {
+# 	'EndValue', #Generado por momentos de Joy Generatos
 	
-	'Effort', #Generado por acciones al ser ejecutadas
+# 	'Effort', #Generado por acciones al ser ejecutadas
 	
-	'Stupidity', #Generado por acciones al ser ejecutadas	
+# 	'Stupidity', #Generado por acciones al ser ejecutadas	
 	
-	'Progress', #Generado por objetivos
+# 	'Progress', #Generado por objetivos
 	
-	'WishRealized',# Generado por Life Pieces al cambiar de status 	
+# 	'WishRealized',# Generado por Life Pieces al cambiar de status 	
 
-	'Measurement', #Generaddo por indicadores
-}
+# 	'Measurement', #Generaddo por indicadores
+# }
+
+event_types = ['EndValue', 'Effort', 'Stupidity', 'Progress', 'WishRealized', 'Measurement']
 
 
 attributes_guide = {
