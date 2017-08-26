@@ -32,7 +32,13 @@ $(document).ready(function(){
 
 		FixTheoryView()		
 	})
+
+	$('#center_column').css({height: $(window).height()})
 });
+
+$(window).on('resize', function(){
+	$('#center_column').css({height: $(window).height()})
+})
 
 
 $('.SectionButton').on('click', function(){
@@ -884,11 +890,11 @@ function FormatBasedOnStatus(ksu, status){
 
 function RenderDashboard(dashboard_sections){//xx
 	// console.log(dashboard_sections)
-	var section_dic, template, attributes, SectionAttr;
+	// var section_dic, template, attributes, SectionAttr;
 	
-	$('#Overall_Holder').empty()
-	$('#Merits_Holder').empty()
-	$('#MonitoredKSU_Holder').empty()
+	// $('#Overall_Holder').empty()
+	// $('#Merits_Holder').empty()
+	// $('#MonitoredKSU_Holder').empty()
 
 	for (var i = dashboard_sections.length - 1; i >= 0; i--) {
 		
@@ -907,6 +913,33 @@ function RenderDashboard(dashboard_sections){//xx
 	}
 
 	$('#Merits_Section').removeClass('hidden');
+}
+
+function RenderDashboardSubsection(sub_section_dic, sub_section_template){
+
+		attributes = sub_section_template.find('.SectionAttr');		
+		for (var j = attributes.length - 1; j >= 0; j--) {
+			SectionAttr = $(attributes[j]);
+			SectionAttr.text(sub_section_dic[SectionAttr.attr("name")])
+		} 
+
+		// return sub_section_template
+
+		// 		{'section_type':'Overall',
+		// 	 'section_title':'',
+		// 	 'sub_sections':[
+		// 	 	{'title': 'Discipline Lvl.',
+		// 		'score': game['discipline_lvl'],
+		// 		'contrast': game['best_discipline_lvl']},
+
+		// 		{'title': 'Streak (Days)',
+		// 		'score': game['streak'],
+		// 		'contrast': game['best_streak']},
+	
+		// 		{'title': 'Merits Reseve',
+		// 		'score': game['piggy_bank'],
+		// 		'contrast': game['best_piggy_bank']},
+		// 	 ]},
 }
 
 
