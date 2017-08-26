@@ -678,7 +678,6 @@ class Home(Handler):
 		
 		dashboard_sections = [
 			{'section_type':'Overall',
-			 'section_title':'',
 			 'sub_sections':[
 			 	{'title': 'Discipline Lvl.',
 				'score': game['discipline_lvl'],
@@ -687,14 +686,14 @@ class Home(Handler):
 				{'title': 'Streak (Days)',
 				'score': game['streak'],
 				'contrast': game['best_streak']},
-
+	
 				{'title': 'Merits Reseve',
 				'score': game['piggy_bank'],
 				'contrast': game['best_piggy_bank']},
 			 ]},
 		
-			 {'section_type':'Merits',
-			  'section_title': 'Merits [daily average]',
+			 {'section_type':'Summary',
+			  'title': 'Merits [daily average]',
 			  'sub_sections': [
 				{'title': 'Total',
 				'score': dashboard_base['current']['Merits']['score']['average'],
@@ -710,7 +709,7 @@ class Home(Handler):
 			  ]},
 		]
 
-		return dashboard_sections + dashboard_base['monitored_ksus_sections']
+		return dashboard_sections #+ dashboard_base['monitored_ksus_sections']
 
 	def add_total_and_average_to_event_type_summary(self, event_type_summary):
 		days = len(event_type_summary['days'])

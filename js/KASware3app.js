@@ -889,57 +889,43 @@ function FormatBasedOnStatus(ksu, status){
 
 
 function RenderDashboard(dashboard_sections){//xx
-	// console.log(dashboard_sections)
-	// var section_dic, template, attributes, SectionAttr;
-	
-	// $('#Overall_Holder').empty()
-	// $('#Merits_Holder').empty()
-	// $('#MonitoredKSU_Holder').empty()
+	console.log(dashboard_sections)
+	var section_dic, section_type, template, sub_section_template, attributes, sub_section;
+	$('.DashboardRenderedSection').remove();
 
 	for (var i = dashboard_sections.length - 1; i >= 0; i--) {
 		
 		section_dic = dashboard_sections[i]
-		template = $('#' + section_dic['type'] + '_Template').clone();
-		template.attr('id', '')
+		section_type = section_dic['section_type']
+		sub_sections = section_dic['sub_sections']
 		
-		attributes = template.find('.SectionAttr');		
-		for (var j = attributes.length - 1; j >= 0; j--) {
-			SectionAttr = $(attributes[j]);
-			SectionAttr.text(section_dic[SectionAttr.attr("name")])
+		template = $('#' + section_type + '_Template').clone();
+		template.attr('id', '')
+		template.addClass('DashboardRenderedSection')
+			
+		for (var j = sub_sections.length - 1; j >= 0; j--) {
+			sub_section_dic = sub_sections[j];
+			sub_section_template = template.find('#SubSection_Template').clone()
+			sub_section_template.attr('id', '')
+			sub_section_template = RenderDashboardSubsection(sub_section_dic, sub_section_template)
+			sub_section_template.removeClass('hidden');
+			sub_section_template.prependTo(template.find('#SubSections_Holder'))
 		} 
 
 		template.removeClass('hidden');
-		template.prependTo('#' + section_dic['type'] + '_Holder');
+		template.prependTo('#DashboardHolder');
 	}
 
-	$('#Merits_Section').removeClass('hidden');
 }
 
 function RenderDashboardSubsection(sub_section_dic, sub_section_template){
-
-		attributes = sub_section_template.find('.SectionAttr');		
-		for (var j = attributes.length - 1; j >= 0; j--) {
-			SectionAttr = $(attributes[j]);
-			SectionAttr.text(sub_section_dic[SectionAttr.attr("name")])
-		} 
-
-		// return sub_section_template
-
-		// 		{'section_type':'Overall',
-		// 	 'section_title':'',
-		// 	 'sub_sections':[
-		// 	 	{'title': 'Discipline Lvl.',
-		// 		'score': game['discipline_lvl'],
-		// 		'contrast': game['best_discipline_lvl']},
-
-		// 		{'title': 'Streak (Days)',
-		// 		'score': game['streak'],
-		// 		'contrast': game['best_streak']},
 	
-		// 		{'title': 'Merits Reseve',
-		// 		'score': game['piggy_bank'],
-		// 		'contrast': game['best_piggy_bank']},
-		// 	 ]},
+	attributes = sub_section_template.find('.SectionAttr');		
+	for (var x = attributes.length - 1; x >= 0; x--) {
+		SectionAttr = $(attributes[x]);
+		SectionAttr.text(sub_section_dic[SectionAttr.attr("name")])
+	}
+	return sub_section_template
 }
 
 
