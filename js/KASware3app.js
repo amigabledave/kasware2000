@@ -33,11 +33,14 @@ $(document).ready(function(){
 		FixTheoryView()		
 	})
 
-	$('#center_column').css({height: $(window).height()})
+	$('#center_column').css({'height': $(window).height()})
+	$('#SectionSelectionBar').css({'min-height': $(window).height()})
+	
 });
 
 $(window).on('resize', function(){
-	$('#center_column').css({height: $(window).height()})
+	$('#center_column').css({'height': $(window).height()})
+	$('#SectionSelectionBar').css({'min-height': $(window).height()})
 })
 
 
@@ -54,7 +57,7 @@ $('.SectionButton').on('click', function(){
 		$('#more_buttons').toggleClass('hidden')
 		$('#ShowMoreSpan').toggleClass('hidden')
 		$('#ShowLessSpan').toggleClass('hidden')
-		window.scrollTo(0, 1000);
+		
 	}
 });
 
@@ -889,7 +892,7 @@ function FormatBasedOnStatus(ksu, status){
 
 
 function RenderDashboard(dashboard_sections){//xx
-	console.log(dashboard_sections)
+	// console.log(dashboard_sections)
 	var section_dic, section_type, template, sub_section_template, attributes, sub_section;
 	$('.DashboardRenderedSection').remove();
 
@@ -902,6 +905,10 @@ function RenderDashboard(dashboard_sections){//xx
 		template = $('#' + section_type + '_Template').clone();
 		template.attr('id', '')
 		template.addClass('DashboardRenderedSection')
+
+		if('title' in section_dic){
+			template.find('#SectionTitle').text(section_dic['title'])
+		}
 			
 		for (var j = sub_sections.length - 1; j >= 0; j--) {
 			sub_section_dic = sub_sections[j];

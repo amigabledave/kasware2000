@@ -652,10 +652,8 @@ class Home(Handler):
 				time_frame = 'previous'
 			summary_section = dashboard_base[time_frame][event_type]			
 			
-			summary_section['score'][event.size] += event.score
-			summary_section['score']['total'] += event.score			
+			summary_section['score'][event.size] += event.score			
 			summary_section['events'][event.size] += 1
-			summary_section['events']['total'] += 1
 
 			if event_date.toordinal() not in summary_section['days']:
 				summary_section['days'].append(event_date.toordinal())
@@ -669,10 +667,6 @@ class Home(Handler):
 		return dashboard_base	
 
 	def CreateDashboardSections(self, dashboard_base):
-		print
-		print 'Dashboard base'
-		print dashboard_base
-		print
 
 		game = self.game
 		
@@ -695,15 +689,15 @@ class Home(Handler):
 			 {'section_type':'Summary',
 			  'title': 'Merits [daily average]',
 			  'sub_sections': [
-				{'title': 'Total',
+				{'title': 'Net',
 				'score': dashboard_base['current']['Merits']['score']['average'],
 				'contrast': dashboard_base['previous']['Merits']['score']['average']},
 				
-				{'title': 'Earned',
+				{'title': 'Earned', #&mu; &Sigma;
 				'score': dashboard_base['current']['Merits']['score']['average'],
 				'contrast': dashboard_base['previous']['Merits']['score']['average']},
 				
-				{'title': 'Loss',
+				{'title': 'Loss ',
 				'score': dashboard_base['current']['Merits']['score']['average'],
 				'contrast': dashboard_base['previous']['Merits']['score']['average']},
 			  ]},
@@ -716,10 +710,13 @@ class Home(Handler):
 		for section in ['score', 'events']:
 			for i in range(1,6):
 				event_type_summary[section]['total'] += event_type_summary[section][i]
+			
 			if days > 0:
 				event_type_summary[section]['average'] = event_type_summary[section]['total']/days
+			
 			else:
 				event_type_summary[section]['average'] = 0
+
 
 		return event_type_summary
 
