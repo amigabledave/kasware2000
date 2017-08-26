@@ -624,7 +624,7 @@ class Home(Handler):
 
 	def CreateDashboardBase(self, dashboard_base, start_date, end_date):
 
-		dasboard_base = {'Merits':{}}xx
+		dasboard_base = {'Merits':{}}
 			
 		for time_frame in ['current', 'previous']:
 			for event_type in KASware3.event_types:
