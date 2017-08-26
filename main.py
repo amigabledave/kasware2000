@@ -391,13 +391,13 @@ class Home(Handler):
 					}))
 			return
 
-		elif user_action == 'RetrieveDashboard': #xx
+		elif user_action == 'RetrieveDashboard':
 			
 			end_date = (datetime.today()+timedelta(hours=self.theory.timezone))
 			start_date = end_date - timedelta(days=7)
 				
 			dashboard_base = self.CreateDashboardBase(start_date, end_date)
-			dashboard_sections = self.CreateDashboardSections(dasboard_base)
+			dashboard_sections = self.CreateDashboardSections(dashboard_base)
 
 			self.response.out.write(json.dumps({
 					'dashboard_sections': dashboard_sections,
@@ -405,7 +405,6 @@ class Home(Handler):
 					}))
 		return
 
-	
 	def update_ksu(self, ksu, user_action):
 
 		if user_action == 'Action_Done':
@@ -622,13 +621,16 @@ class Home(Handler):
 		self.theory.put()
 		return game
 
-	def CreateDashboardBase(self, dashboard_base, start_date, end_date):
+	def CreateDashboardBase(self, start_date, end_date):
 
-		dasboard_base = {'Merits':{}}
+		dashboard_base = {'current':{}, 'previous':{}}
 			
 		for time_frame in ['current', 'previous']:
+			
 			for event_type in KASware3.event_types:
 				dashboard_base[time_frame][event_type] = make_template('event_type_summary')		
+
+			dashboard_base[time_frame]['Merits'] = make_template('merits_summary')
 
 		period_len = end_date.toordinal() - start_date.toordinal() + 1
 		previous_start_date = start_date - timedelta(days=period_len)
@@ -640,7 +642,7 @@ class Home(Handler):
 			section = self.ksu_to_dashboard_section(ksu)
 			monitored_ksus_sections.append(section)
 
-		dasboard_base['monitored_ksus_sections'] = monitored_ksus_sections
+		dashboard_base['monitored_ksus_sections'] = monitored_ksus_sections
 
 		for event in history:
 			event_type = event.event_type
@@ -662,79 +664,53 @@ class Home(Handler):
 			for time_frame in ['current', 'previous']:
 				dashboard_base[time_frame][event_type] = self.add_total_and_average_to_event_type_summary(dashboard_base[time_frame][event_type])
 
+		dashboard_base = self.add_special_sections_to_dashboard_base(dashboard_base)
+
 		return dashboard_base	
 
-	def CreateDashboardSections(self, dasboard_base):
+	def CreateDashboardSections(self, dashboard_base):
+		print
+		print 'Dashboard base'
+		print dashboard_base
+		print
+
 		game = self.game
 		
 		dashboard_sections = [
 			{'section_type':'Overall',
 			 'section_title':'',
 			 'sub_sections':[
-				{'title': 'Discipline Lvl.',
+			 	{'title': 'Discipline Lvl.',
 				'score': game['discipline_lvl'],
-				'personal_best': game['best_discipline_lvl']},
+				'contrast': game['best_discipline_lvl']},
 
 				{'title': 'Streak (Days)',
 				'score': game['streak'],
-				'personal_best': game['best_streak']},
+				'contrast': game['best_streak']},
 
 				{'title': 'Merits Reseve',
 				'score': game['piggy_bank'],
-				'personal_best': game['best_piggy_bank']},
+				'contrast': game['best_piggy_bank']},
 			 ]},
 		
-			 {'section_type':'Merits'
-			  'section_title': 'Merits [daily average]',			  
-			  'contrast_type': 'time_frame',
-			  'include_total':True,
+			 {'section_type':'Merits',
+			  'section_title': 'Merits [daily average]',
 			  'sub_sections': [
 				{'title': 'Total',
-				'score': '',
-				'contrast': ''} 
+				'score': dashboard_base['current']['Merits']['score']['average'],
+				'contrast': dashboard_base['previous']['Merits']['score']['average']},
 				
-				{'title': 'Earned'},
+				{'title': 'Earned',
+				'score': dashboard_base['current']['Merits']['score']['average'],
+				'contrast': dashboard_base['previous']['Merits']['score']['average']},
 				
 				{'title': 'Loss',
-				'current': dashboard_base['current']['Merits']['Stupidity'],
-				'previous': dashboard_base['previous']['Merits']['Stupidity']},
-			  ]
-			 }.
+				'score': dashboard_base['current']['Merits']['score']['average'],
+				'contrast': dashboard_base['previous']['Merits']['score']['average']},
+			  ]},
 		]
 
-		dashboard_values = [
-			{'type': 'Overall',	
-			'title': 'Discipline Lvl.',
-			'score': game['discipline_lvl'],
-			'personal_best': game['best_discipline_lvl']},
-			
-			{'type': 'Overall',	
-			'title': 'Streak (Days)',
-			'score': game['streak'],
-			'personal_best': game['best_streak']},
-
-			{'type': 'Overall',	
-			'title': 'Merits Reseve',
-			'score': game['piggy_bank'],
-			'personal_best': game['best_piggy_bank']},
-		
-			{'type': 'Merits',	
-			'title': 'Total',
-			'current': dashboard_base['current']['Merits']['total'],
-			'previous': dashboard_base['previous']['Merits']['total']},
-
-			{'type': 'Merits',	
-			'title': 'Effort',
-			'current': dashboard_base['current']['Merits']['Effort'],
-			'previous': dashboard_base['previous']['Merits']['Effort']},
-
-			{'type': 'Merits',	
-			'title': 'Stupidity',
-			'current': dashboard_base['current']['Merits']['Stupidity'],
-			'previous': dashboard_base['previous']['Merits']['Stupidity']},
-		]
-
-		return dashboard_values + dasboard_base['monitored_ksus_sections']
+		return dashboard_sections + dashboard_base['monitored_ksus_sections']
 
 	def add_total_and_average_to_event_type_summary(self, event_type_summary):
 		days = len(event_type_summary['days'])
@@ -748,6 +724,17 @@ class Home(Handler):
 
 		return event_type_summary
 
+	def add_special_sections_to_dashboard_base(self, dashboard_base):
+		
+		for time_frame in ['current', 'previous']:					
+			dashboard_base[time_frame]['Merits'] = make_template('merits_summary')
+
+			for operator in ['total', 'average']:
+				for value_type in ['score', 'events']:
+					dashboard_base[time_frame]['Merits'][value_type][operator] = dashboard_base[time_frame]['Effort'][value_type][operator] - dashboard_base[time_frame]['Stupidity'][value_type][operator]
+
+		return dashboard_base
+			
 	def ksu_to_dashboard_section(self, ksu):
 		section ={
 			'type': 'MonitoredKSU',	
@@ -2727,11 +2714,11 @@ def get_ksu_to_remember(self):
 #KASWare3	
 def make_template(template_name):
 	templates = {
-		'event_type_summary': {'score':{1:0, 2:0, 3:0, 4:0, 5:0, 'total':0}, 'events':{1:0, 2:0, 3:0, 4:0, 5:0, 'total':0}, 'days':[]}
+		'event_type_summary': {'score':{1:0, 2:0, 3:0, 4:0, 5:0, 'total':0}, 'events':{1:0, 2:0, 3:0, 4:0, 5:0, 'total':0}, 'days':[]},
+		'merits_summary': {'score':{'total':0, 'average':0}, 'events':{'total':0, 'average':0}}
 	}
 	return templates[template_name]
 
-# xx Aqui nos quedamos... Merits'= {section: {operator: dashboard_base[time_frame]['Effort'] - dashboard_base[time_frame]['Effort']}}
 
 #--- Validation and security functions ----------
 secret = 'elzecreto'
