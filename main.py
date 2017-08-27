@@ -634,14 +634,19 @@ class Home(Handler):
 		history = Event3.query(Event3.theory_id == self.theory.key).filter(Event3.event_date >= previous_start_date, Event3.event_date <= end_date).order(-Event3.event_date).fetch()
 
 		monitored_ksus = KSU3.query(KSU3.theory_id == self.theory.key).filter(KSU3.in_graveyard == False).filter(KSU3.monitor == True).fetch()
-		monitored_ksus_sections = []
-		for ksu in monitored_ksus:
-			section = self.ksu_to_dashboard_section(ksu)
-			monitored_ksus_sections.append(section)
+		
+		monitored_ksus_ids = []
+		monitored_ksus_dic = {}
 
-		dashboard_base['monitored_ksus_sections'] = monitored_ksus_sections
+		for ksu in monitored_ksus:
+			ksu_id = ksu.key.id()
+			monitored_ksus_ids.append(ksu_id)
+			ksu.dashboard_score = 0
+			ksu.dashboard_events = 0
+			monitored_ksus_dic[ksu_id] = ksu
 
 		for event in history:
+			ksu_id = event.ksu_id.id()
 			event_type = event.event_type
 			time_frame = 'current'
 			event_date = event.event_date
@@ -655,9 +660,32 @@ class Home(Handler):
 			if event_date.toordinal() not in summary_section['days']:
 				summary_section['days'].append(event_date.toordinal())
 
+			print
+			print 'ksu id: ' + str(ksu_id)
+			print 'Monitored KSUs:'
+			print monitored_ksus_ids 
+			print
+			
+			if time_frame == 'current' and ksu_id in monitored_ksus_ids:
+				print 
+				print 'Por lo menos su llega hasta aqui'
+				print
+				ksu = monitored_ksus_dic[ksu_id]
+				ksu.dashboard_score += event.score
+				ksu.dashboard_events += 1
+				monitored_ksus_dic[ksu_id] = ksu
+
 		for event_type in KASware3.event_types:
 			for time_frame in ['current', 'previous']:
 				dashboard_base[time_frame][event_type] = self.add_total_and_average_to_event_type_summary(dashboard_base[time_frame][event_type], period_len)
+
+
+		monitored_ksus_sections = []
+		for ksu_id in monitored_ksus_ids:
+			section = self.ksu_to_dashboard_section(monitored_ksus_dic[ksu_id])
+			monitored_ksus_sections.append(section)
+
+		dashboard_base['monitored_ksus_sections'] = monitored_ksus_sections
 
 		dashboard_base = self.add_special_sections_to_dashboard_base(dashboard_base)
 
@@ -684,7 +712,7 @@ class Home(Handler):
 			 ]},
 		
 			 {'section_type':'Summary',
-			  'title': 'Merits Earned Through Effort and Loss due to Stupidity',
+			  'title': 'Merits Earned & Loss Through Effort & Stupidity',
 			  'sub_sections': [
 				# {'title': 'Net',
 				# 'score': dashboard_base['current']['Merits']['score']['average'],
@@ -693,26 +721,30 @@ class Home(Handler):
 				{'title': 'Effort',
 				'operator': 'total',
 				'score': dashboard_base['current']['Effort']['score']['total'],
+				'contrast_title': 'Previous period:',
 				'contrast': dashboard_base['previous']['Effort']['score']['total']},
 				
 				{'title': 'Stupidity',
 				'operator': 'total',
 				'score': dashboard_base['current']['Stupidity']['score']['total'],
+				'contrast_title': 'Previous period:',
 				'contrast': dashboard_base['previous']['Stupidity']['score']['total']},
 				
 				{'title': 'Effort',
 				'operator': 'average',
 				'score': dashboard_base['current']['Effort']['score']['average'],
+				'contrast_title': 'Previous period:',
 				'contrast': dashboard_base['previous']['Effort']['score']['average']},
 				
 				{'title': 'Stupidity',
 				'operator': 'average',
 				'score': dashboard_base['current']['Stupidity']['score']['average'],
+				'contrast_title': 'Previous period:',
 				'contrast': dashboard_base['previous']['Stupidity']['score']['average']},
 			  ]},
 		]
 
-		return dashboard_sections #+ dashboard_base['monitored_ksus_sections']
+		return dashboard_sections + dashboard_base['monitored_ksus_sections']
 
 	def add_total_and_average_to_event_type_summary(self, event_type_summary, period_len):
 		days = len(event_type_summary['days'])
@@ -736,13 +768,26 @@ class Home(Handler):
 		return dashboard_base
 			
 	def ksu_to_dashboard_section(self, ksu):
-		section ={
-			'type': 'MonitoredKSU',	
-			'title': 'Results around: ',
-			'ksu_description': ksu.description,
-			}
+		section = {
+			'section_type':'Summary',	
+			'title':'Results around: ',
+			'detail': ksu.description,
+			'sub_sections':[
+				{'title':'Score',
+				'operator': 'total',
+				'score':ksu.dashboard_score,
+				'contrast_title': 'Goal',
+				'contrast':'#'},
+
+			   {'title':'Events',
+				'operator': 'total',
+				'score':ksu.dashboard_events,
+				'contrast_title': 'Goal',
+				'contrast':'#'}
+			]}
 
 		return section
+
 
 
 class SignUpLogIn(Handler):

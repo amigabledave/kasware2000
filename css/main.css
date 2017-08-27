@@ -120,10 +120,10 @@ input::-webkit-inner-spin-button {
 .KSUdisplaySection {
    
   background: #fff;  
-  border: 1px #ddd;
+  border: 2px #ddd;
 
   border-style: solid;  
-  border-color: white;
+  /*border-color: white;*/
   
   padding:10px;
   font-size: 13px;
@@ -247,15 +247,16 @@ input::-webkit-inner-spin-button {
 }
 
 .IsHistory {
-  background-color: #97cefd;  
+  border-color: #6b8ac1;
+  background-color: rgba(219, 236, 253, 1);  
 }
 
 .IsCritical {
-    color: red;
+   border-color: #bb6262 
 }
 
 .IsOptional {
-    color: green;
+    border-color: #3a8a26
 }
 
 .ActionBorders{

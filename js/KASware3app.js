@@ -892,7 +892,7 @@ function FormatBasedOnStatus(ksu, status){
 
 
 function RenderDashboard(dashboard_sections){//xx
-	// console.log(dashboard_sections)
+	console.log(dashboard_sections)
 	var section_dic, section_type, template, sub_section_template, attributes, sub_section;
 	$('.DashboardRenderedSection').remove();
 
@@ -908,6 +908,10 @@ function RenderDashboard(dashboard_sections){//xx
 
 		if('title' in section_dic){
 			template.find('#SectionTitle').text(section_dic['title'])
+		}
+
+		if('detail' in section_dic){
+			template.find('#SectionDetail').text(section_dic['detail'])
 		}
 			
 		for (var j = sub_sections.length - 1; j >= 0; j--) {
