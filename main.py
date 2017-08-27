@@ -248,8 +248,6 @@ class Handler(webapp2.RequestHandler):
 
 
 
-
-
 # ---- KASware3 ----
 class Home(Handler):
 
@@ -258,7 +256,6 @@ class Home(Handler):
 		constants['ksu_types'] = KASware3.ksu_types		
 		new_pic_input_action = "{0}".format(blobstore.create_upload_url('/upload_pic'))
 		self.print_html('KASware3.html', constants=constants, new_pic_input_action=new_pic_input_action)
-
 
 	@super_user_bouncer
 	def post(self):
@@ -660,7 +657,7 @@ class Home(Handler):
 
 		for event_type in KASware3.event_types:
 			for time_frame in ['current', 'previous']:
-				dashboard_base[time_frame][event_type] = self.add_total_and_average_to_event_type_summary(dashboard_base[time_frame][event_type])
+				dashboard_base[time_frame][event_type] = self.add_total_and_average_to_event_type_summary(dashboard_base[time_frame][event_type], period_len)
 
 		dashboard_base = self.add_special_sections_to_dashboard_base(dashboard_base)
 
@@ -687,36 +684,43 @@ class Home(Handler):
 			 ]},
 		
 			 {'section_type':'Summary',
-			  'title': 'Merits [daily average]',
+			  'title': 'Merits Earned Through Effort and Loss due to Stupidity',
 			  'sub_sections': [
-				{'title': 'Net',
-				'score': dashboard_base['current']['Merits']['score']['average'],
-				'contrast': dashboard_base['previous']['Merits']['score']['average']},
+				# {'title': 'Net',
+				# 'score': dashboard_base['current']['Merits']['score']['average'],
+				# 'contrast': dashboard_base['previous']['Merits']['score']['average']},
+
+				{'title': 'Effort',
+				'operator': 'total',
+				'score': dashboard_base['current']['Effort']['score']['total'],
+				'contrast': dashboard_base['previous']['Effort']['score']['total']},
 				
-				{'title': 'Earned', #&mu; &Sigma;
-				'score': dashboard_base['current']['Merits']['score']['average'],
-				'contrast': dashboard_base['previous']['Merits']['score']['average']},
+				{'title': 'Stupidity',
+				'operator': 'total',
+				'score': dashboard_base['current']['Stupidity']['score']['total'],
+				'contrast': dashboard_base['previous']['Stupidity']['score']['total']},
 				
-				{'title': 'Loss ',
-				'score': dashboard_base['current']['Merits']['score']['average'],
-				'contrast': dashboard_base['previous']['Merits']['score']['average']},
+				{'title': 'Effort',
+				'operator': 'average',
+				'score': dashboard_base['current']['Effort']['score']['average'],
+				'contrast': dashboard_base['previous']['Effort']['score']['average']},
+				
+				{'title': 'Stupidity',
+				'operator': 'average',
+				'score': dashboard_base['current']['Stupidity']['score']['average'],
+				'contrast': dashboard_base['previous']['Stupidity']['score']['average']},
 			  ]},
 		]
 
 		return dashboard_sections #+ dashboard_base['monitored_ksus_sections']
 
-	def add_total_and_average_to_event_type_summary(self, event_type_summary):
+	def add_total_and_average_to_event_type_summary(self, event_type_summary, period_len):
 		days = len(event_type_summary['days'])
 		for section in ['score', 'events']:
 			for i in range(1,6):
 				event_type_summary[section]['total'] += event_type_summary[section][i]
-			
-			if days > 0:
-				event_type_summary[section]['average'] = event_type_summary[section]['total']/days
-			
-			else:
-				event_type_summary[section]['average'] = 0
 
+			event_type_summary[section]['average'] = round(event_type_summary[section]['total']/(period_len*1.0),1)
 
 		return event_type_summary
 
@@ -2259,6 +2263,44 @@ class UpdateTheoryStructure(Handler):
 		theory.put()
 
 
+class PopulateRandomHistory(Handler):
+	
+	@super_user_bouncer
+	def get(self):
+		
+		valid_subtypes = ['Proactive', 'Rective', 'Negative']
+		n = 2
+
+		ksu_set = KSU3.query(KSU3.theory_id == self.theory.key).fetch()
+		for ksu in ksu_set:
+			if ksu.ksu_subtype in valid_subtypes:
+				for i in range(0, n):
+					self.create_random_event(ksu)
+
+		self.redirect('/')
+
+	def create_random_event(self, ksu):
+		event_date = datetime.today() - timedelta(days=random.randrange(0,13))
+		ksu_event_by_subtype = {
+			'Proactive':'Effort',
+			'Reactive': 'Effort',
+			'Negative':'Stupidity'
+		}
+
+		event = Event3(
+			theory_id = ksu.theory_id,
+			ksu_id = ksu.key,
+			description = ksu.description,
+			event_date = event_date, 
+
+			event_type = ksu_event_by_subtype[ksu.ksu_subtype],
+			score = random.randrange(0,25),
+			duration = 0,
+			size = random.randrange(1, 5),
+			comments = '')
+		event.put()
+
+
 
 #--- Essential Helper Functions ----------
 def get_post_details(self):
@@ -2800,25 +2842,26 @@ class UpdateTheories(Handler):
 
 #--- Request index
 app = webapp2.WSGIApplication([
-							    ('/', Home),
-							    ('/KASware3', Home),
-							    ('/upload_pic', PicuteUploadHandler),
+	('/', Home),
+	('/KASware3', Home),
+	('/upload_pic', PicuteUploadHandler),
 
-							    ('/SignUpLogIn', SignUpLogIn),
-							    ('/Accounts', Accounts),
-							    ('/LogOut', LogOut),
-							    ('/Settings', Settings),
-							    
-							    ('/KsuEditor', KsuEditor),
-							    ('/MissionViewer', MissionViewer),
-							    ('/SetViewer', SetViewer),
-							    ('/TheoryViewer', TheoryViewer),
-						
-							    ('/EventHandler',EventHandler),
-							    ('/HistoryViewer', HistoryViewer),
-							    
-							    ('/PopulateRandomTheory',PopulateRandomTheory),
-							    ('/UpdateTheoryStructure', UpdateTheoryStructure),
-							    # ('/UpdateTheories', UpdateTheories)
-								], debug=True)
+	('/SignUpLogIn', SignUpLogIn),
+	('/Accounts', Accounts),
+	('/LogOut', LogOut),
+	('/Settings', Settings),
+
+	('/KsuEditor', KsuEditor),
+	('/MissionViewer', MissionViewer),
+	('/SetViewer', SetViewer),
+	('/TheoryViewer', TheoryViewer),
+
+	('/EventHandler',EventHandler),
+	('/HistoryViewer', HistoryViewer),
+
+	('/PopulateRandomTheory',PopulateRandomTheory),
+	('/PopulateRandomHistory', PopulateRandomHistory),
+	('/UpdateTheoryStructure', UpdateTheoryStructure),
+	# ('/UpdateTheories', UpdateTheories)
+], debug=True)
 

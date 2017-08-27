@@ -932,6 +932,9 @@ function RenderDashboardSubsection(sub_section_dic, sub_section_template){
 		SectionAttr = $(attributes[x]);
 		SectionAttr.text(sub_section_dic[SectionAttr.attr("name")])
 	}
+	if('operator' in sub_section_dic){
+		sub_section_template.find('#'+sub_section_dic['operator']).removeClass('hidden')
+	}
 	return sub_section_template
 }
 
