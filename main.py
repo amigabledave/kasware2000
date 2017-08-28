@@ -501,6 +501,7 @@ class Home(Handler):
 			'score':event.score,
 			'description': event.description,
 			'event_date': event.event_date.strftime('%I:%M %p. %a, %b %d, %Y'),
+			'minutes': event.duration
 		}
 		return event_dic
 
@@ -654,24 +655,30 @@ class Home(Handler):
 		previous_start_date = start_date - timedelta(days=period_len)
 		history = Event3.query(Event3.theory_id == self.theory.key).filter(Event3.event_date >= previous_start_date, Event3.event_date <= end_date).order(-Event3.event_date).fetch()
 
-		monitored_ksus = KSU3.query(KSU3.theory_id == self.theory.key).filter(KSU3.in_graveyard == False).filter(KSU3.monitor == True).fetch()
 		
+		ksu_set = KSU3.query(KSU3.theory_id == self.theory.key).fetch()
+		
+		monitored_ksus = []
 		monitored_ksus_ids = []
 		monitored_ksus_dic = {}
-
-		for ksu in monitored_ksus:
+		superficial_scores = {}
+		
+		for ksu in ksu_set:
 			ksu_id = ksu.key.id()
-			monitored_ksus_ids.append(ksu_id)
-			ksu.merits = 0
-			ksu.events = 0
-			ksu.minutes = 0
-			monitored_ksus_dic[ksu_id] = ksu
+			superficial_scores[ksu_id] = { 'current': make_template('events_total'), 'previous': make_template('events_total')}
+			
+			if ksu.monitor and not ksu.in_graveyard:
+				monitored_ksus_ids.append(ksu_id)
+				monitored_ksus_dic[ksu_id] = ksu	
 
 		for event in history:
 			ksu_id = event.ksu_id.id()
+			target_ksu_score = superficial_scores[ksu_id]
+			
 			event_type = event.event_type
 			time_frame = 'current'
 			event_date = event.event_date
+			
 			if event.event_date < start_date:
 				time_frame = 'previous'
 			summary_section = dashboard_base[time_frame][event_type]			
@@ -679,21 +686,25 @@ class Home(Handler):
 			summary_section['score'][event.size] += event.score			
 			summary_section['events'][event.size] += 1
 
-			if event_date.toordinal() not in summary_section['days']:
-				summary_section['days'].append(event_date.toordinal())
 
-			print
-			print 'ksu id: ' + str(ksu_id)
-			print 'Monitored KSUs:'
-			print monitored_ksus_ids 
-			print
+			if ksu_id not in superficial_scores: #xx
+				superficial_scores[ksu_id] = ksu.score
+
+			event_dic = self.event_to_dic(event)
+			event_dic['merits'] = 0
+			event_dic['events'] = 1
+
+			if event_type == 'Effort':
+				event_dic['merits'] = event.score
 			
-			if time_frame == 'current' and ksu_id in monitored_ksus_ids:
-				ksu = monitored_ksus_dic[ksu_id]
-				ksu.merits += event.score
-				ksu.minutes += event.duration
-				ksu.events += 1
-				monitored_ksus_dic[ksu_id] = ksu
+			elif event_type == 'Stupidity':
+				event_dic['merits'] = -event.score	
+
+			for score_type in ['merits', 'events', 'minutes']:
+				target_ksu_score[time_frame][score_type] += event_dic[score_type]
+
+
+		deep_scores = self.calculate_deep_scores(ksu_set, superficial_scores, 4)
 
 		for event_type in KASware3.event_types:
 			for time_frame in ['current', 'previous']:
@@ -701,7 +712,7 @@ class Home(Handler):
 
 		monitored_ksus_sections = []
 		for ksu_id in monitored_ksus_ids:
-			section = self.ksu_to_dashboard_section(monitored_ksus_dic[ksu_id], period_len)
+			section = self.ksu_to_dashboard_section(monitored_ksus_dic[ksu_id], deep_scores[ksu_id], period_len)
 			monitored_ksus_sections.append(section)
 
 		dashboard_base['monitored_ksus_sections'] = monitored_ksus_sections
@@ -788,7 +799,7 @@ class Home(Handler):
 
 		return dashboard_base
 	
-	def ksu_to_dashboard_section(self, ksu, period_len):
+	def ksu_to_dashboard_section(self, ksu, ksu_deep_score, period_len):
 				
 		goal_factor = (period_len * 1.0 /int(ksu.details['goal_time_frame']))
 		for goal in ['goal_merits', 'goal_minutes', 'goal_events']:
@@ -804,22 +815,79 @@ class Home(Handler):
 			
 			'sub_sections':[
 				{'title':'Merits',
-				'score':ksu.merits,				
+				'score':ksu_deep_score['current']['merits'],				
 				'contrast_title': 'Goal',
 				'contrast':ksu.details['goal_merits']},
 
 				{'title':'Events',
-				'score':ksu.events,
+				'score':ksu_deep_score['current']['events'],
 				'contrast_title': 'Goal',
 				'contrast':ksu.details['goal_events']},
 
 				{'title':'Minutes',
-				'score':ksu.minutes,
+				'score':ksu_deep_score['current']['minutes'],
 				'contrast_title': 'Goal',
 				'contrast':ksu.details['goal_minutes']}
 			]}
 
 		return section		
+
+	def calculate_deep_scores(self, ksu_set, superficial_scores, generations):
+
+		parent_ksus = []
+		parent_childs = {}
+		deep_scores = {}
+
+		for ksu in ksu_set:
+			
+			ksu_id = ksu.key.id()
+			reason_id = ksu.reason_id
+			
+			if reason_id:
+				reason_id = reason_id.id()
+				if reason_id not in parent_ksus:
+					deep_scores[reason_id] = { 'current': make_template('events_total'), 'previous': make_template('events_total')}
+					parent_ksus.append(reason_id)
+					parent_childs[reason_id] = [ksu_id]
+				
+				elif ksu_id not in parent_childs[reason_id]:
+					parent_childs[reason_id].append(ksu_id)
+
+		for i in range(generations):
+			for ksu in parent_ksus:
+				new_childs = [] + parent_childs[ksu]
+				for child in parent_childs[ksu]:
+					if child in parent_childs:
+						for grand_child in parent_childs[child]: 
+							if grand_child not in new_childs:
+								new_childs.append(grand_child)
+				parent_childs[ksu] = new_childs
+
+		
+		for time_frame in ['current', 'previous']:
+			
+			for ksu in parent_ksus:
+				score_types = ['merits', 'events', 'minutes']
+
+				for score_type in score_types:
+					deep_scores[ksu][time_frame][score_type] += superficial_scores[ksu][time_frame][score_type]
+
+				for child in parent_childs[ksu]:
+					for score_type in score_types:
+						deep_scores[ksu][time_frame][score_type] += superficial_scores[child][time_frame][score_type]
+
+		z = superficial_scores.copy()
+		z.update(deep_scores)
+
+		print
+		print 'Deep scores:'
+		print z
+		print
+
+
+		return z
+
+
 
 
 class SignUpLogIn(Handler):
@@ -2830,7 +2898,8 @@ def get_ksu_to_remember(self):
 def make_template(template_name):
 	templates = {
 		'event_type_summary': {'score':{1:0, 2:0, 3:0, 4:0, 5:0, 'total':0}, 'events':{1:0, 2:0, 3:0, 4:0, 5:0, 'total':0}, 'days':[]},
-		'merits_summary': {'score':{'total':0, 'average':0}, 'events':{'total':0, 'average':0}}
+		'merits_summary': {'score':{'total':0, 'average':0}, 'events':{'total':0, 'average':0}},
+		'events_total': {'merits':0, 'events':0, 'minutes':0}
 	}
 	return templates[template_name]
 

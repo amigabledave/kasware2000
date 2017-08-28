@@ -260,6 +260,24 @@ input::-webkit-inner-spin-button {
 }
 
 
+.MilestoneReachedButton{
+/*    border-color: #a58a2a;
+    color: #a58a2a;
+    background-color: #f5e5b3;*/
+    border-color:#3e3838;
+    color: #3e3838;
+
+    background-color: white;
+}
+
+.MilestoneReachedButton:hover {
+    color: #f5e5b3;
+    background-color: #a58a2a;
+    border-color: #f5e5b3;
+}
+
+
+
 .IsRealized {
     border-color: #a58a2a;
     /*color: #a58a2a;*/
