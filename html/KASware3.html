@@ -204,7 +204,27 @@
 				</div>
 				<br><br><br>
 			</div>
-			<div class="col-xs-2"></div>
+
+			<div class="col-xs-2" style="padding-top: 35px;">
+				
+				<div class="row SideOption hidden SideOptionsContainer" target_view="dashboard">
+				
+					<div class="col-xs-8 form-group" style="font-size: 14px; color: white;">
+						<label class="TypeSpecific" target_type="Indicator"> Period End </label>
+						<input type="date" class="form-control" style="padding-right:3px; padding-left: 4px;" name="period_end_date" id="period_end_date" value="">
+					</div>
+
+					<div class="col-xs-4 form-group">	
+						<label style="font-size: 14px; color: white;">Days</label>
+						<input type="number" min="1" step="1" class="form-control" id="period_duration" name="period_duration" placeholder="Days">
+					</div>
+
+					<div class="col-xs-12">
+						<button type="button" class="btn SectionButton btn-default" value="dashboard" style="width: 100%;text-align: center;"><span class="glyphicon glyphicon-refresh SetIcon" aria-hidden="true"></span>Refresh </button>	
+					</div>
+					
+				</div>
+			</div>
 		</div>
 	</div>	
 </body>

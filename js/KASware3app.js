@@ -59,6 +59,8 @@ $('.SectionButton').on('click', function(){
 		$('#ShowLessSpan').toggleClass('hidden')
 		
 	}
+
+	ShowOptionsBasedOnView(section)
 });
 
 
@@ -448,6 +450,7 @@ $(document).on('change', '.MonitorCheckbox', function(){
 	$(this).closest('#KSU').find('#MonitorDetails').toggleClass('hidden')
 });
 
+
 $(document).on('change', '.pic_input', function(){
     var ksu = $(this).closest('#KSU');    
     readURL(ksu, this);
@@ -460,7 +463,6 @@ $(document).on('change', '.pic_input', function(){
     	ksu.addClass('PictureOnStandBy')
     } 
 });
-
 
 
 function get_ksu_attr_value(ksu, attr_key){
@@ -725,6 +727,18 @@ function remove_reason_select_from_ksu(ksu){
 }
 
 
+function ShowOptionsBasedOnView(target_view){
+	var side_options = $('.SideOption');
+	for (var i = side_options.length - 1; i >= 0; i--) {
+		var option = $(side_options[i]);
+		option.addClass('hidden')
+		if( option.attr('target_view').includes(target_view)){
+			option.removeClass('hidden')
+		}
+	}
+}
+
+
 function FixTemplateBasedOnKsuType(template, ksu_type){
 	
 	var type_spefic_sections = template.find('.TypeSpecific')
@@ -816,6 +830,9 @@ function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
 };
 
 
+
+
+
 function FixTheoryView(){
 	var selected_section = $('.SelectedSection').first().attr('value');
 	var section_ksu_type = section_details[selected_section]['new_ksu_type'];
@@ -824,7 +841,6 @@ function FixTheoryView(){
 	var holders = ['TheoryHolder', 'HistoryHolder', 'SettingsHolder', 'DashboardHolder'];
 	for (var i = holders.length - 1; i >= 0; i--) {
 		$('#' + holders[i]).addClass('hidden')
-		
 	}
 	
 	$('#' + holder).removeClass('hidden')
@@ -844,11 +860,31 @@ function FixTheoryView(){
 	} 
 
 	if( holder == 'DashboardHolder'){
+
+		var TodayDate = new Date().toJSON().slice(0,10).replace(/-/g,'-');
+		
+		var period_end_date = $('#period_end_date')
+		var period_duration = $('#period_duration')
+		
+		if(period_end_date.val() == ''){
+			period_end_date.val(TodayDate)
+		}
+		console.log(period_duration.val())
+		if(period_duration.val() == ''){
+			period_duration.val(7)
+		}
+		
+		//xx		
+
 		$.ajax({
 			type: "POST",
 			url: "/",
 			dataType: 'json',
-			data: JSON.stringify({'user_action': 'RetrieveDashboard'})
+			data: JSON.stringify({
+				'user_action': 'RetrieveDashboard',
+				'period_end_date': period_end_date.val(),
+				'period_duration': period_duration.val(),
+			})
 		}).done(function(data){
 			RenderDashboard(data['dashboard_sections'])
 		})

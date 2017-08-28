@@ -204,6 +204,17 @@ input::-webkit-inner-spin-button {
 }
 
 
+.SideOptionsContainer{
+    border: 1.5px;
+    border-style: dashed;
+    border-radius: 10px;
+    padding: 5px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-color: white;
+}
+
+
 .DashboardScore{
     font-size: 40px;
 }

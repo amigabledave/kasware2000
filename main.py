@@ -390,8 +390,8 @@ class Home(Handler):
 
 		elif user_action == 'RetrieveDashboard':
 			
-			end_date = (datetime.today()+timedelta(hours=self.theory.timezone))
-			start_date = end_date - timedelta(days=6)
+			end_date = (datetime.strptime(event_details['period_end_date'], '%Y-%m-%d'))
+			start_date = end_date - timedelta(days=int(event_details['period_duration'])-1)
 				
 			dashboard_base = self.CreateDashboardBase(start_date, end_date)
 			dashboard_sections = self.CreateDashboardSections(dashboard_base)
