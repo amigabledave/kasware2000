@@ -903,8 +903,10 @@ function RenderDashboard(dashboard_sections){//xx
 			template.find('#SectionTitle').text(section_dic['title'])
 		}
 
-		if('detail' in section_dic){
-			template.find('#SectionDetail').text(section_dic['detail'])
+		if(section_dic['section_subtype'] == 'MonitoredKSU'){
+			template.find('#ResultsAround').removeClass('hidden')
+			template.find('#SectionTitle').removeClass('DashboardTitle')
+			template.find('#TitleColumn').addClass('DashboardKSUdescription')
 		}
 		
 		var col_size = {2:'col-xs-6', 3:'col-xs-4', 4:'col-xs-3'};

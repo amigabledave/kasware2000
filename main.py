@@ -695,6 +695,7 @@ class Home(Handler):
 		
 		dashboard_sections = [
 			{'section_type':'Overall',
+			 'section_subtype':'Overall',
 			 'sub_sections':[
 			 	{'title': 'Discipline Lvl.',
 				'score': game['discipline_lvl'],
@@ -710,6 +711,7 @@ class Home(Handler):
 			 ]},
 		
 			 {'section_type':'Summary',
+			 'section_subtype':'Summary',
 			  'title': 'Merits Earned & Loss Through Effort & Stupidity',
 			  'sub_sections': [
 				# {'title': 'Net',
@@ -782,8 +784,8 @@ class Home(Handler):
 
 		section = {
 			'section_type':'Summary',	
-			'title':'Results around: ',
-			'detail': ksu.description,
+			'title':ksu.description,
+			'section_subtype': 'MonitoredKSU',
 			
 			'sub_sections':[
 				{'title':'Merits',

@@ -195,6 +195,15 @@ input::-webkit-inner-spin-button {
     margin-bottom: -5px;
 }
 
+.DashboardKSUdescription{
+    font-size: 20px; 
+    margin-top: 5px;
+    margin-bottom: 10px;
+    line-height: 100%;
+
+}
+
+
 .DashboardScore{
     font-size: 40px;
 }
