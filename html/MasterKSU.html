@@ -11,11 +11,16 @@
 <div class="row" id="MainSection"><div class="col-xs-12" style="">
 	<div class="row" id="PreviewDiv">
 		
-		<div class="col-xs-1 TypeSpecific" target_type="Objective Experience Contribution SelfAttribute Person Possesion Situation Wisdom Indicator" style="padding-right: 0px; max-height: 38px; text-align:center;">
+		<div class="col-xs-1 TypeSpecific" target_type="Experience Contribution SelfAttribute Person Possesion Situation Wisdom Indicator" style="padding-right: 0px; max-height: 38px; text-align:center;">
 			<div id="img_holder"><img style="height: 38px; margin-top: -3px; margin-left: 3px;" class="img-circle" src="images/ic_extension_black_48dp_2x.png" id="blah"></div>
 			
 			<img src="#" id="ksu_pic" data-magnify-src="" class="zoom hidden" style="border-radius: 5px; height: 38px;">		
 		</div>	
+
+		<div class="col-xs-1 TypeSpecific" target_type="Objective">
+			<button type="button" class="btn IsRealized ksu-circle-btn KsuActionButton" name="action_description" value='Milestone_Reached' style="margin-left: 3px" id="MilestoneReachedButton"><span class="glyphicon glyphicon-ok" style="color: #a58a2a;"></span></button>
+		</div>
+
 
 		<div class="col-xs-1 TypeSpecific" target_type='Action'>
 			<button type="button" class="btn btn-success ksu-circle-btn KsuActionButton SubtypeSpecific" avoid_subtype="Negative" name="action_description" value='Action_Done' style="margin-left: 3px" id="EffortDoneButton">
@@ -29,7 +34,7 @@
 		<div class="" id="DescriptionHolder">
 			<textarea style="width:100%; border:0; font-style: italic; padding-bottom: 0px; background-color: inherit;" class="KsuAttr autoExpand SubtypeSpecific TypeSpecific hidden" target_type="Action" avoid_subtype="Proactive Negative" rows="1" data-min-rows='1' name="trigger" id="trigger" placeholder="Trigger circumstance"></textarea>
 			
-			<textarea style="width:100%; border:0; background-color: inherit;" class="KsuAttr autoExpand" rows="1" data-min-rows='1' name="description" id="description" placeholder="Action description"></textarea>
+			<textarea style="width:100%; border:0; background-color: inherit;" class="KsuAttr autoExpand" rows="2" data-min-rows='1' name="description" id="description" placeholder="Action description"></textarea>
 
 			<textarea style="width:100%; border:0; font-style: italic; padding-bottom: 0px; background-color: inherit;" class="KsuAttr autoExpand TypeSpecific" target_type="Indicator" rows="1" data-min-rows='1' name="question" id="question" placeholder="Question"></textarea>			
 

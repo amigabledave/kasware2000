@@ -260,13 +260,8 @@ class Home(Handler):
 	@super_user_bouncer
 	def post(self):
 		event_details = json.loads(self.request.body);
-		user_action = event_details['user_action']
+		user_action = event_details['user_action']	
 		
-		# logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-		# logging.info('Event details')
-		# logging.info(event_details)
-		# logging.info('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-
 		if user_action == 'Action_Done':
 			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
 			event = self.create_event(ksu, user_action, event_details)
@@ -281,6 +276,24 @@ class Home(Handler):
 			self.response.out.write(json.dumps({
 				'mensaje': 'Evento guardado',
 				'game':game,
+				'event_dic':event_dic,
+				'in_graveyard': ksu.in_graveyard,
+				}))
+			return
+
+		elif user_action == 'Milestone_Reached':
+			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
+			
+			event = self.create_event(ksu, user_action, event_details)
+			event.put()
+			
+			ksu = self.update_ksu(ksu, user_action)
+			ksu.put()
+
+			event_dic = self.event_to_dic(event)
+			
+			self.response.out.write(json.dumps({
+				'mensaje': 'Evento guardado',
 				'event_dic':event_dic,
 				'in_graveyard': ksu.in_graveyard,
 				}))
@@ -387,7 +400,7 @@ class Home(Handler):
 					'mensaje':'Nueva accion enviada',
 					}))
 			return
-
+		
 		elif user_action == 'RetrieveDashboard':
 			
 			end_date = (datetime.strptime(event_details['period_end_date'], '%Y-%m-%d'))
@@ -408,6 +421,10 @@ class Home(Handler):
 			ksu = self.update_event_date(ksu, user_action)
 			if ksu.details['repeats'] == 'Never':
 				ksu.in_graveyard = True
+		
+		if user_action == 'Milestone_Reached':
+			ksu.in_graveyard = True
+
 		return ksu
 
 	def update_ksu_attribute(self, ksu, attr_key, attr_value):
@@ -566,8 +583,12 @@ class Home(Handler):
 			elif ksu_subtype == 'Negative':
 				event_type = 'Stupidity'
 
+		if user_action == 'Milestone_Reached':
+			event_type = 'Progress'
+
+
 		event_date = (datetime.today() + timedelta(hours=self.theory.timezone))
-		if ksu.event_date:
+		if ksu.event_date and ksu_subtype not in ['Action', 'Objective']:
 			event_date = ksu.event_date
 
 		score = 0
@@ -766,16 +787,10 @@ class Home(Handler):
 					dashboard_base[time_frame]['Merits'][value_type][operator] = dashboard_base[time_frame]['Effort'][value_type][operator] - dashboard_base[time_frame]['Stupidity'][value_type][operator]
 
 		return dashboard_base
-			
+	
 	def ksu_to_dashboard_section(self, ksu, period_len):
-		
-		print
-		print 'These are the ksu details'
-		print ksu.details
-		print
-
+				
 		goal_factor = (period_len * 1.0 /int(ksu.details['goal_time_frame']))
-
 		for goal in ['goal_merits', 'goal_minutes', 'goal_events']:
 			if ksu.details[goal] == '':
 				ksu.details[goal] = 0
@@ -793,20 +808,18 @@ class Home(Handler):
 				'contrast_title': 'Goal',
 				'contrast':ksu.details['goal_merits']},
 
-			   {'title':'Events',
+				{'title':'Events',
 				'score':ksu.events,
 				'contrast_title': 'Goal',
 				'contrast':ksu.details['goal_events']},
-			   
-			   {'title':'Minutes',
+
+				{'title':'Minutes',
 				'score':ksu.minutes,
 				'contrast_title': 'Goal',
 				'contrast':ksu.details['goal_minutes']}
 			]}
 
-		return section
-
-
+		return section		
 
 
 class SignUpLogIn(Handler):

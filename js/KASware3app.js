@@ -102,6 +102,8 @@ $(document).on('click', '.KsuActionButton', function(){
 		'Action_Skipped': UpdateEventDate,
 		'Action_Pushed': UpdateEventDate,
 		'SendToMission': UpdateEventDate,
+
+		'Milestone_Reached': MilestoneReached,
 	}
 
 	actions_menu[action](ksu);
@@ -222,6 +224,24 @@ $(document).on('click', '.KsuActionButton', function(){
 			AdjustGame(data['game'])			
 			render_event(data['event_dic'])
 
+		});
+	};
+
+	function MilestoneReached(ksu){//xx
+		console.log('Milestone Reached...')
+		ksu.fadeOut('slow');
+		$.ajax({
+			type: "POST",
+			url: "/",
+			dataType: 'json',
+			data: JSON.stringify({
+				'ksu_id': ksu.attr("value"),
+				'user_action': action,
+			})
+		}).done(function(data){
+			console.log(data); 		
+			ksu.remove()
+			render_event(data['event_dic'])
 		});
 	};
 });
@@ -543,6 +563,8 @@ function render_event(event_dic){
 	var type_details = {
 		'Effort': {'type_description': 'Effort Made', 'score_format': 'ScoreHolderEffort'},
 		'Stupidity': {'type_description': 'Stupidity Commited', 'score_format': 'ScoreHolderStupidity'},
+
+		'Progress': {'type_description': 'Milestone Reached', 'score_format': ''},
 	}
 
 	event.attr("id", 'Event');
@@ -869,7 +891,7 @@ function FixTheoryView(){
 		if(period_end_date.val() == ''){
 			period_end_date.val(TodayDate)
 		}
-		console.log(period_duration.val())
+
 		if(period_duration.val() == ''){
 			period_duration.val(7)
 		}
