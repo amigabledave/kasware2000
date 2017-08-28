@@ -391,7 +391,7 @@ class Home(Handler):
 		elif user_action == 'RetrieveDashboard':
 			
 			end_date = (datetime.today()+timedelta(hours=self.theory.timezone))
-			start_date = end_date - timedelta(days=7)
+			start_date = end_date - timedelta(days=6)
 				
 			dashboard_base = self.CreateDashboardBase(start_date, end_date)
 			dashboard_sections = self.CreateDashboardSections(dashboard_base)
@@ -641,8 +641,9 @@ class Home(Handler):
 		for ksu in monitored_ksus:
 			ksu_id = ksu.key.id()
 			monitored_ksus_ids.append(ksu_id)
-			ksu.dashboard_score = 0
-			ksu.dashboard_events = 0
+			ksu.merits = 0
+			ksu.events = 0
+			ksu.minutes = 0
 			monitored_ksus_dic[ksu_id] = ksu
 
 		for event in history:
@@ -667,22 +668,19 @@ class Home(Handler):
 			print
 			
 			if time_frame == 'current' and ksu_id in monitored_ksus_ids:
-				print 
-				print 'Por lo menos su llega hasta aqui'
-				print
 				ksu = monitored_ksus_dic[ksu_id]
-				ksu.dashboard_score += event.score
-				ksu.dashboard_events += 1
+				ksu.merits += event.score
+				ksu.minutes += event.duration
+				ksu.events += 1
 				monitored_ksus_dic[ksu_id] = ksu
 
 		for event_type in KASware3.event_types:
 			for time_frame in ['current', 'previous']:
 				dashboard_base[time_frame][event_type] = self.add_total_and_average_to_event_type_summary(dashboard_base[time_frame][event_type], period_len)
 
-
 		monitored_ksus_sections = []
 		for ksu_id in monitored_ksus_ids:
-			section = self.ksu_to_dashboard_section(monitored_ksus_dic[ksu_id])
+			section = self.ksu_to_dashboard_section(monitored_ksus_dic[ksu_id], period_len)
 			monitored_ksus_sections.append(section)
 
 		dashboard_base['monitored_ksus_sections'] = monitored_ksus_sections
@@ -767,26 +765,45 @@ class Home(Handler):
 
 		return dashboard_base
 			
-	def ksu_to_dashboard_section(self, ksu):
+	def ksu_to_dashboard_section(self, ksu, period_len):
+		
+		print
+		print 'These are the ksu details'
+		print ksu.details
+		print
+
+		goal_factor = (period_len * 1.0 /int(ksu.details['goal_time_frame']))
+
+		for goal in ['goal_merits', 'goal_minutes', 'goal_events']:
+			if ksu.details[goal] == '':
+				ksu.details[goal] = 0
+			else:
+				ksu.details[goal] = round(int(ksu.details[goal]) * goal_factor, 1)
+
 		section = {
 			'section_type':'Summary',	
 			'title':'Results around: ',
 			'detail': ksu.description,
+			
 			'sub_sections':[
-				{'title':'Score',
-				'operator': 'total',
-				'score':ksu.dashboard_score,
+				{'title':'Merits',
+				'score':ksu.merits,				
 				'contrast_title': 'Goal',
-				'contrast':'#'},
+				'contrast':ksu.details['goal_merits']},
 
 			   {'title':'Events',
-				'operator': 'total',
-				'score':ksu.dashboard_events,
+				'score':ksu.events,
 				'contrast_title': 'Goal',
-				'contrast':'#'}
+				'contrast':ksu.details['goal_events']},
+			   
+			   {'title':'Minutes',
+				'score':ksu.minutes,
+				'contrast_title': 'Goal',
+				'contrast':ksu.details['goal_minutes']}
 			]}
 
 		return section
+
 
 
 
@@ -2339,8 +2356,8 @@ class PopulateRandomHistory(Handler):
 			event_date = event_date, 
 
 			event_type = ksu_event_by_subtype[ksu.ksu_subtype],
-			score = random.randrange(0,25),
-			duration = 0,
+			score = random.randrange(0, 40),
+			duration = random.randrange(0, 120),
 			size = random.randrange(1, 5),
 			comments = '')
 		event.put()

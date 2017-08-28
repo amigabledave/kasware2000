@@ -670,7 +670,6 @@ function HideUnhideKsuProperties(ksu, targets, action){
 function ShowHideSelect(ksu, select, option){
 	var select_toBeHidden = {
 		'repeats': ['#repeats_Xdays_col', '#repeats_day_col', '#repeats_month_col', '#repeats_week_col'],
-		'goal_type':['#goal_period_size_col'],
 	}
 
 
@@ -683,12 +682,6 @@ function ShowHideSelect(ksu, select, option){
 			'Month':['#repeats_day_col'],
 			'Year':['#repeats_day_col', '#repeats_month_col']
 		},
-
-		'goal_type':{
-			'Total':[],
-			'PeriodBased':['#goal_period_size_col'],
-			'Average':[],
-		}
 	}
 
 
@@ -913,11 +906,15 @@ function RenderDashboard(dashboard_sections){//xx
 		if('detail' in section_dic){
 			template.find('#SectionDetail').text(section_dic['detail'])
 		}
-			
+		
+		var col_size = {2:'col-xs-6', 3:'col-xs-4', 4:'col-xs-3'};
+
+
 		for (var j = sub_sections.length - 1; j >= 0; j--) {
 			sub_section_dic = sub_sections[j];
 			sub_section_template = template.find('#SubSection_Template').clone()
 			sub_section_template.attr('id', '')
+			sub_section_template.addClass(col_size[sub_sections.length])
 			sub_section_template = RenderDashboardSubsection(sub_section_dic, sub_section_template)
 			sub_section_template.removeClass('hidden');
 			sub_section_template.prependTo(template.find('#SubSections_Holder'))

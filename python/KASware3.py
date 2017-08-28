@@ -137,8 +137,8 @@ attributes_guide = {
 	'monitor': ['Boolean', 'Checkbox'],
 	'goal_merits': ['Details', 'Standard'],
 	'goal_events': ['Details', 'Standard'],
-	'goal_type': ['Details', 'Select'],
-	'goal_period_size': ['Details', 'Select'],
+	'goal_minutes': ['Details', 'Standard'],
+	'goal_time_frame': ['Details', 'Select'],
 }
 
 
@@ -159,8 +159,8 @@ ksu_type_attributes = {
 		'monitor',				
 		'goal_merits',
 		'goal_events',
-		'goal_type',
-		'goal_period_size',
+		'goal_minutes',
+		'goal_time_frame'
 	],
 
 	'Action': [
