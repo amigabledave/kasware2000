@@ -11,12 +11,13 @@ ksu_types = [
 	]],	
 
 	[['Objective', 'Mile Stone'], [ #Group actions in a well define purpose
-		['Objective', 'Objective', True], #If the parent is another objective then its a milestone#'Milestone',
+		['MiniObjective', 'Mini Objective', True], #If the parent is another objective then its a milestone#'Milestone',
+		['BigObjective', 'Big Objective', ''], #If the parent is another objective then its a milestone#'Milestone',
 	]],
 	
 	[['Wisdom', 'Wisdom'], [#Idea #Your personal constitution. Non actionable knowledge that you believe should guide your behaviour.
-		['Idea', 'Idea', True], #If the idea has a parent then is not a principle. BRILIANT!
 		['Principle', 'Principle', ''], #Sirve para organizar y auditar
+		['Idea', 'Idea', True], #If the idea has a parent then is not a principle. BRILIANT!		
 		['Learning', 'Learning', '']
 	]], 
 		
@@ -60,26 +61,18 @@ ksu_types = [
 	[['Indicator', 'Indicator'], [
 		['Reality', 'Reality', ''],
 		['Perception', 'Perception', True],
-		# ['TernaryPerception', ],
 	]],
 ]
 
 
-# event_types = {
-# 	'EndValue', #Generado por momentos de Joy Generatos
-	
-# 	'Effort', #Generado por acciones al ser ejecutadas
-	
-# 	'Stupidity', #Generado por acciones al ser ejecutadas	
-	
-# 	'Progress', #Generado por objetivos
-	
-# 	'WishRealized',# Generado por Life Pieces al cambiar de status 	
-
-# 	'Measurement', #Generaddo por indicadores
-# }
-
-event_types = ['EndValue', 'Effort', 'Stupidity', 'Progress', 'WishRealized', 'Measurement']
+event_types = [	
+	'EndValue', #Generado por momentos de Joy Generatos
+	'Effort', #Generado por acciones al ser ejecutadas
+	'Stupidity', #Generado por acciones al ser ejecutadas
+	'Progress', #Generado por objetivos
+	'WishRealized', #Generado por Life Pieces al cambiar de status
+	'Measurement' #Generaddo por indicadores
+]
 
 
 attributes_guide = {
