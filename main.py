@@ -403,7 +403,7 @@ class Home(Handler):
 		
 		elif user_action == 'RetrieveDashboard':
 			
-			end_date = (datetime.strptime(event_details['period_end_date'], '%Y-%m-%d'))
+			end_date = (datetime.strptime(event_details['period_end_date'], '%Y-%m-%d')) + timedelta(minutes=1439)
 			start_date = end_date - timedelta(days=int(event_details['period_duration'])-1)
 				
 			dashboard_base = self.CreateDashboardBase(start_date, end_date)
@@ -608,10 +608,16 @@ class Home(Handler):
 		if comments in event_details:
 			comments = event_details['comments']
 
+		reason_status = 'NoReason'
+		if ksu.reason_id:
+			reason_ksu = KSU3.get_by_id(ksu.reason_id.id())
+			reason_status = reason_ksu.status
+
 		event = Event3(
 			theory_id = ksu.theory_id,
 			ksu_id = ksu.key,
 			description = ksu.description,
+			reason_status = reason_status,
 			event_date = event_date, 
 
 			event_type = event_type,
@@ -686,10 +692,6 @@ class Home(Handler):
 			summary_section['score'][event.size] += event.score			
 			summary_section['events'][event.size] += 1
 
-
-			if ksu_id not in superficial_scores: #xx
-				superficial_scores[ksu_id] = ksu.score
-
 			event_dic = self.event_to_dic(event)
 			event_dic['merits'] = 0
 			event_dic['events'] = 1
@@ -701,8 +703,7 @@ class Home(Handler):
 				event_dic['merits'] = -event.score	
 
 			for score_type in ['merits', 'events', 'minutes']:
-				target_ksu_score[time_frame][score_type] += event_dic[score_type]
-
+				target_ksu_score[time_frame][score_type] += event_dic[score_type]			
 
 		deep_scores = self.calculate_deep_scores(ksu_set, superficial_scores, 4)
 
@@ -834,6 +835,13 @@ class Home(Handler):
 
 	def calculate_deep_scores(self, ksu_set, superficial_scores, generations):
 
+		print
+		print 'Superficial scores:'
+		print superficial_scores
+		print
+
+
+
 		parent_ksus = []
 		parent_childs = {}
 		deep_scores = {}
@@ -886,8 +894,6 @@ class Home(Handler):
 
 
 		return z
-
-
 
 
 class SignUpLogIn(Handler):
@@ -2902,6 +2908,24 @@ def make_template(template_name):
 		'events_total': {'merits':0, 'events':0, 'minutes':0}
 	}
 	return templates[template_name]
+
+def calculate_mission_reward(eod_merits, merits_goal):
+	
+	bracket_size = 20
+	reward_factor = 1
+	reward = 0
+
+	range_end = eod_merits - merits_goal
+
+	if range_end < 0:
+		reward_factor = -1
+		range_end = -range_end
+
+	for merit in range(0, range_end):
+		merit_reward = math.floor(merit/bracket_size) + 1
+		reward += merit_reward
+
+	return reward * reward_factor
 
 
 #--- Validation and security functions ----------

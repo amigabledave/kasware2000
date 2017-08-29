@@ -95,11 +95,11 @@ class KSU3(ndb.Model):
 	details = ndb.JsonProperty(default={}) # Subtype details. E.g. Birthday for a person, or exceptions for KAS4, Triggers for KAS3, cost for stuff	
 	
 
-
 class Event3(ndb.Model):
 	theory_id = ndb.KeyProperty(kind=Theory, required=True)	
 	ksu_id = ndb.KeyProperty(kind=KSU3, required=True)
 	description = ndb.StringProperty()
+	reason_status = ndb.StringProperty()
 	created = ndb.DateTimeProperty(auto_now_add=True)	
 	event_date = ndb.DateTimeProperty(required=True) #User date
 
