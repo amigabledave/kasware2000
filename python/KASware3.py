@@ -132,6 +132,8 @@ attributes_guide = {
 	'goal_events': ['Details', 'Standard'],
 	'goal_minutes': ['Details', 'Standard'],
 	'goal_time_frame': ['Details', 'Select'],
+
+	'experience_quality':['Integer', 'Radio'],
 }
 
 

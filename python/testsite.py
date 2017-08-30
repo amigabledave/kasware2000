@@ -20,5 +20,5 @@ def calculate_mission_reward(eod_merits, merits_goal):
 	return reward * reward_factor
 
 
-print calculate_mission_reward(102, 105)
+print calculate_mission_reward(111, 105)
 

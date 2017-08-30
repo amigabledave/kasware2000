@@ -281,7 +281,7 @@ class Home(Handler):
 				}))
 			return
 
-		elif user_action == 'Milestone_Reached':
+		elif user_action in ['Milestone_Reached', 'EndValue_Experienced']: #xx
 			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
 			
 			event = self.create_event(ksu, user_action, event_details)
@@ -422,8 +422,12 @@ class Home(Handler):
 			if ksu.details['repeats'] == 'Never':
 				ksu.in_graveyard = True
 		
-		if user_action == 'Milestone_Reached':
+		elif user_action == 'Milestone_Reached':
 			ksu.in_graveyard = True
+
+		elif user_action == 'EndValue_Experienced':
+			if ksu.ksu_subtype in ['Moment', 'Chapter']:
+				ksu.in_graveyard = True
 
 		return ksu
 
@@ -584,8 +588,11 @@ class Home(Handler):
 			elif ksu_subtype == 'Negative':
 				event_type = 'Stupidity'
 
-		if user_action == 'Milestone_Reached':
+		elif user_action == 'Milestone_Reached':
 			event_type = 'Progress'
+
+		elif user_action == 'EndValue_Experienced':
+			event_type = 'EndValue'
 
 
 		event_date = (datetime.today() + timedelta(hours=self.theory.timezone))

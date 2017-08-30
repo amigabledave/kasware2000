@@ -5,12 +5,6 @@
 
 .TopBackground {
     background-color: #342042;
-  
-/*    position: fixed;
-    width: 100%;
-    overflow: hidden;
-    top: 0;*/
-
 }
 
 input::-webkit-outer-spin-button,
@@ -244,6 +238,10 @@ input::-webkit-inner-spin-button {
     color: #d9534f;
 }
 
+.ScoreHolderEndValue{
+    color: purple;
+}
+
 
 .EventDetails{
     color:purple;
@@ -257,6 +255,19 @@ input::-webkit-inner-spin-button {
     font-size: 14px;
     line-height: 1.33;
     border-radius: 8px;
+}
+
+
+.WhiteToSuccessButton{
+    border-color:#3e3838;
+    color: #3e3838;
+    background-color: white;  
+}
+
+.WhiteToSuccessButton:hover{
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
 }
 
 

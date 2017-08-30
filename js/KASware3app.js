@@ -104,6 +104,7 @@ $(document).on('click', '.KsuActionButton', function(){
 		'SendToMission': UpdateEventDate,
 
 		'Milestone_Reached': MilestoneReached,
+		'EndValue_Experienced':EndValueExperienced,
 	}
 
 	actions_menu[action](ksu);
@@ -227,7 +228,7 @@ $(document).on('click', '.KsuActionButton', function(){
 		});
 	};
 
-	function MilestoneReached(ksu){//xx
+	function MilestoneReached(ksu){
 		console.log('Milestone Reached...')
 		ksu.fadeOut('slow');
 		$.ajax({
@@ -244,6 +245,46 @@ $(document).on('click', '.KsuActionButton', function(){
 			render_event(data['event_dic'])
 		});
 	};
+
+	function EndValueExperienced(ksu){//xx
+		console.log('End value experienced...')
+		
+		if($('#chapter_duration').val() == ''){
+			$('#chapter_duration').val(1)
+		}
+		
+		var duration = parseInt($('#chapter_duration').val());
+		var size = parseInt(get_ksu_attr_value(ksu, 'experience_quality'));
+		var score =	duration * size;
+		
+		console.log(duration, size, score);
+		
+		ksu.fadeOut('slow');
+		$.ajax({
+			type: "POST",
+			url: "/",
+			dataType: 'json',
+			data: JSON.stringify({
+				'ksu_id': ksu.attr("value"),
+				'user_action': action,
+				'score': score,
+				'size': size,
+				'duration': duration,
+			})
+		}).done(function(data){
+			console.log(data); 
+			
+			if(!data['in_graveyard']){
+				ksu.fadeIn('slow')
+			} else {
+				ksu.remove()
+			}
+
+			render_event(data['event_dic'])
+
+		});
+	};
+
 });
 
 
@@ -553,6 +594,10 @@ function render_ksu(ksu_dic){
 		ksu.find('#MonitorDetails').removeClass('hidden')
 	}
 
+	if(ksu_dic['ksu_subtype'] == 'Reactive'){
+		ksu.find('#description').attr('rows',1);
+	}
+
 	FormatBasedOnStatus(ksu, ksu_dic['status'])
 }
 
@@ -565,6 +610,7 @@ function render_event(event_dic){
 		'Stupidity': {'type_description': 'Stupidity Commited', 'score_format': 'ScoreHolderStupidity'},
 
 		'Progress': {'type_description': 'Milestone Reached', 'score_format': ''},
+		'EndValue': {'type_description': 'Joy Generated', 'score_format': 'ScoreHolderEndValue'},
 	}
 
 	event.attr("id", 'Event');
@@ -862,9 +908,6 @@ function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
 };
 
 
-
-
-
 function FixTheoryView(){
 	var selected_section = $('.SelectedSection').first().attr('value');
 	var section_ksu_type = section_details[selected_section]['new_ksu_type'];
@@ -905,8 +948,6 @@ function FixTheoryView(){
 		if(period_duration.val() == ''){
 			period_duration.val(7)
 		}
-		
-		//xx		
 
 		$.ajax({
 			type: "POST",
@@ -952,7 +993,7 @@ function FormatBasedOnStatus(ksu, status){
 }
 
 
-function RenderDashboard(dashboard_sections){//xx
+function RenderDashboard(dashboard_sections){
 	console.log(dashboard_sections)
 	var section_dic, section_type, template, sub_section_template, attributes, sub_section;
 	$('.DashboardRenderedSection').remove();
