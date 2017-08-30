@@ -1,7 +1,7 @@
 // Validated for KASware3
 
 // ------- Triggers ----
-var ksu_type_attributes, attributes_guide, $zoom, t, start_time;
+var ksu_type_attributes, attributes_guide, reasons_guide, $zoom, t, start_time;
 
 $(document).ready(function(){
 	$.ajax({
@@ -17,7 +17,8 @@ $(document).ready(function(){
 		// console.log(data)
 		ksu_type_attributes = data['ksu_type_attributes']
 		attributes_guide = data['attributes_guide']
-		// console.log(ksu_type_attributes)	
+		reasons_guide = data['reasons_guide']
+		// console.log(reasons_guide)	
 		RenderReasonsIndex(data['reasons_index'])
 		
 		var ksu_set = data['ksu_set']
@@ -137,8 +138,7 @@ $(document).on('click', '.KsuActionButton', function(){
 			ksu.find('#ShowDetailButton').removeClass('hidden');
 			ksu.find('#SaveNewKSUButton').addClass('hidden');
 			ShowDetail(ksu);
-			AddReasonToSelect(data['ksu_id'], ksu.find('#description').val())
-			// UpdateResonSelects()
+			AddReasonToSelect(data['ksu_id'], get_ksu_attr_value(ksu, 'ksu_subtype'), ksu.find('#description').val());
 
 			if(ksu.hasClass('PictureOnStandBy')){
 				AddKsu_idToPicInput(ksu);
@@ -505,6 +505,11 @@ $(document).on('change', '.SubtypeSelect', function(){
 			set_ksu_attr_value(ksu, 'repeats', 'Always')
 		}
 	}
+
+	remove_reason_select_from_ksu(ksu)
+	var reason_id = ksu.find('#reason_holder').attr('reason_id')
+	add_reason_select_to_ksu(ksu, reason_id );
+
 });
 
 
@@ -731,7 +736,7 @@ function SetKsuImage(ksu, pic_url){
 	ksu.find('#img_holder').addClass('hidden');
 	ksu.find('#ksu_pic').removeClass('hidden');
 	ksu.find('#ksu_pic').magnify();  
-}
+};
 
 
 function set_ksu_attr_value(ksu, attribute, attr_value){
@@ -790,7 +795,7 @@ function HideUnhideKsuProperties(ksu, targets, action){
 			ksu.find(targets[t]).removeClass('hidden') 
 		}		
 	}
-}
+};
 
 
 function ShowHideSelect(ksu, select, option){
@@ -813,26 +818,46 @@ function ShowHideSelect(ksu, select, option){
 
   HideUnhideKsuProperties(ksu, select_toBeHidden[select], 'Hide');
   HideUnhideKsuProperties(ksu, select_toBeShown[select][option], 'Show');
-}
+};
 
 
 function RenderReasonsIndex(reasons_list){
 	for (var i = reasons_list.length - 1; i >= 0; i--) {
 		var reason = reasons_list[i]
-		AddReasonToSelect(reason[0], reason[1])
+		AddReasonToSelect(reason[0], reason[1], reason[2])
 	}
-}
+};
 
 
-function AddReasonToSelect(ksu_id, description){
-	$('#reasons_select').append($('<option>', {value:ksu_id, text:description}));
-}
+function ReduceReasonsOptions(reasons_select, ksu_subtype){
+	var reason_options = reasons_select.find('option');
+	var valid_targets = reasons_guide[ksu_subtype]
+	// console.log(valid_targets)
+	for (var i = reason_options.length - 1; i > 0; i--){
+		var option = $(reason_options[i]);
+		var option_subtype = option.attr('ksu_subtype');
+		
+		if(inList(option_subtype, valid_targets) == false){
+			option.addClass('InvalidOption')
+		}
+	}
+
+	reasons_select.find('.InvalidOption').remove()
+};
+
+
+function AddReasonToSelect(ksu_id, ksu_subtype, description){
+	$('#reasons_select').append($('<option>', {value:ksu_id, text:description, ksu_subtype:ksu_subtype}));
+};
 
 
 function add_reason_select_to_ksu(ksu, reason_id){
 	// var selected_option = ksu.find('#reason').val()
 	ksu.find('#reason_holder').empty()
-	ksu.find('#reason_holder').append($('#reasons_select_group').clone());
+	var reasons_select = $('#reasons_select_group').clone();
+	ReduceReasonsOptions(reasons_select, get_ksu_attr_value(ksu, 'ksu_subtype'))
+	// console.log(reasons_select)
+	ksu.find('#reason_holder').append(reasons_select);
 	ksu.find('#reasons_select_group').removeClass('hidden');
 	ksu.find('#reasons_select').attr('id', 'reason_id')
 	var $select = ksu.find('#reason_id').selectize();

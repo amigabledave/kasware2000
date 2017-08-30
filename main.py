@@ -323,7 +323,7 @@ class Home(Handler):
 			
 			for ksu in ksu_set:
 				ksu_output.append(self.ksu_to_dic(ksu))
-				reasons_index.append([ksu.key.id(), ksu.description])
+				reasons_index.append([ksu.key.id(), ksu.ksu_subtype, ksu.description])
 			
 			history = Event3.query(Event3.theory_id == self.theory.key).order(-Event3.event_date).fetch()
 			event_output = []
@@ -337,6 +337,7 @@ class Home(Handler):
 				'reasons_index':reasons_index,
 				'ksu_type_attributes': KASware3.ksu_type_attributes,
 				'attributes_guide': KASware3.attributes_guide,
+				'reasons_guide': KASware3.reasons_guide,
 				}))
 			return
 

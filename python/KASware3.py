@@ -38,7 +38,7 @@ ksu_types = [
 	[['Person', 'Person'], [ #Who you want in your life 'Love', #Important People. Love & Friendship
 		['Individual', 'Individual', True], #Person #If the parent is another person, then the parent is a group of people #'Group',
 		['Group', 'Group', ''],
-		['Role', 'Role'], #E.g. Sexual Partner, Someone to Play Magic, Etc... El padre solo puede ser una persona y puede tener varios padres
+		['Role', 'Role', ''], #E.g. Sexual Partner, Someone to Play Magic, Etc... El padre solo puede ser una persona y puede tener varios padres
 	]],
 
 	[['Possesion', 'Possesion'], [ #What you want to have
@@ -67,6 +67,7 @@ ksu_types = [
 		['Perception', 'Perception', True],
 	]],
 ]
+
 
 
 event_types = [	
@@ -240,7 +241,6 @@ ksu_type_attributes = {
 }
 
 
-
 dashboard_template = {
 
 	'EndValue':{
@@ -266,3 +266,75 @@ dashboard_template = {
 
 	'Measurement':{}, #Generaddo por indicadores
 }
+
+life_piece_subtypes = [
+	'Moment',
+	'JoyMine',
+	'Chapter',
+	
+	'StarFish',
+	'Calling',
+	'WorldChange',
+	
+	'Attitude',
+	'KnowledgeOrSkill',
+	'BodyFeature',
+	'Achievement',
+	
+	'Individual',
+	'Group',
+	'Role',
+	
+	'Thing',
+	'Service',
+	'Asset',
+	'Job',
+	
+	'Private',
+	'Public',
+	'Order',
+]
+
+reasons_guide = {
+	'Proactive':['MiniObjective', 'BigObjective'] + life_piece_subtypes,
+	'Reactive':['MiniObjective', 'BigObjective'] + life_piece_subtypes,
+	'Negative':['MiniObjective', 'BigObjective'] + life_piece_subtypes,
+	
+	'MiniObjective':['BigObjective'],
+	'BigObjective':[] + life_piece_subtypes,
+	
+	'Moment':['Chapter'],
+	'JoyMine':['JoyMine'],
+	'Chapter':['Chapter'],
+	
+	'StarFish':['Individual', 'WorldChange'],
+	'Calling':['WorldChange'],
+	'WorldChange':['WorldChange'],
+	
+	'Attitude':['Attitude'],
+	'KnowledgeOrSkill':['KnowledgeOrSkill'],
+	'BodyFeature':['BodyFeature'],
+	'Achievement':['Achievement'],
+	
+	'Individual':['Group', 'Role'],
+	'Group':['Role'],
+	'Role':['Moment', 'JoyMine', 'Chapter'],
+	
+	'Thing':['Thing', 'Moment', 'JoyMine', 'Chapter'],
+	'Service':['Moment', 'JoyMine', 'Chapter'],
+	'Asset':['Asset', 'Moment', 'JoyMine', 'Chapter'],
+	'Job':['Thing', 'Service' ,'Asset', 'Moment', 'JoyMine', 'Chapter'],
+	
+	'Private':[],
+	'Public':[],
+	'Order':['Private','Public'],
+	
+	'Principle':[],
+	'Idea':['Principle'],
+	'Learning':['Principle'],
+	
+	'Reality':[] + life_piece_subtypes,
+	'Perception':[] + life_piece_subtypes,
+}
+
+
