@@ -399,7 +399,8 @@ class Home(Handler):
 			ksu.put()
 			self.response.out.write(json.dumps({
 				'mensaje':'Attributo actualizado',
-				'event_dic': event_dic
+				'event_dic': event_dic,
+				'ksu_dic': self.ksu_to_dic(ksu)
 				}))
 			return
 		
@@ -625,6 +626,10 @@ class Home(Handler):
 			
 		elif event_type in ['WishRealized', 'LifePieceGone']:
 			score = weight[size]
+			print #xx
+			print 'Eso es el score segun el peso'
+			print score
+			print
 
 		duration = 0
 		if 'duration' in event_details:

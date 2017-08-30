@@ -440,13 +440,13 @@ $(document).on('focusin', '.KsuAttr', function(){
 	// var KsuAttr = $(this)
 	var initial_attr_value = get_ksu_attr_value(ksu, $(this).attr("name"));
 	// console.log('Se reconocio que se esta acutalizando un attributo')
-
+	// console.log(initial_attr_value)
 	$(this).on('focusout', function(){
 		
 		var attr_value = get_ksu_attr_value(ksu, $(this).attr("name"));
 		
 		if(initial_attr_value != attr_value){
-			
+			// console.log('Se reconocio que el attributo cambio')
 			var ksu_id = ksu.attr("value");
 			var attr_key = $(this).attr("name");
 			
@@ -528,11 +528,10 @@ $(document).on('change', '.pic_input', function(){
 
 
 function get_ksu_attr_value(ksu, attr_key){
-	// console.log(ksu.find('#description').val())
-	// console.log(KsuAttr)
+	// console.log(attr_key)
 	var KsuAttr = ksu.find('#' + attr_key)
 	var attr_type = attributes_guide[attr_key][1];
-
+	// console.log(attr_type)
 	if (attr_type == 'Standard' || attr_type == 'Select'){
 		return KsuAttr.val();
 

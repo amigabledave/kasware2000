@@ -203,6 +203,7 @@ ksu_type_attributes = {
 	],
 
 	'LifePiece':[
+		'size',
 		'money_cost',
 		'cost_frequency',
 		'status',
