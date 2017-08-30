@@ -246,7 +246,7 @@ $(document).on('click', '.KsuActionButton', function(){
 		});
 	};
 
-	function EndValueExperienced(ksu){//xx
+	function EndValueExperienced(ksu){
 		console.log('End value experienced...')
 		
 		if($('#chapter_duration').val() == ''){
@@ -369,7 +369,7 @@ $(document).on('click', '.TimeBarButton',function(){
 })
 
 
-$(document).on('click', '.PlayStopButton', function(){ //## Aqui nos quedamos -- Entender por que no se estan actualizando los meritos
+$(document).on('click', '.PlayStopButton', function(){
 	clearTimeout(t);
 	
 	var ksu = $(this).closest('#KSU');
@@ -611,6 +611,9 @@ function render_event(event_dic){
 
 		'Progress': {'type_description': 'Milestone Reached', 'score_format': ''},
 		'EndValue': {'type_description': 'Joy Generated', 'score_format': 'ScoreHolderEndValue'},
+		
+		'WishRealized': {'type_description': 'Wish Realized', 'score_format': 'IsRealized'},
+		'LifePieceGone': {'type_description': 'Life Piece Gone', 'score_format': 'IsHistory'},
 	}
 
 	event.attr("id", 'Event');
@@ -903,7 +906,7 @@ function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
 	})
 	
 	.done(function(data){
-		console.log(data['mensaje']);
+		console.log(data);
 	})
 };
 
@@ -1063,13 +1066,14 @@ var ksu_type_attr_details = {
 	'Wisdom': [['description', 'placeholder', 'What pice of knowledge could help you live a better life?']], 
 	'Indicator': [['description', 'placeholder', 'Indicator place holder']], 
 	'Situation': [['description', 'placeholder', 'What aspect of your life situation is significant to you?']],
+	'Environment': [['description', 'placeholder', 'In what environment would you like to live in?']],
 }
 
 
 var section_details = {
 	'mission':{'title': "Today's Mission", 'new_ksu_type': 'Action', 'holder':'TheoryHolder'},
 	'kas': {'title': 'Key Action Set', 'new_ksu_type': 'Action', 'holder':'TheoryHolder'},  
-	'objectives': {'title': 'Mile Stones', 'new_ksu_type': 'Objective', 'holder':'TheoryHolder'}, 
+	'objectives': {'title': 'Milestones', 'new_ksu_type': 'Objective', 'holder':'TheoryHolder'}, 
 	'purpose':{'title': "Current Purpose", 'new_ksu_type': 'disabled', 'holder':'TheoryHolder'},
 
 	'contributions': {'title': 'Contributions', 'new_ksu_type': 'Contribution', 'holder':'TheoryHolder'}, 
@@ -1078,6 +1082,8 @@ var section_details = {
 	'people': {'title': 'Important People', 'new_ksu_type': 'Person', 'holder':'TheoryHolder'},  
 	'possesions': {'title': 'Possesions', 'new_ksu_type': 'Possesion', 'holder':'TheoryHolder'},  
 	'situation': {'title': 'Life Situation', 'new_ksu_type': 'Situation', 'holder':'TheoryHolder'},
+	'environment': {'title': 'Environment', 'new_ksu_type': 'Environment', 'holder':'TheoryHolder'},
+
 	'wisdom': {'title': 'Wisdom', 'new_ksu_type': 'Wisdom', 'holder':'TheoryHolder'},
 	'dashboard': {'title': 'Dashboard', 'new_ksu_type': 'disabled', 'holder':'DashboardHolder'},
 	'indicators': {'title': 'Indicators', 'new_ksu_type': 'Indicator', 'holder':'TheoryHolder'},

@@ -25,19 +25,20 @@ ksu_types = [
 	[['Experience', 'Experience'], [#What do you want to be doing? #'Surroundings = Aqui entra estar viviendo en Canada
 		['Moment', 'Moment', True], # Whaterver < Nice < Very nice < Memorable < Epic < Legendary		
 		['JoyMine', 'Joy Mine', ''], #Algo concreto que genera momentos del mismo tipo... E.g. Estar jugando Zelda breath of the wild
-		['Chapter', 'Chapter', ''], #Agrupa varios momentos, pero no es un momento en si por lo que no tiene importancia. El padre puede ser otro chapter .E.g. Estar jugando el juego de aventura en turno >> #E.g. Estar jugando Zelda breath of the wild
-		#'Experience' #If the parent is other joy generator, then its a generator instance: E.g. Estar jugando el juego de aventura en turno >> #E.g. Estar jugando Zelda breath of the wild	
+		['Chapter', 'Chapter', ''], #Agrupa varios momentos, pero no es un momento en si por lo que no tiene importancia. El padre puede ser otro chapter .E.g. Estar jugando el juego de aventura en turno >> #E.g. Estar jugando Zelda breath of the wild		
 	]],
 
 	[['Contribution', 'Contribution'], [ #Whats the impact you want to have in others peoples life and the envieronment? Antes Meaning GreaterGood
-		['Contribution', 'Contribution', True] #  #'Social', 'Environment',		
+		['StarFish', 'Star Fish', True], # Cada Star Fish matters, son contribuciones targeteadas para mejorar la vida de una persona
+		['Calling', 'Calling', ''], # Aqui entran el trabajo que harias aunque no te pagaran	
+		['WorldChange', 'World Change', ' '] #Aqui entran cualquier aspiraciones de cambiar el status del mundo mas alla de la vida de algunos individuos en particular
 	]],
 	
 	[['SelfAttribute', 'Attribute'], [# Antes Self. #Who is the best person you could be? 'Antes tenia Achievemnt pero ahora queda en meaning',
 		['Attitude', 'Attitude', ''], #'SoulSkill', #Connciousness and inner peace
 		['KnowledgeOrSkill', 'Skill or Knowledge', True], #MindSkill Knowledge and skills		
 		['BodyFeature', 'Body Feature', ''], #PhisicalAttribute, Health and vitality
-		# ['Achievement', 'Achievement', ''] #Personal achievement.
+		['Achievement', 'Achievement', ''] #Personal achievement.
 	]],
 
 	[['Person', 'Person'], [ #Who you want in your life 'Love', #Important People. Love & Friendship
@@ -47,12 +48,21 @@ ksu_types = [
 	]],
 
 	[['Possesion', 'Possesion'], [ #What you want to have
-		['Thing', 'Thing', True], #For personal use #Tambien entra orden aqui. e.g. "Tener un cuarto ordenado"		
-		['Service', 'Service Access'],
+		['Thing', 'Thing', True], #For personal use 	
+		['Service', 'Service Access'], #For personal use
 		['Asset', 'Asset', ''], #Dinero o assets tangibles. MoneyOrAsset
+		['Job', 'Job', ''], #Aqui entran los trabajos que no harias si no te pagaran
 	]],	
 
-	[['Situation', 'Situation'], [ #Whats the impact you want to have in others peoples life and the envieronment? Antes Meaning GreaterGood
+	[['Environment', 'Environment'], [ #Surrondings... Quiero de alguna forma indicar que se trata de los lugares donde pasas tiempo...
+		['Order', 'Order', ''], #Algun attributo particular del lugar en cuestion 
+		['Private', 'Private', ''],
+		['Public', 'Public', ''], #Aqui entran los paises donde quieres vivir u otros lugares donde te gustaria pasar buena parte de tu tiempo
+		#Tambien entra orden aqui. e.g. "Tener un cuarto ordenado"
+	]],
+
+
+	[['Situation', 'Situation'], [ #Por lo pronto es un poco EE. 
 		['SocialStatus', 'Social Status', True], #Aqui entrarian los trabajos o cualquier cosa que viva en las mentes de otras personas	
 		['Environment', 'Environment', ''], #Aqui entra el lugar donde quieres vivir a nivel pais, hogar o cualquier escala
 	]],
@@ -67,10 +77,15 @@ ksu_types = [
 
 event_types = [	
 	'EndValue', #Generado por momentos de Joy Generatos
+	
 	'Effort', #Generado por acciones al ser ejecutadas
 	'Stupidity', #Generado por acciones al ser ejecutadas
+	
 	'Progress', #Generado por objetivos
+	
 	'WishRealized', #Generado por Life Pieces al cambiar de status
+	'LifePieceGone', #Generado por Life Pieces al cambiar de status
+
 	'Measurement' #Generaddo por indicadores
 ]
 
@@ -215,7 +230,9 @@ ksu_type_attributes = {
 		'birthday',
 	],
 
-	'Situation': [], 
+	'Situation': [],
+
+	'Environment':[],
 
 	'Possesion': [], 
 

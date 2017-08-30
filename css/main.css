@@ -291,18 +291,22 @@ input::-webkit-inner-spin-button {
 
 .IsRealized {
     border-color: #a58a2a;
-    /*color: #a58a2a;*/
-    background-color: #f5e5b3;
+    color: #a58a2a;
+    /*background-color: #f5e5b3;*/
 }
+
 
 .IsHistory {
   border-color: #6b8ac1;
-  background-color: rgba(219, 236, 253, 1);  
+  color: #6b8ac1;
+  /*background-color: rgba(219, 236, 253, 1);  */
 }
+
 
 .IsCritical {
    border-color: #bb6262 
 }
+
 
 .IsOptional {
     border-color: #3a8a26

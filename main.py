@@ -385,11 +385,23 @@ class Home(Handler):
 			return
 
 		elif user_action == 'UpdateKsuAttribute':
+
 			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
 			self.update_ksu_attribute(ksu, event_details['attr_key'], event_details['attr_value'])
+
+			event_dic = None
+			if 'status' == event_details['attr_key']:
+				status = event_details['attr_value']
+				if status in ['Present', 'Past']:
+					event = self.create_event(ksu, 'LifePieceTo_' + status, {})
+					event.put()	
+					ksu.details['LifePieceTo_' + status] = event.key.id()
+					event_dic = self.event_to_dic(event)
+
 			ksu.put()
 			self.response.out.write(json.dumps({
 				'mensaje':'Attributo actualizado',
+				'event_dic': event_dic
 				}))
 			return
 		
@@ -432,10 +444,12 @@ class Home(Handler):
 		return ksu
 
 	def update_ksu_attribute(self, ksu, attr_key, attr_value):
+
 		attr_type = KASware3.attributes_guide[attr_key][0]
 		fixed_key = attr_key
 		fixed_value = attr_value
-		
+		event = None
+
 		if attr_type in ['String', 'Text']:
 			fixed_value = attr_value.encode('utf-8')
 		
@@ -461,14 +475,12 @@ class Home(Handler):
 			if attr_value != '':
 				fixed_value = datetime.strptime(attr_value, '%Y-%m-%d')		
 	
-
 		elif attr_type == 'BlobKey':
 			fixed_value = None
 			#Queda pendiente decirle que hacer con el blobkey
 
-
 		setattr(ksu, fixed_key, fixed_value)
-		return ksu
+		return ksu, event
 	
 	def ksu_to_dic(self, ksu):
 		ksu_dic = {
@@ -594,18 +606,28 @@ class Home(Handler):
 		elif user_action == 'EndValue_Experienced':
 			event_type = 'EndValue'
 
+		elif user_action == 'LifePieceTo_Present':
+			event_type = 'WishRealized'
+
+		elif user_action == 'LifePieceTo_Past':
+			event_type = 'LifePieceGone'
+
 
 		event_date = (datetime.today() + timedelta(hours=self.theory.timezone))
 		if ksu.event_date and ksu_subtype not in ['Action', 'Objective']:
 			event_date = ksu.event_date
 
-		score = 0
-		if 'score' in event_details:
-			score = int(event_details['score'])
-
 		size = ksu.size
 		if 'size' in event_details:
 			size = int(event_details['size'])	
+
+
+		score = 0
+		if 'score' in event_details:
+			score = int(event_details['score'])
+			
+		elif event_type in ['WishRealized', 'LifePieceGone']:
+			score = weight[size]
 
 		duration = 0
 		if 'duration' in event_details:
