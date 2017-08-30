@@ -281,7 +281,7 @@ class Home(Handler):
 				}))
 			return
 
-		elif user_action in ['Milestone_Reached', 'EndValue_Experienced']:
+		elif user_action in ['Milestone_Reached', 'EndValue_Experienced', 'Measurement_Recorded']:
 			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
 			
 			event = self.create_event(ksu, user_action, event_details)
@@ -613,6 +613,11 @@ class Home(Handler):
 		elif user_action == 'LifePieceTo_Past':
 			event_type = 'LifePieceGone'
 
+		elif user_action == 'Measurement_Recorded':
+			if ksu_subtype == 'Perception':
+				event_type = 'PerceptionSnapshot'
+			elif ksu_subtype == 'Reality':
+				event_type = 'RealitySnapshot'
 
 		event_date = (datetime.today() + timedelta(hours=self.theory.timezone))
 		if ksu.event_date and ksu_subtype not in ['Action', 'Objective']:
@@ -642,10 +647,14 @@ class Home(Handler):
 			reason_ksu = KSU3.get_by_id(ksu.reason_id.id())
 			reason_status = reason_ksu.status
 
+		description = ksu.description
+		if ksu.ksu_type == 'Indicator':
+			description = ksu.details['question']
+
 		event = Event3(
 			theory_id = ksu.theory_id,
 			ksu_id = ksu.key,
-			description = ksu.description,
+			description = description,
 			reason_status = reason_status,
 			event_date = event_date, 
 

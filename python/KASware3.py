@@ -80,7 +80,8 @@ event_types = [
 	'WishRealized', #Generado por Life Pieces al cambiar de status
 	'LifePieceGone', #Generado por Life Pieces al cambiar de status
 
-	'Measurement' #Generaddo por indicadores
+	'PerceptionSnapshot', #Generaddo por indicadores de percepcion
+	'RealitySnapshot',
 ]
 
 

@@ -230,6 +230,16 @@ input::-webkit-inner-spin-button {
 }
 
 
+.ScoreHolderPerception{
+    font-size: 18px;
+    padding-top: 5px;
+}
+
+.ScoreHolderReality{
+    font-size: 11px;
+    word-wrap: break-word;
+}
+
 .ScoreHolderEffort{
     color: #5cb85c;
 }

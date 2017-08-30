@@ -104,7 +104,8 @@ $(document).on('click', '.KsuActionButton', function(){
 		'SendToMission': UpdateEventDate,
 
 		'Milestone_Reached': MilestoneReached,
-		'EndValue_Experienced':EndValueExperienced,
+		'EndValue_Experienced': EndValueExperienced,
+		'Measurement_Recorded': MeasurementRecorded,
 	}
 
 	actions_menu[action](ksu);
@@ -285,6 +286,36 @@ $(document).on('click', '.KsuActionButton', function(){
 		});
 	};
 
+	function MeasurementRecorded(ksu){
+		console.log('Measurement recorded...')
+		
+		var score;
+		var ksu_subtype = get_ksu_attr_value(ksu, 'ksu_subtype');
+
+		if(ksu_subtype == 'Perception'){
+			score = ksu.find('input:radio[name=PerceptionSnapshot]:checked').val();
+		} else {
+			score = ksu.find('#RealitySnapshot').val()
+		}
+		
+		console.log(score);	
+		ksu.fadeOut('slow');
+		$.ajax({
+			type: "POST",
+			url: "/",
+			dataType: 'json',
+			data: JSON.stringify({
+				'ksu_id': ksu.attr("value"),
+				'user_action': action,
+				'score': score,
+			})
+		}).done(function(data){
+			console.log(data); 
+			render_event(data['event_dic'])
+		});
+		ShowDetail(ksu)
+		ksu.fadeIn('slow')
+	}
 });
 
 
@@ -544,6 +575,10 @@ function get_ksu_attr_value(ksu, attr_key){
 }
 
 
+function inList(target_element, list){
+	return list.indexOf(target_element) >= 0
+}
+
 function render_ksu(ksu_dic){
 	var ksu = $('#KSUTemplate').clone();
 	ksu = FixTemplateBasedOnKsuType(ksu, ksu_dic['ksu_type']);
@@ -594,7 +629,7 @@ function render_ksu(ksu_dic){
 		ksu.find('#MonitorDetails').removeClass('hidden')
 	}
 
-	if(ksu_dic['ksu_subtype'] == 'Reactive'){
+	if(inList(ksu_dic['ksu_subtype'], ['Reactive', 'Perception', 'Reality'])){
 		ksu.find('#description').attr('rows',1);
 	}
 
@@ -603,7 +638,8 @@ function render_ksu(ksu_dic){
 
 function render_event(event_dic){
 	var event = $('#EventTemplate').clone();
-	var event_type = event_dic['event_type']
+	var event_type = event_dic['event_type'];
+	var score = event_dic['score'];
 
 	var type_details = {
 		'Effort': {'type_description': 'Effort Made', 'score_format': 'ScoreHolderEffort'},
@@ -614,6 +650,13 @@ function render_event(event_dic){
 		
 		'WishRealized': {'type_description': 'Wish Realized', 'score_format': 'IsRealized'},
 		'LifePieceGone': {'type_description': 'Life Piece Gone', 'score_format': 'IsHistory'},
+
+		'PerceptionSnapshot': {'type_description': 'Indicator Measurement', 'score_format': 'ScoreHolderPerception'},
+		'RealitySnapshot': {'type_description': 'Indicator Measurement', 'score_format': 'ScoreHolderReality'},
+	}
+
+	if(event_type == 'PerceptionSnapshot'){
+		score = {0:'No', 1:'Yes'}[score]
 	}
 
 	event.attr("id", 'Event');
@@ -623,7 +666,7 @@ function render_event(event_dic){
 	event.find('#ScoreHolder').addClass(type_details[event_type]['score_format'])
 	event.find('#event_type').text(type_details[event_type]['type_description'])
 
-	event.find('#event_score').text(event_dic['score'])
+	event.find('#event_score').text(score)
 	event.find('#description').text(event_dic['description'])	
 	event.find('#event_date').text(event_dic['event_date'])
 
