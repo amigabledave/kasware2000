@@ -738,7 +738,7 @@ class Home(Handler):
 				'score': game['streak'],
 				'contrast': game['best_streak']},
 	
-				{'title': 'Merits Reseve',
+				{'title': 'Indulgences', #Formerly Merits Reserves
 				'score': game['piggy_bank'],
 				'contrast': game['best_piggy_bank']},
 			 ]},

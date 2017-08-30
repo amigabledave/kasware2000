@@ -607,17 +607,27 @@ function UpdateMerits(ksu){
 	var size = ksu.find('input:radio[name=size]:checked').val();
 
 	var timer = 0;
+	var repetitions = 1;
+
 	if ( ksu_subtype == 'Proactive'){
 		timer = ksu.find('#timer').val();
 	}
 	
+	if ( ksu_subtype != 'Proactive' && ksu.find('#timer').val() < 1){
+		ksu.find('#timer').val(1);
+	}
+
+	if ( ksu_subtype != 'Proactive'){
+		repetitions = ksu.find('#timer').val();
+	}
+
 	var base = {
 		'Proactive': {1:0, 2:1, 3:5, 4:5},
 		'Reactive': {1:1, 2:5, 3:10, 4:10},
-		'Negative': {1:5, 2:20, 3:150, 4:500},
+		'Negative': {1:10, 2:20, 3:50, 4:150},
 	};
 
-	merits = Math.floor(size*10*timer/60) + base[ksu_subtype][size]
+	merits = Math.floor(size*10*timer/60) + base[ksu_subtype][size]*repetitions
 
 	ksu.find('#' + ksu_subtype + '_Merits').text(merits)
 }
