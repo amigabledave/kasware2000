@@ -114,7 +114,7 @@ $(document).on('click', '.KsuActionButton', function(){
 		ksu.attr("value","")
 		var attributes_dic = {};
 		var ksu_attributes = ksu.find('.KsuAttr');
-		console.log(ksu_attributes);
+		
 		for (var i = ksu_attributes.length - 1; i >= 0; i--) {
 			var KsuAttr = $(ksu_attributes[i]);
 			attributes_dic[KsuAttr.attr("name")] = get_ksu_attr_value(ksu, KsuAttr.attr("name"))
@@ -451,15 +451,16 @@ $(document).on('focusin', '.KsuAttr', function(){
 			var attr_key = $(this).attr("name");
 			
 			UpdateKsuAttribute(ksu_id, attr_key, attr_value)
-			
-			if( attr_key == 'money_cost'){
-				HideShowCostFrequency(ksu)	
-			}
 		};
 		$(this).off()
 	})
 });
 
+
+$(document).on('change', '#money_cost', function(){
+	var ksu = $(this).closest('#KSU');
+	HideShowCostFrequency(ksu)	
+})
 
 $(document).on('change', '.SubtypeSelect', function(){
 	var ksu = $(this).closest('#KSU');
@@ -555,7 +556,7 @@ function render_ksu(ksu_dic){
 	// console.log(ksu_dic);
 	var ksu_type = ksu_dic['ksu_type'];
 	var attributes = ksu_type_attributes['Base'].concat(ksu_type_attributes[ksu_type]);	
-	if (['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion', 'Situation'].indexOf(ksu_type) >= 0){		
+	if (['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion', 'Environment'].indexOf(ksu_type) >= 0){		
 		attributes = attributes.concat(ksu_type_attributes['LifePiece'])		
 	}
 	
@@ -1065,7 +1066,6 @@ var ksu_type_attr_details = {
 	'Possesion': [['description', 'placeholder', 'What is a possesion that makes sense for you to care about?']], 
 	'Wisdom': [['description', 'placeholder', 'What pice of knowledge could help you live a better life?']], 
 	'Indicator': [['description', 'placeholder', 'Indicator place holder']], 
-	'Situation': [['description', 'placeholder', 'What aspect of your life situation is significant to you?']],
 	'Environment': [['description', 'placeholder', 'In what environment would you like to live in?']],
 }
 
@@ -1081,7 +1081,6 @@ var section_details = {
 	'mybestself': {'title': 'Mybestself', 'new_ksu_type': 'SelfAttribute', 'holder':'TheoryHolder'},  
 	'people': {'title': 'Important People', 'new_ksu_type': 'Person', 'holder':'TheoryHolder'},  
 	'possesions': {'title': 'Possesions', 'new_ksu_type': 'Possesion', 'holder':'TheoryHolder'},  
-	'situation': {'title': 'Life Situation', 'new_ksu_type': 'Situation', 'holder':'TheoryHolder'},
 	'environment': {'title': 'Environment', 'new_ksu_type': 'Environment', 'holder':'TheoryHolder'},
 
 	'wisdom': {'title': 'Wisdom', 'new_ksu_type': 'Wisdom', 'holder':'TheoryHolder'},

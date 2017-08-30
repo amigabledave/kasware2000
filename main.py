@@ -281,7 +281,7 @@ class Home(Handler):
 				}))
 			return
 
-		elif user_action in ['Milestone_Reached', 'EndValue_Experienced']: #xx
+		elif user_action in ['Milestone_Reached', 'EndValue_Experienced']:
 			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
 			
 			event = self.create_event(ksu, user_action, event_details)
@@ -343,9 +343,7 @@ class Home(Handler):
 		elif user_action == 'SaveNewKSU':
 			ksu = KSU3(theory_id=self.theory.key)
 			ksu_type = event_details['ksu_type']
-			attributes = KASware3.ksu_type_attributes['Base'] + KASware3.ksu_type_attributes[ksu_type]
-			if ksu_type in ['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion']:
-				attributes += KASware3.ksu_type_attributes['LifePiece']
+			attributes = self.get_ksu_type_attributes(ksu_type)
 
 			for attribute in attributes:
 				self.update_ksu_attribute(ksu, attribute, event_details[attribute])
@@ -524,9 +522,8 @@ class Home(Handler):
 	def get_ksu_type_attributes(self, ksu_type):
 		attributes = KASware3.ksu_type_attributes['Base'] + KASware3.ksu_type_attributes[ksu_type] 
 		
-		if ksu_type in ['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion', 'Situation']:
+		if ksu_type in ['Experience', 'Contribution', 'SelfAttribute', 'Person', 'Possesion', 'Environment']:
 			attributes += KASware3.ksu_type_attributes['LifePiece']
-
 		return attributes
 
 	def update_event_date(self, ksu, user_action):

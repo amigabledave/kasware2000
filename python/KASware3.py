@@ -15,12 +15,6 @@ ksu_types = [
 		['BigObjective', 'Big Objective', ''], #If the parent is another objective then its a milestone#'Milestone',
 	]],
 	
-	[['Wisdom', 'Wisdom'], [#Idea #Your personal constitution. Non actionable knowledge that you believe should guide your behaviour.
-		['Principle', 'Principle', ''], #Sirve para organizar y auditar
-		['Idea', 'Idea', True], #If the idea has a parent then is not a principle. BRILIANT!		
-		['Learning', 'Learning', '']
-	]], 
-		
 	#Life Pieces
 	[['Experience', 'Experience'], [#What do you want to be doing? #'Surroundings = Aqui entra estar viviendo en Canada
 		['Moment', 'Moment', True], # Whaterver < Nice < Very nice < Memorable < Epic < Legendary		
@@ -55,20 +49,20 @@ ksu_types = [
 	]],	
 
 	[['Environment', 'Environment'], [ #Surrondings... Quiero de alguna forma indicar que se trata de los lugares donde pasas tiempo...
-		['Order', 'Order', ''], #Algun attributo particular del lugar en cuestion 
-		['Private', 'Private', ''],
+		['Private', 'Private', True],
 		['Public', 'Public', ''], #Aqui entran los paises donde quieres vivir u otros lugares donde te gustaria pasar buena parte de tu tiempo
+		['Order', 'Order', ''], #Algun attributo particular del lugar en cuestion 		
 		#Tambien entra orden aqui. e.g. "Tener un cuarto ordenado"
 	]],
 
+	#Other	
+	[['Wisdom', 'Wisdom'], [#Idea #Your personal constitution. Non actionable knowledge that you believe should guide your behaviour.
+		['Principle', 'Principle', ''], #Sirve para organizar y auditar
+		['Idea', 'Idea', True], #If the idea has a parent then is not a principle. BRILIANT!		
+		['Learning', 'Learning', '']
+	]], 
 
-	[['Situation', 'Situation'], [ #Por lo pronto es un poco EE. 
-		['SocialStatus', 'Social Status', True], #Aqui entrarian los trabajos o cualquier cosa que viva en las mentes de otras personas	
-		['Environment', 'Environment', ''], #Aqui entra el lugar donde quieres vivir a nivel pais, hogar o cualquier escala
-	]],
-
-	#Indicator Results The concreate metrics you pick to measure success
-	[['Indicator', 'Indicator'], [
+	[['Indicator', 'Indicator'], [#A concreate metrics you pick to measure success
 		['Reality', 'Reality', ''],
 		['Perception', 'Perception', True],
 	]],
@@ -229,8 +223,6 @@ ksu_type_attributes = {
 		'frequency',
 		'birthday',
 	],
-
-	'Situation': [],
 
 	'Environment':[],
 
