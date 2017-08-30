@@ -278,22 +278,12 @@
 			<div class="col-xs-9 ReasonHolder" name="reason_id" id="reason_holder" reason_id="">	
 			</div>
 
-			<div class="col-xs-3 form-group hidden TypeSpecific SubtypeSpecific" target_type='Action' avoid_subtype='Proactive Reactive'>
-				<label> Avoidance Diff. </label>
-				<select id="avoidance_difficulty" class="KsuAttr form-control SexySelect" name="avoidance_difficulty">
-					<option value="1" > Easy </option>
-					<option value="2" selected="selected"> Challenging </option>
-					<option value="3"> Heroic </option>
-				</select>
-			</div>
-
-			<div class="col-xs-9 form-group hidden TypeSpecific SubtypeSpecific" id="ExceptionsRow" target_type='Action' avoid_subtype='Proactive Reactive'>
-				<label>Valid exceptions</label>
-				<textarea class="KsuAttr form-control SexyInput" rows="1" data-min-rows='1' name="exceptions" id="exceptions" placeholder="Exceptions" style="padding-left: 10px;"></textarea>	
-			</div>
 
 
-			<div class="col-xs-3 form-group TypeSpecific" target_type="Objective" id="objective_status_col">		<label > Status </label>						
+
+
+			<div class="col-xs-3 form-group TypeSpecific" target_type="Objective" id="objective_status_col">
+				<label> Status </label>						
 				<select id="status" class="KsuAttr form-control SexySelect StatusSelect" name="status">	
 					<option value="Pipeline" selected="selected"> In Pipeline </option>						
 					<option value="Pursuit" > In Pursuit </option>
@@ -412,7 +402,11 @@
 					<option value="365"> Yearly </option>
 				</select>			
 			</div>
-
+			
+			<div class="col-xs-12 form-group hidden TypeSpecific SubtypeSpecific" id="ExceptionsRow" target_type='Action' avoid_subtype='Proactive Reactive'>
+				<label>Valid exceptions</label>
+				<textarea class="KsuAttr form-control SexyInput" rows="1" data-min-rows='1' name="exceptions" id="exceptions" placeholder="Exceptions" style="padding-left: 10px;"></textarea>	
+			</div>
 
 
 			<div class="col-xs-12 form-group TypeSpecific" id="source_col" target_type='Wisdom'>

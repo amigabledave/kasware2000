@@ -132,8 +132,6 @@ attributes_guide = {
 	'goal_events': ['Details', 'Standard'],
 	'goal_minutes': ['Details', 'Standard'],
 	'goal_time_frame': ['Details', 'Select'],
-
-	'avoidance_difficulty': ['Details', 'Select'],
 }
 
 
@@ -184,7 +182,6 @@ ksu_type_attributes = {
 	
 		'anywhere',
 		'status',
-		'avoidance_difficulty',	
 	],
 
 	'Objective': [
