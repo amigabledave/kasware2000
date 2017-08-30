@@ -907,6 +907,9 @@ function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
 	
 	.done(function(data){
 		console.log(data);
+		if(data['event_dic']){
+			render_event(data['event_dic'])
+		}
 	})
 };
 

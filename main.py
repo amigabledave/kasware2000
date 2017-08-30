@@ -391,8 +391,11 @@ class Home(Handler):
 			if 'status' == event_details['attr_key']:
 				status = event_details['attr_value']
 				if status in ['Present', 'Past']:
-					event = self.create_event(ksu, 'LifePieceTo_' + status, {})
+					user_action = 'LifePieceTo_' + status
+					event = self.create_event(ksu, user_action, {})
 					event.put()	
+					if user_action in ksu.details:
+						Event3.get_by_id(int(ksu.details[user_action])).key.delete()
 					ksu.details['LifePieceTo_' + status] = event.key.id()
 					event_dic = self.event_to_dic(event)
 
@@ -619,17 +622,12 @@ class Home(Handler):
 		if 'size' in event_details:
 			size = int(event_details['size'])	
 
-
 		score = 0
 		if 'score' in event_details:
 			score = int(event_details['score'])
 			
 		elif event_type in ['WishRealized', 'LifePieceGone']:
 			score = weight[size]
-			print #xx
-			print 'Eso es el score segun el peso'
-			print score
-			print
 
 		duration = 0
 		if 'duration' in event_details:
