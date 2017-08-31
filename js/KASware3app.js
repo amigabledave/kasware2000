@@ -1149,7 +1149,7 @@ var section_details = {
 	'purpose':{'title': "Current Purpose", 'new_ksu_type': 'disabled', 'holder':'TheoryHolder'},
 
 	'contributions': {'title': 'Contributions', 'new_ksu_type': 'Contribution', 'holder':'TheoryHolder'}, 
-	'experiences': {'title': 'Experiences', 'new_ksu_type': 'Experience', 'holder':'TheoryHolder'},  
+	'experiences': {'title': 'Joy Generators', 'new_ksu_type': 'Experience', 'holder':'TheoryHolder'},  
 	'mybestself': {'title': 'Mybestself', 'new_ksu_type': 'SelfAttribute', 'holder':'TheoryHolder'},  
 	'people': {'title': 'Important People', 'new_ksu_type': 'Person', 'holder':'TheoryHolder'},  
 	'possesions': {'title': 'Possesions', 'new_ksu_type': 'Possesion', 'holder':'TheoryHolder'},  
