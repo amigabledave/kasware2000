@@ -564,7 +564,7 @@ $(document).on('change', '.pic_input', function(){
 
 
 function get_ksu_attr_value(ksu, attr_key){
-	console.log(attr_key)
+	// console.log(attr_key)
 	var KsuAttr = ksu.find('#' + attr_key)
 	var attr_type = attributes_guide[attr_key][1];
 	// console.log(attr_type)
@@ -718,13 +718,15 @@ function UpdateMerits(ksu){
 		repetitions = ksu.find('#counter').val();
 	}
 
+	var timer_factor = {1:5, 2:10, 3:20, 4:30};
+
 	var base = {
-		'Proactive': {1:0, 2:1, 3:5, 4:5},
-		'Reactive': {1:1, 2:5, 3:10, 4:10},
-		'Negative': {1:10, 2:20, 3:50, 4:150},
+		'Proactive': {1:0, 2:0, 3:1, 4:5},
+		'Reactive': {1:1, 2:3, 3:5, 4:10},
+		'Negative': {1:5, 2:10, 3:20, 4:50},
 	};
 
-	merits = Math.floor(size*10*timer/60) + base[ksu_subtype][size]*repetitions
+	merits = Math.floor(timer_factor[size]*timer/60) + base[ksu_subtype][size]*repetitions
 
 	ksu.find('#' + ksu_subtype + '_Merits').text(merits)
 }
@@ -958,8 +960,8 @@ function fixTemplateDivAttr(template, div_id, attr_key, attr_value){
 
 function UpdateKsuAttribute(ksu_id, attr_key, attr_value){
 	
-	console.log(attr_key);
-	console.log(attr_value);
+	// console.log(attr_key);
+	// console.log(attr_value);
 
 	$.ajax({
 		type: "POST",
@@ -1157,6 +1159,7 @@ var section_details = {
 	'dashboard': {'title': 'Dashboard', 'new_ksu_type': 'disabled', 'holder':'DashboardHolder'},
 	'indicators': {'title': 'Indicators', 'new_ksu_type': 'Indicator', 'holder':'TheoryHolder'},
 	'settings': {'title': 'Settings', 'new_ksu_type': 'disabled', 'holder':'SettingsHolder'},
+	'money': {'title': 'Money Requirements', 'new_ksu_type': 'disabled', 'holder':'MoneyRequirementsHolder'},
 
 	'history':{'title': 'History', 'new_ksu_type': 'disabled', 'holder':'HistoryHolder'},
 }

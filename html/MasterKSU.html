@@ -79,22 +79,23 @@
 					</label>
 
 					<label class="radio-inline">
-						<input type="radio" name="size" value="2" class="KsuAttr ScoreInput" checked="checked">
-						<span class="SubtypeSpecific" avoid_subtype="Reactive Negative"> Focused </span> 
-						<span class="SubtypeSpecific" avoid_subtype="Proactive Negative"> Challenging </span>
+						<input type="radio" name="size" value="2" class="KsuAttr ScoreInput">
+						<span class="SubtypeSpecific" avoid_subtype="Reactive Negative"> Distracted </span>
+						<span class="SubtypeSpecific" avoid_subtype="Proactive Negative"> Simple </span>
 						<span class="SubtypeSpecific" avoid_subtype="Reactive Proactive"> Unaceptable </span> 
 					</label>
 
 					<label class="radio-inline">
-						<input type="radio" name="size" value="3" class="KsuAttr ScoreInput">
-						<span class="SubtypeSpecific" avoid_subtype="Reactive Negative"> Uncomfortable </span>
-						<span class="SubtypeSpecific" avoid_subtype="Proactive Negative"> Heroic </span>
+						<input type="radio" name="size" value="3" class="KsuAttr ScoreInput" checked="checked">		
+						<span class="SubtypeSpecific" avoid_subtype="Reactive Negative"> Focused </span> 
+						<span class="SubtypeSpecific" avoid_subtype="Proactive Negative"> Challenging </span>
 						<span class="SubtypeSpecific" avoid_subtype="Reactive Proactive"> Despicable </span> 
 					</label>
 			
-					<label class="radio-inline SubtypeSpecific" avoid_subtype="Proactive Reactive">
+					<label class="radio-inline">
 						<input type="radio" name="size" value="4" class="KsuAttr ScoreInput">
-						<span> Horrible </span>
+						<span class="SubtypeSpecific" avoid_subtype="Negative"> Heroic </span>
+						<span class="SubtypeSpecific" avoid_subtype="Proactive Reactive"> Horrible </span>
 					</label>
 
 				</form>	
@@ -279,9 +280,6 @@
 			</div>
 
 
-
-
-
 			<div class="col-xs-3 form-group TypeSpecific" target_type="Objective" id="objective_status_col">
 				<label> Status </label>						
 				<select id="status" class="KsuAttr form-control SexySelect StatusSelect" name="status">	
@@ -291,6 +289,14 @@
 				</select>			
 			</div>
 
+			<div class="col-xs-3 form-group TypeSpecific" target_type="Action" id="priotiy_col">	
+				<label > Priority </label>
+				<select id="status" class="KsuAttr form-control SexySelect StatusSelect" name="status">	
+					<option value="Critical" > Critical </option>
+					<option value="Active" selected="selected" class="TypeSpecific" target_type="Action"> Active </option>
+					<option value="Optional"> Optional </option>						
+				</select>			
+			</div>
 
 			<div class="col-xs-3 form-group TypeSpecific" target_type='Action Objective Experience Indicator'>
 				<label class="TypeSpecific" target_type="Action"> Target Date </label>
@@ -375,7 +381,7 @@
 
 
 			
-			<div class="col-xs-3 form-group TypeSpecific" id="money_cost_col" target_type="Action Objective Experience Contribution SelfAttribute Person Possesion Environment">
+			<div class="col-xs-3 form-group TypeSpecific" id="money_cost_col" target_type="Experience Contribution SelfAttribute Person Possesion Environment">
 				<label>Money Cost</label>
 				<div class="input-group">
 					<span class="input-group-addon SexyInput">$</span>
@@ -383,17 +389,7 @@
 				</div>
 			</div>
 
-			<div class="col-xs-3 form-group TypeSpecific" target_type="Action" id="priotiy_col">	
-				<label > Priority </label>
-				<select id="status" class="KsuAttr form-control SexySelect StatusSelect" name="status">	
-					<option value="Critical" > Critical </option>
-					<option value="Active" selected="selected" class="TypeSpecific" target_type="Action"> Active </option>
-					<option value="Optional"> Optional </option>						
-				</select>			
-			</div>
-
-
-			<div class="col-xs-3 form-group hidden" id="cost_frequency_col">	
+			<div class="col-xs-3 form-group hidden TypeSpecific" id="cost_frequency_col" target_type="Experience Contribution SelfAttribute Person Possesion Environment">	
 				<label> Cost frequency </label>
 				<select id="cost_frequency" class="KsuAttr form-control SexySelect" name="cost_frequency">
 					<option value="0" selected="selected"> One Time </option>
@@ -402,6 +398,7 @@
 					<option value="365"> Yearly </option>
 				</select>			
 			</div>
+
 
 			<div class="col-xs-12 form-group hidden TypeSpecific SubtypeSpecific" id="ExceptionsRow" target_type='Action' avoid_subtype='Proactive Reactive'>
 				<label>Valid exceptions</label>
@@ -435,21 +432,24 @@
 		<div class="row hidden" id="MonitorDetails">
 			<div class="inKSUhrDiv"><hr class="inKSUhr" style="margin-top: 15px;"></div>
 			<div class="col-xs-3 form-group" id="merits_goal_col">				
-				<label class="TypeSpecific SubtypeSpecific" target_type="Action" avoid_subtype="Proactive Reactive">Stupidity Limit</label>
+				<label class="TypeSpecific SubtypeSpecific" target_type="Action" avoid_subtype="Proactive Reactive">Indulgence Limit</label>
 				<label class="SubtypeSpecific" avoid_subtype="Negative">Effort Minimum</label>
-				<input type="number" min="0" step="1" class="form-control KsuAttr SexyInput" id="goal_merits" name="goal_merits" placeholder="Merits Goal">				
+				<input type="number" min="0" step="1" class="form-control KsuAttr SexyInput" id="goal_score" name="goal_score" placeholder="Goal">			
+			</div>
+
+			<div class="col-xs-3 form-group" id="count_goal_col">
+				<label class="SubtypeSpecific" avoid_subtype="Negative Reactive" >Time Minimum</label>	
+				<label class="SubtypeSpecific" avoid_subtype="Proactive Negative">Rep. Minimum</label>
+				<label class="TypeSpecific SubtypeSpecific" target_type="Action" avoid_subtype="Proactive Reactive">Rep. Limit</label>
+				<input type="number" min="0" step="1" class="form-control KsuAttr SexyInput" id="goal_count" name="goal_count" placeholder="Goal">			
 			</div>
 
 			<div class="col-xs-3 form-group" id="events_goal_col">
 				<label class="SubtypeSpecific" avoid_subtype="Negative">Events Minimum</label>
 				<label class="TypeSpecific SubtypeSpecific" target_type="Action" avoid_subtype="Proactive Reactive">Events Limit</label>				
-				<input type="number" min="0" step="1" class="form-control KsuAttr SexyInput" id="goal_events" name="goal_events" placeholder="Events Goal">			
+				<input type="number" min="0" step="1" class="form-control KsuAttr SexyInput" id="goal_events" name="goal_events" placeholder="Goal">			
 			</div>
 
-			<div class="col-xs-3 form-group SubtypeSpecific" avoid_subtype="Negative Reactive" id="minutes_goal_col">
-				<label>Time Minimum</label>				
-				<input type="number" min="0" step="1" class="form-control KsuAttr SexyInput" id="goal_minutes" name="goal_minutes" placeholder="Minutes Goal">			
-			</div>
 
 			<div class="col-xs-3 form-group" id="goal_type_col">								
 				<label> Goal Time Frame </label>

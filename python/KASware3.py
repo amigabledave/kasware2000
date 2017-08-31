@@ -11,8 +11,8 @@ ksu_types = [
 	]],	
 
 	[['Objective', 'Mile Stone'], [ #Group actions in a well define purpose
-		['MiniObjective', 'Mini Objective', True], #If the parent is another objective then its a milestone#'Milestone',
-		['BigObjective', 'Big Objective', ''], #If the parent is another objective then its a milestone#'Milestone',
+		['BigObjective', 'Objective', True], #If the parent is another objective then its a milestone#'Milestone',
+		['MiniObjective', 'Mini Objective', ''], #If the parent is another objective then its a milestone#'Milestone',		
 	]],
 	
 	#Life Pieces
@@ -139,9 +139,9 @@ attributes_guide = {
 	'chapter_duration': ['Details', 'Standard'],
 
 	'monitor': ['Boolean', 'Checkbox'],
-	'goal_merits': ['Details', 'Standard'],
+	'goal_score': ['Details', 'Standard'],
 	'goal_events': ['Details', 'Standard'],
-	'goal_minutes': ['Details', 'Standard'],
+	'goal_count': ['Details', 'Standard'],
 	'goal_time_frame': ['Details', 'Select'],
 
 	'experience_quality':['Integer', 'Radio'],
@@ -163,15 +163,13 @@ ksu_type_attributes = {
 		'tag',
 
 		'monitor',				
-		'goal_merits',
+		'goal_score',
 		'goal_events',
-		'goal_minutes',
+		'goal_count',
 		'goal_time_frame'
 	],
 
 	'Action': [
-		'money_cost',
-		'cost_frequency',
 		'best_time', 
 		'trigger',
 		'exceptions',
@@ -198,8 +196,6 @@ ksu_type_attributes = {
 	],
 
 	'Objective': [
-		'money_cost',
-		'cost_frequency',
 		'event_date',
 		'status',
 	],

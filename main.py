@@ -848,7 +848,7 @@ class Home(Handler):
 	def ksu_to_dashboard_section(self, ksu, ksu_deep_score, period_len):
 				
 		goal_factor = (period_len * 1.0 /int(ksu.details['goal_time_frame']))
-		for goal in ['goal_merits', 'goal_minutes', 'goal_events']:
+		for goal in ['goal_score', 'goal_count', 'goal_events']:
 			if ksu.details[goal] == '':
 				ksu.details[goal] = 0
 			else:
@@ -863,7 +863,7 @@ class Home(Handler):
 				{'title':'Merits',
 				'score':ksu_deep_score['current']['merits'],				
 				'contrast_title': 'Goal',
-				'contrast':ksu.details['goal_merits']},
+				'contrast':ksu.details['goal_score']},
 
 				{'title':'Events',
 				'score':ksu_deep_score['current']['events'],
@@ -873,7 +873,7 @@ class Home(Handler):
 				{'title':'Minutes',
 				'score':ksu_deep_score['current']['minutes'],
 				'contrast_title': 'Goal',
-				'contrast':ksu.details['goal_minutes']}
+				'contrast':ksu.details['goal_count']}
 			]}
 
 		return section		
