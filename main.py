@@ -520,7 +520,7 @@ class Home(Handler):
 			'score':event.score,
 			'description': event.description,
 			'event_date': event.event_date.strftime('%I:%M %p. %a, %b %d, %Y'),
-			'minutes': event.duration
+			'counter': event.counter
 		}
 		return event_dic
 
@@ -635,9 +635,14 @@ class Home(Handler):
 		elif event_type in ['WishRealized', 'LifePieceGone']:
 			score = weight[size]
 
-		duration = 0
-		if 'duration' in event_details:
-			duration = int(event_details['duration'])
+		counter = 0
+		if 'counter' in event_details:
+			counter = int(event_details['counter'])
+		
+		reps = 1
+		if 'reps' in event_details:
+			reps = int(event_details['reps'])
+
 
 		comments = ''
 		if comments in event_details:
@@ -661,7 +666,8 @@ class Home(Handler):
 
 			event_type = event_type,
 			score = score,
-			duration = duration,
+			counter = counter,
+
 			size = size,
 			comments = comments)
 
@@ -2485,7 +2491,7 @@ class PopulateRandomHistory(Handler):
 
 			event_type = ksu_event_by_subtype[ksu.ksu_subtype],
 			score = random.randrange(0, 40),
-			duration = random.randrange(0, 120),
+			counter = random.randrange(0, 120),
 			size = random.randrange(1, 5),
 			comments = '')
 		event.put()

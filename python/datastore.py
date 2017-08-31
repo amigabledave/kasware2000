@@ -77,7 +77,7 @@ class KSU3(ndb.Model):
 	pic_url = ndb.StringProperty()
 
 	size = ndb.IntegerProperty(default=3) #Indicates the size of a LifePiece or Objective. In a fibonacci scale 1, 2, 3, 5, 8. Also works as effor denominator for Actions
-	timer = ndb.IntegerProperty(default=0) #Total minutes invested
+	counter = ndb.IntegerProperty(default=0) #Total minutes invested/Reps
 	event_date = ndb.DateTimeProperty()
 
 	status = ndb.StringProperty() #Wish, Present, Past #Remplaza is_realized e is_active #Indicates if a 'LifePiece' is either a wish or a RTBG or part of my life situation. And if an objective is acomplished or not.
@@ -98,6 +98,7 @@ class KSU3(ndb.Model):
 class Event3(ndb.Model):
 	theory_id = ndb.KeyProperty(kind=Theory, required=True)	
 	ksu_id = ndb.KeyProperty(kind=KSU3, required=True)
+	
 	description = ndb.StringProperty()
 	reason_status = ndb.StringProperty()
 	created = ndb.DateTimeProperty(auto_now_add=True)	
@@ -105,8 +106,8 @@ class Event3(ndb.Model):
 
 	event_type = ndb.StringProperty(required=True)
 	score = ndb.IntegerProperty(default=0)
-	size = ndb.IntegerProperty(default=1)
-	duration = ndb.IntegerProperty(default=0)
+	size = ndb.IntegerProperty(default=1)	
+	counter = ndb.IntegerProperty(default=0)
 	comments = ndb.StringProperty()
 
 

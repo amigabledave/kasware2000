@@ -98,7 +98,7 @@ attributes_guide = {
 	'pic_url': ['String', 'Standard'],
 	
 	'size': ['Integer', 'Radio'],
-	'timer': ['Integer', 'Standard'],
+	'counter': ['Integer', 'Standard'],
 	'event_date': ['DateTime', 'Standard'],
 
 	'status': ['String', 'Select'],
@@ -177,7 +177,7 @@ ksu_type_attributes = {
 		'exceptions',
 		
 		'size',
-		'timer',
+		'counter',
 		'event_date',
 
 		'repeats',

@@ -212,7 +212,7 @@ $(document).on('click', '.KsuActionButton', function(){
 				'user_action': action,
 				'score': score,
 				'size': get_ksu_attr_value(ksu, 'size'),
-				'duration': get_ksu_attr_value(ksu, 'timer'),
+				'counter': get_ksu_attr_value(ksu, 'counter'),
 			})
 		}).done(function(data){
 			console.log(data); 
@@ -270,7 +270,7 @@ $(document).on('click', '.KsuActionButton', function(){
 				'user_action': action,
 				'score': score,
 				'size': size,
-				'duration': duration,
+				'counter': get_ksu_attr_value(ksu, 'counter'),
 			})
 		}).done(function(data){
 			console.log(data); 
@@ -407,7 +407,7 @@ $(document).on('click', '.PlayStopButton', function(){
 	
 	var button_action = $(this).attr("button_action")
 	var GlaphiconDiv = $(this).find('#PlayStopGlyphicon');
-	var target_timer = ksu.find('#timer');
+	var target_timer = ksu.find('#counter');
 	
 	var starting_minutes =  parseInt(target_timer.val());
     
@@ -426,7 +426,7 @@ $(document).on('click', '.PlayStopButton', function(){
 		ksu.find('#EffortDoneButton').removeClass('PlayPulse');
 		ksu.find('#EffortDoneButton').prop("disabled", false);
 		$(this).attr("button_action", "Play");
-		UpdateKsuAttribute(ksu.attr('value'), 'timer', target_timer.val())
+		UpdateKsuAttribute(ksu.attr('value'), 'counter', target_timer.val())
 	}
 
 	GlaphiconDiv.toggleClass('glyphicon-play');
@@ -564,7 +564,7 @@ $(document).on('change', '.pic_input', function(){
 
 
 function get_ksu_attr_value(ksu, attr_key){
-	// console.log(attr_key)
+	console.log(attr_key)
 	var KsuAttr = ksu.find('#' + attr_key)
 	var attr_type = attributes_guide[attr_key][1];
 	// console.log(attr_type)
@@ -707,15 +707,15 @@ function UpdateMerits(ksu){
 	var repetitions = 1;
 
 	if ( ksu_subtype == 'Proactive'){
-		timer = ksu.find('#timer').val();
+		timer = ksu.find('#counter').val();
 	}
 	
-	if ( ksu_subtype != 'Proactive' && ksu.find('#timer').val() < 1){
-		ksu.find('#timer').val(1);
+	if ( ksu_subtype != 'Proactive' && ksu.find('#counter').val() < 1){
+		ksu.find('#counter').val(1);
 	}
 
 	if ( ksu_subtype != 'Proactive'){
-		repetitions = ksu.find('#timer').val();
+		repetitions = ksu.find('#counter').val();
 	}
 
 	var base = {
