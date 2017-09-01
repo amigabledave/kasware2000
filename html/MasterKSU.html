@@ -117,49 +117,6 @@
 			<div class="inKSUhrDiv"><hr class="inKSUhr" style=""></div>
 		</div>
 		
-		<div class="row TypeSpecific" target_type='Experience' name="ExperienceQualityRow" style="margin-bottom: 10px;">
-			<div class="inKSUhrDiv"><hr class="inKSUhr" style=""></div>
-			<div class="col-xs-1 TypeSpecific" target_type='Experience'>
-				<button type="button" class="btn WhiteToSuccessButton ksu-circle-btn KsuActionButton" name="action_description" value='EndValue_Experienced' style="margin-left: 3px"><span class="glyphicon glyphicon-ok"></span></button>
-			</div>
-
-			<div class="col-xs-10 TypeSpecific" target_type="Experience" style="padding-left: 37px">							
-				<b>Experience Quality:</b>
-				<form>
-
-					<label class="radio-inline">
-						<input type="radio" name="experience_quality" value="1" class=""> OK					
-					</label>					
-
-					<label class="radio-inline">
-						<input type="radio" name="experience_quality" value="3" class="" checked="checked"> Nice
-					</label>
-
-					<label class="radio-inline">
-						<input type="radio" name="experience_quality" value="5" class=""> Memorable
-					</label>
-					
-					<label class="radio-inline">
-						<input type="radio" name="experience_quality" value="8" class=""> Epic
-					</label>
-					
-					<label class="radio-inline">
-						<input type="radio" name="experience_quality" value="13" class=""> Legendary
-					</label>
-				
-				</form>	
-			</div>			
-
-			<div class="col-xs-1 TypeSpecific" target_type='Experience'>
-				<button type="button" class="btn btn-primary ksu-circle-btn KsuActionButton pull-right" name='action_description' style="margin-right: 10px;" value="AddEventComments"><span class="glyphicon glyphicon-pencil"></span></button>
-			</div>
-
-			<div class="col-xs-12 form-group hidden" id="event_comments_col" style="margin-bottom: 0px;">
-				<textarea class="form-control" rows="1" data-min-rows='1' name="event_comments" placeholder="Any words for the record?" style="padding-left: 10px; margin-top: 10px; margin-bottom: 0px;"></textarea>	
-			</div>
-
-		</div>
-		
 		<div class="row TypeSpecific" name="LifePieceSizeAndStatusRow" target_type="Experience Contribution SelfAttribute Person Possesion Environment">
 			<div class="inKSUhrDiv"><hr class="inKSUhr" style=""></div>			
 			
@@ -203,13 +160,15 @@
 			<div class="col-xs-3" name="status_col">
 				<div class="form-group pull-right" style="margin-bottom: 0px;">
 					<label> Status </label>
-					<select id="status" class="KsuAttr form-control SexySelect StatusSelect" name="status">
-						<option value="Wish"> Wish </option>						
-						<option value="Pursuit"> In Pursuit </option>
+					<select id="status" class="KsuAttr form-control SexySelect StatusSelect ShowHideSelect" name="status">
+						<option value="Wish" class="SubtypeSpecific" avoid_subtype="JoyMine"> Wish </option>
+						<option value="Pursuit" class="SubtypeSpecific" avoid_subtype="JoyMine"> In Pursuit </option>
 						<option value="Reached" class="TypeSpecific" target_type="Objective"> Reached </option>
 						<option value="Present" class="TypeSpecific" target_type="Contribution SelfAttribute Person Possesion Environment"> Present </option>
+						<option value="Ready" class="TypeSpecific SubtypeSpecific" target_type="Experience" avoid_subtype="Moment Chapter"> Reloading </option>
 						<option value="Ready" class="TypeSpecific SubtypeSpecific" target_type="Experience" avoid_subtype="Moment Chapter"> Ready </option>
 						<option value="Past" class="TypeSpecific" target_type="Contribution SelfAttribute Person Possesion Environment"> Past </option>
+						<option value="Memory" class="TypeSpecific" target_type="Experience"> Memory </option>
 					</select>
 				</div>
 			</div>			
@@ -298,6 +257,35 @@
 				</select>			
 			</div>
 
+
+			<div class="col-xs-3 TypeSpecific" target_type="Experience" id="memory_level_col">
+				<label> Memory Level</label>
+				<select id="memory_level" class="KsuAttr form-control SexySelect" name="memory_level">
+					<option value="1">Ok</option>
+					<option value="2">Nice</option>
+					<option value="3">Very Nice</option>
+					<option value="4">Epic</option>
+					<option value="5">Legendary</option>
+				</select>				
+			</div>
+
+			<div class="col-xs-3 form-group TypeSpecific SubtypeSpecific" target_type='Experience Person Indicator' id="frequency_col" avoid_subtype="Moment Chapter Group Role">					
+				<label class="TypeSpecific" target_type="Experience"> Reload time </label>
+				<label class="TypeSpecific" target_type="Person"> Minimum Contact </label>
+				<label class="TypeSpecific" target_type="Indicator"> Question Freq. </label>
+				<select id="frequency" class="KsuAttr form-control SexySelect" name="frequency">
+					<option value="1"> Daily </option>
+					<option value="3"> Tridaily </option>					
+					<option value="7"> Weekly </option>
+					<option value="14"> Biweekly </option>
+					<option value="30" selected="selected"> Monthly </option>					
+					<option value="60"> Bimonthly </option>
+					<option value="180"> Semesterly </option>
+					<option value="365"> Yearly </option>
+				</select>
+				
+			</div>
+
 			<div class="col-xs-3 form-group TypeSpecific" target_type='Action Objective Experience Indicator'>
 				<label class="TypeSpecific" target_type="Action"> Target Date </label>
 				<label class="TypeSpecific" target_type="Objective"> Target Date </label>
@@ -350,22 +338,7 @@
 				</div>				
 			</div>
 
-			<div class="col-xs-3 form-group TypeSpecific SubtypeSpecific" target_type='Experience Person Indicator' id="frequency_col" avoid_subtype="Moment Chapter Group Role">					
-				<label class="TypeSpecific" target_type="Experience"> Reload time </label>
-				<label class="TypeSpecific" target_type="Person"> Minimum Contact </label>
-				<label class="TypeSpecific" target_type="Indicator"> Question Freq. </label>
-				<select id="frequency" class="KsuAttr form-control SexySelect" name="frequency">
-					<option value="1"> Daily </option>
-					<option value="3"> Tridaily </option>					
-					<option value="7"> Weekly </option>
-					<option value="14"> Biweekly </option>
-					<option value="30" selected="selected"> Monthly </option>					
-					<option value="60"> Bimonthly </option>
-					<option value="180"> Semesterly </option>
-					<option value="365"> Yearly </option>
-				</select>
-				
-			</div>
+
 		
 
 			<div class="col-xs-3 form-group TypeSpecific SubtypeSpecific" target_type='Person' id="birthday_col" avoid_subtype="Group Role">					
@@ -419,7 +392,7 @@
 
 				<label class="checkbox-inline"><input type="checkbox" id="monitor" name="monitor" class="KsuAttr MonitorCheckbox"><b>Monitor</b></label>
 
-				<label class="checkbox-inline TypeSpecific" target_type="Experience Contribution SelfAttribute Person Possesion Environment"><input type="checkbox" id="needs_mtnc" name="needs_mtnc" class="KsuAttr"><b>Needs Maintenace</b></label>
+				<label class="checkbox-inline TypeSpecific" target_type="Contribution SelfAttribute Person Possesion Environment"><input type="checkbox" id="needs_mtnc" name="needs_mtnc" class="KsuAttr"><b>Needs Maintenace</b></label>
 				
 				<label class="checkbox-inline TypeSpecific" target_type="Action"><input type="checkbox" id="anywhere" name="anywhere" class="KsuAttr"><b>Anywhere</b></label>
 				

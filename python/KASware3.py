@@ -17,9 +17,9 @@ ksu_types = [
 	
 	#Life Pieces
 	[['Experience', 'Experience'], [#What do you want to be doing? #'Surroundings = Aqui entra estar viviendo en Canada
-		['Moment', 'Moment', True], # Whaterver < Nice < Very nice < Memorable < Epic < Legendary		
-		['JoyMine', 'Joy Mine', ''], #Algo concreto que genera momentos del mismo tipo... E.g. Estar jugando Zelda breath of the wild
+		['Moment', 'Moment', True], # Whaterver < Nice < Very nice < Memorable < Epic < Legendary				
 		['Chapter', 'Chapter', ''], #Agrupa varios momentos, pero no es un momento en si por lo que no tiene importancia. El padre puede ser otro chapter .E.g. Estar jugando el juego de aventura en turno >> #E.g. Estar jugando Zelda breath of the wild		
+		['JoyMine', 'Hobby', ''], #Algo concreto que genera momentos del mismo tipo... E.g. Estar jugando Zelda breath of the wild
 	]],
 
 	[['Contribution', 'Contribution'], [ #Whats the impact you want to have in others peoples life and the envieronment? Antes Meaning GreaterGood
@@ -204,8 +204,7 @@ ksu_type_attributes = {
 		'size',
 		'money_cost',
 		'cost_frequency',
-		'status',
-		'needs_mtnc',						
+		'status',								
 	],
 
 	'Experience': [
@@ -214,18 +213,19 @@ ksu_type_attributes = {
 		'chapter_duration',
 	], 
 
-	'Contribution': [], 
+	'Contribution': ['needs_mtnc'], 
 
-	'SelfAttribute': [], 
+	'SelfAttribute': ['needs_mtnc'], 
 
 	'Person': [
 		'frequency',
 		'birthday',
+		'needs_mtnc',
 	],
 
-	'Environment':[],
+	'Environment':['needs_mtnc'],
 
-	'Possesion': [], 
+	'Possesion': ['needs_mtnc'], 
 
 	'Wisdom': ['source'], #Meter attributo para indicar si es self knowledge o general knowledge
 

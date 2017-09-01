@@ -803,6 +803,7 @@ function HideUnhideKsuProperties(ksu, targets, action){
 function ShowHideSelect(ksu, select, option){
 	var select_toBeHidden = {
 		'repeats': ['#repeats_Xdays_col', '#repeats_day_col', '#repeats_month_col', '#repeats_week_col'],
+		'status': ['#memory_level_col'],
 	}
 
 
@@ -815,11 +816,18 @@ function ShowHideSelect(ksu, select, option){
 			'Month':['#repeats_day_col'],
 			'Year':['#repeats_day_col', '#repeats_month_col']
 		},
+
+		'status':{
+			'Memory':['#memory_level_col']
+		},
 	}
 
+	HideUnhideKsuProperties(ksu, select_toBeHidden[select], 'Hide');
 
-  HideUnhideKsuProperties(ksu, select_toBeHidden[select], 'Hide');
-  HideUnhideKsuProperties(ksu, select_toBeShown[select][option], 'Show');
+	if(option in select_toBeShown[select]){
+		HideUnhideKsuProperties(ksu, select_toBeShown[select][option], 'Show');
+	}	
+
 };
 
 
@@ -1061,6 +1069,7 @@ function FormatBasedOnStatus(ksu, status){
 		'Past': 'IsHistory',
 		'Critical': 'IsCritical',
 		'Optional': 'IsOptional',
+		'Memory': 'IsHistory',
 	}
 
 	if (status in StatusFormat){
@@ -1149,7 +1158,7 @@ var section_details = {
 	'purpose':{'title': "Current Purpose", 'new_ksu_type': 'disabled', 'holder':'TheoryHolder'},
 
 	'contributions': {'title': 'Contributions', 'new_ksu_type': 'Contribution', 'holder':'TheoryHolder'}, 
-	'experiences': {'title': 'Joy Generators', 'new_ksu_type': 'Experience', 'holder':'TheoryHolder'},  
+	'experiences': {'title': 'Joy Experiences', 'new_ksu_type': 'Experience', 'holder':'TheoryHolder'},  
 	'mybestself': {'title': 'Mybestself', 'new_ksu_type': 'SelfAttribute', 'holder':'TheoryHolder'},  
 	'people': {'title': 'Important People', 'new_ksu_type': 'Person', 'holder':'TheoryHolder'},  
 	'possesions': {'title': 'Possesions', 'new_ksu_type': 'Possesion', 'holder':'TheoryHolder'},  
