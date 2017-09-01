@@ -186,7 +186,8 @@ input::-webkit-inner-spin-button {
 
 .DashboardSubTitle{
     font-size: 25px; 
-    margin-bottom: -5px;
+    font-family: 'Rationale', sans-serif;
+    line-height: 25px;
 }
 
 .DashboardKSUdescription{
@@ -301,7 +302,7 @@ input::-webkit-inner-spin-button {
 
 .IsRealized {
     border-color: #a58a2a;
-    color: #a58a2a;
+    /*color: #a58a2a;*/
     /*background-color: #f5e5b3;*/
 }
 

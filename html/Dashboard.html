@@ -1,5 +1,4 @@
-
-<div class="row hidden" id="Overall_Template" style="text-align: center"><div class="col-xs-12"><div class="row" id="SubSections_Holder">
+<div class="col-xs-12 hidden" id="Overall_Template" style="text-align: center"><div class="row" id="SubSections_Holder">
 		
 	<div class=" hidden" id="SubSection_Template"><div class="DashboardDisplaySection">
 		<div class="row"><div class="col-xs-12" style="margin-bottom: -10px;">
@@ -12,36 +11,100 @@
 			<span class="SectionAttr" name="contrast_title">Personal best: </span><span class="SectionAttr" name="contrast">xx</span></div></div>
 	</div></div>
 
-</div></div></div>
+</div></div>
 
-<div class="row" id="ScoreSummary_Template" style="margin-top: 10px;"><div class="col-xs-12"><div class="DashboardDisplaySection" style="min-height: 90px; padding-top: 20px;"><div class="row">
+<div class="col-xs-6 hidden" id="ActionsSummary_Template" style="margin-top: 10px;"><div class="DashboardDisplaySection" style="min-height: 90px; padding-top: 20px;">
+	
+	<div class="row" style="margin-bottom: 10px;"><div class="col-xs-12" id="TitleColumn">
+		<span class="DashboardTitle" id="SectionTitle" style="line-height: 30px;">Effort Made:</span>
+	</div></div>
+
+	<div class="row" id="SubSections_Holder" style="text-align: center;">
+
+		<div id="SubSection_Template" class="col-xs-6 hidden">
+
+			<div class="row"><div class="col-xs-12 DashboardSubTitle" style="font-size: 20px;"> 
+				<span class="SectionAttr" name="title"></span>				
+			</div></div>
+			
+			<div class="row"><span></span><div class="col-xs-12">
+				<span class="SectionAttr DashboardScore" style="font-size: 40px;" name="score">10,000</span>		 
+			</div></div>
+
+			<div class="row"><div class="col-xs-12"> 
+				<span class="" name="title">PP: </span>
+				<span class="SectionAttr" name="contrast">10</span>	
+			</div></div>
+
+		</div>
+	</div>
+</div></div>
+
+
+
+<div class="col-xs-12" id="LifePiecesSummary_Template" style="margin-top: 10px;"><div class="DashboardDisplaySection" style="min-height: 90px; padding-top: 20px;"><div class="row">
 	
 	<div class="col-xs-4" id="TitleColumn">
-		<span class="DashboardTitle" id="SectionTitle" style="font-size: 30px;">Effort Made:</span>
+		<span class="DashboardTitle" id="SectionTitle" style="line-height: 30px;">Joy Experiences</span>
 	</div>
 
 	<div class="col-xs-8">
 		<div class="row" id="SubSections_Holder" style="text-align: center;">
 
-			<div id="SubSection_Template" class="col-xs-3">
+			<div id="SubSection_Template" class="col-xs-4">
+
+				<div class="row"><div class="col-xs-12 DashboardSubTitle" style="font-size: 20px;"> 
+					<span class="SectionAttr" name="title"> Wishes Realized </span>				
+				</div></div>
 				
-				<div class="row"><span></span><div class="col-xs-12">
-					<span class="SectionAttr DashboardScore" style="font-size: 30px;" name="score">10,000</span>		 
+				<div class="row"><div class="col-xs-12">
+					<span class="SectionAttr DashboardScore" style="font-size: 35px;" name="score">100</span>		 
 				</div></div>
 
 				<div class="row"><div class="col-xs-12"> 
-					<span class="SectionAttr" name="title">Current</span>
-					<span id="average" class="hidden"> &mu;</span>
-					<span id="total" class=""> &Sigma;</span></div>
-				</div>
+					<span class="SectionAttr" name="title">Unweighted: </span>
+					<span class="SectionAttr" name="contrast">10</span>	
+				</div></div>
 			</div>
+
+			<div id="SubSection_Template" class="col-xs-4">
+
+				<div class="row"><div class="col-xs-12 DashboardSubTitle" style="font-size: 20px;"> 
+					<span class="SectionAttr" name="title"> Wishes Today </span>				
+				</div></div>
+				
+				<div class="row"><div class="col-xs-12">
+					<span class="SectionAttr DashboardScore" style="font-size: 35px;" name="score">100</span>		 
+				</div></div>
+
+				<div class="row"><div class="col-xs-12"> 
+					<span class="SectionAttr" name="title"> Unweighted: </span>
+					<span class="SectionAttr" name="contrast">10</span>	
+				</div></div>
+			</div>
+
+			<div id="SubSection_Template" class="col-xs-4">
+
+				<div class="row"><div class="col-xs-12 DashboardSubTitle" style="font-size: 20px;"> 
+					<span class="SectionAttr" name="title"> Completeness </span>				
+				</div></div>
+				
+				<div class="row"><div class="col-xs-12">
+					<span class="SectionAttr DashboardScore" style="font-size: 35px;" name="score">99%</span>		 
+				</div></div>
+
+				<div class="row"><div class="col-xs-12"> 
+					<span class="SectionAttr" name="title"> Unweighted: </span>
+					<span class="SectionAttr" name="contrast">50%</span>	
+				</div></div>
+			</div>
+
 		</div>		
 	</div>
-</div></div></div></div>
+</div></div></div>
 
 
-
-<div class="row hidden" id="Summary_Template" style="margin-top: 10px;"><div class="col-xs-12"><div class="DashboardDisplaySection">
+<div class="col-xs-12 hidden" id="Summary_Template" style="margin-top: 10px;"><div class="DashboardDisplaySection">
 
 	<div class="row hidden" id="ResultsAround"><div class="col-xs-12">
 		<span class="DashboardTitle" style="font-size: 25px;">Results around:</span>
@@ -69,6 +132,6 @@
 				<span class="SectionAttr" name="contrast">xx</span></div></div>	
 		</div>		
 	</div>
-</div></div></div>
+</div></div>
 
 

@@ -1069,7 +1069,7 @@ function FormatBasedOnStatus(ksu, status){
 		'Past': 'IsHistory',
 		'Critical': 'IsCritical',
 		'Optional': 'IsOptional',
-		'Memory': 'IsHistory',
+		'Memory': 'IsRealized',
 	}
 
 	if (status in StatusFormat){

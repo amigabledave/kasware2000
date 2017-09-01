@@ -391,7 +391,7 @@ class Home(Handler):
 			event_dic = None
 			if 'status' == event_details['attr_key']:
 				status = event_details['attr_value']
-				if status in ['Present', 'Past']:
+				if status in ['Present', 'Past', 'Memory']:
 					user_action = 'LifePieceTo_' + status
 					event = self.create_event(ksu, user_action, {})
 					event.put()	
@@ -608,7 +608,7 @@ class Home(Handler):
 		elif user_action == 'EndValue_Experienced':
 			event_type = 'EndValue'
 
-		elif user_action == 'LifePieceTo_Present':
+		elif user_action in ['LifePieceTo_Present','LifePieceTo_Memory']:
 			event_type = 'WishRealized'
 
 		elif user_action == 'LifePieceTo_Past':
@@ -741,13 +741,7 @@ class Home(Handler):
 			event_dic['merits'] = 0
 			event_dic['events'] = 1
 
-			if event_type == 'Effort':
-				event_dic['merits'] = event.score
-			
-			elif event_type == 'Stupidity':
-				event_dic['merits'] = -event.score	
-
-			for score_type in ['merits', 'events', 'minutes']:
+			for score_type in ['score', 'events', 'counter']:
 				target_ksu_score[time_frame][score_type] += event_dic[score_type]			
 
 		deep_scores = self.calculate_deep_scores(ksu_set, superficial_scores, 4)
@@ -773,53 +767,51 @@ class Home(Handler):
 		
 		dashboard_sections = [
 			{'section_type':'Overall',
-			 'section_subtype':'Overall',
-			 'sub_sections':[
-			 	{'title': 'Discipline Lvl.',
+			'section_subtype':'Overall',
+			'sub_sections':[
+				{'title': 'Discipline Lvl.',
 				'score': game['discipline_lvl'],
 				'contrast': game['best_discipline_lvl']},
 
-				{'title': 'Streak (Days)',
+				{'title': 'Streak',
 				'score': game['streak'],
 				'contrast': game['best_streak']},
-	
-				{'title': 'Indulgences', #Formerly Merits Reserves
+
+				{'title': 'Piggy Bank', #Formerly Merits Reserves
 				'score': game['piggy_bank'],
 				'contrast': game['best_piggy_bank']},
-			 ]},
+			]},
 		
-			 {'section_type':'Summary',
-			 'section_subtype':'Summary',
-			  'title': 'Merits Earned & Loss Through Effort & Stupidity',
-			  'sub_sections': [
-				# {'title': 'Net',
-				# 'score': dashboard_base['current']['Merits']['score']['average'],
-				# 'contrast': dashboard_base['previous']['Merits']['score']['average']},
-
-				{'title': 'Effort',
+			{'section_type':'ActionsSummary',
+			'section_subtype':'Summary',
+			'title': 'Effort Made',
+			'sub_sections':[
+				{'title': 'Total',
 				'operator': 'total',
 				'score': dashboard_base['current']['Effort']['score']['total'],
-				'contrast_title': 'Previous period:',
-				'contrast': dashboard_base['previous']['Effort']['score']['total']},
-				
-				{'title': 'Stupidity',
-				'operator': 'total',
-				'score': dashboard_base['current']['Stupidity']['score']['total'],
-				'contrast_title': 'Previous period:',
-				'contrast': dashboard_base['previous']['Stupidity']['score']['total']},
-				
-				{'title': 'Effort',
+				'contrast':dashboard_base['previous']['Effort']['score']['total']},
+
+				{'title': 'Average',
 				'operator': 'average',
 				'score': dashboard_base['current']['Effort']['score']['average'],
-				'contrast_title': 'Previous period:',
-				'contrast': dashboard_base['previous']['Effort']['score']['average']},
-				
-				{'title': 'Stupidity',
+				'contrast':dashboard_base['previous']['Effort']['score']['average']},
+			]},
+
+			{'section_type':'ActionsSummary',
+			'section_subtype':'Summary',
+			'title': 'Stupidity Commited',
+			'sub_sections':[
+				{'title': 'Total',
+				'operator': 'total',
+				'score': dashboard_base['current']['Stupidity']['score']['total'],
+				'contrast':dashboard_base['previous']['Stupidity']['score']['total']},
+
+				{'title': 'Average',
 				'operator': 'average',
 				'score': dashboard_base['current']['Stupidity']['score']['average'],
-				'contrast_title': 'Previous period:',
 				'contrast': dashboard_base['previous']['Stupidity']['score']['average']},
-			  ]},
+			]},
+
 		]
 
 		return dashboard_sections + dashboard_base['monitored_ksus_sections']
@@ -848,7 +840,7 @@ class Home(Handler):
 	def ksu_to_dashboard_section(self, ksu, ksu_deep_score, period_len):
 				
 		goal_factor = (period_len * 1.0 /int(ksu.details['goal_time_frame']))
-		for goal in ['goal_score', 'goal_count', 'goal_events']:
+		for goal in ['goal_score', 'goal_counter', 'goal_events']:
 			if ksu.details[goal] == '':
 				ksu.details[goal] = 0
 			else:
@@ -861,7 +853,7 @@ class Home(Handler):
 			
 			'sub_sections':[
 				{'title':'Merits',
-				'score':ksu_deep_score['current']['merits'],				
+				'score':ksu_deep_score['current']['score'],				
 				'contrast_title': 'Goal',
 				'contrast':ksu.details['goal_score']},
 
@@ -871,9 +863,9 @@ class Home(Handler):
 				'contrast':ksu.details['goal_events']},
 
 				{'title':'Minutes',
-				'score':ksu_deep_score['current']['minutes'],
+				'score':ksu_deep_score['current']['counter'],
 				'contrast_title': 'Goal',
-				'contrast':ksu.details['goal_count']}
+				'contrast':ksu.details['goal_counter']}
 			]}
 
 		return section		
@@ -2950,7 +2942,7 @@ def make_template(template_name):
 	templates = {
 		'event_type_summary': {'score':{1:0, 2:0, 3:0, 4:0, 5:0, 'total':0}, 'events':{1:0, 2:0, 3:0, 4:0, 5:0, 'total':0}, 'days':[]},
 		'merits_summary': {'score':{'total':0, 'average':0}, 'events':{'total':0, 'average':0}},
-		'events_total': {'merits':0, 'events':0, 'minutes':0}
+		'events_total': {'score':0, 'events':0, 'counter':0}
 	}
 	return templates[template_name]
 
