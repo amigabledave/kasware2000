@@ -643,6 +643,8 @@ function render_ksu(ksu_dic){
 	}
 
 	FormatBasedOnStatus(ksu, ksu_dic['status'])
+
+	AdjustTextAreaHeight(ksu.find('#description')[0]) 
 }
 
 function render_event(event_dic){
@@ -2351,7 +2353,12 @@ $(document).on('focusin.autoExpand', 'textarea.autoExpand', function(){
         this.rows = minRows + rows;
     });
 
-
+function AdjustTextAreaHeight(target_textarea){
+        var minRows = 1 //this.getAttribute('data-min-rows')|0, rows;
+        target_textarea.rows = minRows;
+        rows = Math.ceil((target_textarea.scrollHeight) / target_textarea.lineHeight); 
+        target_textarea.rows = minRows + rows;
+}
 
 
 $('input[type=radio][name=effort_denominator]').on('change',function(){
