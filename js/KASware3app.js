@@ -165,6 +165,9 @@ $(document).on('click', '.KsuActionButton', function(){
 				ksu.fadeOut("slow", function(){
 					$(this).remove()
 				})
+				
+				$("[reason_id='"+ data['ksu_id'] +"']").attr('reason_id', '')
+				$("[value='"+ data['ksu_id'] +"']").remove()
 			});
 		}		
 	};
@@ -493,6 +496,7 @@ $(document).on('change', '#money_cost', function(){
 	HideShowCostFrequency(ksu)	
 })
 
+
 $(document).on('change', '.SubtypeSelect', function(){
 	var ksu = $(this).closest('#KSU');
 	var ksu_subtype =  ksu.find('#ksu_subtype').val()
@@ -509,7 +513,6 @@ $(document).on('change', '.SubtypeSelect', function(){
 	remove_reason_select_from_ksu(ksu)
 	var reason_id = ksu.find('#reason_holder').attr('reason_id')
 	add_reason_select_to_ksu(ksu, reason_id );
-
 });
 
 
@@ -524,6 +527,7 @@ $(document).on('change', '.ReasonSelect', function(){
 	// if (ksu.attr("value") == ''){return};
 	
 	var ksu_id = ksu.attr("value");
+	if (ksu.attr("value") == ''){return};
 	UpdateKsuAttribute(ksu_id, 'reason_id', attr_value)
 });
 
@@ -564,7 +568,7 @@ $(document).on('change', '.pic_input', function(){
 
 
 function get_ksu_attr_value(ksu, attr_key){
-	console.log(attr_key)
+	// console.log(attr_key)
 	var KsuAttr = ksu.find('#' + attr_key)
 	var attr_type = attributes_guide[attr_key][1];
 	// console.log(attr_type)
@@ -1094,17 +1098,16 @@ function RenderDashboard(dashboard_sections){
 		template.addClass('DashboardRenderedSection')
 
 		if('title' in section_dic){
-			template.find('#SectionTitle').text(section_dic['title'])
-		}
+			var title_string = section_dic['title']
 
-		if(section_dic['section_subtype'] == 'MonitoredKSU'){
-			template.find('#ResultsAround').removeClass('hidden')
-			template.find('#SectionTitle').removeClass('DashboardTitle')
-			template.find('#TitleColumn').addClass('DashboardKSUdescription')
+			if(title_string.length > 65){
+				title_string = title_string.substring(0, 65) + '...'
+			}
+
+			template.find('#SectionTitle').text(title_string)
 		}
 		
-		var col_size = {2:'col-xs-6', 3:'col-xs-4', 4:'col-xs-3'};
-
+		var col_size = {2:'col-xs-6', 3:'col-xs-4', 4:'col-xs-3', 6:'col-xs-2'};
 
 		for (var j = sub_sections.length - 1; j >= 0; j--) {
 			sub_section_dic = sub_sections[j];

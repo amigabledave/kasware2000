@@ -356,9 +356,20 @@ class Home(Handler):
 			self.response.out.write(json.dumps(ksu_dic))
 			return
 
-		elif user_action == 'DeleteKSU':
+		elif user_action == 'DeleteKSU':#xx
 			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
+
+			child_ksus = KSU3.query(KSU3.reason_id == ksu.key).fetch()
+			for child in child_ksus:
+				child.reason_id = None
+				child.put()
+
+			ksu_events = Event3.query(Event3.ksu_id == ksu.key).fetch()
+			for event in ksu_events:
+				event.key.delete()
+
 			ksu.key.delete()
+			
 			self.response.out.write(json.dumps({
 				'mensaje':'KSU Borrado',
 				'ksu_id': ksu.key.id(),
@@ -642,7 +653,7 @@ class Home(Handler):
 		elif event_type == 'Progress':
 			score = 1
 
-		counter = 0
+		counter = 1
 		if 'counter' in event_details:
 			counter = int(event_details['counter'])
 		
@@ -884,7 +895,7 @@ class Home(Handler):
 
 		return events_total
 
-	def ksu_to_dashboard_section(self, ksu, ksu_deep_score, period_len):
+	def ksu_to_dashboard_section(self, ksu, ksu_deep_score, period_len):#xx
 				
 		goal_factor = (period_len * 1.0 /int(ksu.details['goal_time_frame']))
 		for goal in ['goal_score', 'goal_counter', 'goal_events']:
@@ -893,26 +904,38 @@ class Home(Handler):
 			else:
 				ksu.details[goal] = round(int(ksu.details[goal]) * goal_factor, 1)
 
+		ksu_subtype = ksu.ksu_subtype
+		sub_sections_titles = {'score':'Effort Made', 'events':'Total Actions', 'counter':'Total Minutes'}
+		
+		if ksu_subtype in ['Reactive', 'Negative']:
+			sub_sections_titles['counter'] = 'Total Repetitions'
+		
+		if ksu_subtype == 'Negative':
+			sub_sections_titles['score'] = 'Stupidity Commited'
+
+		if ksu_subtype in ['Reality', 'Perception']:
+			sub_sections_titles['events'] = 'Data Points'
+
 		section = {
-			'section_type':'Summary',	
+			'section_type':'KsuSummary',	
 			'title':ksu.description,
 			'section_subtype': 'MonitoredKSU',
 			
 			'sub_sections':[
-				{'title':'Merits',
+				{'title':sub_sections_titles['score'],
 				'score':ksu_deep_score['current']['score'],				
 				'contrast_title': 'Goal',
 				'contrast':ksu.details['goal_score']},
 
-				{'title':'Events',
+				{'title': sub_sections_titles['counter'],
+				'score':ksu_deep_score['current']['counter'],
+				'contrast_title': 'Goal',
+				'contrast':ksu.details['goal_counter']},
+
+				{'title':sub_sections_titles['events'],
 				'score':ksu_deep_score['current']['events'],
 				'contrast_title': 'Goal',
 				'contrast':ksu.details['goal_events']},
-
-				{'title':'Minutes',
-				'score':ksu_deep_score['current']['counter'],
-				'contrast_title': 'Goal',
-				'contrast':ksu.details['goal_counter']}
 			]}
 
 		return section		
@@ -952,7 +975,7 @@ class Home(Handler):
 		for time_frame in ['current', 'previous']:
 			
 			for ksu in parent_ksus:
-				score_types = ['merits', 'events', 'minutes']
+				score_types = ['score', 'events', 'counter']
 
 				for score_type in score_types:
 					deep_scores[ksu][time_frame][score_type] += superficial_scores[ksu][time_frame][score_type]
