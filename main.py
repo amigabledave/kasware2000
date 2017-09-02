@@ -391,7 +391,7 @@ class Home(Handler):
 			event_dic = None
 			if 'status' == event_details['attr_key']:
 				status = event_details['attr_value']
-				if status in ['Present', 'Past', 'Memory']:
+				if status in ['Present', 'Past', 'Memory', 'Pursuit']:
 					user_action = 'LifePieceTo_' + status
 					event = self.create_event(ksu, user_action, {})
 					event.put()	
@@ -520,7 +520,8 @@ class Home(Handler):
 			'score':event.score,
 			'description': event.description,
 			'event_date': event.event_date.strftime('%I:%M %p. %a, %b %d, %Y'),
-			'counter': event.counter
+			'counter': event.counter,
+			'events':1
 		}
 		return event_dic
 
@@ -611,6 +612,9 @@ class Home(Handler):
 		elif user_action in ['LifePieceTo_Present','LifePieceTo_Memory']:
 			event_type = 'WishRealized'
 
+		elif user_action in ['LifePieceTo_Pursuit']:
+			event_type = 'PursuitStarted'
+
 		elif user_action == 'LifePieceTo_Past':
 			event_type = 'LifePieceGone'
 
@@ -634,6 +638,9 @@ class Home(Handler):
 			
 		elif event_type in ['WishRealized', 'LifePieceGone']:
 			score = weight[size]
+
+		elif event_type == 'Progress':
+			score = 1
 
 		counter = 0
 		if 'counter' in event_details:
@@ -697,16 +704,21 @@ class Home(Handler):
 			
 		for time_frame in ['current', 'previous']:
 			
-			for event_type in KASware3.event_types:
-				dashboard_base[time_frame][event_type] = make_template('event_type_summary')		
+			for ksu_type in KASware3.ksu_types:
+				dashboard_base[time_frame][ksu_type[0][0]] = {}
 
-			dashboard_base[time_frame]['Merits'] = make_template('merits_summary')
+				for event_type in KASware3.event_types:
+					
+					dashboard_base[time_frame][ksu_type[0][0]][event_type] = make_template('events_total')
+
+			for event_type in KASware3.event_types:
+
+				dashboard_base[time_frame][event_type] = make_template('events_total')
 
 		period_len = end_date.toordinal() - start_date.toordinal() + 1
 		previous_start_date = start_date - timedelta(days=period_len)
 		history = Event3.query(Event3.theory_id == self.theory.key).filter(Event3.event_date >= previous_start_date, Event3.event_date <= end_date).order(-Event3.event_date).fetch()
-
-		
+	
 		ksu_set = KSU3.query(KSU3.theory_id == self.theory.key).fetch()
 		
 		monitored_ksus = []
@@ -716,39 +728,38 @@ class Home(Handler):
 		
 		for ksu in ksu_set:
 			ksu_id = ksu.key.id()
-			superficial_scores[ksu_id] = { 'current': make_template('events_total'), 'previous': make_template('events_total')}
+			superficial_scores[ksu_id] = { 'current': make_template('events_total'), 'previous': make_template('events_total'), 'ksu_type': ksu.ksu_type}
 			
 			if ksu.monitor and not ksu.in_graveyard:
 				monitored_ksus_ids.append(ksu_id)
 				monitored_ksus_dic[ksu_id] = ksu	
 
 		for event in history:
-			ksu_id = event.ksu_id.id()
-			target_ksu_score = superficial_scores[ksu_id]
-			
+
 			event_type = event.event_type
 			time_frame = 'current'
 			event_date = event.event_date
 			
 			if event.event_date < start_date:
 				time_frame = 'previous'
-			summary_section = dashboard_base[time_frame][event_type]			
-			
-			summary_section['score'][event.size] += event.score			
-			summary_section['events'][event.size] += 1
+
+			ksu_id = event.ksu_id.id()
+			ksu_score_summary = superficial_scores[ksu_id][time_frame]
+			ksu_type_summary = dashboard_base[time_frame][superficial_scores[ksu_id]['ksu_type']][event_type]
+			event_type_summmary = dashboard_base[time_frame][event_type]
 
 			event_dic = self.event_to_dic(event)
-			event_dic['merits'] = 0
-			event_dic['events'] = 1
 
 			for score_type in ['score', 'events', 'counter']:
-				target_ksu_score[time_frame][score_type] += event_dic[score_type]			
+				ksu_score_summary[score_type] += event_dic[score_type]			
+				ksu_type_summary[score_type] += event_dic[score_type]
+				event_type_summmary[score_type] += event_dic[score_type]
+
+		for time_frame in ['current', 'previous']:			
+			for event_type in KASware3.event_types:
+				dashboard_base[time_frame][event_type] = self.add_average_to_events_total(dashboard_base[time_frame][event_type], period_len)
 
 		deep_scores = self.calculate_deep_scores(ksu_set, superficial_scores, 4)
-
-		for event_type in KASware3.event_types:
-			for time_frame in ['current', 'previous']:
-				dashboard_base[time_frame][event_type] = self.add_total_and_average_to_event_type_summary(dashboard_base[time_frame][event_type], period_len)
 
 		monitored_ksus_sections = []
 		for ksu_id in monitored_ksus_ids:
@@ -756,8 +767,6 @@ class Home(Handler):
 			monitored_ksus_sections.append(section)
 
 		dashboard_base['monitored_ksus_sections'] = monitored_ksus_sections
-
-		dashboard_base = self.add_special_sections_to_dashboard_base(dashboard_base)
 
 		return dashboard_base	
 
@@ -788,13 +797,13 @@ class Home(Handler):
 			'sub_sections':[
 				{'title': 'Total',
 				'operator': 'total',
-				'score': dashboard_base['current']['Effort']['score']['total'],
-				'contrast':dashboard_base['previous']['Effort']['score']['total']},
+				'score': dashboard_base['current']['Effort']['score'],
+				'contrast':dashboard_base['previous']['Effort']['score']},
 
 				{'title': 'Average',
 				'operator': 'average',
-				'score': dashboard_base['current']['Effort']['score']['average'],
-				'contrast':dashboard_base['previous']['Effort']['score']['average']},
+				'score': dashboard_base['current']['Effort']['averages']['score'],
+				'contrast':dashboard_base['previous']['Effort']['averages']['score']},
 			]},
 
 			{'section_type':'ActionsSummary',
@@ -803,40 +812,78 @@ class Home(Handler):
 			'sub_sections':[
 				{'title': 'Total',
 				'operator': 'total',
-				'score': dashboard_base['current']['Stupidity']['score']['total'],
-				'contrast':dashboard_base['previous']['Stupidity']['score']['total']},
+				'score': dashboard_base['current']['Stupidity']['score'],
+				'contrast':dashboard_base['previous']['Stupidity']['score']},
 
 				{'title': 'Average',
 				'operator': 'average',
-				'score': dashboard_base['current']['Stupidity']['score']['average'],
-				'contrast': dashboard_base['previous']['Stupidity']['score']['average']},
+				'score': dashboard_base['current']['Stupidity']['averages']['score'],
+				'contrast': dashboard_base['previous']['Stupidity']['averages']['score']},
 			]},
+
+			{'section_type':'ActionsSummary',
+			'section_subtype':'Summary',
+			'title': 'Milestones Reached',
+			'sub_sections':[
+				{'title': 'Total',
+				'score': dashboard_base['current']['Progress']['score'],
+				'contrast':dashboard_base['previous']['Progress']['score']},
+
+				{'title': 'Average',
+				'score': dashboard_base['current']['Progress']['averages']['score'],
+				'contrast': dashboard_base['previous']['Progress']['averages']['score']},
+			]},		
+
+
+			{'section_type':'ActionsSummary',
+			'section_subtype':'Summary',
+			'title': 'Wishes Realized',
+			'sub_sections':[
+				{'title': 'Total',
+				'score': dashboard_base['current']['WishRealized']['score'],
+				'contrast':dashboard_base['previous']['WishRealized']['score']},
+
+				{'title': 'Average',
+				'score': dashboard_base['current']['WishRealized']['averages']['score'],
+				'contrast': dashboard_base['previous']['WishRealized']['averages']['score']},
+			]},
+
 
 		]
 
+
+		section_titles = {
+			'Progress': 'Milestones Reached',
+			'WishRealized': 'Wishes Realized'
+		}
+		
+
+		for event_type in ['WishRealized']:
+			section = {
+				'section_type':'LifePiecesSummary',
+				'section_subtype':'Summary',
+				'title': section_titles[event_type],
+				'sub_sections':[]
+			}
+
+			for ksu_type in KASware3.life_pieces:
+				section['sub_sections'].append({
+					'glyphicon': ksu_type[1],
+					'score': dashboard_base['current'][ksu_type[0]][event_type]['score'],
+					'contrast': dashboard_base['previous'][ksu_type[0]][event_type]['score']
+				})
+
+			dashboard_sections.append(section)
+
 		return dashboard_sections + dashboard_base['monitored_ksus_sections']
 
-	def add_total_and_average_to_event_type_summary(self, event_type_summary, period_len):
-		days = len(event_type_summary['days'])
-		for section in ['score', 'events']:
-			for i in range(1,6):
-				event_type_summary[section]['total'] += event_type_summary[section][i]
+	def add_average_to_events_total(self, events_total, period_len):
+		events_total['averages'] = {}
+		for section in ['score', 'events', 'counter']:
+			events_total['averages'][section] = round(events_total[section]/(period_len*1.0),1)
 
-			event_type_summary[section]['average'] = round(event_type_summary[section]['total']/(period_len*1.0),1)
+		return events_total
 
-		return event_type_summary
-
-	def add_special_sections_to_dashboard_base(self, dashboard_base):
-		
-		for time_frame in ['current', 'previous']:					
-			dashboard_base[time_frame]['Merits'] = make_template('merits_summary')
-
-			for operator in ['total', 'average']:
-				for value_type in ['score', 'events']:
-					dashboard_base[time_frame]['Merits'][value_type][operator] = dashboard_base[time_frame]['Effort'][value_type][operator] - dashboard_base[time_frame]['Stupidity'][value_type][operator]
-
-		return dashboard_base
-	
 	def ksu_to_dashboard_section(self, ksu, ksu_deep_score, period_len):
 				
 		goal_factor = (period_len * 1.0 /int(ksu.details['goal_time_frame']))
@@ -871,13 +918,6 @@ class Home(Handler):
 		return section		
 
 	def calculate_deep_scores(self, ksu_set, superficial_scores, generations):
-
-		print
-		print 'Superficial scores:'
-		print superficial_scores
-		print
-
-
 
 		parent_ksus = []
 		parent_childs = {}
@@ -923,12 +963,6 @@ class Home(Handler):
 
 		z = superficial_scores.copy()
 		z.update(deep_scores)
-
-		print
-		print 'Deep scores:'
-		print z
-		print
-
 
 		return z
 

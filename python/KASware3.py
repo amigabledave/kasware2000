@@ -19,7 +19,7 @@ ksu_types = [
 	[['Experience', 'Experience'], [#What do you want to be doing? #'Surroundings = Aqui entra estar viviendo en Canada
 		['Moment', 'Moment', True], # Whaterver < Nice < Very nice < Memorable < Epic < Legendary				
 		['Chapter', 'Chapter', ''], #Agrupa varios momentos, pero no es un momento en si por lo que no tiene importancia. El padre puede ser otro chapter .E.g. Estar jugando el juego de aventura en turno >> #E.g. Estar jugando Zelda breath of the wild		
-		['JoyMine', 'Hobby', ''], #Algo concreto que genera momentos del mismo tipo... E.g. Estar jugando Zelda breath of the wild
+		['JoyMine', 'Joy Mine', ''], #Algo concreto que genera momentos del mismo tipo... E.g. Estar jugando Zelda breath of the wild
 	]],
 
 	[['Contribution', 'Contribution'], [ #Whats the impact you want to have in others peoples life and the envieronment? Antes Meaning GreaterGood
@@ -32,13 +32,14 @@ ksu_types = [
 		['Attitude', 'Attitude', ''], #'SoulSkill', #Connciousness and inner peace
 		['KnowledgeOrSkill', 'Skill or Knowledge', True], #MindSkill Knowledge and skills		
 		['BodyFeature', 'Body Feature', ''], #PhisicalAttribute, Health and vitality
-		['Achievement', 'Achievement', ''] #Personal achievement.
+		['Achievement', 'Achievement', ''], #Personal achievement.
+		['Role', 'Role', ''], #Dad, Friend, Lover, etc. 
 	]],
 
 	[['Person', 'Person'], [ #Who you want in your life 'Love', #Important People. Love & Friendship
 		['Individual', 'Individual', True], #Person #If the parent is another person, then the parent is a group of people #'Group',
 		['Group', 'Group', ''],
-		['Role', 'Role', ''], #E.g. Sexual Partner, Someone to Play Magic, Etc... El padre solo puede ser una persona y puede tener varios padres
+		['Relationship', 'Relationship', ''], #E.g. Sexual Partner, Someone to Play Magic, Etc... El padre solo puede ser una persona y puede tener varios padres
 	]],
 
 	[['Possesion', 'Possesion'], [ #What you want to have
@@ -71,13 +72,14 @@ ksu_types = [
 
 
 event_types = [	
-	'EndValue', #Generado por momentos de Joy Generatos
-	
+	# 'EndValue', #Generado por momentos de Joy Generatos
+
 	'Effort', #Generado por acciones al ser ejecutadas
 	'Stupidity', #Generado por acciones al ser ejecutadas
 	
 	'Progress', #Generado por objetivos
 	
+	'PursuitStarted', #Generado por Life Pieces y Milestones al cambiar de status
 	'WishRealized', #Generado por Life Pieces al cambiar de status
 	'LifePieceGone', #Generado por Life Pieces al cambiar de status
 
@@ -141,10 +143,10 @@ attributes_guide = {
 	'monitor': ['Boolean', 'Checkbox'],
 	'goal_score': ['Details', 'Standard'],
 	'goal_events': ['Details', 'Standard'],
-	'goal_count': ['Details', 'Standard'],
+	'goal_counter': ['Details', 'Standard'],
 	'goal_time_frame': ['Details', 'Select'],
 
-	'experience_quality':['Integer', 'Radio'],
+	'memory_level':['Details', 'Select'],
 }
 
 
@@ -165,7 +167,7 @@ ksu_type_attributes = {
 		'monitor',				
 		'goal_score',
 		'goal_events',
-		'goal_count',
+		'goal_counter',
 		'goal_time_frame'
 	],
 
@@ -211,6 +213,7 @@ ksu_type_attributes = {
 		'frequency',
 		'event_date',
 		'chapter_duration',
+		'memory_level',
 	], 
 
 	'Contribution': ['needs_mtnc'], 
@@ -263,6 +266,17 @@ dashboard_template = {
 	'Measurement':{}, #Generaddo por indicadores
 }
 
+
+life_pieces = [
+	['Experience', 'glyphicon-gift'],
+	['SelfAttribute', 'glyphicon-user'],
+	['Person', 'glyphicon-heart'],
+	['Possesion', 'glyphicon-usd'],
+	['Environment', 'glyphicon-home'],
+	['Contribution', 'glyphicon-globe'],
+]
+
+
 life_piece_subtypes = [
 	'Moment',
 	'JoyMine',
@@ -276,11 +290,12 @@ life_piece_subtypes = [
 	'KnowledgeOrSkill',
 	'BodyFeature',
 	'Achievement',
-	
-	'Individual',
-	'Group',
 	'Role',
-	
+
+	'Individual',
+	'Relationship',
+	'Group',
+
 	'Thing',
 	'Service',
 	'Asset',
@@ -290,6 +305,7 @@ life_piece_subtypes = [
 	'Public',
 	'Order',
 ]
+
 
 reasons_guide = {
 	'Proactive':['MiniObjective', 'BigObjective'] + life_piece_subtypes,
@@ -311,10 +327,11 @@ reasons_guide = {
 	'KnowledgeOrSkill':['KnowledgeOrSkill'],
 	'BodyFeature':['BodyFeature'],
 	'Achievement':['Achievement'],
+	'Role':['Individual', 'Group', 'Relationship'],
 	
-	'Individual':['Group', 'Role'],
-	'Group':['Role'],
-	'Role':['Moment', 'JoyMine', 'Chapter'],
+	'Individual':['Group', 'Relationship'],
+	'Group':['Moment', 'JoyMine', 'Chapter'],
+	'Relationship':['Moment', 'JoyMine', 'Chapter'],
 	
 	'Thing':['Thing', 'Moment', 'JoyMine', 'Chapter'],
 	'Service':['Moment', 'JoyMine', 'Chapter'],

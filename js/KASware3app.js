@@ -564,7 +564,7 @@ $(document).on('change', '.pic_input', function(){
 
 
 function get_ksu_attr_value(ksu, attr_key){
-	// console.log(attr_key)
+	console.log(attr_key)
 	var KsuAttr = ksu.find('#' + attr_key)
 	var attr_type = attributes_guide[attr_key][1];
 	// console.log(attr_type)
@@ -1079,7 +1079,7 @@ function FormatBasedOnStatus(ksu, status){
 
 
 function RenderDashboard(dashboard_sections){
-	console.log(dashboard_sections)
+	// console.log(dashboard_sections)
 	var section_dic, section_type, template, sub_section_template, attributes, sub_section;
 	$('.DashboardRenderedSection').remove();
 
@@ -1129,9 +1129,15 @@ function RenderDashboardSubsection(sub_section_dic, sub_section_template){
 		SectionAttr = $(attributes[x]);
 		SectionAttr.text(sub_section_dic[SectionAttr.attr("name")])
 	}
+	
 	if('operator' in sub_section_dic){
 		sub_section_template.find('#'+sub_section_dic['operator']).removeClass('hidden')
 	}
+
+	if('glyphicon' in sub_section_dic){
+		sub_section_template.find('#glyphicon').addClass(sub_section_dic['glyphicon'])
+	}
+
 	return sub_section_template
 }
 
