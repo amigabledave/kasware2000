@@ -739,7 +739,15 @@ class Home(Handler):
 		
 		for ksu in ksu_set:
 			ksu_id = ksu.key.id()
-			superficial_scores[ksu_id] = { 'current': make_template('events_total'), 'previous': make_template('events_total'), 'ksu_type': ksu.ksu_type}
+			if ksu.ksu_type != 'Indicator':
+				ksu_event_types = ['Effort', 'Stupidity']
+			
+			else:
+				ksu_event_types = ['PerceptionSnapshot', 'RealitySnapshot']
+
+			superficial_scores[ksu_id] = {'ksu_type': ksu.ksu_type}
+			for ksu_event_type in ksu_event_types:				
+				superficial_scores[ksu_id][ksu_event_type] = { 'current': make_template('events_total'), 'previous': make_template('events_total')}
 			
 			if ksu.monitor and not ksu.in_graveyard:
 				monitored_ksus_ids.append(ksu_id)
@@ -755,16 +763,18 @@ class Home(Handler):
 				time_frame = 'previous'
 
 			ksu_id = event.ksu_id.id()
-			ksu_score_summary = superficial_scores[ksu_id][time_frame]
 			ksu_type_summary = dashboard_base[time_frame][superficial_scores[ksu_id]['ksu_type']][event_type]
 			event_type_summmary = dashboard_base[time_frame][event_type]
+			if event_type in superficial_scores[ksu_id]:
+				ksu_score_summary = superficial_scores[ksu_id][event_type][time_frame]
 
 			event_dic = self.event_to_dic(event)
 
-			for score_type in ['score', 'events', 'counter']:
-				ksu_score_summary[score_type] += event_dic[score_type]			
+			for score_type in ['score', 'events', 'counter']:		
 				ksu_type_summary[score_type] += event_dic[score_type]
 				event_type_summmary[score_type] += event_dic[score_type]
+				if event_type in superficial_scores[ksu_id]:
+					ksu_score_summary[score_type] += event_dic[score_type]	
 
 		for time_frame in ['current', 'previous']:			
 			for event_type in KASware3.event_types:
@@ -896,7 +906,9 @@ class Home(Handler):
 		return events_total
 
 	def ksu_to_dashboard_section(self, ksu, ksu_deep_score, period_len):#xx
-				
+		
+		event_type = 'Effort'		
+		
 		goal_factor = (period_len * 1.0 /int(ksu.details['goal_time_frame']))
 		for goal in ['goal_score', 'goal_counter', 'goal_events']:
 			if ksu.details[goal] == '':
@@ -905,38 +917,74 @@ class Home(Handler):
 				ksu.details[goal] = round(int(ksu.details[goal]) * goal_factor, 1)
 
 		ksu_subtype = ksu.ksu_subtype
-		sub_sections_titles = {'score':'Effort Made', 'events':'Total Actions', 'counter':'Total Minutes'}
+		sub_sections_titles = {'score':'Merits Earned', 'events':'Total Actions', 'counter':'Total Minutes'}
 		
-		if ksu_subtype in ['Reactive', 'Negative']:
+		if ksu_subtype == 'Reactive':
 			sub_sections_titles['counter'] = 'Total Repetitions'
 		
-		if ksu_subtype == 'Negative':
-			sub_sections_titles['score'] = 'Stupidity Commited'
+		elif ksu_subtype == 'Negative':
+			event_type = 'Stupidity'
+			sub_sections_titles['counter'] = 'Total Repetitions'
+			sub_sections_titles['score'] = 'Merits Loss'
 
-		if ksu_subtype in ['Reality', 'Perception']:
-			sub_sections_titles['events'] = 'Data Points'
+		print
+		print ksu_deep_score
+		print
 
 		section = {
 			'section_type':'KsuSummary',	
 			'title':ksu.description,
-			'section_subtype': 'MonitoredKSU',
-			
-			'sub_sections':[
+			'ksu_type': ksu.ksu_type,
+			'section_subtype': 'MonitoredKSU',			
+			'sub_sections':[]}
+
+		if ksu.ksu_type != 'Indicator':
+			section['sub_sections'] = [
 				{'title':sub_sections_titles['score'],
-				'score':ksu_deep_score['current']['score'],				
+				'score':ksu_deep_score[event_type]['current']['score'],				
 				'contrast_title': 'Goal',
 				'contrast':ksu.details['goal_score']},
 
 				{'title': sub_sections_titles['counter'],
-				'score':ksu_deep_score['current']['counter'],
+				'score':ksu_deep_score[event_type]['current']['counter'],
 				'contrast_title': 'Goal',
 				'contrast':ksu.details['goal_counter']},
 
 				{'title':sub_sections_titles['events'],
-				'score':ksu_deep_score['current']['events'],
+				'score':ksu_deep_score[event_type]['current']['events'],
 				'contrast_title': 'Goal',
-				'contrast':ksu.details['goal_events']},
-			]}
+				'contrast':ksu.details['goal_events']}
+			]
+
+		elif ksu_subtype == 'Reality':
+			sub_sections_titles['events'] = 'Data Points'
+			event_type = 'RealitySnapshot'
+			section['sub_sections'] = [				
+				{'title':'Period Average',
+				'score':1.0*ksu_deep_score[event_type]['current']['score']/ksu_deep_score[event_type]['current']['events'],				
+				'contrast_title': 'Goal',
+				'contrast':ksu.details['goal_score']},
+
+				{'title':sub_sections_titles['events'],
+				'score':ksu_deep_score[event_type]['current']['events'],
+				'contrast_title': 'Goal',
+				'contrast':ksu.details['goal_events']}
+			]
+
+		elif ksu_subtype == 'Perception':
+			sub_sections_titles['events'] = 'Data Points'
+			event_type = 'PerceptionSnapshot'
+			section['sub_sections'] = [				
+				{'title':'Period Average',
+				'score':str(int(100.0*ksu_deep_score[event_type]['current']['score']/ksu_deep_score[event_type]['current']['events']))+'%',				
+				'contrast_title': 'Goal',
+				'contrast':ksu.details['goal_score']},
+
+				{'title':sub_sections_titles['events'],
+				'score':ksu_deep_score[event_type]['current']['events'],
+				'contrast_title': 'Goal',
+				'contrast':ksu.details['goal_events']}
+			]
 
 		return section		
 
@@ -944,7 +992,7 @@ class Home(Handler):
 
 		parent_ksus = []
 		parent_childs = {}
-		deep_scores = {}
+		deep_scores = superficial_scores.copy()
 
 		for ksu in ksu_set:
 			
@@ -954,7 +1002,6 @@ class Home(Handler):
 			if reason_id:
 				reason_id = reason_id.id()
 				if reason_id not in parent_ksus:
-					deep_scores[reason_id] = { 'current': make_template('events_total'), 'previous': make_template('events_total')}
 					parent_ksus.append(reason_id)
 					parent_childs[reason_id] = [ksu_id]
 				
@@ -975,19 +1022,19 @@ class Home(Handler):
 		for time_frame in ['current', 'previous']:
 			
 			for ksu in parent_ksus:
+				parent_deep_score = deep_scores[ksu]
 				score_types = ['score', 'events', 'counter']
 
-				for score_type in score_types:
-					deep_scores[ksu][time_frame][score_type] += superficial_scores[ksu][time_frame][score_type]
-
 				for child in parent_childs[ksu]:
-					for score_type in score_types:
-						deep_scores[ksu][time_frame][score_type] += superficial_scores[child][time_frame][score_type]
+					child_superficial_score = superficial_scores[child]
+					for event_type in ['Effort', 'Stupidity']:
 
-		z = superficial_scores.copy()
-		z.update(deep_scores)
+						if event_type in parent_deep_score and event_type in child_superficial_score:
 
-		return z
+							for score_type in score_types:
+								parent_deep_score[event_type][time_frame][score_type] += child_superficial_score[event_type][time_frame][score_type]
+
+		return deep_scores
 
 
 class SignUpLogIn(Handler):

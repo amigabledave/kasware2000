@@ -33,7 +33,7 @@ ksu_types = [
 		['KnowledgeOrSkill', 'Skill or Knowledge', True], #MindSkill Knowledge and skills		
 		['BodyFeature', 'Body Feature', ''], #PhisicalAttribute, Health and vitality
 		['Achievement', 'Achievement', ''], #Personal achievement.
-		['Role', 'Role', ''], #Dad, Friend, Lover, etc. 
+		['Role', 'Role', ''], #Cambiar el nombre para que sea 'Perception por otros'  Dad, Friend, Lover, etc. 
 	]],
 
 	[['Person', 'Person'], [ #Who you want in your life 'Love', #Important People. Love & Friendship
@@ -69,6 +69,14 @@ ksu_types = [
 	]],
 ]
 
+def make_subtype_descriptions(ksu_types):
+	result = {}
+	for ksu_type in ksu_types:
+		type_description = ksu_type[0][1]
+		ksu_subtypes = ksu_type[1]
+		for ksu_subtype in ksu_subtypes:
+			result[ksu_subtype[0]] = type_description + ' - ' + ksu_subtype[1]
+	return result
 
 
 event_types = [	
@@ -77,9 +85,9 @@ event_types = [
 	'Effort', #Generado por acciones al ser ejecutadas
 	'Stupidity', #Generado por acciones al ser ejecutadas
 	
+	'PursuitStarted', #Generado por Life Pieces y Milestones al cambiar de status
 	'Progress', #Generado por objetivos
 	
-	'PursuitStarted', #Generado por Life Pieces y Milestones al cambiar de status
 	'WishRealized', #Generado por Life Pieces al cambiar de status
 	'LifePieceGone', #Generado por Life Pieces al cambiar de status
 
@@ -237,33 +245,6 @@ ksu_type_attributes = {
 		'frequency',
 		'event_date',
 	]
-}
-
-
-dashboard_template = {
-
-	'EndValue':{
-		'Score':0,
-		'Legendary':[0,[]], #Event_id inside the []
-		'Epic':[0,[]],
-		'Memorable':[0,[]],
-		'Nice':[0,[]],
-		'Disappointing':[0,[]],
-	}, 
-
-	'KSU':{
-		'ksu_id':['NumberOfEvents', 'TotalScore', ['Events_ids'], ['Childs']],
-	},
-
-	'Effort':{}, #Generado por acciones al ser ejecutadas
-	
-	'Stupidity':{}, #Generado por acciones al ser ejecutadas	
-	
-	'Progress':{}, #Generado por objetivos
-	
-	'WishRealized':{},# Generado por Life Pieces al cambiar de status 	
-
-	'Measurement':{}, #Generaddo por indicadores
 }
 
 

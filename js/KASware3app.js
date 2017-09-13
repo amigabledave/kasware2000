@@ -75,6 +75,7 @@ $('#CreateNewKSU').on('click',function(){
 	new_ksu.attr('ksu_type', ksu_type)
 	new_ksu.find('#ksu_type').attr('value', ksu_type);
 	
+	new_ksu.find('#glyphicon').addClass(ksu_type_glyphicons[ksu_type])
 	new_ksu.find('#ShowDetailButton').addClass('hidden');
 	new_ksu.find('#SaveNewKSUButton').removeClass('hidden');
 	
@@ -84,6 +85,7 @@ $('#CreateNewKSU').on('click',function(){
 	new_ksu = FixTemplateBasedOnKsuSubtype(new_ksu, $('#ksu_subtype').val());
 	new_ksu.removeClass('hidden');
 	new_ksu.show()
+	new_ksu.find('#description').focus();
 	ShowDetail(new_ksu);
 });
 
@@ -310,7 +312,7 @@ $(document).on('click', '.KsuActionButton', function(){
 			data: JSON.stringify({
 				'ksu_id': ksu.attr("value"),
 				'user_action': action,
-				'score': score,
+				'score': Math.floor(score),
 			})
 		}).done(function(data){
 			console.log(data); 
@@ -624,7 +626,9 @@ function render_ksu(ksu_dic){
 	 
 	if(ksu_dic['pic_url']){
 		SetKsuImage(ksu, ksu_dic['pic_url'])
-	} 
+	} else {
+		ksu.find('#glyphicon').addClass(ksu_type_glyphicons[ksu_dic['ksu_type']])
+	}
 
 	if (attributes.indexOf('money_cost') >= 0){		
 		HideShowCostFrequency(ksu);	
@@ -644,7 +648,7 @@ function render_ksu(ksu_dic){
 
 	FormatBasedOnStatus(ksu, ksu_dic['status'])
 
-	AdjustTextAreaHeight(ksu.find('#description')[0]) 
+	AdjustTextAreaHeight(ksu.find('#description')) 
 }
 
 function render_event(event_dic){
@@ -659,6 +663,7 @@ function render_event(event_dic){
 		'Progress': {'type_description': 'Milestone Reached', 'score_format': ''},
 		'EndValue': {'type_description': 'Joy Generated', 'score_format': 'ScoreHolderEndValue'},
 		
+		'PursuitStarted': {'type_description': 'Pursuit Started', 'score_format': ''},
 		'WishRealized': {'type_description': 'Wish Realized', 'score_format': 'IsRealized'},
 		'LifePieceGone': {'type_description': 'Life Piece Gone', 'score_format': 'IsHistory'},
 
@@ -673,7 +678,7 @@ function render_event(event_dic){
 	event.attr("id", 'Event');
 	event.attr('event_type', event_type);
 	event.attr("value", event_dic['event_id']);
-
+	
 	event.find('#ScoreHolder').addClass(type_details[event_type]['score_format'])
 	event.find('#event_type').text(type_details[event_type]['type_description'])
 
@@ -727,7 +732,7 @@ function UpdateMerits(ksu){
 	var timer_factor = {1:5, 2:10, 3:20, 4:30};
 
 	var base = {
-		'Proactive': {1:0, 2:0, 3:1, 4:5},
+		'Proactive': {1:0, 2:1, 3:1, 4:5},
 		'Reactive': {1:1, 2:3, 3:5, 4:10},
 		'Negative': {1:5, 2:10, 3:20, 4:50},
 	};
@@ -1102,13 +1107,17 @@ function RenderDashboard(dashboard_sections){
 		if('title' in section_dic){
 			var title_string = section_dic['title']
 
-			if(title_string.length > 65){
-				title_string = title_string.substring(0, 65) + '...'
+			if(title_string.length > 55){
+				title_string = title_string.substring(0, 55) + '...'
 			}
 
 			template.find('#SectionTitle').text(title_string)
 		}
 		
+		if(section_type == 'KsuSummary'){
+			template.find('#glyphicon').addClass(ksu_type_glyphicons[section_dic['ksu_type']])
+		}
+
 		var col_size = {2:'col-xs-6', 3:'col-xs-4', 4:'col-xs-3', 6:'col-xs-2'};
 
 		for (var j = sub_sections.length - 1; j >= 0; j--) {
@@ -1161,6 +1170,19 @@ var ksu_type_attr_details = {
 	'Environment': [['description', 'placeholder', 'In what environment would you like to live in?']],
 }
 
+var ksu_type_glyphicons = {
+	'Action': 'glyphicon-tower', 
+	'Objective': 'glyphicon-road', 
+	'Contribution': 'glyphicon-globe', 
+	'Experience':'glyphicon-gift', 
+	'SelfAttribute':'glyphicon-user', 
+	'Person':'glyphicon-heart', 
+	'Possesion': 'glyphicon-wrench', 
+	'Wisdom': 'glyphicon-tree-deciduous', 
+	'Indicator': 'glyphicon-scale', 
+	'Environment': 'glyphicon-home',
+}
+
 
 var section_details = {
 	'mission':{'title': "Today's Mission", 'new_ksu_type': 'Action', 'holder':'TheoryHolder'},
@@ -1171,7 +1193,7 @@ var section_details = {
 	'contributions': {'title': 'Contributions', 'new_ksu_type': 'Contribution', 'holder':'TheoryHolder'}, 
 	'experiences': {'title': 'Joy Experiences', 'new_ksu_type': 'Experience', 'holder':'TheoryHolder'},  
 	'mybestself': {'title': 'Mybestself', 'new_ksu_type': 'SelfAttribute', 'holder':'TheoryHolder'},  
-	'people': {'title': 'Important People', 'new_ksu_type': 'Person', 'holder':'TheoryHolder'},  
+	'people': {'title': 'Love & Friendship', 'new_ksu_type': 'Person', 'holder':'TheoryHolder'},  
 	'possesions': {'title': 'Possesions', 'new_ksu_type': 'Possesion', 'holder':'TheoryHolder'},  
 	'environment': {'title': 'Environment', 'new_ksu_type': 'Environment', 'holder':'TheoryHolder'},
 
@@ -2354,10 +2376,9 @@ $(document).on('focusin.autoExpand', 'textarea.autoExpand', function(){
     });
 
 function AdjustTextAreaHeight(target_textarea){
-        var minRows = 1 //this.getAttribute('data-min-rows')|0, rows;
-        target_textarea.rows = minRows;
-        rows = Math.ceil((target_textarea.scrollHeight) / target_textarea.lineHeight); 
-        target_textarea.rows = minRows + rows;
+		var scrollHeight = target_textarea[0].scrollHeight
+		var lineHeight = parseInt(target_textarea.css('line-height').replace('px',''));      	
+		target_textarea[0].rows = Math.ceil((scrollHeight - 4)/lineHeight)
 }
 
 

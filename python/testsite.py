@@ -3,7 +3,7 @@ import math
 
 def calculate_mission_reward(eod_merits, merits_goal):
 	
-	bracket_size = 20
+	bracket_size = 30
 	reward_factor = 1
 	reward = 0
 
@@ -20,5 +20,5 @@ def calculate_mission_reward(eod_merits, merits_goal):
 	return reward * reward_factor
 
 
-print calculate_mission_reward(111, 105)
+print calculate_mission_reward(0, 150)
 
