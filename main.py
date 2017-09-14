@@ -662,10 +662,6 @@ class Home(Handler):
 			reps = int(event_details['reps'])
 
 
-		comments = ''
-		if comments in event_details:
-			comments = event_details['comments']
-
 		reason_status = 'NoReason'
 		if ksu.reason_id:
 			reason_ksu = KSU3.get_by_id(ksu.reason_id.id())
@@ -686,8 +682,7 @@ class Home(Handler):
 			score = score,
 			counter = counter,
 
-			size = size,
-			comments = comments)
+			size = size)
 
 		return event
 
@@ -799,13 +794,16 @@ class Home(Handler):
 			{'section_type':'Overall',
 			'section_subtype':'Overall',
 			'sub_sections':[
+				
+				{'title': 'Endeavours',				
+				'score': 'X', #game['endevours'],
+				'contrast_title': 'Merits in current endevour:',
+				'contrast': 'xx of xx'},
+
 				{'title': 'Discipline Lvl.',
 				'score': game['discipline_lvl'],
-				'contrast': game['best_discipline_lvl']},
-
-				{'title': 'Streak',
-				'score': game['streak'],
-				'contrast': game['best_streak']},
+				'contrast_title': 'Days in current level:',
+				'contrast': 'xx of xx'},
 
 				{'title': 'Piggy Bank', #Formerly Merits Reserves
 				'score': game['piggy_bank'],
@@ -913,8 +911,10 @@ class Home(Handler):
 		for goal in ['goal_score', 'goal_counter', 'goal_events']:
 			if ksu.details[goal] == '':
 				ksu.details[goal] = 0
-			else:
+			elif ksu.ksu_type != 'Indicator':
 				ksu.details[goal] = round(int(ksu.details[goal]) * goal_factor, 1)
+			else:
+				ksu.details[goal] = float(ksu.details[goal])
 
 		ksu_subtype = ksu.ksu_subtype
 		sub_sections_titles = {'score':'Merits Earned', 'events':'Total Actions', 'counter':'Total Minutes'}

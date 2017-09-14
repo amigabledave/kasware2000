@@ -150,6 +150,7 @@ attributes_guide = {
 
 	'monitor': ['Boolean', 'Checkbox'],
 	'goal_score': ['Details', 'Standard'],
+	'goal_type': ['Details', 'Select'],
 	'goal_events': ['Details', 'Standard'],
 	'goal_counter': ['Details', 'Standard'],
 	'goal_time_frame': ['Details', 'Select'],
@@ -244,6 +245,7 @@ ksu_type_attributes = {
 		'question',
 		'frequency',
 		'event_date',
+		'goal_type',
 	]
 }
 

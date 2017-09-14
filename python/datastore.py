@@ -108,7 +108,6 @@ class Event3(ndb.Model):
 	score = ndb.IntegerProperty(default=0)
 	size = ndb.IntegerProperty(default=1)	
 	counter = ndb.IntegerProperty(default=1)
-	comments = ndb.StringProperty()
 
 
 class KSU(ndb.Model):
