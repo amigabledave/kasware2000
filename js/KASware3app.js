@@ -50,10 +50,11 @@ $('.SectionButton').on('click', function(){
 	$('.SelectedSection').removeClass('SelectedSection')
 	$(this).addClass('SelectedSection').blur()
 	
-	if(section != 'more'){
+	 if(section != 'more'){
 		$('#SectionTitle').text(section_details[section]['title']);
 		FixTheoryView()
 		window.scrollTo(0, 0);
+	
 	} else {
 		$('#more_buttons').toggleClass('hidden')
 		$('#ShowMoreSpan').toggleClass('hidden')
@@ -1052,10 +1053,21 @@ function FixTheoryView(){
 
 		for (var i = ksu_set.length - 1; i >= 0; i--) {
 			var ksu = $(ksu_set[i]);
-			if(ksu.attr('ksu_type') == section_ksu_type){
-				ksu.show()
+			
+			if( selected_section != 'search'){				
+				if(ksu.attr('ksu_type') == section_ksu_type){
+					ksu.show()
+				} else {
+					ksu.hide()
+				}
 			} else {
-				ksu.hide()
+				var search_string = $('#search_string').val()
+				
+				if(InSearch(ksu, search_string)){
+					ksu.show()
+				} else {
+					ksu.hide()
+				}
 			}
 		}
 	} 
@@ -1090,6 +1102,30 @@ function FixTheoryView(){
 	}
 	
 	$('#CreateNewKSU').prop("disabled", section_ksu_type == 'disabled')
+
+// xx
+	function InSearch(ksu, search_string){		
+		var search_range = '';
+		var textareas = ksu.find('textarea');
+		
+		for (var i = textareas.length - 1; i >= 0; i--) {
+			search_range = search_range.concat($(textareas[i]).val())
+		}
+		
+		get_ksu_attr_value(ksu, 'description');
+		
+		search_range = search_range.toLowerCase()	
+		var words_searched = search_string.toLowerCase().split();
+		
+		for (var j = words_searched.length - 1; j >= 0; j--) {
+			if(!search_range.includes(words_searched[j]))
+			return false 
+		}
+
+		return true
+
+	}
+
 };
 
 
@@ -1235,6 +1271,7 @@ var section_details = {
 	'money': {'title': 'Money Requirements', 'new_ksu_type': 'disabled', 'holder':'MoneyRequirementsHolder'},
 
 	'history':{'title': 'History', 'new_ksu_type': 'disabled', 'holder':'HistoryHolder'},
+	'search':{'title': 'Search Results', 'new_ksu_type': 'disabled', 'holder':'TheoryHolder'},
 }
 
 
