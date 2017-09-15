@@ -262,7 +262,7 @@ class Home(Handler):
 		event_details = json.loads(self.request.body);
 		user_action = event_details['user_action']	
 		
-		if user_action == 'Action_Done':
+		if user_action in ['Action_Done', 'Stupidity_Commited']:
 			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
 			event = self.create_event(ksu, user_action, event_details)
 			event.put()
@@ -356,7 +356,7 @@ class Home(Handler):
 			self.response.out.write(json.dumps(ksu_dic))
 			return
 
-		elif user_action == 'DeleteKSU':#xx
+		elif user_action == 'DeleteKSU':
 			ksu = KSU3.get_by_id(int(event_details['ksu_id']))
 
 			child_ksus = KSU3.query(KSU3.reason_id == ksu.key).fetch()
@@ -445,7 +445,7 @@ class Home(Handler):
 
 		if user_action == 'Action_Done':
 			ksu = self.update_event_date(ksu, user_action)
-			if ksu.details['repeats'] == 'Never':
+			if ksu.details['repeats'] == 'Never' and ksu.ksu_subtype != 'Reactive':
 				ksu.in_graveyard = True
 		
 		elif user_action == 'Milestone_Reached':
@@ -606,13 +606,14 @@ class Home(Handler):
 	def create_event(self, ksu, user_action, event_details):
 		weight = {1:1, 2:3, 3:5, 4:8, 5:13} #Peso para ponderar Life Pieces según su importancia/size
 		ksu_subtype = ksu.ksu_subtype
-		
+		description = ksu.description
+
 		if user_action == 'Action_Done':
-			if ksu_subtype in ['Proactive', 'Reactive']:
-				event_type = 'Effort'
-			
-			elif ksu_subtype == 'Negative':
-				event_type = 'Stupidity'
+			event_type = 'Effort'
+		
+		elif user_action == 'Stupidity_Commited':
+			event_type = 'Stupidity'
+			description = ksu.details['negative_alternative']
 
 		elif user_action == 'Milestone_Reached':
 			event_type = 'Progress'
@@ -630,6 +631,7 @@ class Home(Handler):
 			event_type = 'LifePieceGone'
 
 		elif user_action == 'Measurement_Recorded':
+			description = ksu.details['question']
 			if ksu_subtype == 'Perception':
 				event_type = 'PerceptionSnapshot'
 			elif ksu_subtype == 'Reality':
@@ -666,10 +668,6 @@ class Home(Handler):
 		if ksu.reason_id:
 			reason_ksu = KSU3.get_by_id(ksu.reason_id.id())
 			reason_status = reason_ksu.status
-
-		description = ksu.description
-		if ksu.ksu_type == 'Indicator':
-			description = ksu.details['question']
 
 		event = Event3(
 			theory_id = ksu.theory_id,
@@ -779,8 +777,16 @@ class Home(Handler):
 
 		monitored_ksus_sections = []
 		for ksu_id in monitored_ksus_ids:
-			section = self.ksu_to_dashboard_section(monitored_ksus_dic[ksu_id], deep_scores[ksu_id], period_len)
+			ksu = monitored_ksus_dic[ksu_id]
+			section = self.ksu_to_dashboard_section(ksu, deep_scores[ksu_id], period_len)
 			monitored_ksus_sections.append(section)
+			
+			if ksu.ksu_subtype == 'Reactive':
+				
+				ksu.ksu_subtype = 'Negative'
+				ksu.description = ksu.details['negative_alternative']
+				section = self.ksu_to_dashboard_section(ksu, deep_scores[ksu_id], period_len)
+				monitored_ksus_sections.append(section)
 
 		dashboard_base['monitored_ksus_sections'] = monitored_ksus_sections
 
@@ -938,7 +944,27 @@ class Home(Handler):
 			'section_subtype': 'MonitoredKSU',			
 			'sub_sections':[]}
 
-		if ksu.ksu_type != 'Indicator':
+
+		if ksu.ksu_subtype in ['Reactive', 'Negative']:
+			section['sub_sections'] = [
+				{'title':sub_sections_titles['score'],
+				'score':ksu_deep_score[event_type]['current']['score'],				
+				'contrast_title': 'PP: ',
+				'contrast':ksu_deep_score[event_type]['previous']['score']},
+
+				{'title': sub_sections_titles['counter'],
+				'score':ksu_deep_score[event_type]['current']['counter'],
+				'contrast_title': 'PP: ',
+				'contrast':ksu_deep_score[event_type]['previous']['counter']},
+
+				{'title':sub_sections_titles['events'],
+				'score':ksu_deep_score[event_type]['current']['events'],
+				'contrast_title': 'PP: ',
+				'contrast':ksu_deep_score[event_type]['previous']['counter']}
+			]
+
+
+		elif ksu.ksu_type != 'Indicator':
 			section['sub_sections'] = [
 				{'title':sub_sections_titles['score'],
 				'score':ksu_deep_score[event_type]['current']['score'],				

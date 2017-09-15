@@ -7,7 +7,7 @@ ksu_types = [
 	[['Action', 'Action'], [
 		['Proactive', 'Proactive', True],
 		['Reactive', 'Reactive', ''],
-		['Negative', 'Negative', '']
+		# ['Negative', 'Negative', '']
 	]],	
 
 	[['Objective', 'Mile Stone'], [ #Group actions in a well define purpose
@@ -156,6 +156,8 @@ attributes_guide = {
 	'goal_time_frame': ['Details', 'Select'],
 
 	'memory_level':['Details', 'Select'],
+	'negative_alternative':['Details', 'Standard'],
+	'negative_size':['Details', 'Radio'],
 }
 
 
@@ -204,6 +206,8 @@ ksu_type_attributes = {
 	
 		'anywhere',
 		'status',
+		'negative_alternative',
+		'negative_size',
 	],
 
 	'Objective': [

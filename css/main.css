@@ -395,11 +395,15 @@ input::-webkit-inner-spin-button {
 }
 
 .half-circle-btn {
-  border-bottom-right-radius: 36px;
-  border-top-right-radius: 36px;
-  height: 36px;
-  width: 18px;
+    margin-left: 3px; 
+    height: 22px; 
+    width: 38px; 
+    padding:0; 
+    text-align: center; 
 }
+
+
+
 
 .inKSUhr{
     border: none;

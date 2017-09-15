@@ -102,6 +102,7 @@ $(document).on('click', '.KsuActionButton', function(){
 		'DeleteKSU': DeleteKSU,
 		'AddEventComments': AddEventComments,
 		'Action_Done': ActionDone,
+		'Stupidity_Commited': StupidityCommited,
 		'Action_Skipped': UpdateEventDate,
 		'Action_Pushed': UpdateEventDate,
 		'SendToMission': UpdateEventDate,
@@ -233,6 +234,31 @@ $(document).on('click', '.KsuActionButton', function(){
 
 		});
 	};
+
+	function StupidityCommited(ksu){
+		console.log('Stupidity Commited...')
+		var score =	ksu.find('#Negative_Merits').text();
+		ksu.fadeOut('slow');
+		$.ajax({
+			type: "POST",
+			url: "/",
+			dataType: 'json',
+			data: JSON.stringify({
+				'ksu_id': ksu.attr("value"),
+				'user_action': action,
+				'score': score,
+				'size': get_ksu_attr_value(ksu, 'size'),
+				'counter': get_ksu_attr_value(ksu, 'counter'),
+			})
+		}).done(function(data){
+			console.log(data); 
+			ksu.fadeIn('slow')
+			AdjustGame(data['game'])			
+			render_event(data['event_dic'])
+
+		});
+	};
+
 
 	function MilestoneReached(ksu){
 		console.log('Milestone Reached...')
@@ -549,9 +575,11 @@ $(document).on('change','.ShowHideSelect', function(){
   ShowHideSelect(ksu, select, option);
 });
 
-
 $(document).on('change', '.MonitorCheckbox', function(){
-	$(this).closest('#KSU').find('#MonitorDetails').toggleClass('hidden')
+	var ksu_subtype = get_ksu_attr_value($(this).closest('#KSU'), 'ksu_subtype');
+	if(ksu_subtype != 'Reactive'){
+		$(this).closest('#KSU').find('#MonitorDetails').toggleClass('hidden')
+	}	
 });
 
 
@@ -638,7 +666,7 @@ function render_ksu(ksu_dic){
 		UpdateMerits(ksu)
 	}
 
-	if(ksu_dic['monitor']){
+	if(ksu_dic['monitor'] && ksu_dic['ksu_subtype'] != 'Reactive'){
 		ksu.find('#MonitorDetails').removeClass('hidden')
 	}
 
@@ -712,6 +740,7 @@ function AddKsu_idToPicInput(ksu){
 function UpdateMerits(ksu){
 	var merits = 0
 	var ksu_subtype = get_ksu_attr_value(ksu, 'ksu_subtype'); 
+	
 	var size = ksu.find('input:radio[name=size]:checked').val();
 
 	var timer = 0;
@@ -740,6 +769,8 @@ function UpdateMerits(ksu){
 	merits = Math.floor(timer_factor[size]*timer/60) + base[ksu_subtype][size]*repetitions
 
 	ksu.find('#' + ksu_subtype + '_Merits').text(merits)
+
+	ksu.find('#' + 'Negative' + '_Merits').text(base['Negative'][ksu.find('input:radio[name=negative_size]:checked').val()]*repetitions)
 }
 
 
